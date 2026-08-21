@@ -7,7 +7,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
-import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItem;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
@@ -37,13 +36,11 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
     /**
      * Creates a new simple Quest Item Factory.
      *
-     * @param textParser            the text parser used to parse text
      * @param bookPageWrapper       the book page wrapper used to split pages
      * @param questItemLoreSupplier supplies the Localizations instance if the "quest item" lore line should be added
      */
-    public UpdatedSimpleItemFactory(final TextParser textParser,
-                                    final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
-        super(textParser, bookPageWrapper, questItemLoreSupplier);
+    public UpdatedSimpleItemFactory(final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
+        super(bookPageWrapper, questItemLoreSupplier);
     }
 
     @Override
@@ -68,7 +65,7 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
                 new EnchantmentsHandler(),
                 new UpdatedPotionHandler(),
                 new BannerHandler(),
-                new BookHandler(textParser, bookPageWrapper),
+                new BookHandler(bookPageWrapper),
                 new HeadHandler(),
                 new ColorHandler(),
                 new FireworkHandler()

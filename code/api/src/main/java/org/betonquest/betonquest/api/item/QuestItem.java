@@ -14,22 +14,27 @@ import java.util.List;
  * @since 3.0.0
  */
 public interface QuestItem {
+    // TODO move all that stuff again in the Wrapper and do not throw here but there?
 
     /**
      * Gets the effective name to show.
      *
+     * @param profile the optional profile for resolving arguments
      * @return the name to display
+     * @throws QuestException when there is an exception while resolving profile specific data
      * @since 3.0.0
      */
-    Component getName();
+    Component getName(@Nullable Profile profile) throws QuestException;
 
     /**
      * Gets the lore.
      *
+     * @param profile the optional profile for resolving arguments
      * @return the list of lore lines, can be empty
+     * @throws QuestException when there is an exception while resolving profile specific data
      * @since 3.0.0
      */
-    List<Component> getLore();
+    List<Component> getLore(@Nullable Profile profile) throws QuestException;
 
     /**
      * Generates this quest item as ItemStack with given amount.
@@ -59,11 +64,12 @@ public interface QuestItem {
      *
      * @param item ItemStack to compare
      * @return true if the item matches
+     * @throws QuestException when there is an exception while resolving profile specific data
      * @since 3.0.0
      * @deprecated for removal in {@code 4.0.0}, items can contain profile specific data which needs to be respected
      */
     @Deprecated(forRemoval = true, since = "3.3.0")
-    boolean matches(@Nullable ItemStack item);
+    boolean matches(@Nullable ItemStack item) throws QuestException;
 
     /**
      * Compares ItemStack to the quest item.

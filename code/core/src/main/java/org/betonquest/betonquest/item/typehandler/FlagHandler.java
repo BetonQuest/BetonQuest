@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Handles metadata about item flags.
@@ -17,18 +18,13 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Set of ItemFlags on the ItemStack.
      */
-    private Set<ItemFlag> itemFlags;
-
-    /**
-     * Existence of the flags.
-     */
-    private Existence existence = Existence.WHATEVER;
+    private ExistenceArgument<Set<ItemFlag>> itemFlags = ExistenceArgument.whateverValue(Set.of());
 
     /**
      * Construct a new FlagHandler.
      */
     public FlagHandler() {
-        itemFlags = Set.of();
+
     }
 
     @Override
@@ -51,34 +47,25 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!"flags".equals(key)) {
-            throw new QuestException("Invalid flag key: " + key);
-        }
-        final Set<ItemFlag> flags;
-        try {
-            flags = Arrays.stream(data.split(",")).map(ItemFlag::valueOf).collect(Collectors.toSet());
-        } catch (final IllegalArgumentException e) {
-            throw new QuestException("Invalid flag : " + e.getMessage(), e);
-        }
-        if (flags.isEmpty()) {
-            this.itemFlags = Set.of();
-            this.existence = Existence.FORBIDDEN;
-        } else {
-            this.itemFlags = Set.copyOf(flags);
-            this.existence = Existence.REQUIRED;
-        }
+    public void set(final Instruction instruction) throws QuestException {
+        this.itemFlags = (ExistenceArgument<Set<ItemFlag>>) instruction.enumeration(ItemFlag.class)
+                .list()
+                .map(list -> Pair.of(Existence.REQUIRED, Set.copyOf(list)))
+                .prefilter("", Pair.of(Existence.FORBIDDEN, Set.of()))
+                .get("flags", Pair.of(Existence.WHATEVER, Set.of()));
     }
 
     @Override
-    public void populate(final ItemMeta meta) {
-        itemFlags.forEach(meta::addItemFlags);
+    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        itemFlags.getValue(profile).getRight().forEach(meta::addItemFlags);
     }
 
     @Override
-    public boolean check(final ItemMeta data) {
+    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, Set<ItemFlag>> pair = itemFlags.getValue(profile);
+        final Existence existence = pair.getLeft();
         return existence == Existence.WHATEVER
-                || existence == Existence.FORBIDDEN && data.getItemFlags().isEmpty()
-                || existence == Existence.REQUIRED && !data.getItemFlags().isEmpty() && itemFlags.equals(data.getItemFlags());
+                || existence == Existence.FORBIDDEN && meta.getItemFlags().isEmpty()
+                || existence == Existence.REQUIRED && !meta.getItemFlags().isEmpty() && pair.getRight().equals(meta.getItemFlags());
     }
 }

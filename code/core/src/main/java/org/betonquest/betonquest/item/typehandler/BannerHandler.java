@@ -1,13 +1,14 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -24,14 +25,14 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     private static final int PATTERN_PARTS = 2;
 
     /**
-     * The ordered banner patterns.
-     */
-    private List<Pattern> patterns = List.of();
-
-    /**
      * The required pattern existence.
      */
-    private Existence patternsE = Existence.WHATEVER;
+    private final Existence patternsE = Existence.WHATEVER;
+
+    /**
+     * The ordered banner patterns.
+     */
+    private ExistenceArgument<List<Pattern>> patterns = ExistenceArgument.whateverEmptyList();
 
     /**
      * The empty default constructor.
@@ -61,21 +62,8 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!"patterns".equals(key)) {
-            throw new QuestException("Invalid banner key: " + key);
-        }
-        if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-            patternsE = Existence.FORBIDDEN;
-            return;
-        }
-        final String[] patternData = HandlerUtil.getSplit(data, "Banner patterns are null!", ",");
-        final List<Pattern> parsedPatterns = new ArrayList<>(patternData.length);
-        for (final String pattern : patternData) {
-            parsedPatterns.add(parsePattern(pattern));
-        }
-        patterns = parsedPatterns;
-        patternsE = Existence.REQUIRED;
+    public void set(final Instruction instruction) throws QuestException {
+        this.patterns = ExistenceArgument.applyList("patterns", instruction.parse(this::parsePattern));
     }
 
     private Pattern parsePattern(final String data) throws QuestException {
@@ -99,15 +87,15 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     }
 
     @Override
-    public void populate(final BannerMeta bannerMeta) {
-        bannerMeta.setPatterns(patterns);
+    public void populate(final BannerMeta bannerMeta, @Nullable final Profile profile) throws QuestException {
+        bannerMeta.setPatterns(patterns.getValue(profile).getRight());
     }
 
     @Override
-    public boolean check(final BannerMeta bannerMeta) {
+    public boolean check(final BannerMeta bannerMeta, @Nullable final Profile profile) throws QuestException {
         return switch (patternsE) {
             case WHATEVER -> true;
-            case REQUIRED -> patterns.equals(bannerMeta.getPatterns());
+            case REQUIRED -> patterns.getValue(profile).equals(bannerMeta.getPatterns());
             case FORBIDDEN -> bannerMeta.getPatterns().isEmpty();
         };
     }

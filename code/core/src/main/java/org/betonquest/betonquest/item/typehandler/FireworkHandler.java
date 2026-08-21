@@ -1,8 +1,11 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -11,10 +14,8 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,27 +27,18 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     /**
      * The individual Firework Effect Handlers.
      */
-    private final List<FireworkEffectHandler> effects = new ArrayList<>();
+    private ExistenceArgument<List<FireworkEffectHandler>> effects = ExistenceArgument.whateverEmptyList();
 
     /**
      * The firework power.
      */
-    private int power;
-
-    /**
-     * The number compare state.
-     */
-    private Number powerN = Number.WHATEVER;
-
-    /**
-     * The required firework effect existence.
-     */
-    private Existence effectsE = Existence.WHATEVER;
+    @Nullable
+    private Argument<NumberValue> power;
 
     /**
      * If the Firework need to be exact the same or just contain all specified effects.
      */
-    private boolean exact = true;
+    private Argument<Boolean> exact = new DefaultArgument<>(true);
 
     /**
      * The empty default Constructor.
@@ -133,37 +125,38 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     @Override
     public void set(final Instruction instruction) throws QuestException {
-        switch (key) {
-            case "firework" -> setEffects(data);
-            case "power" -> {
-                final Map.Entry<Number, Integer> fireworkPower = HandlerUtil.getNumberValue(data, "firework power");
-                powerN = fireworkPower.getKey();
-                power = fireworkPower.getValue();
-            }
-            case "firework-containing" -> exact = false;
-            default -> throw new QuestException("Unknown firework key: " + key);
-        }
+        this.effects = ExistenceArgument.applyList("firework", instruction.parse(resolved -> {
+            final FireworkEffectHandler effect = new FireworkEffectHandler();
+            effect.set(resolved);
+            return effect;
+        }));
+        this.power = NumberValue.create("power", "firework power", instruction);
+        this.exact = instruction.bool().map(bool -> !bool).get("firework-containing", true);
     }
 
     @Override
     public void populate(final FireworkMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
-        fireworkMeta.addEffects(getEffects());
-        fireworkMeta.setPower(power);
+        fireworkMeta.addEffects(getEffects(profile));
+        if (power != null) {
+            fireworkMeta.setPower(power.getValue(profile).value());
+        }
     }
 
     /**
      * Sets the Handler's values into the Meta.
      *
      * @param fireworkMeta the meta to populate
+     * @param profile      the optional profile for resolving arguments
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
     public void populate(final FireworkEffectMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
-        final List<FireworkEffect> list = getEffects();
+        final List<FireworkEffect> list = getEffects(profile);
         fireworkMeta.setEffect(list.isEmpty() ? null : list.get(0));
     }
 
     @Override
     public boolean check(final FireworkMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
-        return checkEffects(fireworkMeta.getEffects()) && powerN.isValid(fireworkMeta.getPower(), power);
+        return checkEffects(profile, fireworkMeta.getEffects()) && (power == null || power.getValue(profile).isValid(fireworkMeta.getPower()));
     }
 
     @Override
@@ -178,7 +171,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
-    public void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) {
+    public void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
         if (meta instanceof final FireworkMeta fireworkMeta) {
             populate(fireworkMeta, profile);
         }
@@ -191,49 +184,41 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      * Check to see if the specified ItemMeta matches the Handler.
      *
      * @param fireworkMeta the ItemMeta to check
+     * @param profile      the optional profile for resolving arguments
      * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
     public boolean check(final FireworkEffectMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
         final FireworkEffect single = fireworkMeta.getEffect();
-        return switch (effectsE) {
+        final Pair<Existence, List<FireworkEffectHandler>> pair = this.effects.getValue(profile);
+        final List<FireworkEffectHandler> effects = pair.getRight();
+        return switch (pair.getLeft()) {
             case WHATEVER -> true;
             case REQUIRED -> single != null && !effects.isEmpty() && effects.get(0).check(single);
             case FORBIDDEN -> single == null;
         };
     }
 
-    private List<FireworkEffect> getEffects() {
+    private List<FireworkEffect> getEffects(@Nullable final Profile profile) throws QuestException {
         final List<FireworkEffect> list = new LinkedList<>();
-        for (final FireworkEffectHandler effect : effects) {
+        for (final FireworkEffectHandler effect : effects.getValue(profile).getRight()) {
             list.add(effect.get());
         }
         return list;
     }
 
-    private void setEffects(final String string) throws QuestException {
-        final String[] parts = HandlerUtil.getSplit(string, "Firework effects are missing!", ",");
-        if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
-            effectsE = Existence.FORBIDDEN;
-            return;
-        }
-        effectsE = Existence.REQUIRED;
-        for (final String part : parts) {
-            final FireworkEffectHandler effect = new FireworkEffectHandler();
-            effect.set(part);
-            effects.add(effect);
-        }
-    }
-
-    private boolean checkEffects(final List<FireworkEffect> list) {
-        return switch (effectsE) {
+    private boolean checkEffects(@Nullable final Profile profile, final List<FireworkEffect> list) throws QuestException {
+        final Pair<Existence, List<FireworkEffectHandler>> pair = effects.getValue(profile);
+        return switch (pair.getLeft()) {
             case WHATEVER -> true;
-            case REQUIRED -> checkRequired(list);
+            case REQUIRED -> checkRequired(profile, pair.getRight(), list);
             case FORBIDDEN -> list.isEmpty();
         };
     }
 
-    private boolean checkRequired(final List<FireworkEffect> list) {
-        if (exact && list.size() != effects.size()) {
+    private boolean checkRequired(@Nullable final Profile profile, final List<FireworkEffectHandler> effects,
+                                  final List<FireworkEffect> list) throws QuestException {
+        if (exact.getValue(profile) && list.size() != effects.size()) {
             return false;
         }
         for (final FireworkEffectHandler checker : effects) {

@@ -1,13 +1,15 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.LoreConsumer;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -35,7 +37,7 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * If the item is a "Quest Item".
      */
-    private Existence questItem = Existence.WHATEVER;
+    private Argument<Existence> questItem = new DefaultArgument<>(Existence.WHATEVER);
 
     /**
      * The constructor.
@@ -79,34 +81,21 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!QUEST.equals(key)) {
-            throw new QuestException("Unknown unbreakable key: " + key);
-        }
-        if (HandlerUtil.isKeyOrTrue(QUEST, data)) {
-            questItem = Existence.REQUIRED;
-        } else {
-            questItem = Existence.FORBIDDEN;
-        }
-    }
-
-    @Contract("_ -> fail")
-    @Override
-    public void populate(final ItemMeta meta) {
-        throw new UnsupportedOperationException("Use #populate(ItemMeta, Profile) instead");
+    public void set(final Instruction instruction) throws QuestException {
+        this.questItem = HandlerUtil.isKeyOrTrue(QUEST, instruction);
     }
 
     @Override
     public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (questItem == Existence.REQUIRED) {
+        if (questItem.getValue(profile) == Existence.REQUIRED) {
             meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
             questItemLore.accept(meta, profile);
         }
     }
 
     @Override
-    public boolean check(final ItemMeta meta) {
-        return switch (questItem) {
+    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        return switch (questItem.getValue(profile)) {
             case WHATEVER -> true;
             case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
             case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
@@ -116,9 +105,11 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Indicates whether the quest item tag is set and changes the lore.
      *
+     * @param profile the optional profile for resolving arguments
      * @return if the item has an additional lore line
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
-    public boolean isLoreSet() {
-        return questItem == Existence.REQUIRED && questItemLore instanceof LoreConsumer.Lore;
+    public boolean isLoreSet(@Nullable final Profile profile) throws QuestException {
+        return questItem.getValue(profile) == Existence.REQUIRED && questItemLore instanceof LoreConsumer.Lore;
     }
 }

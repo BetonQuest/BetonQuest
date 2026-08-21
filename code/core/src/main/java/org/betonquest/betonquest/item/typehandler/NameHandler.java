@@ -70,7 +70,9 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Get the name.
      *
+     * @param profile the optional profile for resolving arguments
      * @return the name
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
     @Nullable
     public Component get(@Nullable final Profile profile) throws QuestException {

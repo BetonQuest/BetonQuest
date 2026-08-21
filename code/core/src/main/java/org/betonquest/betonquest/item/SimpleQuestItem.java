@@ -22,6 +22,7 @@ import java.util.Objects;
  * Represents a Quest item handled by the standard BetonQuest configuration.
  */
 public class SimpleQuestItem implements QuestItem {
+    // TODO make ItemWrapper
 
     /**
      * The base Material Selector for the ItemStack generation.
@@ -96,7 +97,7 @@ public class SimpleQuestItem implements QuestItem {
         if (stackSize <= 0) {
             return new ItemStack(Material.AIR);
         }
-        final Material material = selector.getRandomMaterial();
+        final Material material = selector.getValue(profile).getRandomMaterial();
         if (!material.isItem()) {
             throw new QuestException(material + " is not a valid item!");
         }
@@ -116,16 +117,21 @@ public class SimpleQuestItem implements QuestItem {
     }
 
     @Override
-    public Component getName() {
-        final Component name = this.name.get();
-        if (name != null) {
-            return name;
-        }
-        return Component.text(selector.getRandomMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " "));
+    public boolean matches(@Nullable final ItemStack item) throws QuestException {
+        return matches(item, null);
     }
 
     @Override
-    public List<Component> getLore() {
-        return lore.get();
+    public Component getName(@Nullable final Profile profile) throws QuestException {
+        final Component name = this.name.get(profile);
+        if (name != null) {
+            return name;
+        }
+        return Component.text(selector.getValue(profile).getRandomMaterial().toString().toLowerCase(Locale.ROOT).replace("_", " "));
+    }
+
+    @Override
+    public List<Component> getLore(@Nullable final Profile profile) throws QuestException {
+        return lore.get(profile);
     }
 }

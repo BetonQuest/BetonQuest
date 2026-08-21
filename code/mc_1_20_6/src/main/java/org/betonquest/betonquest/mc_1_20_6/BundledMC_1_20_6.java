@@ -5,7 +5,6 @@ import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.integration.Integration;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
-import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.mc_1_20_6.item.UpdatedSimpleItemFactory;
 import org.betonquest.betonquest.mc_1_20_6.item.UpdatedSimpleQuestItemSerializer;
 
@@ -32,11 +31,10 @@ public class BundledMC_1_20_6 implements Integration {
     @Override
     public void enable(final BetonQuestApi api) {
         final ItemRegistry item = api.items().registry();
-        final TextParser textParser = betonQuest.getComponentLoader().get(TextParser.class);
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
-        item.register("simple", new UpdatedSimpleItemFactory(textParser, bookPageWrapper,
+        item.register("simple", new UpdatedSimpleItemFactory(bookPageWrapper,
                 () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? api.localizations() : null), true);
-        item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(textParser, bookPageWrapper));
+        item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(bookPageWrapper));
     }
 
     @Override

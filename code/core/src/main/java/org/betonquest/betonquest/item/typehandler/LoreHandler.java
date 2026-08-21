@@ -3,6 +3,7 @@ package org.betonquest.betonquest.item.typehandler;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -12,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
 /**
  * Handles de-/serialization of Item Lore.
@@ -22,12 +22,12 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * If the last lore line should be interpreted as 'quest-item' line and ignored in checks.
      */
-    private final Supplier<Boolean> ignoreLastLine;
+    private final QuestFunction<Profile, Boolean> ignoreLastLine;
 
     /**
      * The lore.
      */
-    private Argument<Pair<Existence, List<Component>>> lore = new DefaultArgument<>(Pair.of(Existence.WHATEVER, List.of()));
+    private ExistenceArgument<List<Component>> lore = ExistenceArgument.whateverEmptyList();
 
     /**
      * If the lore need to be exact the same or just contain all specified lines.
@@ -39,7 +39,7 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
      *
      * @param ignoreLastLine if the last lore line should be interpreted as 'quest-item' line and ignored in checks
      */
-    public LoreHandler(final Supplier<Boolean> ignoreLastLine) {
+    public LoreHandler(final QuestFunction<Profile, Boolean> ignoreLastLine) {
         this.ignoreLastLine = ignoreLastLine;
     }
 
@@ -69,7 +69,8 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     @Override
     public void set(final Instruction instruction) throws QuestException {
         this.lore = ExistenceArgument.apply("lore", instruction.component().list()); // problem when there is more than one "lore"
-        this.exact = instruction.bool().map(bool -> !bool).get("lore-containing", false);
+        // TODO fix wrong separator, compact and everything else in this diff
+        this.exact = instruction.bool().map(bool -> !bool).get("lore-containing", true);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
         final List<Component> original = meta.lore();
         final List<Component> lore = original == null ? null
-                : original.subList(0, Math.max(0, original.size() - (ignoreLastLine.get() ? 1 : 0)));
+                : original.subList(0, Math.max(0, original.size() - (ignoreLastLine.apply(profile) ? 1 : 0)));
         final Pair<Existence, List<Component>> pair = this.lore.getValue(profile);
         return switch (pair.getLeft()) {
             case WHATEVER -> true;
@@ -93,7 +94,9 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Gets the lore.
      *
+     * @param profile the optional profile for resolving arguments
      * @return the list of lore lines, can be empty
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
     public List<Component> get(@Nullable final Profile profile) throws QuestException {
         return lore.getValue(profile).getRight();

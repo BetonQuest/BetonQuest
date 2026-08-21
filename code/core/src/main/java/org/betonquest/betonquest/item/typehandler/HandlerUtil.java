@@ -3,6 +3,8 @@ package org.betonquest.betonquest.item.typehandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -117,6 +119,11 @@ public final class HandlerUtil {
      */
     public static boolean isKeyOrTrue(final String key, final String data) throws QuestException {
         return key.equals(data) || new BooleanParser().apply(data);
+    }
+
+    public static Argument<Existence> isKeyOrTrue(final String key, final Instruction instruction) throws QuestException {
+        return instruction.parse(resolved -> isKeyOrTrue(key, resolved))
+                .map(bool -> bool ? Existence.REQUIRED : Existence.FORBIDDEN).get(key, Existence.FORBIDDEN);
     }
 
     /**

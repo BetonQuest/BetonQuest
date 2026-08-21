@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.TypeFactory;
-import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.typehandler.BannerHandler;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
@@ -43,11 +42,6 @@ import java.util.function.Supplier;
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
-     * The text parser used to parse text.
-     */
-    protected final TextParser textParser;
-
-    /**
      * The book page wrapper used to split pages.
      */
     protected final BookPageWrapper bookPageWrapper;
@@ -60,21 +54,22 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     /**
      * Creates a new simple Quest Item Factory.
      *
-     * @param textParser            the text parser used to parse text
      * @param bookPageWrapper       the book page wrapper used to split pages
      * @param questItemLoreSupplier supplies the Localizations instance if the "quest item" lore line should be added
      */
-    public SimpleQuestItemFactory(final TextParser textParser,
-                                  final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
-        this.textParser = textParser;
+    public SimpleQuestItemFactory(final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
         this.bookPageWrapper = bookPageWrapper;
         this.questItemLoreSupplier = questItemLoreSupplier;
     }
 
     /**
      * Parses the instruction string as Simple Quest Item.
+     * <p>
+     * This method exists solely for the database migration and will fail blatantly when using any placeholder or newer
+     * feature in the instruction string.
      *
-     * @param string the instruction string, starting with {@link DefaultBlockSelector}
+     * @param argumentParsers the argument parsers used for creating a new instruction
+     * @param string          the instruction string, starting with {@link DefaultBlockSelector}
      * @return the parsed QuestItem
      * @throws QuestException when an error occurs while parsing
      */
@@ -112,7 +107,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
                 new EnchantmentsHandler(),
                 new PotionHandler(),
                 new BannerHandler(),
-                new BookHandler(textParser, bookPageWrapper),
+                new BookHandler(bookPageWrapper),
                 new HeadHandler(),
                 new ColorHandler(),
                 new FireworkHandler()
@@ -143,7 +138,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
                 keyToHandler.put(key, handler);
             }
         }
-        for (final ItemMetaHandler<?> handler : keyToHandler.values()) {
+        for (final ItemMetaHandler<?> handler : keyToHandler.values()) { // TODO fix call amount logic
             handler.set(instruction);
         }
     }

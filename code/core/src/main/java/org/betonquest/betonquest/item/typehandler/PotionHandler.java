@@ -1,6 +1,11 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -8,10 +13,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,47 +39,28 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     /**
      * The potion type, defaulting to water.
      */
-    protected PotionType type = PotionType.WATER;
-
-    /**
-     * The required potion type existence.
-     */
-    protected Existence typeE = Existence.WHATEVER;
+    protected ExistenceArgument<PotionType> type = ExistenceArgument.whateverValue(PotionType.WATER);
 
     /**
      * If the potion is extended.
      */
-    protected boolean extended;
-
-    /**
-     * The required extended existence.
-     */
-    protected Existence extendedE = Existence.WHATEVER;
+    protected ExistenceArgument<Boolean> extended = ExistenceArgument.whateverNullValue();
 
     /**
      * If the potion is upgraded.
      */
-    protected boolean upgraded;
+    protected ExistenceArgument<Boolean> upgraded = ExistenceArgument.whateverNullValue();
 
-    /**
-     * The required upgraded existence.
-     */
-    protected Existence upgradedE = Existence.WHATEVER;
 
     /**
      * The custom potion effects.
      */
-    private List<CustomEffectHandler> custom = new ArrayList<>();
-
-    /**
-     * The required custom potion effects existence.
-     */
-    private Existence customE = Existence.WHATEVER;
+    private ExistenceArgument<List<CustomEffectHandler>> custom = ExistenceArgument.whateverEmptyList();
 
     /**
      * If the Potions need to be exact the same or just contain all specified effects.
      */
-    private boolean exact = true;
+    private Argument<Boolean> exact = new DefaultArgument<>(true);
 
     /**
      * The empty default Constructor.
@@ -119,56 +103,41 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        switch (key) {
-            case "type" -> setType(data);
-            case EXTENDED -> {
-                this.extendedE = Existence.REQUIRED;
-                this.extended = HandlerUtil.isKeyOrTrue(EXTENDED, data);
-            }
-            case UPGRADED -> {
-                this.upgradedE = Existence.REQUIRED;
-                this.upgraded = HandlerUtil.isKeyOrTrue(UPGRADED, data);
-            }
-            case "effects" -> setCustom(data);
-            case "effects-containing" -> exact = false;
-            default -> throw new QuestException("Unknown potion key: " + key);
-        }
+    public void set(final Instruction instruction) throws QuestException {
+        this.type = ExistenceArgument.apply("type", instruction.enumeration(PotionType.class)), PotionType.WATER));
+        this.extended = HandlerUtil.isKeyOrTrue(EXTENDED, instruction);
+        this.upgraded = HandlerUtil.isKeyOrTrue(UPGRADED, instruction);
+        this.custom = ExistenceArgument.applyList("effects", instruction.parse(CustomEffectHandler::new));
+        this.exact = instruction.bool().map(bool -> !bool).get("effects-containing", true);
     }
 
     @Override
-    public void populate(final PotionMeta potionMeta) {
-        potionMeta.setBasePotionData(new PotionData(type, extended, upgraded));
-        for (final PotionEffect effect : getCustom()) {
+    public void populate(final PotionMeta potionMeta, @Nullable final Profile profile) throws QuestException {
+        potionMeta.setBasePotionData(new PotionData(type.getValue(profile).getValue(),
+                extended.getValue(profile).getValue(), upgraded.getValue(profile).getValue()));
+        for (final PotionEffect effect : getCustom(profile)) {
             potionMeta.addCustomEffect(effect, true);
         }
     }
 
     @Override
-    public boolean check(final PotionMeta meta) {
-        return checkBase(meta.getBasePotionData()) && checkCustom(meta.getCustomEffects());
-    }
-
-    private void setType(final String type) throws QuestException {
-        this.typeE = Existence.REQUIRED;
-        try {
-            this.type = PotionType.valueOf(type.toUpperCase(Locale.ROOT));
-        } catch (final IllegalArgumentException e) {
-            throw new QuestException("No such potion type: " + type, e);
-        }
+    public boolean check(final PotionMeta meta, @Nullable Profile profile) throws QuestException {
+        return checkBase(meta.getBasePotionData(), profile) && checkCustom(meta.getCustomEffects(), profile);
     }
 
     /**
      * Gets the stored custom potion effects.
-     *
+     *@param profile the optional profile for resolving arguments
      * @return the custom potion effects
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
-    protected List<PotionEffect> getCustom() {
+    protected List<PotionEffect> getCustom(@Nullable Profile profile) throws QuestException {
+        final Pair<Existence, List<CustomEffectHandler>> pair = custom.getValue(profile);
         final List<PotionEffect> effects = new LinkedList<>();
-        if (customE == Existence.FORBIDDEN) {
+        if (pair.getLeft() == Existence.FORBIDDEN) {
             return effects;
         }
-        for (final CustomEffectHandler checker : custom) {
+        for (final CustomEffectHandler checker : pair.getRight()) {
             if (checker.customTypeE != Existence.FORBIDDEN) {
                 effects.add(new PotionEffect(checker.customType, checker.duration, checker.power));
             }
@@ -176,35 +145,18 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return effects;
     }
 
-    /**
-     * Sets the stored custom potion effects.
-     *
-     * @param custom the custom potion effects
-     * @throws QuestException when an effect is invalid
-     */
-    protected void setCustom(final String custom) throws QuestException {
-        final String[] parts = HandlerUtil.getSplit(custom, "Potion is null!", ",");
-        if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
-            customE = Existence.FORBIDDEN;
-            return;
-        }
-        this.custom = new ArrayList<>(parts.length);
-        for (final String part : parts) {
-            final CustomEffectHandler checker = new CustomEffectHandler(part);
-            this.custom.add(checker);
-        }
-        customE = Existence.REQUIRED;
-    }
-
-    private boolean checkBase(@Nullable final PotionData base) {
-        return switch (typeE) {
+    private boolean checkBase(@Nullable final PotionData base, @Nullable Profile profile) throws QuestException {
+        final Pair<Existence, PotionType> pair = type.getValue(profile);
+        return switch (pair.getLeft()) {
             case WHATEVER -> true;
             case REQUIRED -> {
-                if (base == null || base.getType() != type) {
+                if (base == null || base.getType() != pair.getRight()) {
                     yield false;
                 }
-                yield (extendedE != Existence.REQUIRED || base.isExtended() == extended)
-                        && (upgradedE != Existence.REQUIRED || base.isUpgraded() == upgraded);
+                final Pair<Existence, Boolean> extended = this.extended.getValue(profile);
+                final Pair<Existence, Boolean> upgraded = this.upgraded.getValue(profile);
+                yield (extended.getLeft() != Existence.REQUIRED || base.isExtended() == extended.getRight())
+                        && (upgraded.getLeft() != Existence.REQUIRED || base.isUpgraded() == upgraded.getRight());
             }
             default -> false;
         };
@@ -212,21 +164,24 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     /**
      * Checks the custom effects.
-     *
      * @param custom the effects to check against the stored
+     *@param profile the optional profile for resolving arguments
+     * @throws QuestException when there is an exception while resolving profile specific data
      * @return if the given effects satisfies the stored
      */
-    protected boolean checkCustom(final List<PotionEffect> custom) {
+    protected boolean checkCustom(final List<PotionEffect> custom, @Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, List<CustomEffectHandler>> pair = this.custom.getValue(profile);
+        final Existence customE = pair.getLeft();
         if (customE == Existence.WHATEVER) {
             return true;
         }
         if (custom.isEmpty()) {
             return customE == Existence.FORBIDDEN;
         }
-        if (exact && custom.size() != this.custom.size()) {
+        if (exact.getValue(profile) && custom.size() != pair.getRight().size()) {
             return false;
         }
-        for (final CustomEffectHandler checker : this.custom) {
+        for (final CustomEffectHandler checker : pair.getRight()) {
             PotionEffect effect = null;
             for (final PotionEffect potionEffect : custom) {
                 if (potionEffect.getType().equals(checker.customType)) {

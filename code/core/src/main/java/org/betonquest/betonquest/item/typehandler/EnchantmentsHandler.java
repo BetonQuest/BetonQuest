@@ -1,12 +1,16 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -21,17 +25,12 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * The individual Enchantment Handlers.
      */
-    private List<SingleEnchantmentHandler> checkers = new ArrayList<>();
-
-    /**
-     * The required existence.
-     */
-    private Existence checkersE = Existence.WHATEVER;
+    private ExistenceArgument<List<SingleEnchantmentHandler>> checkers = ExistenceArgument.whateverEmptyList();
 
     /**
      * If the Enchantment need to be exact the same or just contain all specified enchantments.
      */
-    private boolean exact = true;
+    private Argument<Boolean> exact = new DefaultArgument<>(true);
 
     /**
      * The empty default Constructor.
@@ -73,24 +72,21 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        switch (key) {
-            case "enchants" -> set(data);
-            case "enchants-containing" -> exact = false;
-            default -> throw new QuestException("Unknown enchantment key: " + key);
-        }
+    public void set(final Instruction instruction) throws QuestException {
+        this.checkers = ExistenceArgument.applyList("enchants", instruction.parse(SingleEnchantmentHandler::new));
+        this.exact = instruction.bool().map(bool -> !bool).get("enchants-containing", true);
     }
 
     @Override
-    public void populate(final ItemMeta meta) {
+    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
         if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
             // why no bulk adding method?!
-            final Map<Enchantment, Integer> map = get();
+            final Map<Enchantment, Integer> map = get(profile);
             for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
                 enchantMeta.addStoredEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
             }
         } else {
-            final Map<Enchantment, Integer> map = get();
+            final Map<Enchantment, Integer> map = get(profile);
             for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
                 meta.addEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
             }
@@ -98,33 +94,21 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public boolean check(final ItemMeta meta) {
+    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
         if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
-            return check(enchantMeta.getStoredEnchants());
+            return check(profile, enchantMeta.getStoredEnchants());
         }
-        return check(meta.getEnchants());
+        return check(profile, meta.getEnchants());
     }
 
-    private void set(final String enchants) throws QuestException {
-        final String[] parts = HandlerUtil.getSplit(enchants, "Enchantments are null!", ",");
-        if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
-            checkersE = Existence.FORBIDDEN;
-            return;
-        }
-        checkers = new ArrayList<>(parts.length);
-        for (final String part : parts) {
-            final SingleEnchantmentHandler checker = new SingleEnchantmentHandler(part);
-            checkers.add(checker);
-        }
-        checkersE = Existence.REQUIRED;
-    }
-
-    private Map<Enchantment, Integer> get() {
+    private Map<Enchantment, Integer> get(@Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, List<SingleEnchantmentHandler>> pair = checkers.getValue(profile);
+        final Existence checkersE = pair.getLeft();
         final Map<Enchantment, Integer> map = new HashMap<>();
         if (checkersE == Existence.FORBIDDEN) {
             return map;
         }
-        for (final SingleEnchantmentHandler checker : checkers) {
+        for (final SingleEnchantmentHandler checker : pair.getRight()) {
             if (checker.existence != Existence.FORBIDDEN) {
                 map.put(checker.type, checker.level);
             }
@@ -132,17 +116,19 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         return map;
     }
 
-    private boolean check(final Map<Enchantment, Integer> map) {
+    private boolean check(@Nullable final Profile profile, final Map<Enchantment, Integer> map) throws QuestException {
+        final Pair<Existence, List<SingleEnchantmentHandler>> pair = checkers.getValue(profile);
+        final Existence checkersE = pair.getLeft();
         if (checkersE == Existence.WHATEVER) {
             return true;
         }
-        if (map.isEmpty()) {
+        if (map.isEmpty()) { // TODO remove that? - any value should be set if not whatever? but they could all be '?' too
             return checkersE == Existence.FORBIDDEN;
         }
-        if (exact && map.size() != get().size()) {
+        if (exact.getValue(profile) && map.size() != get(profile).size()) {
             return false;
         }
-        for (final SingleEnchantmentHandler checker : checkers) {
+        for (final SingleEnchantmentHandler checker : pair.getRight()) {
             if (!checker.check(map.get(checker.type))) {
                 return false;
             }

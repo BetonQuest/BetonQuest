@@ -41,8 +41,8 @@ public class ItemTypesComponent extends AbstractCoreComponent {
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
 
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
-        itemRegistry.register("simple", new SimpleQuestItemFactory(textParser, bookPageWrapper,
+        itemRegistry.register("simple", new SimpleQuestItemFactory(bookPageWrapper,
                 () -> config.getBoolean("item.quest.lore") ? localizations : null));
-        itemRegistry.registerSerializer("simple", new SimpleQuestItemSerializer(textParser, bookPageWrapper));
+        itemRegistry.registerSerializer("simple", new SimpleQuestItemSerializer(bookPageWrapper));
     }
 }

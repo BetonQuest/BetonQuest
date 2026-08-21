@@ -49,9 +49,14 @@ public record QuestItemTagAdapter(QuestItem original, LoreConsumer loreConsumer)
     }
 
     @Override
-    public boolean matches(@Nullable final ItemStack item) {
+    public boolean matches(@Nullable final ItemStack item) throws QuestException {
+        return matches(item, null);
+    }
+
+    @Override
+    public boolean matches(@Nullable final ItemStack item, @Nullable final Profile profile) throws QuestException {
         return item != null && item.hasItemMeta()
                 && item.getItemMeta().getPersistentDataContainer().has(QuestHandler.QUEST_ITEM_KEY)
-                && original.matches(item);
+                && original.matches(item, profile);
     }
 }

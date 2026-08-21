@@ -2,13 +2,14 @@ package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
-import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,11 +19,6 @@ import java.util.Set;
 public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     /**
-     * The text parser used to parse text.
-     */
-    private final TextParser textParser;
-
-    /**
      * The book wrapper used to split pages.
      */
     private final BookPageWrapper bookPageWrapper;
@@ -30,43 +26,24 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     /**
      * The title.
      */
-    @Nullable
-    private Component title;
-
-    /**
-     * The required title existence.
-     */
-    private Existence titleE = Existence.WHATEVER;
+    private ExistenceArgument<Component> title = ExistenceArgument.whateverNullValue();
 
     /**
      * The author.
      */
-    @Nullable
-    private Component author;
-
-    /**
-     * The required author existence.
-     */
-    private Existence authorE = Existence.WHATEVER;
+    private ExistenceArgument<Component> author = ExistenceArgument.whateverNullValue();
 
     /**
      * The text pages.
      */
-    private List<Component> text = new ArrayList<>();
-
-    /**
-     * The required text existence.
-     */
-    private Existence textE = Existence.WHATEVER;
+    private ExistenceArgument<List<Component>> text = ExistenceArgument.whateverValue(List.of(Component.empty()));
 
     /**
      * Creates an empty BookHandler.
      *
-     * @param textParser      the text parser used to parse text
      * @param bookPageWrapper the book wrapper used to split pages
      */
-    public BookHandler(final TextParser textParser, final BookPageWrapper bookPageWrapper) {
-        this.textParser = textParser;
+    public BookHandler(final BookPageWrapper bookPageWrapper) {
         this.bookPageWrapper = bookPageWrapper;
     }
 
@@ -118,67 +95,39 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        switch (key) {
-            case "title" -> setTitle(data);
-            case "author" -> setAuthor(data);
-            case "text" -> setText(data);
-            default -> throw new QuestException("Unknown book key: " + key);
-        }
+    public void set(final Instruction instruction) throws QuestException {
+        this.title = ExistenceArgument.apply("title", instruction.component().map(Component::compact));
+        this.author = ExistenceArgument.apply("author", instruction.component().map(Component::compact));
+        this.text = (ExistenceArgument<List<Component>>) ExistenceArgument.apply(instruction.component().map(bookPageWrapper::splitPages))
+                .get("text", Pair.of(Existence.WHATEVER, List.of(Component.empty())));
     }
 
     @Override
-    public void populate(final BookMeta bookMeta) {
-        bookMeta.title(title).author(author).addPages(text.toArray(new Component[0]));
+    public void populate(final BookMeta bookMeta, @Nullable final Profile profile) throws QuestException {
+        bookMeta.title(title.getValue(profile).getRight())
+                .author(author.getValue(profile).getRight())
+                .addPages(text.getValue(profile).getRight().toArray(new Component[0]));
     }
 
     @Override
-    public boolean check(final BookMeta bookMeta) {
-        return checkExistence(titleE, title, bookMeta.title())
-                && checkExistence(authorE, author, bookMeta.author())
-                && checkText(bookMeta.pages());
+    public boolean check(final BookMeta bookMeta, @Nullable final Profile profile) throws QuestException {
+        return checkExistence(title.getValue(profile), bookMeta.title())
+                && checkExistence(author.getValue(profile), bookMeta.author())
+                && checkText(text.getValue(profile), bookMeta.pages());
     }
 
-    private void setTitle(final String string) throws QuestException {
-        if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
-            titleE = Existence.FORBIDDEN;
-        } else {
-            title = textParser.parse(string).compact();
-            titleE = Existence.REQUIRED;
-        }
-    }
-
-    private void setAuthor(final String string) throws QuestException {
-        if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
-            authorE = Existence.FORBIDDEN;
-        } else {
-            author = textParser.parse(string).compact();
-            authorE = Existence.REQUIRED;
-        }
-    }
-
-    private void setText(final String string) throws QuestException {
-        if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
-            text.add(Component.empty());
-            textE = Existence.FORBIDDEN;
-        } else {
-            text = bookPageWrapper.splitPages(textParser.parse(string));
-            textE = Existence.REQUIRED;
-        }
-    }
-
-    private boolean checkExistence(final Existence existence, @Nullable final Component stored, @Nullable final Component onItem) {
-        return switch (existence) {
+    private boolean checkExistence(final Pair<Existence, @Nullable Component> stored, @Nullable final Component onItem) {
+        return switch (stored.getLeft()) {
             case WHATEVER -> true;
-            case REQUIRED -> onItem != null && onItem.compact().equals(stored);
+            case REQUIRED -> onItem != null && onItem.compact().equals(stored.getRight());
             case FORBIDDEN -> onItem == null || onItem.equals(Component.empty());
         };
     }
 
-    private boolean checkText(@Nullable final List<Component> list) {
-        return switch (textE) {
+    private boolean checkText(final Pair<Existence, List<Component>> stored, @Nullable final List<Component> list) {
+        return switch (stored.getLeft()) {
             case WHATEVER -> true;
-            case REQUIRED -> text.equals(list);
+            case REQUIRED -> stored.getRight().equals(list);
             case FORBIDDEN ->
                     list == null || list.isEmpty() || list.size() == 1 && list.get(0).equals(Component.empty());
         };

@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.mc_1_20_6.item;
 
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
-import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
@@ -30,13 +29,12 @@ public class UpdatedSimpleQuestItemSerializer extends SimpleQuestItemSerializer 
     /**
      * Constructs a new Simple Serializer with updated {@link ItemMetaHandler}s.
      *
-     * @param textParser      the text parser used to parse text
      * @param bookPageWrapper the book page wrapper used to split pages
      */
-    public UpdatedSimpleQuestItemSerializer(final TextParser textParser, final BookPageWrapper bookPageWrapper) {
+    public UpdatedSimpleQuestItemSerializer(final BookPageWrapper bookPageWrapper) {
         super(List.of(
-                new DurabilityHandler(), new UpdatedNameHandler(), new LoreHandler(() -> false), new EnchantmentsHandler(),
-                new BookHandler(textParser, bookPageWrapper), new UpdatedPotionHandler(), new BannerHandler(), new ColorHandler(), new HeadHandler(),
+                new DurabilityHandler(), new UpdatedNameHandler(), new LoreHandler(profile -> false), new EnchantmentsHandler(),
+                new BookHandler(bookPageWrapper), new UpdatedPotionHandler(), new BannerHandler(), new ColorHandler(), new HeadHandler(),
                 new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler(),
                 new QuestHandler(LoreConsumer.EMPTY)
         ));

@@ -1,10 +1,12 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -13,19 +15,10 @@ import java.util.Set;
 public class DurabilityHandler implements ItemMetaHandler<Damageable> {
 
     /**
-     * If a durability is set.
+     * The durability with their compare state.
      */
-    private boolean isSet;
-
-    /**
-     * The durability.
-     */
-    private int durability;
-
-    /**
-     * The number compare state.
-     */
-    private Number number = Number.WHATEVER;
+    @Nullable
+    private Argument<NumberValue> durability;
 
     /**
      * The empty default Constructor.
@@ -53,25 +46,19 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!"durability".equals(key)) {
-            throw new QuestException("Unknown durability key: " + key);
-        }
-        final Map.Entry<Number, Integer> itemDurability = HandlerUtil.getNumberValue(data, "item durability");
-        this.number = itemDurability.getKey();
-        this.durability = itemDurability.getValue();
-        isSet = true;
+    public void set(final Instruction instruction) throws QuestException {
+        this.durability = NumberValue.create("durability", "item durability", instruction);
     }
 
     @Override
-    public void populate(final Damageable damageableMeta) {
-        if (isSet) {
-            damageableMeta.setDamage(durability);
+    public void populate(final Damageable damageableMeta, @Nullable final Profile profile) throws QuestException {
+        if (durability != null) {
+            damageableMeta.setDamage(durability.getValue(profile).value());
         }
     }
 
     @Override
-    public boolean check(final Damageable meta) {
-        return number.isValid(meta.getDamage(), this.durability);
+    public boolean check(final Damageable meta, @Nullable final Profile profile) throws QuestException {
+        return this.durability != null && this.durability.getValue(profile).isValid(meta.getDamage());
     }
 }

@@ -1,6 +1,10 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +23,7 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * The required existence.
      */
-    private Existence unbreakable = Existence.WHATEVER;
+    private Argument<Existence> unbreakable = new DefaultArgument<>(Existence.WHATEVER);
 
     /**
      * The empty default Constructor.
@@ -47,25 +51,18 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!UNBREAKABLE.equals(key)) {
-            throw new QuestException("Unknown unbreakable key: " + key);
-        }
-        if (HandlerUtil.isKeyOrTrue(UNBREAKABLE, data)) {
-            unbreakable = Existence.REQUIRED;
-        } else {
-            unbreakable = Existence.FORBIDDEN;
-        }
+    public void set(final Instruction instruction) throws QuestException {
+        unbreakable = HandlerUtil.isKeyOrTrue(UNBREAKABLE, instruction);
     }
 
     @Override
-    public void populate(final ItemMeta meta) {
-        meta.setUnbreakable(unbreakable == Existence.REQUIRED);
+    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        meta.setUnbreakable(unbreakable.getValue(profile) == Existence.REQUIRED);
     }
 
     @Override
-    public boolean check(final ItemMeta meta) {
-        return switch (unbreakable) {
+    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+        return switch (unbreakable.getValue(profile)) {
             case WHATEVER -> true;
             case REQUIRED -> meta.isUnbreakable();
             case FORBIDDEN -> !meta.isUnbreakable();
