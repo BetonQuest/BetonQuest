@@ -1,32 +1,28 @@
-import posixpath
 import re
+from betonquest.doc_instruction import DocInstruction
+from betonquest.path_utils import relative_link
+from bq_cmd.cmd_template import BqCmd
 from mkdocs.config import config_options
 from mkdocs.plugins import BasePlugin
 from mkdocs.plugins import get_plugin_logger
 from pathlib import Path
-from pathlib import PurePosixPath
 
-log = get_plugin_logger("element-scraper")
-SCRAPER_PATTERN = re.compile(r"(\%\%scraper:([^%]+)\%\%)")
 CONTENT_PATTERN = re.compile(r"__Context__: @snippet:([a-z]+)-meta:[a-z\-]+@\s+__Syntax__: `([^`]+)`")
 
 
-def on_page_markdown(markdown, **kwargs):
-    if not "%%scraper:" in markdown:
-        return markdown
-    result = contains_scraper(markdown)
-    if result != "":
-        elements = scrape_all(result[1].split(","), kwargs["files"])
-        reference_dict = generate_reference_list(elements, kwargs["page"])
-        markdown = markdown.replace(result[0], create_markdown(reference_dict))
-    return markdown
+class ElementScraperCmd(BqCmd):
+    def __init__(self, log):
+        super().__init__("scraper", log)
+
+    def run(self, instruction: DocInstruction):
+        targets = [instruction.get_argument(i).value for i in range(instruction.argument_count())]
+        return _run_scraper(targets, instruction.get_files(), instruction.get_page())
 
 
-def contains_scraper(markdown):
-    match = SCRAPER_PATTERN.search(markdown)
-    if match:
-        return [match.group(1), match.group(2).strip()]
-    return ""
+def _run_scraper(targets, src_files, src_page):
+    elements = scrape_all(targets, src_files)
+    reference_dict = generate_reference_list(elements, src_page)
+    return create_markdown(reference_dict)
 
 
 def scrape_all(configured, files):
@@ -68,13 +64,6 @@ def generate_reference(element, relative_to):
     name = element[0]
     path = relative_link(relative_to, element[2]) + "#" + re.split(r"[\s\.]", name, maxsplit=1)[0]
     return f"[`{name}`]({path})"
-
-
-def relative_link(source_file, target_file):
-    source = PurePosixPath(source_file.src_uri)
-    target = PurePosixPath(target_file.src_uri)
-    source_dir = source.parent
-    return posixpath.relpath(target, start=source_dir)
 
 
 def create_markdown(reference_dict):
