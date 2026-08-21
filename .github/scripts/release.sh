@@ -293,6 +293,14 @@ bumpCommit() {
     exit 1
   fi
 
+  if grep -q "^## \[$CURRENT_VERSION\] -" API-CHANGELOG.md; then
+    echo "        API-CHANGELOG.md already contains an entry for $CURRENT_VERSION. Skipping..."
+  else
+    echo '    Updating API-CHANGELOG.md file...'
+    NEW_CHANGELOG="## \[Unreleased\] - \${maven.build.timestamp}\n### API\n#### Added\n#### Changed\n#### Deprecated\n#### Removed\n### Library\n#### Added\n#### Changed\n#### Deprecated\n#### Removed\n"
+    sed -i "s~## \[Unreleased\] - \${maven\.build\.timestamp}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $RELEASE_TIME~g" API-CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
+  fi
+
   echo '    Committing changed files...'
   git -c core.safecrlf=false commit --all --message="Bump version of $BUMP_MODULES to $NEW_VERSION" 2>&1 > /dev/null | sed 's/^/        /'
 }
