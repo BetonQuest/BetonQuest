@@ -677,6 +677,17 @@ conditions:
   armorRating10: "rating 10"
 ```
 
+## `Redstone`
+
+__Context__: @snippet:condition-meta:independent@    
+__Syntax__: `redstone <location> <power>`  
+__Description__: Whether the block at the specified location is powered by at least the specified amount.
+
+| Parameter                                                                      | Type     | Explanation                                                         |
+|--------------------------------------------------------------------------------|----------|---------------------------------------------------------------------|
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required | The location of the block to check.                                 |
+| power<br>[Number]                                                              | Required | The required minimal redstone signal strength. (1 - 15 inclusively) |
+
 ## `RealTime`
 
 __Context__: @snippet:condition-meta:independent@  
