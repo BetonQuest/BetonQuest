@@ -125,7 +125,7 @@ public class TrainCartsRideObjective extends CountingObjective {
         }
     }
 
-    private void startCount(final OnlineProfile onlineProfile) {
+    private void startCount(final OnlineProfile onlineProfile) throws QuestException {
         final int ticksToCompletion = getCountingData(onlineProfile).getAmountLeft() * 20;
         final BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(plugin,
                 () -> stopCount(onlineProfile), ticksToCompletion);
@@ -139,14 +139,16 @@ public class TrainCartsRideObjective extends CountingObjective {
         }
         final Pair<Long, BukkitTask> remove = startTimes.remove(onlineProfile);
         remove.getValue().cancel();
-        if (!getExceptionHandler().handle(() -> getService().checkConditions(onlineProfile), false)) {
-            return;
-        }
-        final int ridden = (int) ((System.currentTimeMillis() - remove.getKey()) / MILLISECONDS_TO_SECONDS);
-        final CountingData countingData = getCountingData(onlineProfile);
-        countingData.add(ridden);
-        if (countingData.isComplete()) {
-            getService().complete(onlineProfile);
-        }
+        getExceptionHandler().handle(() -> {
+            if (!getService().checkConditions(onlineProfile)) {
+                return;
+            }
+            final int ridden = (int) ((System.currentTimeMillis() - remove.getKey()) / MILLISECONDS_TO_SECONDS);
+            final CountingData countingData = getCountingData(onlineProfile);
+            countingData.add(ridden);
+            if (countingData.isComplete()) {
+                getService().complete(onlineProfile);
+            }
+        });
     }
 }

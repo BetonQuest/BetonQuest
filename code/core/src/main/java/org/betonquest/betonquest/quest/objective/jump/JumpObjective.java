@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.CountingObjective;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
+import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.objective.service.ObjectiveService;
 
 /**
@@ -28,8 +29,9 @@ public class JumpObjective extends CountingObjective {
      *
      * @param event         the event that triggered the jump
      * @param onlineProfile the profile of the player that jumped
+     * @throws QuestException if {@link #getCountingData(Profile)} fails
      */
-    public void onPlayerJump(final PlayerJumpEvent event, final OnlineProfile onlineProfile) {
+    public void onPlayerJump(final PlayerJumpEvent event, final OnlineProfile onlineProfile) throws QuestException {
         getCountingData(onlineProfile).progress();
         completeIfDoneOrNotify(onlineProfile);
     }
