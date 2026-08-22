@@ -58,6 +58,7 @@ import org.betonquest.betonquest.quest.condition.point.HasGlobalPointConditionFa
 import org.betonquest.betonquest.quest.condition.point.HasPointConditionFactory;
 import org.betonquest.betonquest.quest.condition.point.PointConditionFactory;
 import org.betonquest.betonquest.quest.condition.random.RandomConditionFactory;
+import org.betonquest.betonquest.quest.condition.redstone.RedstoneConditionFactory;
 import org.betonquest.betonquest.quest.condition.ride.RideConditionFactory;
 import org.betonquest.betonquest.quest.condition.scoreboard.ScoreboardObjectiveConditionFactory;
 import org.betonquest.betonquest.quest.condition.scoreboard.ScoreboardTagConditionFactory;
@@ -166,6 +167,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
         conditionTypes.registerCombined("random", new RandomConditionFactory());
         conditionTypes.register("rating", new ArmorRatingConditionFactory());
         conditionTypes.register("realtime", new RealTimeConditionFactory());
+        conditionTypes.registerCombined("redstone", new RedstoneConditionFactory());
         conditionTypes.register("ride", new RideConditionFactory());
         conditionTypes.registerCombined("section", new SectionConditionFactory(conditionManager, conditionIdentifierFactory));
         conditionTypes.register("score", new ScoreboardObjectiveConditionFactory());
