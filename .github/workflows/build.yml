@@ -143,6 +143,15 @@ jobs:
           VERSION_TYPE: ${{ env.VERSION_TYPE }}
           VERSION_MAVEN: ${{ env.VERSION_MAVEN }}
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
+      - name: Set api changelog version
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./API-CHANGELOG.md
+          DATE="$(date +%Y-%m-%d)"
+          sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./API-CHANGELOG.md
+          echo "$(cat ./API-CHANGELOG.md)" >> './docs/API/CHANGELOG.md'
+        env:
+          VERSION: ${{ inputs.VERSION }}
       - name: Build with mkdocs
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
