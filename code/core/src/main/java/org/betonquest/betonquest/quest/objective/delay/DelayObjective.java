@@ -166,6 +166,9 @@ public class DelayObjective extends DefaultObjective {
 
     private long getTargetTimestamp(final Profile profile) {
         final String data = getService().getData().get(profile);
+        if (data == null) {
+            return System.currentTimeMillis();
+        }
         try {
             return NumberParser.DEFAULT.apply(data).longValue();
         } catch (final QuestException e) {

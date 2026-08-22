@@ -71,9 +71,6 @@ public abstract class CountingObjective extends DefaultObjective {
 
     private String getProperty(final String name, final Profile profile) throws QuestException {
         final CountingData countingData = getCountingData(profile);
-        if (countingData == null) {
-            return "";
-        }
         final int data = switch (name.toLowerCase(Locale.ROOT)) {
             case "amount" -> countingData.getCompletedAmount();
             case "left" -> countingData.getAmountLeft();
@@ -91,16 +88,18 @@ public abstract class CountingObjective extends DefaultObjective {
      *
      * @param profile the {@link Profile} to get the data for
      * @return counting objective data of the profile
+     * @throws QuestException if the profile does not have data or the data could not be created
      */
-    @Nullable
-    public final CountingData getCountingData(final Profile profile) {
-        final String data = getService().getData().getOrDefault(profile, "");
+    public final CountingData getCountingData(final Profile profile) throws QuestException {
+        final String data = getService().getData().get(profile);
+        if (data == null) {
+            throw new QuestException("Profile should have data!");
+        }
         try {
             return new CountingData(data, profile, getObjectiveID());
         } catch (final QuestException e) {
-            getLogger().error("Could not access CountingData for profile '" + profile + "': " + e.getMessage(), e);
+            throw new QuestException("Could not access CountingData for profile '" + profile + "': " + e.getMessage(), e);
         }
-        return null;
     }
 
     /**
@@ -110,8 +109,9 @@ public abstract class CountingObjective extends DefaultObjective {
      *
      * @param profile the {@link Profile} to act for
      * @return {@code true} if the objective is completed; {@code false} otherwise
+     * @throws QuestException if {@link #getCountingData(Profile)} fails
      */
-    protected final boolean completeIfDoneOrNotify(final Profile profile) {
+    protected final boolean completeIfDoneOrNotify(final Profile profile) throws QuestException {
         return completeIfDoneOrNotify(profile, countSender);
     }
 
@@ -123,8 +123,10 @@ public abstract class CountingObjective extends DefaultObjective {
      * @param profile            the {@link Profile} to act for
      * @param notificationSender the {@link IngameNotificationSender} to use for sending the notification
      * @return {@code true} if the objective is completed; {@code false} otherwise
+     * @throws QuestException if {@link #getCountingData(Profile)} fails
      */
-    protected final boolean completeIfDoneOrNotify(final Profile profile, @Nullable final IngameNotificationSender notificationSender) {
+    protected final boolean completeIfDoneOrNotify(final Profile profile, @Nullable final IngameNotificationSender notificationSender)
+            throws QuestException {
         final CountingData data = getCountingData(profile);
         if (data.isComplete()) {
             getService().complete(profile);

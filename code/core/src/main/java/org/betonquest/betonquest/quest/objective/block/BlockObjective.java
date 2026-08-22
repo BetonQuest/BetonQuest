@@ -132,7 +132,7 @@ public class BlockObjective extends CountingObjective {
         }
     }
 
-    private void handleDataChange(final OnlineProfile onlineProfile, final CountingData data) {
+    private void handleDataChange(final OnlineProfile onlineProfile, final CountingData data) throws QuestException {
         final IngameNotificationSender message = data.getDirectionFactor() > 0 ? blockPlaceSender : blockBreakSender;
         completeIfDoneOrNotify(onlineProfile, message);
     }
