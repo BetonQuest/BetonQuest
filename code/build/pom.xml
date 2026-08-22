@@ -25,7 +25,7 @@
     <plugin.name>BetonQuest</plugin.name>
     <plugin.main>${project.groupId}.${project.artifactId}.${plugin.name}Plugin</plugin.main>
     <plugin.version>${revision}-DEV-UNOFFICIAL</plugin.version>
-    <plugin.api-version>1.18</plugin.api-version>
+    <plugin.api-version>1.20.6</plugin.api-version>
     <plugin.description>All Your Adventure Supplies</plugin.description>
 
     <!-- module versions -->
@@ -36,7 +36,7 @@
     <betonquest.compatibility.version>3.3.0${changelist}</betonquest.compatibility.version>
 
     <!-- dependency versions -->
-    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+    <paper-api.version>1.20.6-R0.1-SNAPSHOT</paper-api.version>
   </properties>
 
   <dependencies>

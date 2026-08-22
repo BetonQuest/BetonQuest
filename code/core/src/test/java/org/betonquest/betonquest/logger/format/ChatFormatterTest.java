@@ -26,7 +26,7 @@ class ChatFormatterTest {
     /**
      * The formatted sent message.
      */
-    private static final String FORMATTED_MESSAGE = "§f" + MESSAGE + "\"}";
+    private static final String FORMATTED_MESSAGE = "§f" + MESSAGE + "\"";
 
     /**
      * The mocked plugin instance.
@@ -49,9 +49,9 @@ class ChatFormatterTest {
     @Test
     void testChatFormatting() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin);
-        final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
-        final String expected2 = "{\"text\":\"§7[§8BQ§7]§r " + FORMATTED_MESSAGE;
-        final String expected3 = "{\"text\":\"§7[§8BetonQuest§7]§r " + FORMATTED_MESSAGE;
+        final String expected1 = "\"" + FORMATTED_MESSAGE;
+        final String expected2 = "\"§7[§8BQ§7]§r " + FORMATTED_MESSAGE;
+        final String expected3 = "\"§7[§8BetonQuest§7]§r " + FORMATTED_MESSAGE;
         assertLogMessage(ChatFormatter.PluginDisplayMethod.NONE, null, null, record, expected1);
         assertLogMessage(ChatFormatter.PluginDisplayMethod.PLUGIN, plugin, "BQ", record, expected2);
         assertLogMessage(ChatFormatter.PluginDisplayMethod.PLUGIN, plugin, null, record, expected3);
@@ -64,12 +64,12 @@ class ChatFormatterTest {
     @Test
     void testChatFormattingLogRecord() {
         final LogRecord record = new LogRecord(Level.INFO, MESSAGE);
-        final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
-        final String expected2 = "{\"text\":\"§7[§8?§7]§r " + FORMATTED_MESSAGE;
-        final String expected3 = "{\"text\":\"§7[§8BQ§7]§r " + FORMATTED_MESSAGE;
-        final String expected4 = "{\"text\":\"§7[§8BetonQuest§7]§r " + FORMATTED_MESSAGE;
-        final String expected5 = "{\"text\":\"§7[§8BQ | ?§7]§r " + FORMATTED_MESSAGE;
-        final String expected6 = "{\"text\":\"§7[§8BetonQuest | ?§7]§r " + FORMATTED_MESSAGE;
+        final String expected1 = "\"" + FORMATTED_MESSAGE;
+        final String expected2 = "\"§7[§8?§7]§r " + FORMATTED_MESSAGE;
+        final String expected3 = "\"§7[§8BQ§7]§r " + FORMATTED_MESSAGE;
+        final String expected4 = "\"§7[§8BetonQuest§7]§r " + FORMATTED_MESSAGE;
+        final String expected5 = "\"§7[§8BQ | ?§7]§r " + FORMATTED_MESSAGE;
+        final String expected6 = "\"§7[§8BetonQuest | ?§7]§r " + FORMATTED_MESSAGE;
         assertLogMessage(ChatFormatter.PluginDisplayMethod.NONE, null, null, record, expected1);
         assertLogMessage(ChatFormatter.PluginDisplayMethod.PLUGIN, plugin, "BQ", record, expected2);
         assertLogMessage(ChatFormatter.PluginDisplayMethod.PLUGIN, plugin, null, record, expected2);
@@ -82,12 +82,12 @@ class ChatFormatterTest {
     @Test
     void testChatFormattingPlugin() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, pluginExtension);
-        final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
-        final String expected2 = "{\"text\":\"§7[§8Extension§7]§r " + FORMATTED_MESSAGE;
-        final String expected3 = "{\"text\":\"§7[§8BQ§7]§r " + FORMATTED_MESSAGE;
-        final String expected4 = "{\"text\":\"§7[§8BetonQuest§7]§r " + FORMATTED_MESSAGE;
-        final String expected5 = "{\"text\":\"§7[§8BQ | Extension§7]§r " + FORMATTED_MESSAGE;
-        final String expected6 = "{\"text\":\"§7[§8BetonQuest | Extension§7]§r " + FORMATTED_MESSAGE;
+        final String expected1 = "\"" + FORMATTED_MESSAGE;
+        final String expected2 = "\"§7[§8Extension§7]§r " + FORMATTED_MESSAGE;
+        final String expected3 = "\"§7[§8BQ§7]§r " + FORMATTED_MESSAGE;
+        final String expected4 = "\"§7[§8BetonQuest§7]§r " + FORMATTED_MESSAGE;
+        final String expected5 = "\"§7[§8BQ | Extension§7]§r " + FORMATTED_MESSAGE;
+        final String expected6 = "\"§7[§8BetonQuest | Extension§7]§r " + FORMATTED_MESSAGE;
         assertLogMessage(ChatFormatter.PluginDisplayMethod.NONE, null, null, record, expected1);
         assertLogMessage(ChatFormatter.PluginDisplayMethod.PLUGIN, plugin, "BQ", record, expected2);
         assertLogMessage(ChatFormatter.PluginDisplayMethod.PLUGIN, plugin, null, record, expected2);
@@ -102,7 +102,7 @@ class ChatFormatterTest {
         final LogSource pack = mock(LogSource.class);
         when(pack.getSourcePath()).thenReturn("TestPackage");
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin, pack);
-        final String expected = "{\"text\":\"\\u003cTestPackage\\u003e " + FORMATTED_MESSAGE;
+        final String expected = "\"<TestPackage> " + FORMATTED_MESSAGE;
         assertLogMessage(ChatFormatter.PluginDisplayMethod.NONE, null, null, record, expected);
     }
 
@@ -113,7 +113,7 @@ class ChatFormatterTest {
         final String message = getFormattedMessage(ChatFormatter.PluginDisplayMethod.NONE, null, null, record);
         final String start = "{\"extra\":[{\"color\":\"red\",\"clickEvent\":{\"action\":\"copy_to_clipboard\",\"value\":\"\\n"
                 + "java.lang.NullPointerException: Exception Message\\n\\";
-        final String end = "}},\"text\":\" Hover for Stacktrace!\"}],\"text\":\"" + FORMATTED_MESSAGE;
+        final String end = "},\"text\":\" Hover for Stacktrace!\"}],\"text\":\"" + FORMATTED_MESSAGE + "}";
         assertEquals(start, message.substring(0, start.length()), "The start of the log message is not correct formatted");
         assertEquals(end, message.substring(message.length() - end.length()), "The end of the log message is not correct formatted");
     }
@@ -129,15 +129,15 @@ class ChatFormatterTest {
     @Test
     void testLevelColors() {
         final ChatFormatter formatter = new ChatFormatter();
-        assertEquals("{\"text\":\"§4\"}", formatter.format(new LogRecord(Level.OFF, "")), "Expected color 4");
-        assertEquals("{\"text\":\"§4\"}", formatter.format(new LogRecord(Level.SEVERE, "")), "Expected color 4");
-        assertEquals("{\"text\":\"§c\"}", formatter.format(new LogRecord(Level.WARNING, "")), "Expected color c");
-        assertEquals("{\"text\":\"§f\"}", formatter.format(new LogRecord(Level.INFO, "")), "Expected color f");
-        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.CONFIG, "")), "Expected color 7");
-        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.FINE, "")), "Expected color 7");
-        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.FINER, "")), "Expected color 7");
-        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.FINEST, "")), "Expected color 7");
-        assertEquals("{\"text\":\"§7\"}", formatter.format(new LogRecord(Level.ALL, "")), "Expected color 7");
+        assertEquals("\"§4\"", formatter.format(new LogRecord(Level.OFF, "")), "Expected color 4");
+        assertEquals("\"§4\"", formatter.format(new LogRecord(Level.SEVERE, "")), "Expected color 4");
+        assertEquals("\"§c\"", formatter.format(new LogRecord(Level.WARNING, "")), "Expected color c");
+        assertEquals("\"§f\"", formatter.format(new LogRecord(Level.INFO, "")), "Expected color f");
+        assertEquals("\"§7\"", formatter.format(new LogRecord(Level.CONFIG, "")), "Expected color 7");
+        assertEquals("\"§7\"", formatter.format(new LogRecord(Level.FINE, "")), "Expected color 7");
+        assertEquals("\"§7\"", formatter.format(new LogRecord(Level.FINER, "")), "Expected color 7");
+        assertEquals("\"§7\"", formatter.format(new LogRecord(Level.FINEST, "")), "Expected color 7");
+        assertEquals("\"§7\"", formatter.format(new LogRecord(Level.ALL, "")), "Expected color 7");
     }
 
     private void assertLogMessage(final ChatFormatter.PluginDisplayMethod displayMethod, final Plugin plugin,
