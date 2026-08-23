@@ -43,7 +43,7 @@ public record ItemsAdderItemWrapper(Argument<CustomStack> customItemArgument) im
         }
 
         @Override
-        public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
+        public ItemStack generate(final int stackSize) {
             final ItemStack itemStack = customStack.getItemStack();
             itemStack.setAmount(stackSize);
             return itemStack;

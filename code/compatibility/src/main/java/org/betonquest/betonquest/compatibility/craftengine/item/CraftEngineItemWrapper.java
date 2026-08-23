@@ -27,7 +27,14 @@ public record CraftEngineItemWrapper(Argument<BukkitItemDefinition> customItemAr
 
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
-        return new CraftEngineItem(customItemArgument.getValue(profile));
+        final BukkitItemDefinition definition = customItemArgument.getValue(profile);
+        final ItemBuildContext context;
+        if (profile instanceof final OnlineProfile onlineProfile) {
+            context = ItemBuildContext.of(BukkitAdaptor.adapt(onlineProfile.getPlayer()));
+        } else {
+            context = ItemBuildContext.empty();
+        }
+        return new CraftEngineItem(definition, context);
     }
 
     /**
@@ -46,13 +53,20 @@ public record CraftEngineItemWrapper(Argument<BukkitItemDefinition> customItemAr
         private final ItemMeta itemMeta;
 
         /**
+         * The context to build the item stack.
+         */
+        private final ItemBuildContext buildContext;
+
+        /**
          * Constructs a CraftEngineItem for the given base custom item.
          *
-         * @param definition the base custom item.
+         * @param definition   the base custom item.
+         * @param buildContext the context to build the item stack.
          */
-        public CraftEngineItem(final BukkitItemDefinition definition) {
+        public CraftEngineItem(final BukkitItemDefinition definition, final ItemBuildContext buildContext) {
             this.definition = definition;
             this.itemMeta = definition.buildBukkitItem().getItemMeta();
+            this.buildContext = buildContext;
         }
 
         @Override
@@ -66,11 +80,8 @@ public record CraftEngineItemWrapper(Argument<BukkitItemDefinition> customItemAr
         }
 
         @Override
-        public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
-            if (profile instanceof final OnlineProfile onlineProfile) {
-                return definition.buildBukkitItem(ItemBuildContext.of(BukkitAdaptor.adapt(onlineProfile.getPlayer())), stackSize);
-            }
-            return definition.buildBukkitItem(ItemBuildContext.empty(), stackSize);
+        public ItemStack generate(final int stackSize) {
+            return definition.buildBukkitItem(buildContext, stackSize);
         }
 
         @Override

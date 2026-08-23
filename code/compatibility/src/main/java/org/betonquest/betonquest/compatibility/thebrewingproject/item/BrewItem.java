@@ -6,9 +6,7 @@ import dev.jsinco.brewery.api.brew.BrewQuality;
 import dev.jsinco.brewery.api.recipe.Recipe;
 import dev.jsinco.brewery.api.recipe.RecipeMatcherResult;
 import net.kyori.adventure.text.Component;
-import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.item.QuestItem;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +34,7 @@ public record BrewItem(Recipe<ItemStack> recipe, String recipeName, @Nullable Br
     }
 
     @Override
-    public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
+    public ItemStack generate(final int stackSize) {
         final RecipeMatcherResult<ItemStack> match = brewManager.matcher()
                 .matchAgainstOnly(recipe)
                 .disallowStepVariations()

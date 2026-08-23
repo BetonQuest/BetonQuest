@@ -81,7 +81,7 @@ public class BrewWrapper implements QuestItemWrapper {
         }
 
         @Override
-        public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
+        public ItemStack generate(final int stackSize) {
             return recipe.create(quality).asQuantity(stackSize);
         }
 
