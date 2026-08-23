@@ -117,4 +117,12 @@ public interface ItemMetaHandler<M extends ItemMeta> {
             return !metaClass().isInstance(meta) || check((M) meta);
         }
     }
+
+    interface ItemMetaResolved extends Resolved<ItemMeta> {
+
+        @Override
+        default Class<ItemMeta> metaClass() {
+            return ItemMeta.class;
+        }
+    }
 }

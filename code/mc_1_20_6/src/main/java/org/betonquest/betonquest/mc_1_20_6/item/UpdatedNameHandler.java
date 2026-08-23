@@ -73,11 +73,6 @@ public class UpdatedNameHandler extends NameHandler {
                                   Pair<Existence, @Nullable Component> itemName) implements ResolvedName {
 
         @Override
-        public Class<ItemMeta> metaClass() {
-            return displayName.metaClass();
-        }
-
-        @Override
         public void populate(final ItemMeta meta) {
             displayName.populate(meta);
             meta.itemName(itemName.getRight());
