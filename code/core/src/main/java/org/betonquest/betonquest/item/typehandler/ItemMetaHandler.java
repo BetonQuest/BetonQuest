@@ -64,53 +64,57 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      */
     void set(Instruction instruction) throws QuestException;
 
-    /**
-     * Reconstitute this Handler data into the specified meta.
-     *
-     * @param meta    the meta to populate
-     * @param profile the optional profile for customized population
-     * @throws QuestException when there is an exception while resolving profile specific data
-     */
-    void populate(final M meta, @Nullable final Profile profile) throws QuestException;
+    Resolved<M> resolve(@Nullable Profile profile) throws QuestException;
 
-    /**
-     * Reconstitute this Handler data into the specified meta if it is applicable to {@link #metaClass()}.
-     * <p>
-     * When the meta is not applicable nothing changes.
-     *
-     * @param meta    the meta to populate
-     * @param profile the optional profile for resolving arguments
-     * @throws QuestException when there is an exception while resolving profile specific data
-     */
-    @SuppressWarnings("unchecked")
-    default void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (metaClass().isInstance(meta)) {
-            populate((M) meta, profile);
+    interface Resolved<M extends ItemMeta> {
+
+        /**
+         * Gets the class of meta this Handler works on.
+         *
+         * @return the ItemMeta class for the Handler
+         */
+        Class<M> metaClass();
+
+        /**
+         * Reconstitute this Handler data into the specified meta.
+         *
+         * @param meta the meta to populate
+         */
+        void populate(final M meta);
+
+        /**
+         * Reconstitute this Handler data into the specified meta if it is applicable to {@link #metaClass()}.
+         * <p>
+         * When the meta is not applicable nothing changes.
+         *
+         * @param meta the meta to populate
+         */
+        @SuppressWarnings("unchecked")
+        default void rawPopulate(final ItemMeta meta) {
+            if (metaClass().isInstance(meta)) {
+                populate((M) meta);
+            }
         }
-    }
 
-    /**
-     * Check to see if the specified ItemMeta matches the Handler.
-     *
-     * @param meta    the ItemMeta to check
-     * @param profile the optional profile for resolving arguments
-     * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
-     * @throws QuestException when there is an exception while resolving profile specific data
-     */
-    boolean check(M meta, @Nullable Profile profile) throws QuestException;
+        /**
+         * Check to see if the specified ItemMeta matches the Handler.
+         *
+         * @param meta the ItemMeta to check
+         * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
+         */
+        boolean check(M meta);
 
-    /**
-     * Check to see if the specified ItemMeta matches the Handler if it is applicable to {@link #metaClass()}.
-     * <p>
-     * When the meta is not applicable it will return {@code true}.
-     *
-     * @param meta    the ItemMeta to check
-     * @param profile the optional profile for resolving arguments
-     * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
-     * @throws QuestException when there is an exception while resolving profile specific data
-     */
-    @SuppressWarnings("unchecked")
-    default boolean rawCheck(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        return !metaClass().isInstance(meta) || check((M) meta, profile);
+        /**
+         * Check to see if the specified ItemMeta matches the Handler if it is applicable to {@link #metaClass()}.
+         * <p>
+         * When the meta is not applicable it will return {@code true}.
+         *
+         * @param meta the ItemMeta to check
+         * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
+         */
+        @SuppressWarnings("unchecked")
+        default boolean rawCheck(final ItemMeta meta) {
+            return !metaClass().isInstance(meta) || check((M) meta);
+        }
     }
 }

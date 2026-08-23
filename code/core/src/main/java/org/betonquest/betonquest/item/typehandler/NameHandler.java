@@ -52,30 +52,45 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        meta.displayName(get(profile));
-    }
-
-    @Override
-    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, @Nullable Component> pair = name.getValue(profile);
-        final Component displayName = meta.hasDisplayName() ? meta.displayName() : null;
-        return switch (pair.getLeft()) {
-            case WHATEVER -> true;
-            case REQUIRED -> displayName != null && displayName.compact().equals(pair.getRight());
-            case FORBIDDEN -> displayName == null;
-        };
+    public ItemMetaHandler.Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+        return new Resolved(name.getValue(profile));
     }
 
     /**
-     * Get the name.
+     * The resolved handler.
      *
-     * @param profile the optional profile for resolving arguments
-     * @return the name
-     * @throws QuestException when there is an exception while resolving profile specific data
+     * @param name Item Display Name's required existence and value.
      */
-    @Nullable
-    public Component get(@Nullable final Profile profile) throws QuestException {
-        return name.getValue(profile).getRight();
+    public record Resolved(Pair<Existence, @Nullable Component> name) implements ItemMetaHandler.Resolved<ItemMeta> {
+
+        @Override
+        public Class<ItemMeta> metaClass() {
+            return ItemMeta.class;
+        }
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            meta.displayName(get());
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            final Component displayName = meta.hasDisplayName() ? meta.displayName() : null;
+            return switch (name.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> displayName != null && displayName.compact().equals(name.getRight());
+                case FORBIDDEN -> displayName == null;
+            };
+        }
+
+        /**
+         * Get the name.
+         *
+         * @return the name
+         */
+        @Nullable
+        public Component get() {
+            return name.getRight();
+        }
     }
 }

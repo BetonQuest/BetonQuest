@@ -10,7 +10,6 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.TypeFactory;
 import org.betonquest.betonquest.item.typehandler.BannerHandler;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
@@ -29,7 +28,6 @@ import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.util.DefaultBlockSelector;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -77,7 +75,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     public QuestItem parseInstruction(final ArgumentParsers argumentParsers, final String string) throws QuestException {
         final Instruction instruction = new DefaultInstruction(PlaceholderProcessor.EMPTY_PLACEHOLDER, Map::of, null,
                 null, argumentParsers, "simple " + string);
-        return parseInstructionInternal(instruction);
+        return parseInstructionInternal(instruction).getItem(null);
     }
 
     /**
@@ -87,7 +85,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @return the parsed Quest Item
      * @throws QuestException when placeholders could not be resolved or handlers not be filled
      */
-    protected QuestItem parseInstructionInternal(final Instruction instruction) throws QuestException {
+    protected SimpleQuestItem parseInstructionInternal(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> selector = instruction.blockSelector().get();
 
         final NameHandler name = new NameHandler();
@@ -121,7 +119,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
     @Override
     public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
-        return new ShallowWrapper(parseInstructionInternal(instruction));
+        return parseInstructionInternal(instruction);
     }
 
     /**
@@ -140,19 +138,6 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         }
         for (final ItemMetaHandler<?> handler : keyToHandler.values()) { // TODO fix call amount logic
             handler.set(instruction);
-        }
-    }
-
-    /**
-     * A wrapper for a quest Item without placeholders to resolve.
-     *
-     * @param questItem the quest item to wrap.
-     */
-    public record ShallowWrapper(QuestItem questItem) implements QuestItemWrapper {
-
-        @Override
-        public QuestItem getItem(@Nullable final Profile profile) {
-            return questItem;
         }
     }
 }

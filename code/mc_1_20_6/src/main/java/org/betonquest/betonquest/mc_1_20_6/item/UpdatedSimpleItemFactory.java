@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
-import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItem;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
@@ -44,7 +43,7 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
     }
 
     @Override
-    protected QuestItem parseInstructionInternal(final Instruction instruction) throws QuestException {
+    protected SimpleQuestItem parseInstructionInternal(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> selector = instruction.blockSelector().get();
 
         final NameHandler name = new UpdatedNameHandler();

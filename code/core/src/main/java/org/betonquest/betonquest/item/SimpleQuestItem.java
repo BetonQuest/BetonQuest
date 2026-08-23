@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
+import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
@@ -21,7 +22,7 @@ import java.util.Objects;
 /**
  * Represents a Quest item handled by the standard BetonQuest configuration.
  */
-public class SimpleQuestItem implements QuestItem {
+public class SimpleQuestItem implements QuestItemWrapper {
     // TODO make ItemWrapper
 
     /**
@@ -58,6 +59,11 @@ public class SimpleQuestItem implements QuestItem {
         this.handlers = handlers;
         this.name = name;
         this.lore = lore;
+    }
+
+    @Override
+    public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
+        return;
     }
 
     @Override
