@@ -17,7 +17,6 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,71 +42,16 @@ public class MySQL extends Database {
     private final BetonQuestLogger log;
 
     /**
-     * Username for the MySQL user.
-     */
-    private final String user;
-
-    /**
-     * Prefix for the database tables.
-     */
-    private final String database;
-
-    /**
-     * Password for the MySQL user.
-     */
-    private final String password;
-
-    /**
-     * Port number to connect to the MySQL server.
-     */
-    private final String port;
-
-    /**
-     * Name of the host to connect to the MySQL server.
-     */
-    private final String hostname;
-
-    /**
      * Creates a new MySQL instance.
      *
-     * @param log      the logger that will be used for logging
-     * @param plugin   Plugin instance
-     * @param config   the configuration accessor
-     * @param hostname Name of the host
-     * @param port     Port number
-     * @param database Database name
-     * @param username Username
-     * @param password Password
+     * @param log                the logger that will be used for logging
+     * @param connectionProvider the connection provider
+     * @param plugin             Plugin instance
+     * @param config             the configuration accessor
      */
-    public MySQL(final BetonQuestLogger log, final Plugin plugin, final ConfigAccessor config, final String hostname,
-                 final String port, final String database, final String username, final String password) {
-        super(log, plugin, config);
+    public MySQL(final BetonQuestLogger log, final ConnectionProvider connectionProvider, final Plugin plugin, final ConfigAccessor config) {
+        super(log, connectionProvider, plugin, config);
         this.log = log;
-        this.hostname = hostname;
-        this.port = port;
-        this.database = database;
-        this.user = username;
-        this.password = password;
-    }
-
-    @Override
-    public Connection openConnection() {
-        Connection connection = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database + "?&useSSL=false", this.user, this.password);
-            final String connectionClassName = connection.getClass().getName();
-            if (!connectionClassName.startsWith("com.mysql.")) {
-                log.warn("External source modified or changed the MySQL connector! We can not guarantee that BetonQuest will work correctly with this connector: " + connectionClassName);
-            }
-        } catch (final ClassNotFoundException | SQLException e) {
-            log.warn("MySQL says: " + e.getMessage(), e);
-        }
-        if (connection == null) {
-            throw new IllegalStateException("Not able to create a database connection!");
-        }
-        return connection;
     }
 
     @Override

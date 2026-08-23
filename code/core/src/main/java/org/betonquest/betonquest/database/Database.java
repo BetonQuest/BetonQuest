@@ -34,6 +34,11 @@ public abstract class Database {
     protected final String profileInitialName;
 
     /**
+     * The connection provider instance.
+     */
+    protected final ConnectionProvider connectionProvider;
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
@@ -47,13 +52,15 @@ public abstract class Database {
     /**
      * Creates a new Database instance.
      *
-     * @param log    the BetonQuestLogger to use for logging
-     * @param plugin the BetonQuest plugin instance
-     * @param config the plugin configuration file
+     * @param log                the BetonQuestLogger to use for logging
+     * @param connectionProvider the connection provider instance
+     * @param plugin             the BetonQuest plugin instance
+     * @param config             the plugin configuration file
      */
-    protected Database(final BetonQuestLogger log, final Plugin plugin, final ConfigAccessor config) {
+    protected Database(final BetonQuestLogger log, final ConnectionProvider connectionProvider, final Plugin plugin, final ConfigAccessor config) {
         this.log = log;
         this.plugin = plugin;
+        this.connectionProvider = connectionProvider;
         this.prefix = config.getString("mysql.prefix", "");
         this.profileInitialName = config.getString("profile.initial_name", "default");
     }
@@ -66,8 +73,11 @@ public abstract class Database {
      */
     public Connection getConnection() {
         try {
+            if (connectionProvider.isManaged()) {
+                return connectionProvider.create();
+            }
             if (con == null || con.isClosed() || isConnectionBroken(con)) {
-                con = openConnection();
+                con = connectionProvider.create();
             }
         } catch (final SQLException e) {
             log.error("Failed opening database connection!", e);
@@ -86,14 +96,6 @@ public abstract class Database {
             return true;
         }
     }
-
-    /**
-     * Opens a new database connection.
-     *
-     * @return the new database connection
-     * @throws SQLException if the connection could not be opened
-     */
-    protected abstract Connection openConnection() throws SQLException;
 
     /**
      * Closes the database connection if it is open.
