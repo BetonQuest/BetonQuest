@@ -18,6 +18,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `chat` notify io now only sends messages during a conversation if `bypassInterceptor` is set to `true`
 - `non-positive` (<= 0) update intervals deactivate automatic updating
 - `block selector` no longer uses `matchMaterial` which strips regex characters and resolved to unwanted values
+- `simple` item now supports placeholders and got largely reworked
 ### Deprecated
 ### Removed
 - `mysql.reconnect_interval` config option since it is no longer used
