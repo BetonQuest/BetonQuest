@@ -109,36 +109,35 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
     }
 
     @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
+    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final CustomModelData data = this.data.getValue(profile);
-        if (data.existence() == Existence.REQUIRED) {
-            final CustomModelDataComponent cmd = meta.getCustomModelDataComponent();
-            cmd.setFloats(data.floats());
-            cmd.setFlags(data.flags());
-            cmd.setStrings(data.strings());
-            cmd.setColors(data.colors());
-            meta.setCustomModelDataComponent(cmd);
-        }
+        final boolean noData = this.noData.getValue(profile).orElse(false);
         final Pair<Existence, @Nullable NamespacedKey> model = this.model.getValue(profile);
-        if (model.getLeft() == Existence.REQUIRED) {
-            meta.setItemModel(model.getRight());
-        }
-    }
+        final boolean noModel = this.noModel.getValue(profile).orElse(false);
+        return new ResolvedItemMeta() {
 
-    @Override
-    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (noModel.getValue(profile).orElse(false) && !meta.hasItemModel()) {
-            return false;
-        }
-        final Pair<Existence, @Nullable NamespacedKey> pair = model.getValue(profile);
-        final Existence modelE = pair.getLeft();
-        if (!(modelE == Existence.WHATEVER
-                || modelE == Existence.FORBIDDEN && !meta.hasItemModel()
-                || modelE == Existence.REQUIRED && meta.hasItemModel() && Objects.equals(pair.getRight(), meta.getItemModel()))) {
-            return false;
-        }
-        final CustomModelData data = this.data.getValue(profile);
-        return data.check(meta, noData.getValue(profile).orElse(false));
+            @Override
+            public void populate(final ItemMeta meta) {
+                if (data.existence() == Existence.REQUIRED) {
+                    data.set(meta);
+                }
+                if (model.getLeft() == Existence.REQUIRED) {
+                    meta.setItemModel(model.getRight());
+                }
+            }
+
+            @Override
+            public boolean check(final ItemMeta meta) {
+                if (noModel && !meta.hasItemModel()) {
+                    return false;
+                }
+                final Existence modelE = model.getLeft();
+                return (modelE == Existence.WHATEVER
+                        || modelE == Existence.FORBIDDEN && !meta.hasItemModel()
+                        || modelE == Existence.REQUIRED && meta.hasItemModel() && Objects.equals(model.getRight(), meta.getItemModel())
+                ) && data.check(meta, noData);
+            }
+        };
     }
 
     /**
@@ -199,6 +198,15 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
                 default:
                     throw new QuestException("Invalid length: " + split.length);
             }
+        }
+
+        private void set(final ItemMeta meta) {
+            final CustomModelDataComponent cmd = meta.getCustomModelDataComponent();
+            cmd.setFloats(floats);
+            cmd.setFlags(flags);
+            cmd.setStrings(strings);
+            cmd.setColors(colors);
+            meta.setCustomModelDataComponent(cmd);
         }
 
         private boolean check(final ItemMeta meta, final boolean noData) {

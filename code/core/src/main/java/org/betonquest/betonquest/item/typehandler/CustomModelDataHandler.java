@@ -25,7 +25,7 @@ public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * The CustomModelData with existence.
      */
-    private ExistenceArgument<Integer> modelData = ExistenceArgument.whateverValue(0);
+    private ExistenceArgument<Integer> modelData = ExistenceArgument.whateverNullValue();
 
     /**
      * The empty default Constructor.
@@ -65,24 +65,28 @@ public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, Integer> pair = modelData.getValue(profile);
-        final Integer cmd = pair.getRight();
-        if (cmd != null) {
-            meta.setCustomModelData(cmd);
-        }
-    }
+    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, Integer> modelData = this.modelData.getValue(profile);
+        final boolean noModelData = this.noModelData.getValue(profile).orElse(false);
+        return new ResolvedItemMeta() {
+            @Override
+            public void populate(final ItemMeta meta) {
+                final Integer cmd = modelData.getRight();
+                if (cmd != null) {
+                    meta.setCustomModelData(cmd);
+                }
+            }
 
-    @Override
-    public boolean check(final ItemMeta data, @Nullable final Profile profile) throws QuestException {
-        if (noModelData.getValue(profile).orElse(false) && data.hasCustomModelData()) {
-            return false;
-        }
-        final Pair<Existence, Integer> pair = modelData.getValue(profile);
-        final Existence existence = pair.getLeft();
-        final Integer cmd = pair.getRight();
-        return existence == Existence.WHATEVER
-                || existence == Existence.FORBIDDEN && !data.hasCustomModelData()
-                || existence == Existence.REQUIRED && data.hasCustomModelData() && cmd == data.getCustomModelData();
+            @Override
+            public boolean check(final ItemMeta meta) {
+                if (noModelData && meta.hasCustomModelData()) {
+                    return false;
+                }
+                final Existence existence = modelData.getLeft();
+                return existence == Existence.WHATEVER
+                        || existence == Existence.FORBIDDEN && !meta.hasCustomModelData()
+                        || existence == Existence.REQUIRED && meta.hasCustomModelData() && modelData.getRight() == meta.getCustomModelData();
+            }
+        };
     }
 }

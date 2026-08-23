@@ -118,7 +118,7 @@ public interface ItemMetaHandler<M extends ItemMeta> {
         }
     }
 
-    interface ItemMetaResolved extends Resolved<ItemMeta> {
+    interface ResolvedItemMeta extends Resolved<ItemMeta> {
 
         @Override
         default Class<ItemMeta> metaClass() {

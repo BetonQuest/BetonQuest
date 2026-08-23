@@ -60,7 +60,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Specific resolved Name Handler for the {@link QuestItem#getName()} method.
      */
-    public interface ResolvedName extends ItemMetaHandler.ItemMetaResolved {
+    public interface ResolvedName extends ResolvedItemMeta {
 
         /**
          * Get the name.
