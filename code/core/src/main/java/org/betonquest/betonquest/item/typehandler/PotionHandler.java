@@ -26,7 +26,6 @@ import java.util.Set;
  * <p>
  * Works only up to MC 1.20.4 with a breaking change for PotionData in the following version.
  */
-@SuppressWarnings("PMD.TooManyMethods")
 public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     /**
@@ -115,91 +114,105 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     }
 
     @Override
-    public void populate(final PotionMeta potionMeta, @Nullable final Profile profile) throws QuestException {
-        potionMeta.setBasePotionData(new PotionData(type.getValue(profile).getValue(),
-                extended.getValue(profile).orElse(false),
-                upgraded.getValue(profile).orElse(false)));
-        for (final PotionEffect effect : getCustom(profile)) {
-            potionMeta.addCustomEffect(effect, true);
-        }
-    }
-
-    @Override
-    public boolean check(final PotionMeta meta, @Nullable final Profile profile) throws QuestException {
-        return checkBase(meta.getBasePotionData(), profile) && checkCustom(meta.getCustomEffects(), profile);
+    public Resolved<PotionMeta> resolve(@Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, PotionType> typePair = type.getValue(profile);
+        final Optional<Boolean> extended = this.extended.getValue(profile);
+        final Optional<Boolean> upgraded = this.upgraded.getValue(profile);
+        final Pair<Existence, List<CustomEffectHandler>> customPair = this.custom.getValue(profile);
+        final boolean exact = this.exact.getValue(profile);
+        return new ResolvedPotion(typePair, extended, upgraded, customPair, exact);
     }
 
     /**
-     * Gets the stored custom potion effects.
-     *
-     * @param profile the optional profile for resolving arguments
-     * @return the custom potion effects
-     * @throws QuestException when there is an exception while resolving profile specific data
+     * Resolved Potion Handler.
      */
-    protected List<PotionEffect> getCustom(@Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, List<CustomEffectHandler>> pair = custom.getValue(profile);
-        final List<PotionEffect> effects = new LinkedList<>();
-        if (pair.getLeft() == Existence.FORBIDDEN) {
+    protected record ResolvedPotion(Pair<Existence, PotionType> typePair, Optional<Boolean> extended,
+                                    Optional<Boolean> upgraded, Pair<Existence, List<CustomEffectHandler>> customPair,
+                                    boolean exact) implements Resolved<PotionMeta> {
+
+        @Override
+        public Class<PotionMeta> metaClass() {
+            return PotionMeta.class;
+        }
+
+        @Override
+        public void populate(final PotionMeta potionMeta) {
+            potionMeta.setBasePotionData(new PotionData(typePair.getValue(),
+                    extended.orElse(false), upgraded.orElse(false)));
+            for (final PotionEffect effect : getCustom()) {
+                potionMeta.addCustomEffect(effect, true);
+            }
+        }
+
+        @Override
+        public boolean check(final PotionMeta meta) {
+            return checkBase(meta.getBasePotionData()) && checkCustom(meta.getCustomEffects());
+        }
+
+        /**
+         * Gets the stored custom potion effects.
+         *
+         * @return the custom potion effects
+         */
+        public List<PotionEffect> getCustom() {
+            final List<PotionEffect> effects = new LinkedList<>();
+            if (customPair.getLeft() == Existence.FORBIDDEN) {
+                return effects;
+            }
+            for (final CustomEffectHandler checker : customPair.getRight()) {
+                if (checker.customTypeE != Existence.FORBIDDEN) {
+                    effects.add(new PotionEffect(checker.customType, checker.duration, checker.power));
+                }
+            }
             return effects;
         }
-        for (final CustomEffectHandler checker : pair.getRight()) {
-            if (checker.customTypeE != Existence.FORBIDDEN) {
-                effects.add(new PotionEffect(checker.customType, checker.duration, checker.power));
-            }
-        }
-        return effects;
-    }
 
-    private boolean checkBase(@Nullable final PotionData base, @Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, PotionType> pair = type.getValue(profile);
-        return switch (pair.getLeft()) {
-            case WHATEVER -> true;
-            case REQUIRED -> {
-                if (base == null || base.getType() != pair.getRight()) {
-                    yield false;
+        private boolean checkBase(@Nullable final PotionData base) {
+            return switch (typePair.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> {
+                    if (base == null || base.getType() != typePair.getRight()) {
+                        yield false;
+                    }
+                    yield (extended.isEmpty() || base.isExtended() == extended.get())
+                            && (upgraded.isEmpty() || base.isUpgraded() == upgraded.get());
                 }
-                final Optional<Boolean> extended = this.extended.getValue(profile);
-                final Optional<Boolean> upgraded = this.upgraded.getValue(profile);
-                yield (extended.isEmpty() || base.isExtended() == extended.get())
-                        && (upgraded.isEmpty() || base.isUpgraded() == upgraded.get());
-            }
-            default -> false;
-        };
-    }
+                default -> false;
+            };
+        }
 
-    /**
-     * Checks the custom effects.
-     *
-     * @param custom  the effects to check against the stored
-     * @param profile the optional profile for resolving arguments
-     * @return if the given effects satisfies the stored
-     * @throws QuestException when there is an exception while resolving profile specific data
-     */
-    protected boolean checkCustom(final List<PotionEffect> custom, @Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, List<CustomEffectHandler>> pair = this.custom.getValue(profile);
-        final Existence customE = pair.getLeft();
-        if (customE == Existence.WHATEVER) {
-            return true;
-        }
-        if (custom.isEmpty()) {
-            return customE == Existence.FORBIDDEN;
-        }
-        if (exact.getValue(profile) && custom.size() != pair.getRight().size()) {
-            return false;
-        }
-        for (final CustomEffectHandler checker : pair.getRight()) {
-            PotionEffect effect = null;
-            for (final PotionEffect potionEffect : custom) {
-                if (potionEffect.getType().equals(checker.customType)) {
-                    effect = potionEffect;
-                    break;
-                }
+        /**
+         * Checks the custom effects.
+         *
+         * @param custom the effects to check against the stored
+         * @return if the given effects satisfies the stored
+         */
+        public boolean checkCustom(final List<PotionEffect> custom) {
+
+            final Existence customE = customPair.getLeft();
+            if (customE == Existence.WHATEVER) {
+                return true;
             }
-            if (!checker.check(effect)) {
+            if (custom.isEmpty()) {
+                return customE == Existence.FORBIDDEN;
+            }
+            if (exact && custom.size() != customPair.getRight().size()) {
                 return false;
             }
+            for (final CustomEffectHandler checker : customPair.getRight()) {
+                PotionEffect effect = null;
+                for (final PotionEffect potionEffect : custom) {
+                    if (potionEffect.getType().equals(checker.customType)) {
+                        effect = potionEffect;
+                        break;
+                    }
+                }
+                if (!checker.check(effect)) {
+                    return false;
+                }
+            }
+            return true;
         }
-        return true;
     }
 
     /**
