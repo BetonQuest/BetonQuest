@@ -3,9 +3,11 @@ package org.betonquest.betonquest.item.typehandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultFlagArgument;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -16,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -44,13 +47,12 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     /**
      * If the potion is extended.
      */
-    protected ExistenceArgument<Boolean> extended = ExistenceArgument.whateverNullValue();
+    protected FlagArgument<Boolean> extended = new DefaultFlagArgument<>();
 
     /**
      * If the potion is upgraded.
      */
-    protected ExistenceArgument<Boolean> upgraded = ExistenceArgument.whateverNullValue();
-
+    protected FlagArgument<Boolean> upgraded = new DefaultFlagArgument<>();
 
     /**
      * The custom potion effects.
@@ -104,9 +106,10 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     @Override
     public void set(final Instruction instruction) throws QuestException {
-        this.type = ExistenceArgument.apply("type", instruction.enumeration(PotionType.class)), PotionType.WATER));
-        this.extended = HandlerUtil.isKeyOrTrue(EXTENDED, instruction);
-        this.upgraded = HandlerUtil.isKeyOrTrue(UPGRADED, instruction);
+        this.type = ExistenceArgument.apply("type", instruction.enumeration(PotionType.class), PotionType.WATER);
+        this.extended = instruction.bool().getFlag(EXTENDED, true);
+        this.upgraded = instruction.bool().getFlag(UPGRADED, true);
+        HandlerUtil.isKeyOrTrue(EXTENDED, instruction);
         this.custom = ExistenceArgument.applyList("effects", instruction.parse(CustomEffectHandler::new));
         this.exact = instruction.bool().map(bool -> !bool).get("effects-containing", true);
     }
@@ -114,24 +117,26 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     @Override
     public void populate(final PotionMeta potionMeta, @Nullable final Profile profile) throws QuestException {
         potionMeta.setBasePotionData(new PotionData(type.getValue(profile).getValue(),
-                extended.getValue(profile).getValue(), upgraded.getValue(profile).getValue()));
+                extended.getValue(profile).orElse(false),
+                upgraded.getValue(profile).orElse(false)));
         for (final PotionEffect effect : getCustom(profile)) {
             potionMeta.addCustomEffect(effect, true);
         }
     }
 
     @Override
-    public boolean check(final PotionMeta meta, @Nullable Profile profile) throws QuestException {
+    public boolean check(final PotionMeta meta, @Nullable final Profile profile) throws QuestException {
         return checkBase(meta.getBasePotionData(), profile) && checkCustom(meta.getCustomEffects(), profile);
     }
 
     /**
      * Gets the stored custom potion effects.
-     *@param profile the optional profile for resolving arguments
+     *
+     * @param profile the optional profile for resolving arguments
      * @return the custom potion effects
      * @throws QuestException when there is an exception while resolving profile specific data
      */
-    protected List<PotionEffect> getCustom(@Nullable Profile profile) throws QuestException {
+    protected List<PotionEffect> getCustom(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, List<CustomEffectHandler>> pair = custom.getValue(profile);
         final List<PotionEffect> effects = new LinkedList<>();
         if (pair.getLeft() == Existence.FORBIDDEN) {
@@ -145,7 +150,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         return effects;
     }
 
-    private boolean checkBase(@Nullable final PotionData base, @Nullable Profile profile) throws QuestException {
+    private boolean checkBase(@Nullable final PotionData base, @Nullable final Profile profile) throws QuestException {
         final Pair<Existence, PotionType> pair = type.getValue(profile);
         return switch (pair.getLeft()) {
             case WHATEVER -> true;
@@ -153,10 +158,10 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
                 if (base == null || base.getType() != pair.getRight()) {
                     yield false;
                 }
-                final Pair<Existence, Boolean> extended = this.extended.getValue(profile);
-                final Pair<Existence, Boolean> upgraded = this.upgraded.getValue(profile);
-                yield (extended.getLeft() != Existence.REQUIRED || base.isExtended() == extended.getRight())
-                        && (upgraded.getLeft() != Existence.REQUIRED || base.isUpgraded() == upgraded.getRight());
+                final Optional<Boolean> extended = this.extended.getValue(profile);
+                final Optional<Boolean> upgraded = this.upgraded.getValue(profile);
+                yield (extended.isEmpty() || base.isExtended() == extended.get())
+                        && (upgraded.isEmpty() || base.isUpgraded() == upgraded.get());
             }
             default -> false;
         };
@@ -164,10 +169,11 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     /**
      * Checks the custom effects.
-     * @param custom the effects to check against the stored
-     *@param profile the optional profile for resolving arguments
-     * @throws QuestException when there is an exception while resolving profile specific data
+     *
+     * @param custom  the effects to check against the stored
+     * @param profile the optional profile for resolving arguments
      * @return if the given effects satisfies the stored
+     * @throws QuestException when there is an exception while resolving profile specific data
      */
     protected boolean checkCustom(final List<PotionEffect> custom, @Nullable final Profile profile) throws QuestException {
         final Pair<Existence, List<CustomEffectHandler>> pair = this.custom.getValue(profile);
