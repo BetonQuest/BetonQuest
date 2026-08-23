@@ -3,6 +3,8 @@ package org.betonquest.betonquest.database;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -73,10 +75,9 @@ public class AsyncSaver implements Runnable, Saver {
                 }
             }
             while (!active) {
-                try {
-                    con.getDatabase().getConnection();
-                    active = true;
-                } catch (final IllegalStateException illegalStateException) {
+                try (Connection connection = con.getDatabase().getConnection()) {
+                    active = connection.isValid(5000);
+                } catch (final IllegalStateException | SQLException illegalStateException) {
                     log.warn("Failed to re-establish connection with the database! Trying again in %s second(s)..."
                             .formatted(reconnectInterval / 1000), illegalStateException);
                     try {

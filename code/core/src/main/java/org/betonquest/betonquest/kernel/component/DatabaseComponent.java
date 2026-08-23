@@ -15,6 +15,8 @@ import org.betonquest.betonquest.database.SQliteJdbcProvider;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.bukkit.plugin.Plugin;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Set;
 
 /**
@@ -67,20 +69,17 @@ public class DatabaseComponent extends AbstractCoreComponent {
                     ? new HikariProvider(HikariProvider.HikariDriver.MYSQL, host, port, base, username, password)
                     : new MySqlJdbcProvider(databaseLogger, host, port, base, username, password);
             final Database mySql = new MySQL(databaseLogger, connectionProvider, plugin, config);
-            try {
-                mySql.getConnection();
+            try (Connection connection = mySql.getConnection()) {
+                this.mySql = connection.isValid(5000);
                 database = mySql;
-                this.mySql = true;
                 log.info("Successfully connected to MySQL database!");
-            } catch (final IllegalStateException e) {
+            } catch (final IllegalStateException | SQLException e) {
                 log.warn("MySQL: " + e.getMessage(), e);
             }
         }
         if (database == null) {
             final BetonQuestLogger databaseLogger = loggerFactory.create(SQLite.class, "Database");
-            final ConnectionProvider connectionProvider = hikariEnabled
-                    ? new HikariProvider(HikariProvider.HikariDriver.SQLITE, plugin.getDataFolder().toPath().toString(), "database.db")
-                    : new SQliteJdbcProvider(databaseLogger, plugin, "database.db");
+            final ConnectionProvider connectionProvider = new SQliteJdbcProvider(databaseLogger, plugin, "database.db");
             database = new SQLite(databaseLogger, connectionProvider, plugin, config);
             if (mySQLEnabled) {
                 log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");

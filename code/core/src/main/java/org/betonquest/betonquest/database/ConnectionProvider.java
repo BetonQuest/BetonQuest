@@ -16,13 +16,9 @@ public interface ConnectionProvider {
     Connection create();
 
     /**
-     * Returns true if the connection is managed.
-     * Managed connections are opened and closed by the provider and may not be persisted.
-     * Unmanaged connections should be manually managed.
-     *
-     * @return true if the connection is managed, false otherwise
+     * Closes the connection handling if necessary.
      */
-    default boolean isManaged() {
-        return false;
+    default void close() {
+        // Empty
     }
 }

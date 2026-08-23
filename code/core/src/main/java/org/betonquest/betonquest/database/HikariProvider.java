@@ -48,8 +48,8 @@ public class HikariProvider implements ConnectionProvider {
     }
 
     @Override
-    public boolean isManaged() {
-        return true;
+    public void close() {
+        dataSource.close();
     }
 
     /**
@@ -70,27 +70,13 @@ public class HikariProvider implements ConnectionProvider {
          */
         MYSQL(5, args -> {
             final HikariConfig hikariConfig = new HikariConfig();
+            hikariConfig.setPoolName("betonquest-mysql-pool");
             hikariConfig.setJdbcUrl("jdbc:mysql://%s:%s/%s?&useSSL=false".formatted(args[0], args[1], args[2]));
             hikariConfig.setUsername(args[3]);
             hikariConfig.setPassword(args[4]);
             hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
             hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
             hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-            return hikariConfig;
-        }),
-
-        /**
-         * SQLite driver configuration for HikariCP.
-         * <p>
-         * Takes two arguments:
-         * <ul>
-         * <li>0: the path to the database file </li>
-         * <li>1: the name of the database file </li>
-         * </ul>
-         */
-        SQLITE(2, args -> {
-            final HikariConfig hikariConfig = new HikariConfig();
-            hikariConfig.setJdbcUrl("jdbc:sqlite:%s/%s".formatted(args[0], args[1]));
             return hikariConfig;
         });
 
