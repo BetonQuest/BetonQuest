@@ -18,7 +18,7 @@ import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.text.Text;
 import org.betonquest.betonquest.kernel.processor.feature.ConversationProcessor;
-import org.betonquest.betonquest.lib.config.section.fallback.FallbackConfigurationSection;
+import org.betonquest.betonquest.lib.config.section.fallback.FallbackConfiguration;
 import org.betonquest.betonquest.lib.config.section.unmodifiable.UnmodifiableConfigurationSection;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.text.ParsedSectionTextCreator;
@@ -693,7 +693,7 @@ public class DefaultConversationData implements ConversationData {
 
             for (final String extend : extendLinks) {
                 if (conditionManager.testAll(profile, getOption(extend, type).getConditions())) {
-                    return new FallbackConfigurationSection(properties, getOption(extend, type).getProperties(profile, optionPath));
+                    return new FallbackConfiguration(properties, getOption(extend, type).getProperties(profile, optionPath));
                 }
             }
             return properties;
