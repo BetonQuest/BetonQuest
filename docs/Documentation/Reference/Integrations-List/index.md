@@ -93,6 +93,7 @@ The categories are just to make it easier for you to find the plugins you're loo
 - [Depenizen](https://github.com/DenizenScript/Depenizen) – Compatibility with Denizen.
 - [HonnyCompass](https://github.com/honnisha/HonnyCompass) – Compass shown in the bossbar.
 - [JourneyBetonQuest](https://modrinth.com/plugin/journeybetonquest) – Compatibility with Journey.
+- [LuxDialogues](https://wiki.aselstudios.com/luxdialogues/hooks/betonquest) – Integration for conversation IO.
 - [MythicDungeons](https://www.spigotmc.org/resources/102699/) – Dungeon generator.
 - [NotQuests](https://www.spigotmc.org/resources/95872/) – Quest writing.
 - [nuNPCDestinations](https://www.spigotmc.org/resources/13863/) – Gives more control to npc movement and destination.
