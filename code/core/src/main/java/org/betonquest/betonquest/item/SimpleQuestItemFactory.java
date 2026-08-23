@@ -29,7 +29,6 @@ import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.util.DefaultBlockSelector;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -129,13 +128,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @throws QuestException when the argument is invalid for a handler or no handler accepts that argument
      */
     protected void fillHandler(final List<ItemMetaHandler<?>> handlers, final Instruction instruction) throws QuestException {
-        final Map<String, ItemMetaHandler<?>> keyToHandler = new HashMap<>();
         for (final ItemMetaHandler<?> handler : handlers) {
-            for (final String key : handler.keys()) {
-                keyToHandler.put(key, handler);
-            }
-        }
-        for (final ItemMetaHandler<?> handler : keyToHandler.values()) { // TODO fix call amount logic
             handler.set(instruction);
         }
     }
