@@ -4,8 +4,10 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
+import org.betonquest.betonquest.database.ConnectionProvider;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Database;
+import org.betonquest.betonquest.database.HikariProvider;
 import org.betonquest.betonquest.database.MySQL;
 import org.betonquest.betonquest.database.MySqlJdbcProvider;
 import org.betonquest.betonquest.database.SQLite;
@@ -50,17 +52,20 @@ public class DatabaseComponent extends AbstractCoreComponent {
 
         final BetonQuestLogger log = loggerFactory.create(DatabaseComponent.class);
 
-        final boolean mySQLEnabled = config.getBoolean("mysql.enabled", true);
+        final boolean mySQLEnabled = config.getBoolean("mysql.enabled", false);
+        final boolean hikariEnabled = config.getBoolean("mysql.hikari_pooling", true);
         Database database = null;
         if (mySQLEnabled) {
             log.debug("Connecting to MySQL database");
             final BetonQuestLogger databaseLogger = loggerFactory.create(MySQL.class, "Database");
-            final MySqlJdbcProvider connectionProvider = new MySqlJdbcProvider(databaseLogger,
-                    config.getString("mysql.host", ""),
-                    config.getString("mysql.port", ""),
-                    config.getString("mysql.base", ""),
-                    config.getString("mysql.user", ""),
-                    config.getString("mysql.pass", ""));
+            final String host = config.getString("mysql.host", "");
+            final String port = config.getString("mysql.port", "");
+            final String base = config.getString("mysql.base", "");
+            final String username = config.getString("mysql.user", "");
+            final String password = config.getString("mysql.pass", "");
+            final ConnectionProvider connectionProvider = hikariEnabled
+                    ? new HikariProvider(HikariProvider.HikariDriver.MYSQL, host, port, base, username, password)
+                    : new MySqlJdbcProvider(databaseLogger, host, port, base, username, password);
             final Database mySql = new MySQL(databaseLogger, connectionProvider, plugin, config);
             try {
                 mySql.getConnection();
@@ -73,7 +78,9 @@ public class DatabaseComponent extends AbstractCoreComponent {
         }
         if (database == null) {
             final BetonQuestLogger databaseLogger = loggerFactory.create(SQLite.class, "Database");
-            final SQliteJdbcProvider connectionProvider = new SQliteJdbcProvider(databaseLogger, plugin, "database.db");
+            final ConnectionProvider connectionProvider = hikariEnabled
+                    ? new HikariProvider(HikariProvider.HikariDriver.SQLITE, plugin.getDataFolder().toPath().toString(), "database.db")
+                    : new SQliteJdbcProvider(databaseLogger, plugin, "database.db");
             database = new SQLite(databaseLogger, connectionProvider, plugin, config);
             if (mySQLEnabled) {
                 log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");

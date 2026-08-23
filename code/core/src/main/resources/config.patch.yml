@@ -1,4 +1,8 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.3.0.1:
+  - type: SET
+    key: mysql.hikari_pooling
+    value: true
 3.2.0.1:
   - type: SET
     key: conversation.io.dialog.quester_in_title

@@ -16,6 +16,7 @@ debug:
   history: 10
 mysql:
   enabled: false
+  hikari_pooling: true
   host: ''
   port: ''
   user: ''
