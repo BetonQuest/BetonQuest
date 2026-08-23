@@ -7,6 +7,10 @@ import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -113,7 +117,7 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.owner = ExistenceArgument.apply(META_OWNER, instruction.string());
         this.playerId = ExistenceArgument.apply(META_PLAYER_ID, instruction.uuid());
         this.texture = ExistenceArgument.apply(META_TEXTURE, instruction.string());
@@ -140,14 +144,14 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
     }
 
     @Override
-    public Resolved<SkullMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<SkullMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, String> ownerPair = this.owner.getValue(profile);
         final Profile owner = getOwner(profile, ownerPair.getRight());
         final Pair<Existence, UUID> playerIdPair = this.playerId.getValue(profile);
         final UUID playerId = playerIdPair.getRight();
         final Pair<Existence, String> texturePair = this.texture.getValue(profile);
         final String texture = texturePair.getRight();
-        return new Resolved<SkullMeta>() {
+        return new ResolvedAttribute<SkullMeta>() {
 
             @Override
             public Class<SkullMeta> metaClass() {

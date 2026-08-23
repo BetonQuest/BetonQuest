@@ -5,6 +5,9 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.LoreConsumer;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -81,15 +84,15 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.questItem = HandlerUtil.isKeyOrTrue(QUEST, instruction);
     }
 
     @Override
-    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Existence existence = questItem.getValue(profile);
         final LoreConsumer loreConsumer = questItemLore.getValue(profile);
-        return new ResolvedItemMeta() {
+        return new ResolvedAttribute.ResolvedItemMeta() {
 
             @Override
             public void populate(final ItemMeta meta) {

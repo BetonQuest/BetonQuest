@@ -1,8 +1,9 @@
-package org.betonquest.betonquest.item.typehandler;
+package org.betonquest.betonquest.item.handler;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.item.typehandler.HandlerUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;

@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.item.typehandler;
+package org.betonquest.betonquest.item.handler;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;

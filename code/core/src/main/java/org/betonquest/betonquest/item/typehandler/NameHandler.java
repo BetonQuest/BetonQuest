@@ -6,6 +6,10 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +51,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         // TODO is empty check?
         this.name = ExistenceArgument.apply("name", instruction.component().map(Component::compact));
     }
@@ -60,7 +64,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Specific resolved Name Handler for the {@link QuestItem#getName()} method.
      */
-    public interface ResolvedName extends ResolvedItemMeta {
+    public interface ResolvedName extends ResolvedAttribute.ResolvedItemMeta {
 
         /**
          * Get the name.

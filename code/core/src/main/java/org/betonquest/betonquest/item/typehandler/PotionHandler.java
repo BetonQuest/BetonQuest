@@ -6,6 +6,11 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.Number;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultFlagArgument;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -104,17 +109,16 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.type = ExistenceArgument.apply("type", instruction.enumeration(PotionType.class), PotionType.WATER);
         this.extended = instruction.bool().getFlag(EXTENDED, true);
         this.upgraded = instruction.bool().getFlag(UPGRADED, true);
-        HandlerUtil.isKeyOrTrue(EXTENDED, instruction);
         this.custom = ExistenceArgument.applyList("effects", instruction.parse(CustomEffectHandler::new));
         this.exact = instruction.bool().map(bool -> !bool).get("effects-containing", true);
     }
 
     @Override
-    public Resolved<PotionMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<PotionMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, PotionType> typePair = type.getValue(profile);
         final Optional<Boolean> extended = this.extended.getValue(profile);
         final Optional<Boolean> upgraded = this.upgraded.getValue(profile);
@@ -128,7 +132,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
      */
     protected record ResolvedPotion(Pair<Existence, PotionType> typePair, Optional<Boolean> extended,
                                     Optional<Boolean> upgraded, Pair<Existence, List<CustomEffectHandler>> customPair,
-                                    boolean exact) implements Resolved<PotionMeta> {
+                                    boolean exact) implements ResolvedAttribute<PotionMeta> {
 
         @Override
         public Class<PotionMeta> metaClass() {
@@ -238,7 +242,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         /**
          * The number compare state for the duration.
          */
-        private final Number durationE;
+        private final org.betonquest.betonquest.item.handler.Number durationE;
 
         /**
          * The effect duration, in ticks.
@@ -253,7 +257,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         /**
          * The number compare state for the power.
          */
-        private final Number powerE;
+        private final org.betonquest.betonquest.item.handler.Number powerE;
 
         /**
          * Create a new Custom Potion data from serialized string.
@@ -266,9 +270,9 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             if (parts[0].startsWith("none-")) {
                 customTypeE = Existence.FORBIDDEN;
                 customType = getType(parts[0].substring("none-".length()));
-                powerE = Number.WHATEVER;
+                powerE = org.betonquest.betonquest.item.handler.Number.WHATEVER;
                 power = 1;
-                durationE = Number.WHATEVER;
+                durationE = org.betonquest.betonquest.item.handler.Number.WHATEVER;
                 duration = 60 * 20;
                 return;
             }
@@ -277,7 +281,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             if (parts.length != INSTRUCTION_FORMAT_LENGTH) {
                 throw new QuestException("Wrong effect format");
             }
-            final Map.Entry<Number, Integer> effectPower = HandlerUtil.getNumberValue(parts[1], "effect power");
+            final Map.Entry<org.betonquest.betonquest.item.handler.Number, Integer> effectPower = HandlerUtil.getNumberValue(parts[1], "effect power");
             powerE = effectPower.getKey();
             power = effectPower.getValue() - 1;
             if (power < 0) {

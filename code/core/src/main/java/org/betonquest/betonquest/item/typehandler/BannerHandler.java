@@ -4,6 +4,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
@@ -63,7 +67,7 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.patterns = ExistenceArgument.applyList("patterns", instruction.parse(this::parsePattern));
     }
 
@@ -88,10 +92,10 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     }
 
     @Override
-    public Resolved<BannerMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<BannerMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, List<Pattern>> patterns = this.patterns.getValue(profile);
 
-        return new Resolved<>() {
+        return new ResolvedAttribute<>() {
 
             @Override
             public Class<BannerMeta> metaClass() {

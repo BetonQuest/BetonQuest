@@ -5,6 +5,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.NumberValue;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -123,7 +128,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.effects = ExistenceArgument.applyList("firework", instruction.parse(resolved -> {
             final FireworkEffectHandler effect = new FireworkEffectHandler();
             effect.set(resolved);
@@ -134,7 +139,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
-    public Resolved<FireworkMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<FireworkMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, List<FireworkEffectHandler>> pair = this.effects.getValue(profile);
         final List<FireworkEffect> effects = new LinkedList<>();
         for (final FireworkEffectHandler effect : pair.getRight()) {
@@ -150,7 +155,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      */
     private record ResolvedFirework(Existence existence, List<FireworkEffectHandler> effectHandlers,
                                     List<FireworkEffect> effects, @Nullable NumberValue power, boolean exact)
-            implements ItemMetaHandler.Resolved<FireworkMeta> {
+            implements ResolvedAttribute<FireworkMeta> {
 
         @Override
         public Class<FireworkMeta> metaClass() {
@@ -204,7 +209,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
          * Check to see if the specified ItemMeta matches the Handler.
          *
          * @param fireworkMeta the ItemMeta to check
-         * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
+         * @return if the meta satisfies the requirement defined via {@link #parse(Instruction)}
          */
         public boolean check(final FireworkEffectMeta fireworkMeta) {
             final FireworkEffect single = fireworkMeta.getEffect();

@@ -4,6 +4,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -47,7 +51,7 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.itemFlags = (ExistenceArgument<Set<ItemFlag>>) instruction.enumeration(ItemFlag.class)
                 .list()
                 .map(list -> Pair.of(Existence.REQUIRED, Set.copyOf(list)))
@@ -56,11 +60,11 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, Set<ItemFlag>> pair = this.itemFlags.getValue(profile);
         final Existence existence = pair.getLeft();
         final Set<ItemFlag> itemFlags = pair.getRight();
-        return new ResolvedItemMeta() {
+        return new ResolvedAttribute.ResolvedItemMeta() {
 
             @Override
             public void populate(final ItemMeta meta) {

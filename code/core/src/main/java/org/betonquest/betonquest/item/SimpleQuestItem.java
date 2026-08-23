@@ -7,7 +7,8 @@ import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.bukkit.Material;
@@ -65,7 +66,7 @@ public class SimpleQuestItem implements QuestItemWrapper {
         final BlockSelector blockSelector = this.selector.getValue(profile);
         final NameHandler.ResolvedName name = this.name.resolve(profile);
         final LoreHandler.ResolvedLore lore = this.lore.resolve(profile);
-        final List<ItemMetaHandler.Resolved<?>> resolvedHandlers = new ArrayList<>();
+        final List<ResolvedAttribute<?>> resolvedHandlers = new ArrayList<>();
         for (final ItemMetaHandler<? extends ItemMeta> handler : this.handlers) {
             resolvedHandlers.add(handler.resolve(profile));
         }
@@ -79,7 +80,7 @@ public class SimpleQuestItem implements QuestItemWrapper {
      */
     private record ResolvedSimpleQuestItem(BlockSelector selector, NameHandler.ResolvedName name,
                                            LoreHandler.ResolvedLore lore,
-                                           List<ItemMetaHandler.Resolved<?>> handlers) implements QuestItem {
+                                           List<ResolvedAttribute<?>> handlers) implements QuestItem {
 
         @Override
         public boolean matches(@Nullable final ItemStack item) {
@@ -94,7 +95,7 @@ public class SimpleQuestItem implements QuestItemWrapper {
                 return true;
             }
 
-            for (final ItemMetaHandler.Resolved<? extends ItemMeta> handler : handlers) {
+            for (final ResolvedAttribute<? extends ItemMeta> handler : handlers) {
                 if (!handler.rawCheck(meta)) {
                     return false;
                 }
@@ -118,7 +119,7 @@ public class SimpleQuestItem implements QuestItemWrapper {
                 return item;
             }
 
-            for (final ItemMetaHandler.Resolved<? extends ItemMeta> handler : handlers) {
+            for (final ResolvedAttribute<? extends ItemMeta> handler : handlers) {
                 handler.rawPopulate(meta);
             }
 

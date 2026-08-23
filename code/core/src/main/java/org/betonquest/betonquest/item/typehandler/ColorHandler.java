@@ -4,6 +4,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -50,14 +54,14 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.color = ExistenceArgument.apply("color", instruction.parse(HandlerUtil::getColor));
     }
 
     @Override
-    public Resolved<LeatherArmorMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<LeatherArmorMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, Color> color = this.color.getValue(profile);
-        return new Resolved<>() {
+        return new ResolvedAttribute<>() {
 
             @Override
             public Class<LeatherArmorMeta> metaClass() {

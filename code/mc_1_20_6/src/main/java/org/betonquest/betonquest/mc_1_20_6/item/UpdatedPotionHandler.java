@@ -4,8 +4,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.item.typehandler.Existence;
-import org.betonquest.betonquest.item.typehandler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.bukkit.Keyed;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -80,8 +81,8 @@ public class UpdatedPotionHandler extends PotionHandler {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
-        super.set(instruction);
+    public void parse(final Instruction instruction) throws QuestException {
+        super.parse(instruction);
 
         final ExistenceArgument<PotionType> setSuperType = super.type;
 
@@ -110,9 +111,9 @@ public class UpdatedPotionHandler extends PotionHandler {
     }
 
     @Override
-    public Resolved<PotionMeta> resolve(final @Nullable Profile profile) throws QuestException {
+    public ResolvedAttribute<PotionMeta> resolve(final @Nullable Profile profile) throws QuestException {
         final ResolvedPotion resolved = (ResolvedPotion) super.resolve(profile);
-        return new Resolved<>() {
+        return new ResolvedAttribute<>() {
 
             @Override
             public Class<PotionMeta> metaClass() {

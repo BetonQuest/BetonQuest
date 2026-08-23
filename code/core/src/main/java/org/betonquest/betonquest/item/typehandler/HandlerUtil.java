@@ -6,6 +6,8 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.Number;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.intellij.lang.annotations.Language;
@@ -68,23 +70,23 @@ public final class HandlerUtil {
     /**
      * Gets a pair of Number requirement and its non-negative int.
      * <p>
-     * The value will be one in the {@link Number#WHATEVER} case.
+     * The value will be one in the {@link org.betonquest.betonquest.item.handler.Number#WHATEVER} case.
      *
      * @param part        to parse into one pair
      * @param messagePart to put into exceptions to identify what is parsed
      * @return the requirement type and the parsed value
      * @throws QuestException if {@code part} can't be parsed or is negative
      */
-    public static Map.Entry<Number, Integer> getNumberValue(final String part, final String messagePart) throws QuestException {
+    public static Map.Entry<org.betonquest.betonquest.item.handler.Number, Integer> getNumberValue(final String part, final String messagePart) throws QuestException {
         final String whatEver = "?";
         if (whatEver.equals(part)) {
-            return Map.entry(Number.WHATEVER, 1);
+            return Map.entry(org.betonquest.betonquest.item.handler.Number.WHATEVER, 1);
         }
-        final Number number;
+        final org.betonquest.betonquest.item.handler.Number number;
         if (part.endsWith("-")) {
-            number = Number.LESS;
+            number = org.betonquest.betonquest.item.handler.Number.LESS;
         } else if (part.endsWith("+")) {
-            number = Number.MORE;
+            number = org.betonquest.betonquest.item.handler.Number.MORE;
         } else {
             return Map.entry(Number.EQUAL, getNotBelowZero(part, messagePart));
         }
@@ -108,22 +110,20 @@ public final class HandlerUtil {
     }
 
     /**
-     * Checks if the data parses to {@code true} or equals the key.
+     * Checks if the value of the key parses to {@code true} or equals the key.
      * <p>
      * Used for keywords which may be denied.
      *
-     * @param key  the key to check for similarity of the data
-     * @param data the data to parse
+     * @param key         the key to get and check for similarity of the data
+     * @param instruction the instruction to get the value from
      * @return if the data is true or the key
      * @throws QuestException when the data is neither the key nor "true" or "false"
      */
-    public static boolean isKeyOrTrue(final String key, final String data) throws QuestException {
-        return key.equals(data) || new BooleanParser().apply(data);
-    }
-
     public static Argument<Existence> isKeyOrTrue(final String key, final Instruction instruction) throws QuestException {
-        return instruction.parse(resolved -> isKeyOrTrue(key, resolved))
-                .map(bool -> bool ? Existence.REQUIRED : Existence.FORBIDDEN).get(key, Existence.FORBIDDEN);
+        return instruction
+                .parse(resolved -> new BooleanParser().apply(resolved) ? Existence.REQUIRED : Existence.FORBIDDEN)
+                .prefilter(key, Existence.REQUIRED)
+                .get(key, Existence.WHATEVER);
     }
 
     /**

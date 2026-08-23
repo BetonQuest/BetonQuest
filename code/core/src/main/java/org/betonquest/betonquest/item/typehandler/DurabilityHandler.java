@@ -4,6 +4,9 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.NumberValue;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,14 +49,14 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.durability = NumberValue.create("durability", "item durability", instruction);
     }
 
     @Override
-    public Resolved<Damageable> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<Damageable> resolve(@Nullable final Profile profile) throws QuestException {
         final NumberValue durability = this.durability == null ? null : this.durability.getValue(profile);
-        return new Resolved<>() {
+        return new ResolvedAttribute<>() {
 
             @Override
             public Class<Damageable> metaClass() {

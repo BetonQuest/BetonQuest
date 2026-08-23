@@ -6,6 +6,10 @@ import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultFlagArgument;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -53,7 +57,7 @@ public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.modelData = ExistenceArgument.apply("custom-model-data", instruction.parse(resolvedString -> {
             try {
                 return Integer.parseInt(resolvedString);
@@ -65,10 +69,10 @@ public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, Integer> modelData = this.modelData.getValue(profile);
         final boolean noModelData = this.noModelData.getValue(profile).orElse(false);
-        return new ResolvedItemMeta() {
+        return new ResolvedAttribute.ResolvedItemMeta() {
             @Override
             public void populate(final ItemMeta meta) {
                 final Integer cmd = modelData.getRight();

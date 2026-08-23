@@ -7,6 +7,10 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -95,7 +99,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.title = ExistenceArgument.apply("title", instruction.component().map(Component::compact));
         this.author = ExistenceArgument.apply("author", instruction.component().map(Component::compact));
         this.text = (ExistenceArgument<List<Component>>) ExistenceArgument.apply(instruction.component().map(bookPageWrapper::splitPages))
@@ -103,11 +107,11 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @Override
-    public Resolved<BookMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<BookMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, Component> title = this.title.getValue(profile);
         final Pair<Existence, Component> author = this.author.getValue(profile);
         final Pair<Existence, List<Component>> text = this.text.getValue(profile);
-        return new Resolved<>() {
+        return new ResolvedAttribute<>() {
 
             @Override
             public Class<BookMeta> metaClass() {

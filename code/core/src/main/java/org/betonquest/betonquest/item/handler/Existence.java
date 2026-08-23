@@ -1,4 +1,4 @@
-package org.betonquest.betonquest.item.typehandler;
+package org.betonquest.betonquest.item.handler;
 
 /**
  * The existence of Item parts.

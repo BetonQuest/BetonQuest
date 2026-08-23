@@ -5,6 +5,11 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.Number;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -72,13 +77,13 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final Instruction instruction) throws QuestException {
+    public void parse(final Instruction instruction) throws QuestException {
         this.checkers = ExistenceArgument.applyList("enchants", instruction.parse(SingleEnchantmentHandler::new));
         this.exact = instruction.bool().map(bool -> !bool).get("enchants-containing", true);
     }
 
     @Override
-    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, List<SingleEnchantmentHandler>> pair = checkers.getValue(profile);
         final boolean exact = this.exact.getValue(profile);
         return new ResolvedEnchantments(pair, exact);
@@ -88,7 +93,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
      * Resolved Enchantment Handler.
      */
     private record ResolvedEnchantments(Pair<Existence, List<SingleEnchantmentHandler>> pair,
-                                        boolean exact) implements ResolvedItemMeta {
+                                        boolean exact) implements ResolvedAttribute.ResolvedItemMeta {
 
         @Override
         public void populate(final ItemMeta meta) {
@@ -171,7 +176,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
         /**
          * The number compare state.
          */
-        private final Number number;
+        private final org.betonquest.betonquest.item.handler.Number number;
 
         /**
          * The set enchantment level.
@@ -183,7 +188,7 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
             if (parts[0].startsWith("none-")) {
                 existence = Existence.FORBIDDEN;
                 type = getType(parts[0].substring("none-".length()));
-                number = Number.WHATEVER;
+                number = org.betonquest.betonquest.item.handler.Number.WHATEVER;
                 level = 1;
                 return;
             }
