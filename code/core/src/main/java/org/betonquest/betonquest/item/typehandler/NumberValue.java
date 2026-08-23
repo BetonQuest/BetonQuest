@@ -21,7 +21,7 @@ public interface NumberValue {
 
     int value();
 
-    boolean isValid(int otherValue) throws QuestException;
+    boolean isValid(int otherValue);
 
     record DefaultNumberValue(Number number, int value) implements NumberValue {
 

@@ -74,66 +74,79 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        meta.lore(get(profile));
-    }
-
-    @Override
-    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        final List<Component> original = meta.lore();
-        final List<Component> lore = original == null ? null
-                : original.subList(0, Math.max(0, original.size() - (ignoreLastLine.apply(profile) ? 1 : 0)));
+    public ResolvedLore resolve(@Nullable final Profile profile) throws QuestException {
+        final boolean exact = this.exact.getValue(profile);
+        final boolean ignoreLastLine = this.ignoreLastLine.apply(profile);
         final Pair<Existence, List<Component>> pair = this.lore.getValue(profile);
-        return switch (pair.getLeft()) {
-            case WHATEVER -> true;
-            case REQUIRED -> checkRequired(lore, profile, pair.getRight());
-            case FORBIDDEN -> lore == null || lore.isEmpty();
+        final List<Component> storedLore = pair.getRight();
+        return new ResolvedLore() {
+
+            @Override
+            public void populate(final ItemMeta meta) {
+                meta.lore(get());
+            }
+
+            @Override
+            public boolean check(final ItemMeta meta) {
+                final List<Component> original = meta.lore();
+                final List<Component> lore = original == null ? null
+                        : original.subList(0, Math.max(0, original.size() - (ignoreLastLine ? 1 : 0)));
+
+                return switch (pair.getLeft()) {
+                    case WHATEVER -> true;
+                    case REQUIRED -> checkRequired(lore);
+                    case FORBIDDEN -> lore == null || lore.isEmpty();
+                };
+            }
+
+            @Override
+            public List<Component> get() {
+                return storedLore;
+            }
+
+            private boolean checkRequired(@Nullable final List<Component> lore) {
+                if (lore == null) {
+                    return false;
+                }
+                if (!exact) {
+                    return !checkNonExact(lore, storedLore);
+                }
+                if (storedLore.size() != lore.size()) {
+                    return false;
+                }
+                for (int i = 0; i < lore.size(); i++) {
+                    if (!storedLore.get(i).equals(lore.get(i).compact())) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            private boolean checkNonExact(final List<Component> lore, final List<Component> storedLore) {
+                for (final Component line : storedLore) {
+                    boolean has = false;
+                    for (final Component itemLine : lore) {
+                        if (itemLine.compact().equals(line)) {
+                            has = true;
+                            break;
+                        }
+                    }
+                    if (!has) {
+                        return true;
+                    }
+                }
+                return false;
+            }
         };
     }
 
-    /**
-     * Gets the lore.
-     *
-     * @param profile the optional profile for resolving arguments
-     * @return the list of lore lines, can be empty
-     * @throws QuestException when there is an exception while resolving profile specific data
-     */
-    public List<Component> get(@Nullable final Profile profile) throws QuestException {
-        return lore.getValue(profile).getRight();
-    }
+    public interface ResolvedLore extends ItemMetaHandler.ResolvedItemMeta {
 
-    private boolean checkRequired(@Nullable final List<Component> lore, @Nullable final Profile profile,
-                                  final List<Component> storedLore) throws QuestException {
-        if (lore == null) {
-            return false;
-        }
-        if (!exact.getValue(profile)) {
-            return !checkNonExact(lore, storedLore);
-        }
-        if (storedLore.size() != lore.size()) {
-            return false;
-        }
-        for (int i = 0; i < lore.size(); i++) {
-            if (!storedLore.get(i).equals(lore.get(i).compact())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean checkNonExact(final List<Component> lore, final List<Component> storedLore) {
-        for (final Component line : storedLore) {
-            boolean has = false;
-            for (final Component itemLine : lore) {
-                if (itemLine.compact().equals(line)) {
-                    has = true;
-                    break;
-                }
-            }
-            if (!has) {
-                return true;
-            }
-        }
-        return false;
+        /**
+         * Gets the lore.
+         *
+         * @return the list of lore lines, can be empty
+         */
+        List<Component> get();
     }
 }

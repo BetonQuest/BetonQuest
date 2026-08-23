@@ -38,7 +38,7 @@ public interface QuestItem {
      *
      * @param stackSize size of generated stack
      * @return the ItemStack equal to this quest item
-     * @throws QuestException when there is an exception while resolving profile specific data
+     * @throws QuestException when there is an exception generating the item
      * @since 3.0.0
      */
     default ItemStack generate(final int stackSize) throws QuestException {

@@ -58,8 +58,6 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),
                 new FlagHandler(),
-                name,
-                lore,
                 questHandler,
                 new EnchantmentsHandler(),
                 new UpdatedPotionHandler(),
@@ -72,7 +70,8 @@ public class UpdatedSimpleItemFactory extends SimpleQuestItemFactory {
 
         if (instruction.hasNext()) {
             fillHandler(handlers, instruction);
+            fillHandler(List.of(name, lore), instruction);
         }
-        return new SimpleQuestItem(selector, handlers, name, lore);
+        return new SimpleQuestItem(selector, name, lore, handlers);
     }
 }

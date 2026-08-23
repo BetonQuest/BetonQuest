@@ -99,8 +99,6 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),
                 new FlagHandler(),
-                name,
-                lore,
                 questHandler,
                 new EnchantmentsHandler(),
                 new PotionHandler(),
@@ -113,8 +111,9 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
         if (instruction.hasNext()) {
             fillHandler(handlers, instruction);
+            fillHandler(List.of(name, lore), instruction);
         }
-        return new SimpleQuestItem(selector, handlers, name, lore);
+        return new SimpleQuestItem(selector, name, lore, handlers);
     }
 
     @Override
