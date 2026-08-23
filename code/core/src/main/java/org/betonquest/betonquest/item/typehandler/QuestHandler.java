@@ -32,7 +32,7 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Consumer to use when the item to generate is a quest item.
      */
-    private final LoreConsumer questItemLore;
+    private final Argument<LoreConsumer> questItemLore;
 
     /**
      * If the item is a "Quest Item".
@@ -44,7 +44,7 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
      *
      * @param questItemLore the consumer to use when the item to generate is a quest item
      */
-    public QuestHandler(final LoreConsumer questItemLore) {
+    public QuestHandler(final Argument<LoreConsumer> questItemLore) {
         this.questItemLore = questItemLore;
     }
 
@@ -89,7 +89,7 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
         if (questItem.getValue(profile) == Existence.REQUIRED) {
             meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
-            questItemLore.accept(meta, profile);
+            questItemLore.getValue(profile).accept(meta);
         }
     }
 
@@ -110,6 +110,6 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
      * @throws QuestException when there is an exception while resolving profile specific data
      */
     public boolean isLoreSet(@Nullable final Profile profile) throws QuestException {
-        return questItem.getValue(profile) == Existence.REQUIRED && questItemLore instanceof LoreConsumer.Lore;
+        return questItem.getValue(profile) == Existence.REQUIRED && questItemLore.getValue(profile) instanceof LoreConsumer.Lore;
     }
 }

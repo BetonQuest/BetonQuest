@@ -3,6 +3,7 @@ package org.betonquest.betonquest.kernel.registry.feature;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.Localizations;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemSerializer;
@@ -31,7 +32,7 @@ public class ItemTypeRegistry extends FactoryTypeRegistry<QuestItemWrapper> impl
     /**
      * Consumer to (possibly) add the "Quest Item"-Lore to the generated item.
      */
-    private final LoreConsumer loreConsumer;
+    private final Argument<LoreConsumer> loreConsumer;
 
     /**
      * Create a new Item registry.
@@ -42,8 +43,8 @@ public class ItemTypeRegistry extends FactoryTypeRegistry<QuestItemWrapper> impl
      */
     public ItemTypeRegistry(final BetonQuestLogger log, final Localizations localizations, final ConfigAccessor config) {
         super(log, "items");
-        final LoreConsumer.Lore lore = new LoreConsumer.Lore(localizations);
-        this.loreConsumer = config.getBoolean("item.quest.lore") ? lore : LoreConsumer.EMPTY;
+        final LoreConsumer.LoreArgument lore = new LoreConsumer.LoreArgument(localizations);
+        this.loreConsumer = config.getBoolean("item.quest.lore") ? lore : LoreConsumer.EMPTY_ARGUMENT;
         serializers = new HashMap<>();
     }
 
@@ -88,7 +89,7 @@ public class ItemTypeRegistry extends FactoryTypeRegistry<QuestItemWrapper> impl
      * @param loreConsumer    the Consumer to (possibly) add the "Quest Item"-Lore to the generated item
      */
     private record WrappedFactory(TypeFactory<QuestItemWrapper> originalFactory,
-                                  LoreConsumer loreConsumer) implements TypeFactory<QuestItemWrapper> {
+                                  Argument<LoreConsumer> loreConsumer) implements TypeFactory<QuestItemWrapper> {
 
         @Override
         public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
