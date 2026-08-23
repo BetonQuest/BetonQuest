@@ -59,29 +59,48 @@ public class UpdatedNameHandler extends NameHandler {
     }
 
     @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        super.populate(meta, profile);
-        meta.itemName(itemName.getValue(profile).getRight());
+    public ResolvedName resolve(final @Nullable Profile profile) throws QuestException {
+        final ResolvedName displayName = super.resolve(profile);
+        return new UpdatedResolved(displayName, itemName.getValue(profile));
     }
 
-    @Override
-    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (!super.check(meta, profile)) {
-            return false;
+    /**
+     * The resolved handler.
+     *
+     * @param itemName Item Display Name's required existence and value.
+     */
+    public record UpdatedResolved(ResolvedName displayName,
+                                  Pair<Existence, @Nullable Component> itemName) implements ResolvedName {
+
+        @Override
+        public Class<ItemMeta> metaClass() {
+            return displayName.metaClass();
         }
-        final Pair<Existence, @Nullable Component> pair = this.itemName.getValue(profile);
-        final Component itemName = meta.hasItemName() ? meta.itemName() : null;
-        return switch (pair.getLeft()) {
-            case WHATEVER -> true;
-            case REQUIRED -> itemName != null && itemName.compact().equals(pair.getRight());
-            case FORBIDDEN -> itemName == null;
-        };
-    }
 
-    @Override
-    @Nullable
-    public Component get(@Nullable final Profile profile) throws QuestException {
-        final Component display = super.get(profile);
-        return display == null ? itemName.getValue(profile).getRight() : display;
+        @Override
+        public void populate(final ItemMeta meta) {
+            displayName.populate(meta);
+            meta.itemName(itemName.getRight());
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            if (!displayName.check(meta)) {
+                return false;
+            }
+            final Component itemName = meta.hasItemName() ? meta.itemName() : null;
+            return switch (this.itemName.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> itemName != null && itemName.compact().equals(this.itemName.getRight());
+                case FORBIDDEN -> itemName == null;
+            };
+        }
+
+        @Override
+        @Nullable
+        public Component get() {
+            final Component display = displayName.get();
+            return display == null ? itemName.getRight() : display;
+        }
     }
 }

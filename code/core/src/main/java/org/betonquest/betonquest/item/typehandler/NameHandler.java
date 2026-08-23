@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
@@ -52,8 +53,27 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public ItemMetaHandler.Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+    public ResolvedName resolve(@Nullable final Profile profile) throws QuestException {
         return new Resolved(name.getValue(profile));
+    }
+
+    /**
+     * Specific resolved Name Handler for the {@link QuestItem#getName()} method.
+     */
+    public interface ResolvedName extends ItemMetaHandler.Resolved<ItemMeta> {
+
+        @Override
+        default Class<ItemMeta> metaClass() {
+            return ItemMeta.class;
+        }
+
+        /**
+         * Get the name.
+         *
+         * @return the name
+         */
+        @Nullable
+        Component get();
     }
 
     /**
@@ -61,12 +81,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
      *
      * @param name Item Display Name's required existence and value.
      */
-    public record Resolved(Pair<Existence, @Nullable Component> name) implements ItemMetaHandler.Resolved<ItemMeta> {
-
-        @Override
-        public Class<ItemMeta> metaClass() {
-            return ItemMeta.class;
-        }
+    public record Resolved(Pair<Existence, @Nullable Component> name) implements ResolvedName {
 
         @Override
         public void populate(final ItemMeta meta) {
@@ -83,11 +98,7 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
             };
         }
 
-        /**
-         * Get the name.
-         *
-         * @return the name
-         */
+        @Override
         @Nullable
         public Component get() {
             return name.getRight();
