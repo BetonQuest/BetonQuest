@@ -56,16 +56,23 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        meta.setUnbreakable(unbreakable.getValue(profile) == Existence.REQUIRED);
-    }
+    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+        final Existence existence = unbreakable.getValue(profile);
+        return new ResolvedItemMeta() {
 
-    @Override
-    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        return switch (unbreakable.getValue(profile)) {
-            case WHATEVER -> true;
-            case REQUIRED -> meta.isUnbreakable();
-            case FORBIDDEN -> !meta.isUnbreakable();
+            @Override
+            public void populate(final ItemMeta meta) {
+                meta.setUnbreakable(existence == Existence.REQUIRED);
+            }
+
+            @Override
+            public boolean check(final ItemMeta meta) {
+                return switch (existence) {
+                    case WHATEVER -> true;
+                    case REQUIRED -> meta.isUnbreakable();
+                    case FORBIDDEN -> !meta.isUnbreakable();
+                };
+            }
         };
     }
 }

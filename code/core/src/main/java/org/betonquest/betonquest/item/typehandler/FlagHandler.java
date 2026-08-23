@@ -56,16 +56,23 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        itemFlags.getValue(profile).getRight().forEach(meta::addItemFlags);
-    }
-
-    @Override
-    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, Set<ItemFlag>> pair = itemFlags.getValue(profile);
+    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, Set<ItemFlag>> pair = this.itemFlags.getValue(profile);
         final Existence existence = pair.getLeft();
-        return existence == Existence.WHATEVER
-                || existence == Existence.FORBIDDEN && meta.getItemFlags().isEmpty()
-                || existence == Existence.REQUIRED && !meta.getItemFlags().isEmpty() && pair.getRight().equals(meta.getItemFlags());
+        final Set<ItemFlag> itemFlags = pair.getRight();
+        return new ResolvedItemMeta() {
+
+            @Override
+            public void populate(final ItemMeta meta) {
+                itemFlags.forEach(meta::addItemFlags);
+            }
+
+            @Override
+            public boolean check(final ItemMeta meta) {
+                return existence == Existence.WHATEVER
+                        || existence == Existence.FORBIDDEN && meta.getItemFlags().isEmpty()
+                        || existence == Existence.REQUIRED && !meta.getItemFlags().isEmpty() && itemFlags.equals(meta.getItemFlags());
+            }
+        };
     }
 }

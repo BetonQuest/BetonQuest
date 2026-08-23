@@ -103,33 +103,47 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @Override
-    public void populate(final BookMeta bookMeta, @Nullable final Profile profile) throws QuestException {
-        bookMeta.title(title.getValue(profile).getRight())
-                .author(author.getValue(profile).getRight())
-                .addPages(text.getValue(profile).getRight().toArray(new Component[0]));
-    }
+    public Resolved<BookMeta> resolve(@Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, Component> title = this.title.getValue(profile);
+        final Pair<Existence, Component> author = this.author.getValue(profile);
+        final Pair<Existence, List<Component>> text = this.text.getValue(profile);
+        return new Resolved<>() {
 
-    @Override
-    public boolean check(final BookMeta bookMeta, @Nullable final Profile profile) throws QuestException {
-        return checkExistence(title.getValue(profile), bookMeta.title())
-                && checkExistence(author.getValue(profile), bookMeta.author())
-                && checkText(text.getValue(profile), bookMeta.pages());
-    }
+            @Override
+            public Class<BookMeta> metaClass() {
+                return BookMeta.class;
+            }
 
-    private boolean checkExistence(final Pair<Existence, @Nullable Component> stored, @Nullable final Component onItem) {
-        return switch (stored.getLeft()) {
-            case WHATEVER -> true;
-            case REQUIRED -> onItem != null && onItem.compact().equals(stored.getRight());
-            case FORBIDDEN -> onItem == null || onItem.equals(Component.empty());
-        };
-    }
+            @Override
+            public void populate(final BookMeta bookMeta) {
+                bookMeta.title(title.getRight())
+                        .author(author.getRight())
+                        .addPages(text.getRight().toArray(new Component[0]));
+            }
 
-    private boolean checkText(final Pair<Existence, List<Component>> stored, @Nullable final List<Component> list) {
-        return switch (stored.getLeft()) {
-            case WHATEVER -> true;
-            case REQUIRED -> stored.getRight().equals(list);
-            case FORBIDDEN ->
-                    list == null || list.isEmpty() || list.size() == 1 && list.get(0).equals(Component.empty());
+            @Override
+            public boolean check(final BookMeta bookMeta) {
+                return checkExistence(title, bookMeta.title())
+                        && checkExistence(author, bookMeta.author())
+                        && checkText(text, bookMeta.pages());
+            }
+
+            private boolean checkExistence(final Pair<Existence, @Nullable Component> stored, @Nullable final Component onItem) {
+                return switch (stored.getLeft()) {
+                    case WHATEVER -> true;
+                    case REQUIRED -> onItem != null && onItem.compact().equals(stored.getRight());
+                    case FORBIDDEN -> onItem == null || onItem.equals(Component.empty());
+                };
+            }
+
+            private boolean checkText(final Pair<Existence, List<Component>> stored, @Nullable final List<Component> list) {
+                return switch (stored.getLeft()) {
+                    case WHATEVER -> true;
+                    case REQUIRED -> stored.getRight().equals(list);
+                    case FORBIDDEN ->
+                            list == null || list.isEmpty() || list.size() == 1 && list.get(0).equals(Component.empty());
+                };
+            }
         };
     }
 }

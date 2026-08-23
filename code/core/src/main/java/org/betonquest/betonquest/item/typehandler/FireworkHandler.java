@@ -21,7 +21,6 @@ import java.util.Set;
 /**
  * Handles de-/serialization of Fireworks.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     /**
@@ -135,104 +134,112 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
-    public void populate(final FireworkMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
-        fireworkMeta.addEffects(getEffects(profile));
-        if (power != null) {
-            fireworkMeta.setPower(power.getValue(profile).value());
-        }
-    }
-
-    /**
-     * Sets the Handler's values into the Meta.
-     *
-     * @param fireworkMeta the meta to populate
-     * @param profile      the optional profile for resolving arguments
-     * @throws QuestException when there is an exception while resolving profile specific data
-     */
-    public void populate(final FireworkEffectMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
-        final List<FireworkEffect> list = getEffects(profile);
-        fireworkMeta.setEffect(list.isEmpty() ? null : list.get(0));
-    }
-
-    @Override
-    public boolean check(final FireworkMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
-        return checkEffects(profile, fireworkMeta.getEffects()) && (power == null || power.getValue(profile).isValid(fireworkMeta.getPower()));
-    }
-
-    @Override
-    public boolean rawCheck(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (meta instanceof final FireworkMeta fireworkMeta && !check(fireworkMeta, profile)) {
-            return false;
-        }
-        if (meta instanceof final FireworkEffectMeta fireworkMeta) {
-            return check(fireworkMeta, profile);
-        }
-        return true;
-    }
-
-    @Override
-    public void rawPopulate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (meta instanceof final FireworkMeta fireworkMeta) {
-            populate(fireworkMeta, profile);
-        }
-        if (meta instanceof final FireworkEffectMeta fireworkMeta) {
-            populate(fireworkMeta, profile);
-        }
-    }
-
-    /**
-     * Check to see if the specified ItemMeta matches the Handler.
-     *
-     * @param fireworkMeta the ItemMeta to check
-     * @param profile      the optional profile for resolving arguments
-     * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
-     * @throws QuestException when there is an exception while resolving profile specific data
-     */
-    public boolean check(final FireworkEffectMeta fireworkMeta, @Nullable final Profile profile) throws QuestException {
-        final FireworkEffect single = fireworkMeta.getEffect();
+    public Resolved<FireworkMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, List<FireworkEffectHandler>> pair = this.effects.getValue(profile);
-        final List<FireworkEffectHandler> effects = pair.getRight();
-        return switch (pair.getLeft()) {
-            case WHATEVER -> true;
-            case REQUIRED -> single != null && !effects.isEmpty() && effects.get(0).check(single);
-            case FORBIDDEN -> single == null;
-        };
-    }
-
-    private List<FireworkEffect> getEffects(@Nullable final Profile profile) throws QuestException {
-        final List<FireworkEffect> list = new LinkedList<>();
-        for (final FireworkEffectHandler effect : effects.getValue(profile).getRight()) {
-            list.add(effect.get());
+        final List<FireworkEffect> effects = new LinkedList<>();
+        for (final FireworkEffectHandler effect : pair.getRight()) {
+            effects.add(effect.get());
         }
-        return list;
+        final NumberValue power = this.power == null ? null : this.power.getValue(profile);
+        final boolean exact = this.exact.getValue(profile);
+        return new ResolvedFirework(pair.getLeft(), pair.getRight(), effects, power, exact);
     }
 
-    private boolean checkEffects(@Nullable final Profile profile, final List<FireworkEffect> list) throws QuestException {
-        final Pair<Existence, List<FireworkEffectHandler>> pair = effects.getValue(profile);
-        return switch (pair.getLeft()) {
-            case WHATEVER -> true;
-            case REQUIRED -> checkRequired(profile, pair.getRight(), list);
-            case FORBIDDEN -> list.isEmpty();
-        };
-    }
+    /**
+     * Resolved Firework Handler.
+     */
+    private record ResolvedFirework(Existence existence, List<FireworkEffectHandler> effectHandlers,
+                                    List<FireworkEffect> effects, @Nullable NumberValue power, boolean exact)
+            implements ItemMetaHandler.Resolved<FireworkMeta> {
 
-    private boolean checkRequired(@Nullable final Profile profile, final List<FireworkEffectHandler> effects,
-                                  final List<FireworkEffect> list) throws QuestException {
-        if (exact.getValue(profile) && list.size() != effects.size()) {
-            return false;
+        @Override
+        public Class<FireworkMeta> metaClass() {
+            return FireworkMeta.class;
         }
-        for (final FireworkEffectHandler checker : effects) {
-            FireworkEffect effect = null;
-            for (final FireworkEffect fireworkEffect : list) {
-                if (fireworkEffect.getType() == checker.getType()) {
-                    effect = fireworkEffect;
-                    break;
-                }
+
+        @Override
+        public void populate(final FireworkMeta fireworkMeta) {
+            fireworkMeta.addEffects(effects);
+            if (power != null) {
+                fireworkMeta.setPower(power.value());
             }
-            if (!checker.check(effect)) {
+        }
+
+        /**
+         * Sets the Handler's values into the Meta.
+         *
+         * @param fireworkMeta the meta to populate
+         */
+        public void populate(final FireworkEffectMeta fireworkMeta) {
+            fireworkMeta.setEffect(effects.isEmpty() ? null : effects.get(0));
+        }
+
+        @Override
+        public boolean check(final FireworkMeta fireworkMeta) {
+            return checkEffects(fireworkMeta.getEffects()) && (power == null || power.isValid(fireworkMeta.getPower()));
+        }
+
+        @Override
+        public boolean rawCheck(final ItemMeta meta) {
+            if (meta instanceof final FireworkMeta fireworkMeta && !check(fireworkMeta)) {
                 return false;
             }
+            if (meta instanceof final FireworkEffectMeta fireworkMeta) {
+                return check(fireworkMeta);
+            }
+            return true;
         }
-        return true;
+
+        @Override
+        public void rawPopulate(final ItemMeta meta) {
+            if (meta instanceof final FireworkMeta fireworkMeta) {
+                populate(fireworkMeta);
+            }
+            if (meta instanceof final FireworkEffectMeta fireworkMeta) {
+                populate(fireworkMeta);
+            }
+        }
+
+        /**
+         * Check to see if the specified ItemMeta matches the Handler.
+         *
+         * @param fireworkMeta the ItemMeta to check
+         * @return if the meta satisfies the requirement defined via {@link #set(Instruction)}
+         */
+        public boolean check(final FireworkEffectMeta fireworkMeta) {
+            final FireworkEffect single = fireworkMeta.getEffect();
+            return switch (existence) {
+                case WHATEVER -> true;
+                case REQUIRED -> single != null && !effectHandlers.isEmpty() && effectHandlers.get(0).check(single);
+                case FORBIDDEN -> single == null;
+            };
+        }
+
+        private boolean checkEffects(final List<FireworkEffect> list) {
+            return switch (existence) {
+                case WHATEVER -> true;
+                case REQUIRED -> checkRequired(effectHandlers, list);
+                case FORBIDDEN -> list.isEmpty();
+            };
+        }
+
+        private boolean checkRequired(final List<FireworkEffectHandler> effects, final List<FireworkEffect> list) {
+            if (exact && list.size() != effects.size()) {
+                return false;
+            }
+            for (final FireworkEffectHandler checker : effects) {
+                FireworkEffect effect = null;
+                for (final FireworkEffect fireworkEffect : list) {
+                    if (fireworkEffect.getType() == checker.getType()) {
+                        effect = fireworkEffect;
+                        break;
+                    }
+                }
+                if (!checker.check(effect)) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

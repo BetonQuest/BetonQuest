@@ -78,62 +78,74 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
-            // why no bulk adding method?!
-            final Map<Enchantment, Integer> map = get(profile);
-            for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
-                enchantMeta.addStoredEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
-            }
-        } else {
-            final Map<Enchantment, Integer> map = get(profile);
-            for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
-                meta.addEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
-            }
-        }
-    }
-
-    @Override
-    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
-            return check(profile, enchantMeta.getStoredEnchants());
-        }
-        return check(profile, meta.getEnchants());
-    }
-
-    private Map<Enchantment, Integer> get(@Nullable final Profile profile) throws QuestException {
+    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
         final Pair<Existence, List<SingleEnchantmentHandler>> pair = checkers.getValue(profile);
-        final Existence checkersE = pair.getLeft();
-        final Map<Enchantment, Integer> map = new HashMap<>();
-        if (checkersE == Existence.FORBIDDEN) {
+        final boolean exact = this.exact.getValue(profile);
+        return new ResolvedEnchantments(pair, exact);
+    }
+
+    /**
+     * Resolved Enchantment Handler.
+     */
+    private record ResolvedEnchantments(Pair<Existence, List<SingleEnchantmentHandler>> pair,
+                                        boolean exact) implements ResolvedItemMeta {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
+                // why no bulk adding method?!
+                final Map<Enchantment, Integer> map = get();
+                for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
+                    enchantMeta.addStoredEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
+                }
+            } else {
+                final Map<Enchantment, Integer> map = get();
+                for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
+                    meta.addEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
+                }
+            }
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
+                return check(enchantMeta.getStoredEnchants());
+            }
+            return check(meta.getEnchants());
+        }
+
+        private Map<Enchantment, Integer> get() {
+            final Existence checkersE = pair.getLeft();
+            final Map<Enchantment, Integer> map = new HashMap<>();
+            if (checkersE == Existence.FORBIDDEN) {
+                return map;
+            }
+            for (final SingleEnchantmentHandler checker : pair.getRight()) {
+                if (checker.existence != Existence.FORBIDDEN) {
+                    map.put(checker.type, checker.level);
+                }
+            }
             return map;
         }
-        for (final SingleEnchantmentHandler checker : pair.getRight()) {
-            if (checker.existence != Existence.FORBIDDEN) {
-                map.put(checker.type, checker.level);
-            }
-        }
-        return map;
-    }
 
-    private boolean check(@Nullable final Profile profile, final Map<Enchantment, Integer> map) throws QuestException {
-        final Pair<Existence, List<SingleEnchantmentHandler>> pair = checkers.getValue(profile);
-        final Existence checkersE = pair.getLeft();
-        if (checkersE == Existence.WHATEVER) {
-            return true;
-        }
-        if (map.isEmpty()) { // TODO remove that? - any value should be set if not whatever? but they could all be '?' too
-            return checkersE == Existence.FORBIDDEN;
-        }
-        if (exact.getValue(profile) && map.size() != get(profile).size()) {
-            return false;
-        }
-        for (final SingleEnchantmentHandler checker : pair.getRight()) {
-            if (!checker.check(map.get(checker.type))) {
+        private boolean check(final Map<Enchantment, Integer> map) {
+            final Existence checkersE = pair.getLeft();
+            if (checkersE == Existence.WHATEVER) {
+                return true;
+            }
+            if (map.isEmpty()) { // TODO remove that? - any value should be set if not whatever? but they could all be '?' too
+                return checkersE == Existence.FORBIDDEN;
+            }
+            if (exact && map.size() != get().size()) {
                 return false;
             }
+            for (final SingleEnchantmentHandler checker : pair.getRight()) {
+                if (!checker.check(map.get(checker.type))) {
+                    return false;
+                }
+            }
+            return true;
         }
-        return true;
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -87,16 +88,29 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     }
 
     @Override
-    public void populate(final BannerMeta bannerMeta, @Nullable final Profile profile) throws QuestException {
-        bannerMeta.setPatterns(patterns.getValue(profile).getRight());
-    }
+    public Resolved<BannerMeta> resolve(@Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, List<Pattern>> patterns = this.patterns.getValue(profile);
 
-    @Override
-    public boolean check(final BannerMeta bannerMeta, @Nullable final Profile profile) throws QuestException {
-        return switch (patternsE) {
-            case WHATEVER -> true;
-            case REQUIRED -> patterns.getValue(profile).equals(bannerMeta.getPatterns());
-            case FORBIDDEN -> bannerMeta.getPatterns().isEmpty();
+        return new Resolved<>() {
+
+            @Override
+            public Class<BannerMeta> metaClass() {
+                return BannerMeta.class;
+            }
+
+            @Override
+            public void populate(final BannerMeta bannerMeta) {
+                bannerMeta.setPatterns(patterns.getRight());
+            }
+
+            @Override
+            public boolean check(final BannerMeta bannerMeta) {
+                return switch (patternsE) {
+                    case WHATEVER -> true;
+                    case REQUIRED -> patterns.equals(bannerMeta.getPatterns());
+                    case FORBIDDEN -> bannerMeta.getPatterns().isEmpty();
+                };
+            }
         };
     }
 }

@@ -51,14 +51,26 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
     }
 
     @Override
-    public void populate(final Damageable damageableMeta, @Nullable final Profile profile) throws QuestException {
-        if (durability != null) {
-            damageableMeta.setDamage(durability.getValue(profile).value());
-        }
-    }
+    public Resolved<Damageable> resolve(@Nullable final Profile profile) throws QuestException {
+        final NumberValue durability = this.durability == null ? null : this.durability.getValue(profile);
+        return new Resolved<>() {
 
-    @Override
-    public boolean check(final Damageable meta, @Nullable final Profile profile) throws QuestException {
-        return this.durability != null && this.durability.getValue(profile).isValid(meta.getDamage());
+            @Override
+            public Class<Damageable> metaClass() {
+                return Damageable.class;
+            }
+
+            @Override
+            public void populate(final Damageable damageableMeta) {
+                if (durability != null) {
+                    damageableMeta.setDamage(durability.value());
+                }
+            }
+
+            @Override
+            public boolean check(final Damageable meta) {
+                return durability != null && durability.isValid(meta.getDamage());
+            }
+        };
     }
 }

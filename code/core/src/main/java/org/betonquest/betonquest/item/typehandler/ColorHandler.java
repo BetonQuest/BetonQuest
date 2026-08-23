@@ -55,14 +55,25 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
     }
 
     @Override
-    public void populate(final LeatherArmorMeta armorMeta, @Nullable final Profile profile) throws QuestException {
-        armorMeta.setColor(color.getValue(profile).getRight());
-    }
+    public Resolved<LeatherArmorMeta> resolve(@Nullable final Profile profile) throws QuestException {
+        final Pair<Existence, Color> color = this.color.getValue(profile);
+        return new Resolved<>() {
 
-    @Override
-    public boolean check(final LeatherArmorMeta armorMeta, @Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, Color> pair = this.color.getValue(profile);
-        return pair.getLeft() == Existence.WHATEVER || armorMeta.getColor().equals(pair.getRight());
-        // if it's forbidden, this.color is default leather color (undyed)
+            @Override
+            public Class<LeatherArmorMeta> metaClass() {
+                return LeatherArmorMeta.class;
+            }
+
+            @Override
+            public void populate(final LeatherArmorMeta armorMeta) {
+                armorMeta.setColor(color.getRight());
+            }
+
+            @Override
+            public boolean check(final LeatherArmorMeta armorMeta) {
+                return color.getLeft() == Existence.WHATEVER || armorMeta.getColor().equals(color.getRight());
+                // if it's forbidden, this.color is default leather color (undyed)
+            }
+        };
     }
 }

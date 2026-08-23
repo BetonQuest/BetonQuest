@@ -86,19 +86,27 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (questItem.getValue(profile) == Existence.REQUIRED) {
-            meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
-            questItemLore.getValue(profile).accept(meta);
-        }
-    }
+    public Resolved<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+        final Existence existence = questItem.getValue(profile);
+        final LoreConsumer loreConsumer = questItemLore.getValue(profile);
+        return new ResolvedItemMeta() {
 
-    @Override
-    public boolean check(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        return switch (questItem.getValue(profile)) {
-            case WHATEVER -> true;
-            case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
-            case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
+            @Override
+            public void populate(final ItemMeta meta) {
+                if (existence == Existence.REQUIRED) {
+                    meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
+                    loreConsumer.accept(meta);
+                }
+            }
+
+            @Override
+            public boolean check(final ItemMeta meta) {
+                return switch (existence) {
+                    case WHATEVER -> true;
+                    case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
+                    case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
+                };
+            }
         };
     }
 
