@@ -7,7 +7,9 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.database.Connector;
 import org.betonquest.betonquest.database.Database;
 import org.betonquest.betonquest.database.MySQL;
+import org.betonquest.betonquest.database.MySqlJdbcProvider;
 import org.betonquest.betonquest.database.SQLite;
+import org.betonquest.betonquest.database.SQliteJdbcProvider;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.bukkit.plugin.Plugin;
 
@@ -52,12 +54,14 @@ public class DatabaseComponent extends AbstractCoreComponent {
         Database database = null;
         if (mySQLEnabled) {
             log.debug("Connecting to MySQL database");
-            final Database mySql = new MySQL(loggerFactory.create(MySQL.class, "Database"), plugin, config,
-                    config.getString("mysql.host"),
-                    config.getString("mysql.port"),
-                    config.getString("mysql.base"),
-                    config.getString("mysql.user"),
-                    config.getString("mysql.pass"));
+            final BetonQuestLogger databaseLogger = loggerFactory.create(MySQL.class, "Database");
+            final MySqlJdbcProvider connectionProvider = new MySqlJdbcProvider(databaseLogger,
+                    config.getString("mysql.host", ""),
+                    config.getString("mysql.port", ""),
+                    config.getString("mysql.base", ""),
+                    config.getString("mysql.user", ""),
+                    config.getString("mysql.pass", ""));
+            final Database mySql = new MySQL(databaseLogger, connectionProvider, plugin, config);
             try {
                 mySql.getConnection();
                 database = mySql;
@@ -68,7 +72,9 @@ public class DatabaseComponent extends AbstractCoreComponent {
             }
         }
         if (database == null) {
-            database = new SQLite(loggerFactory.create(SQLite.class, "Database"), plugin, config, "database.db");
+            final BetonQuestLogger databaseLogger = loggerFactory.create(SQLite.class, "Database");
+            final SQliteJdbcProvider connectionProvider = new SQliteJdbcProvider(databaseLogger, plugin, "database.db");
+            database = new SQLite(databaseLogger, connectionProvider, plugin, config);
             if (mySQLEnabled) {
                 log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
             } else {
