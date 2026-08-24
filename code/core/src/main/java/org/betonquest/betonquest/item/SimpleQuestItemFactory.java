@@ -11,7 +11,10 @@ import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.quest.TypeFactory;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.LoreMetaHandler;
+import org.betonquest.betonquest.item.handler.NameMetaHandler;
 import org.betonquest.betonquest.item.typehandler.BannerHandler;
 import org.betonquest.betonquest.item.typehandler.BookHandler;
 import org.betonquest.betonquest.item.typehandler.ColorHandler;
@@ -29,6 +32,7 @@ import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.util.DefaultBlockSelector;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -39,14 +43,33 @@ import java.util.function.Supplier;
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
-     * The book page wrapper used to split pages.
+     * Name meta handler to for {@link QuestItem#getName()}.
      */
-    protected final BookPageWrapper bookPageWrapper;
+    protected final NameMetaHandler nameHandler;
 
     /**
-     * Supplier for the Localizations.
+     * Lore meta handler to for {@link QuestItem#getLore()}.
      */
-    protected final Supplier<Localizations> questItemLoreSupplier;
+    protected final LoreMetaHandler loreHandler;
+
+    /**
+     * All other meta handler to parse attributes of the simple item.
+     */
+    protected final List<ItemMetaHandler<?>> handlers;
+
+    /**
+     * Creates a new simple Quest Item Factory with custom handlers.
+     *
+     * @param nameHandler the name meta handler for {@link QuestItem#getName()}
+     * @param loreHandler the lore meta handler for {@link QuestItem#getLore()}
+     * @param handlers    the handler which allow defining items, exclusive the name and lore handler
+     */
+    public SimpleQuestItemFactory(final NameMetaHandler nameHandler, final LoreMetaHandler loreHandler,
+                                  final List<ItemMetaHandler<?>> handlers) {
+        this.nameHandler = nameHandler;
+        this.loreHandler = loreHandler;
+        this.handlers = handlers;
+    }
 
     /**
      * Creates a new simple Quest Item Factory.
@@ -55,8 +78,26 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @param questItemLoreSupplier supplies the Localizations instance if the "quest item" lore line should be added
      */
     public SimpleQuestItemFactory(final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
-        this.bookPageWrapper = bookPageWrapper;
-        this.questItemLoreSupplier = questItemLoreSupplier;
+        this.nameHandler = new NameHandler();
+
+        final Localizations localizations = questItemLoreSupplier.get();
+        final QuestHandler questHandler = new QuestHandler(localizations == null
+                ? LoreConsumer.EMPTY_ARGUMENT : new LoreConsumer.LoreArgument(localizations));
+        this.loreHandler = new LoreHandler(questHandler::isLoreSet);
+        this.handlers = List.of(
+                new DurabilityHandler(),
+                new CustomModelDataHandler(),
+                new UnbreakableHandler(),
+                new FlagHandler(),
+                questHandler,
+                new EnchantmentsHandler(),
+                new PotionHandler(),
+                new BannerHandler(),
+                new BookHandler(bookPageWrapper),
+                new HeadHandler(),
+                new ColorHandler(),
+                new FireworkHandler()
+        );
     }
 
     /**
@@ -74,7 +115,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     public QuestItem parseInstruction(final ArgumentParsers argumentParsers, final String string) throws QuestException {
         final Instruction instruction = new DefaultInstruction(PlaceholderProcessor.EMPTY_PLACEHOLDER, Map::of, null,
                 null, argumentParsers, "simple " + string);
-        return parseInstructionInternal(instruction).getItem(null);
+        return parseInstruction(instruction).getItem(null);
     }
 
     /**
@@ -84,52 +125,21 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @return the parsed Quest Item
      * @throws QuestException when placeholders could not be resolved or handlers not be filled
      */
-    protected SimpleQuestItem parseInstructionInternal(final Instruction instruction) throws QuestException {
+    @Override
+    public SimpleQuestItem parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> selector = instruction.blockSelector().get();
 
-        final NameHandler name = new NameHandler();
-
-        final Localizations localizations = questItemLoreSupplier.get();
-        final QuestHandler questHandler = new QuestHandler(localizations == null
-                ? LoreConsumer.EMPTY_ARGUMENT : new LoreConsumer.LoreArgument(localizations));
-        final LoreHandler lore = new LoreHandler(questHandler::isLoreSet);
-        final List<ItemMetaHandler<?>> handlers = List.of(
-                new DurabilityHandler(),
-                new CustomModelDataHandler(),
-                new UnbreakableHandler(),
-                new FlagHandler(),
-                questHandler,
-                new EnchantmentsHandler(),
-                new PotionHandler(),
-                new BannerHandler(),
-                new BookHandler(bookPageWrapper),
-                new HeadHandler(),
-                new ColorHandler(),
-                new FireworkHandler()
-        );
-
+        final NameMetaHandler.NameAttribute nameAttribute = nameHandler.parse(instruction);
+        final LoreMetaHandler.LoreAttribute loreAttribute = loreHandler.parse(instruction);
+        final List<Attribute<?>> attributes = new ArrayList<>();
         if (instruction.hasNext()) {
-            fillHandler(handlers, instruction);
-            fillHandler(List.of(name, lore), instruction);
+            for (final ItemMetaHandler<?> handler : handlers) {
+                final Attribute<?> attribute = handler.parse(instruction);
+                if (attribute != null) {
+                    attributes.add(attribute);
+                }
+            }
         }
-        return new SimpleQuestItem(selector, name, lore, handlers);
-    }
-
-    @Override
-    public QuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
-        return parseInstructionInternal(instruction);
-    }
-
-    /**
-     * Fills the handlers with arguments.
-     *
-     * @param handlers    the handlers to fill
-     * @param instruction the instruction to fill into the handlers
-     * @throws QuestException when the argument is invalid for a handler or no handler accepts that argument
-     */
-    protected void fillHandler(final List<ItemMetaHandler<?>> handlers, final Instruction instruction) throws QuestException {
-        for (final ItemMetaHandler<?> handler : handlers) {
-            handler.set(instruction);
-        }
+        return new SimpleQuestItem(selector, nameAttribute, loreAttribute, attributes);
     }
 }

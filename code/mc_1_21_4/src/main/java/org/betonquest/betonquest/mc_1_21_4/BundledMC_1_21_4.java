@@ -12,10 +12,10 @@ import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.menu.MenuConvIOFactory;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
+import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.betonquest.betonquest.mc_1_21_4.conversation.InputEventSession;
-import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleItemFactory;
 import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleQuestItemSerializer;
 import org.betonquest.betonquest.mc_1_21_4.listener.BundleListener;
 import org.betonquest.betonquest.mc_1_21_4.notify.io.UpdatedTotemNotifyIOFactory;
@@ -48,8 +48,8 @@ public class BundledMC_1_21_4 implements Integration {
         final CoreComponentLoader componentLoader = betonQuest.getComponentLoader();
         final TextParser textParser = componentLoader.get(TextParser.class);
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
-        item.register("simple", new UpdatedSimpleItemFactory(bookPageWrapper,
-                () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? api.localizations() : null), true);
+        final SimpleQuestItemFactory itemFactory = UpdatedSimpleQuestItemSerializer.create(betonQuest.getPluginConfig(), api, bookPageWrapper);
+        item.register("simple", itemFactory, true);
         item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(bookPageWrapper));
 
         final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction = (player, control, setSpeed)

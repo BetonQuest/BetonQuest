@@ -35,6 +35,12 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
                 .get(key, Pair.of(Existence.WHATEVER, null));
     }
 
+    @Nullable
+    static <T> ExistenceArgument<@Nullable T> applyOrNull(
+            final String key, final DecoratableChainRetriever<T> retriever) throws QuestException {
+        return (ExistenceArgument<T>) apply(retriever).get(key).orElse(null);
+    }
+
     static <T> ExistenceArgument<@Nullable T> apply(
             final String key, final DecoratableChainRetriever<T> retriever, final T fallback) throws QuestException {
         return (ExistenceArgument<T>) apply(retriever)

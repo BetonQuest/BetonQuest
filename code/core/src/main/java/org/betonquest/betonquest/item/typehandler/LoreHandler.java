@@ -9,9 +9,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
-import org.betonquest.betonquest.item.handler.ItemMetaHandler;
-import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
+import org.betonquest.betonquest.item.handler.LoreMetaHandler;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,22 +19,12 @@ import java.util.Set;
 /**
  * Handles de-/serialization of Item Lore.
  */
-public class LoreHandler implements ItemMetaHandler<ItemMeta> {
+public class LoreHandler implements LoreMetaHandler {
 
     /**
      * If the last lore line should be interpreted as 'quest-item' line and ignored in checks.
      */
     private final QuestFunction<Profile, Boolean> ignoreLastLine;
-
-    /**
-     * The lore.
-     */
-    private ExistenceArgument<List<Component>> lore = ExistenceArgument.whateverEmptyList();
-
-    /**
-     * If the lore need to be exact the same or just contain all specified lines.
-     */
-    private Argument<Boolean> exact = new DefaultArgument<>(true);
 
     /**
      * Creates an empty LoreHandler.
@@ -45,11 +33,6 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
      */
     public LoreHandler(final QuestFunction<Profile, Boolean> ignoreLastLine) {
         this.ignoreLastLine = ignoreLastLine;
-    }
-
-    @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
     }
 
     @Override
@@ -71,86 +54,89 @@ public class LoreHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        this.lore = ExistenceArgument.apply("lore", instruction.component().list()); // problem when there is more than one "lore"
+    public LoreAttribute parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<List<Component>> lore = ExistenceArgument.apply("lore", instruction.component().list()); // problem when there is more than one "lore"
         // TODO fix wrong separator, compact and everything else in this diff
-        this.exact = instruction.bool().map(bool -> !bool).get("lore-containing", true);
+        final Argument<Boolean> exact = instruction.bool().map(bool -> !bool).get("lore-containing", true);
+        return new NonResolved(lore, exact, ignoreLastLine);
     }
 
-    @Override
-    public ResolvedLore resolve(@Nullable final Profile profile) throws QuestException {
-        final boolean exact = this.exact.getValue(profile);
-        final boolean ignoreLastLine = this.ignoreLastLine.apply(profile);
-        final Pair<Existence, List<Component>> pair = this.lore.getValue(profile);
-        final List<Component> storedLore = pair.getRight();
-        return new ResolvedLore() {
+    /**
+     * The lore with placeholders.
+     */
+    private record NonResolved(ExistenceArgument<List<Component>> lore, Argument<Boolean> exact,
+                               QuestFunction<Profile, Boolean> ignoreLastLine) implements LoreAttribute {
 
-            @Override
-            public void populate(final ItemMeta meta) {
-                meta.lore(get());
-            }
+        @Override
+        public ResolvedLoreAttribute resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, List<Component>> pair = this.lore.getValue(profile);
+            final boolean exact = this.exact.getValue(profile);
+            final boolean ignoreLastLine = this.ignoreLastLine.apply(profile);
+            return new Resolved(pair.getLeft(), pair.getRight(), exact, ignoreLastLine);
+        }
+    }
 
-            @Override
-            public boolean check(final ItemMeta meta) {
-                final List<Component> original = meta.lore();
-                final List<Component> lore = original == null ? null
-                        : original.subList(0, Math.max(0, original.size() - (ignoreLastLine ? 1 : 0)));
+    /**
+     * The resolved lore.
+     */
+    private record Resolved(Existence existence, List<Component> storedLore, boolean exact, boolean ignoreLastLine)
+            implements ResolvedLoreAttribute {
 
-                return switch (pair.getLeft()) {
-                    case WHATEVER -> true;
-                    case REQUIRED -> checkRequired(lore);
-                    case FORBIDDEN -> lore == null || lore.isEmpty();
-                };
-            }
+        @Override
+        public void populate(final ItemMeta meta) {
+            meta.lore(get());
+        }
 
-            @Override
-            public List<Component> get() {
-                return storedLore;
-            }
+        @Override
+        public boolean check(final ItemMeta meta) {
+            final List<Component> original = meta.lore();
+            final List<Component> lore = original == null ? null
+                    : original.subList(0, Math.max(0, original.size() - (ignoreLastLine ? 1 : 0)));
 
-            private boolean checkRequired(@Nullable final List<Component> lore) {
-                if (lore == null) {
-                    return false;
-                }
-                if (!exact) {
-                    return !checkNonExact(lore, storedLore);
-                }
-                if (storedLore.size() != lore.size()) {
-                    return false;
-                }
-                for (int i = 0; i < lore.size(); i++) {
-                    if (!storedLore.get(i).equals(lore.get(i).compact())) {
-                        return false;
-                    }
-                }
-                return true;
-            }
+            return switch (existence) {
+                case WHATEVER -> true;
+                case REQUIRED -> checkRequired(lore);
+                case FORBIDDEN -> lore == null || lore.isEmpty();
+            };
+        }
 
-            private boolean checkNonExact(final List<Component> lore, final List<Component> storedLore) {
-                for (final Component line : storedLore) {
-                    boolean has = false;
-                    for (final Component itemLine : lore) {
-                        if (itemLine.compact().equals(line)) {
-                            has = true;
-                            break;
-                        }
-                    }
-                    if (!has) {
-                        return true;
-                    }
-                }
+        @Override
+        public List<Component> get() {
+            return storedLore;
+        }
+
+        private boolean checkRequired(@Nullable final List<Component> lore) {
+            if (lore == null) {
                 return false;
             }
-        };
-    }
+            if (!exact) {
+                return !checkNonExact(lore, storedLore);
+            }
+            if (storedLore.size() != lore.size()) {
+                return false;
+            }
+            for (int i = 0; i < lore.size(); i++) {
+                if (!storedLore.get(i).equals(lore.get(i).compact())) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
-    public interface ResolvedLore extends ResolvedAttribute.ResolvedItemMeta {
-
-        /**
-         * Gets the lore.
-         *
-         * @return the list of lore lines, can be empty
-         */
-        List<Component> get();
+        private boolean checkNonExact(final List<Component> lore, final List<Component> storedLore) {
+            for (final Component line : storedLore) {
+                boolean has = false;
+                for (final Component itemLine : lore) {
+                    if (itemLine.compact().equals(line)) {
+                        has = true;
+                        break;
+                    }
+                }
+                if (!has) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

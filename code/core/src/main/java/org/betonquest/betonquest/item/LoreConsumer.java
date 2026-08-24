@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * A BiConsumer on ItemMeta and nullable Profile.
@@ -31,6 +32,20 @@ public interface LoreConsumer extends Consumer<ItemMeta> {
 
     @Override
     void accept(ItemMeta meta);
+
+    /**
+     * Adds the quest item lore to the item meta.
+     *
+     * @param localizationsSupplier supplies the Localizations instance if the "quest item" lore line should be added
+     */
+    record SupplierArgument(Supplier<Localizations> localizationsSupplier) implements Argument<LoreConsumer> {
+
+        @Override
+        public LoreConsumer getValue(@Nullable final Profile profile) throws QuestException {
+            final Localizations localizations = localizationsSupplier.get();
+            return localizations == null ? EMPTY : new LoreArgument(localizations).getValue(profile);
+        }
+    }
 
     /**
      * Adds the quest item lore to the item meta.

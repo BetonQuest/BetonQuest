@@ -7,10 +7,10 @@ import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.LoreMetaHandler;
+import org.betonquest.betonquest.item.handler.NameMetaHandler;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.betonquest.betonquest.item.typehandler.LoreHandler;
-import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -33,30 +33,30 @@ public class SimpleQuestItem implements QuestItemWrapper {
     /**
      * Providing display name for placeholders.
      */
-    private final NameHandler name;
+    private final NameMetaHandler.NameAttribute name;
 
     /**
      * Providing lore lines for placeholders.
      */
-    private final LoreHandler lore;
+    private final LoreMetaHandler.LoreAttribute lore;
 
     /**
      * Handlers defining the QuestItem.
      */
-    private final List<ItemMetaHandler<? extends ItemMeta>> handlers;
+    private final List<Attribute<?>> attributes;
 
     /**
      * Creates a new QuestItem with "Vanilla Handlers".
      *
-     * @param selector the base Material Selector for the ItemStack generation
-     * @param name     providing display name for placeholders
-     * @param lore     providing lore lines for placeholders
-     * @param handlers the populated handlers defining the QuestItem, excluding explicit given handlers (name and lore)
+     * @param selector   the base Material Selector for the ItemStack generation
+     * @param name       providing display name for placeholders
+     * @param lore       providing lore lines for placeholders
+     * @param attributes the populated attributes defining the QuestItem, excluding explicit given one (name and lore)
      */
-    public SimpleQuestItem(final Argument<BlockSelector> selector, final NameHandler name, final LoreHandler lore,
-                           final List<ItemMetaHandler<?>> handlers) {
+    public SimpleQuestItem(final Argument<BlockSelector> selector, final NameMetaHandler.NameAttribute name,
+                           final LoreMetaHandler.LoreAttribute lore, final List<Attribute<?>> attributes) {
         this.selector = selector;
-        this.handlers = handlers;
+        this.attributes = attributes;
         this.name = name;
         this.lore = lore;
     }
@@ -64,11 +64,11 @@ public class SimpleQuestItem implements QuestItemWrapper {
     @Override
     public QuestItem getItem(@Nullable final Profile profile) throws QuestException {
         final BlockSelector blockSelector = this.selector.getValue(profile);
-        final NameHandler.ResolvedName name = this.name.resolve(profile);
-        final LoreHandler.ResolvedLore lore = this.lore.resolve(profile);
+        final NameMetaHandler.ResolvedNameAttribute name = this.name.resolve(profile);
+        final LoreMetaHandler.ResolvedLoreAttribute lore = this.lore.resolve(profile);
         final List<ResolvedAttribute<?>> resolvedHandlers = new ArrayList<>();
-        for (final ItemMetaHandler<? extends ItemMeta> handler : this.handlers) {
-            resolvedHandlers.add(handler.resolve(profile));
+        for (final Attribute<? extends ItemMeta> attribute : this.attributes) {
+            resolvedHandlers.add(attribute.resolve(profile));
         }
         resolvedHandlers.add(name);
         resolvedHandlers.add(lore);
@@ -78,8 +78,8 @@ public class SimpleQuestItem implements QuestItemWrapper {
     /**
      * Represents a Quest item handled by the standard BetonQuest configuration with all variables resolved.
      */
-    private record ResolvedSimpleQuestItem(BlockSelector selector, NameHandler.ResolvedName name,
-                                           LoreHandler.ResolvedLore lore,
+    private record ResolvedSimpleQuestItem(BlockSelector selector, NameMetaHandler.ResolvedNameAttribute name,
+                                           LoreMetaHandler.ResolvedLoreAttribute lore,
                                            List<ResolvedAttribute<?>> handlers) implements QuestItem {
 
         @Override

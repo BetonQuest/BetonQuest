@@ -1,6 +1,8 @@
 package org.betonquest.betonquest.mc_1_20_6.item;
 
+import org.betonquest.betonquest.api.BetonQuestApi;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
+import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
@@ -38,5 +40,38 @@ public class UpdatedSimpleQuestItemSerializer extends SimpleQuestItemSerializer 
                 new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler(),
                 new QuestHandler(LoreConsumer.EMPTY_ARGUMENT)
         ));
+    }
+
+    /**
+     * Creates a simple item factory with the version specific handlers.
+     *
+     * @param config          the config to get values from
+     * @param api             the BetonQuest api instance
+     * @param bookPageWrapper the book page wrapper used to split pages
+     * @return a new item factory with handlers for this version
+     */
+    public static SimpleQuestItemFactory create(final ConfigAccessor config, final BetonQuestApi api,
+                                                final BookPageWrapper bookPageWrapper) {
+        final QuestHandler questHandler = new QuestHandler(new LoreConsumer.SupplierArgument(
+                () -> config.getBoolean("item.quest.lore") ? api.localizations() : null
+        ));
+        final UpdatedNameHandler name = new UpdatedNameHandler();
+        final LoreHandler lore = new LoreHandler(questHandler::isLoreSet);
+
+        final List<ItemMetaHandler<?>> handlers = List.of(
+                new DurabilityHandler(),
+                new CustomModelDataHandler(),
+                new UnbreakableHandler(),
+                new FlagHandler(),
+                questHandler,
+                new EnchantmentsHandler(),
+                new UpdatedPotionHandler(),
+                new BannerHandler(),
+                new BookHandler(bookPageWrapper),
+                new HeadHandler(),
+                new ColorHandler(),
+                new FireworkHandler()
+        );
+        return new SimpleQuestItemFactory(name, lore, handlers);
     }
 }
