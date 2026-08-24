@@ -5,10 +5,10 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.LoreConsumer;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * Handles Quest Item state.
  */
-public class QuestHandler implements ItemMetaHandler<ItemMeta> {
+public class QuestHandler implements ItemMetaHandler.Standard {
 
     /**
      * Key indicating an ItemStack should be treated as "Quest Item".
@@ -36,11 +36,6 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
      * Consumer to use when the item to generate is a quest item.
      */
     private final Argument<LoreConsumer> questItemLore;
-
-    /**
-     * If the item is a "Quest Item".
-     */
-    private Argument<Existence> questItem = new DefaultArgument<>(Existence.WHATEVER);
 
     /**
      * The constructor.
@@ -65,11 +60,6 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
-    }
-
-    @Override
     public Set<String> keys() {
         return Set.of(QUEST);
     }
@@ -84,33 +74,13 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        this.questItem = HandlerUtil.isKeyOrTrue(QUEST, instruction);
-    }
-
-    @Override
-    public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
-        final Existence existence = questItem.getValue(profile);
-        final LoreConsumer loreConsumer = questItemLore.getValue(profile);
-        return new ResolvedAttribute.ResolvedItemMeta() {
-
-            @Override
-            public void populate(final ItemMeta meta) {
-                if (existence == Existence.REQUIRED) {
-                    meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
-                    loreConsumer.accept(meta);
-                }
-            }
-
-            @Override
-            public boolean check(final ItemMeta meta) {
-                return switch (existence) {
-                    case WHATEVER -> true;
-                    case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
-                    case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
-                };
-            }
-        };
+    @Nullable
+    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+        final Argument<Existence> questItem = HandlerUtil.getIsKeyOrTrue(QUEST, instruction);
+        if (questItem == null) {
+            return null;
+        }
+        return new NonResolved(questItemLore, questItem);
     }
 
     /**
@@ -122,5 +92,44 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
      */
     public boolean isLoreSet(@Nullable final Profile profile) throws QuestException {
         return questItem.getValue(profile) == Existence.REQUIRED && questItemLore.getValue(profile) instanceof LoreConsumer.Lore;
+    }
+
+    /**
+     * The attribute with placeholders.
+     *
+     * @param questItem If the item is a "Quest Item".
+     */
+    private record NonResolved(Argument<LoreConsumer> questItemLore, Argument<Existence> questItem)
+            implements Attribute.Standard {
+
+        @Override
+        public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Existence existence = questItem.getValue(profile);
+            final LoreConsumer loreConsumer = questItemLore.getValue(profile);
+            return new Resolved(existence, loreConsumer);
+        }
+    }
+
+    /**
+     * The resolved attribute.
+     */
+    private record Resolved(Existence existence, LoreConsumer loreConsumer) implements ResolvedAttribute.Standard {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            if (existence == Existence.REQUIRED) {
+                meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
+                loreConsumer.accept(meta);
+            }
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            return switch (existence) {
+                case WHATEVER -> true;
+                case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
+                case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
+            };
+        }
     }
 }

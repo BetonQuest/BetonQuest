@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
@@ -81,9 +82,13 @@ public class UpdatedPotionHandler extends PotionHandler {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        super.parse(instruction);
-
+    @Nullable
+    public Attribute<PotionMeta> parse(final Instruction instruction) throws QuestException {
+        final Attribute<PotionMeta> parsed = super.parse(instruction);
+        if (parsed == null) {
+            return null;
+        }
+        // TODO null checks?
         final ExistenceArgument<PotionType> setSuperType = super.type;
 
         super.type = profile -> {
@@ -99,6 +104,7 @@ public class UpdatedPotionHandler extends PotionHandler {
             }
             return Pair.of(typePair.getLeft(), potionType);
         };
+        return new UpdatedNonResolved(parsed, type);
     }
 
     private PotionType typeSet(final String prefix, final String baseType) throws QuestException {
@@ -110,60 +116,71 @@ public class UpdatedPotionHandler extends PotionHandler {
         }
     }
 
-    @Override
-    public ResolvedAttribute<PotionMeta> resolve(final @Nullable Profile profile) throws QuestException {
-        final ResolvedPotion resolved = (ResolvedPotion) super.resolve(profile);
-        return new ResolvedAttribute<>() {
+    /**
+     * The attribute with placeholders.
+     */
+    private record UpdatedNonResolved(Attribute<PotionMeta> attribute) implements Attribute<PotionMeta> {
 
-            @Override
-            public Class<PotionMeta> metaClass() {
-                return PotionMeta.class;
+        @Override
+        public ResolvedAttribute<PotionMeta> resolve(final @Nullable Profile profile) throws QuestException {
+            final ResolvedPotion resolved = (ResolvedPotion) attribute.resolve(profile);
+            return new UpdateResolved(resolved);
+        }
+    }
+
+    /**
+     * The resolved attribute.
+     */
+    private record UpdateResolved(ResolvedPotion resolved) implements ResolvedAttribute<PotionMeta> {
+
+        @Override
+        public Class<PotionMeta> metaClass() {
+            return PotionMeta.class;
+        }
+
+        @Override
+        public void populate(final PotionMeta potionMeta) {
+            potionMeta.setBasePotionType(resolved.typePair().getRight());
+            for (final PotionEffect effect : resolved.getCustom()) {
+                potionMeta.addCustomEffect(effect, true);
             }
+        }
 
-            @Override
-            public void populate(final PotionMeta potionMeta) {
-                potionMeta.setBasePotionType(resolved.typePair().getRight());
-                for (final PotionEffect effect : resolved.getCustom()) {
-                    potionMeta.addCustomEffect(effect, true);
-                }
-            }
+        @Override
+        public boolean check(final PotionMeta potionMeta) {
+            return checkBase(potionMeta.getBasePotionType()) && resolved.checkCustom(potionMeta.getCustomEffects());
+        }
 
-            @Override
-            public boolean check(final PotionMeta potionMeta) {
-                return checkBase(potionMeta.getBasePotionType()) && resolved.checkCustom(potionMeta.getCustomEffects());
-            }
-
-            private boolean checkBase(@Nullable final PotionType base) {
-                final Pair<Existence, PotionType> pair = resolved.typePair();
-                return switch (pair.getLeft()) {
-                    case WHATEVER -> true;
-                    case REQUIRED -> {
-                        if (base == null || !base.getKey().getNamespace().equals(pair.getRight().getKey().getNamespace())) {
-                            yield false;
-                        }
-                        final String key = base.getKey().getKey();
-                        final String effect;
-                        if (key.startsWith(LONG_PREFIX)) {
-                            effect = key.substring(LONG_PREFIX.length());
-                        } else if (key.startsWith(STRONG_PREFIX)) {
-                            effect = key.substring(STRONG_PREFIX.length());
-                        } else {
-                            effect = key;
-                        }
-
-                        if (!effect.equals(pair.getRight().name())) {
-                            // TODO definitive test that here
-                            //   I don't know if we need to have that at all in the old code.
-                            yield false;
-                        }
-                        final Optional<Boolean> extended = resolved.extended();
-                        final Optional<Boolean> upgraded = resolved.upgraded();
-                        yield (extended.isEmpty() || key.startsWith(LONG_PREFIX) == extended.get())
-                                && (upgraded.isEmpty() || key.startsWith(STRONG_PREFIX) == upgraded.get());
+        private boolean checkBase(@Nullable final PotionType base) {
+            final Pair<Existence, PotionType> pair = resolved.typePair();
+            return switch (pair.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> {
+                    if (base == null || !base.getKey().getNamespace().equals(pair.getRight().getKey().getNamespace())) {
+                        yield false;
                     }
-                    default -> false;
-                };
-            }
-        };
+                    final String key = base.getKey().getKey();
+                    final String effect;
+                    if (key.startsWith(LONG_PREFIX)) {
+                        effect = key.substring(LONG_PREFIX.length());
+                    } else if (key.startsWith(STRONG_PREFIX)) {
+                        effect = key.substring(STRONG_PREFIX.length());
+                    } else {
+                        effect = key;
+                    }
+
+                    if (!effect.equals(pair.getRight().name())) {
+                        // TODO definitive test that here
+                        //   I don't know if we need to have that at all in the old code.
+                        yield false;
+                    }
+                    final Optional<Boolean> extended = resolved.extended();
+                    final Optional<Boolean> upgraded = resolved.upgraded();
+                    yield (extended.isEmpty() || key.startsWith(LONG_PREFIX) == extended.get())
+                            && (upgraded.isEmpty() || key.startsWith(STRONG_PREFIX) == upgraded.get());
+                }
+                default -> false;
+            };
+        }
     }
 }

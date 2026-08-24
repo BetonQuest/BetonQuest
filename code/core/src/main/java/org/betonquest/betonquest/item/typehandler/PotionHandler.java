@@ -6,12 +6,12 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
 import org.betonquest.betonquest.item.handler.Number;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.lib.instruction.argument.DefaultFlagArgument;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -49,24 +49,9 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     protected ExistenceArgument<PotionType> type = ExistenceArgument.whateverValue(PotionType.WATER);
 
     /**
-     * If the potion is extended.
-     */
-    protected FlagArgument<Boolean> extended = new DefaultFlagArgument<>();
-
-    /**
      * If the potion is upgraded.
      */
     protected FlagArgument<Boolean> upgraded = new DefaultFlagArgument<>();
-
-    /**
-     * The custom potion effects.
-     */
-    private ExistenceArgument<List<CustomEffectHandler>> custom = ExistenceArgument.whateverEmptyList();
-
-    /**
-     * If the Potions need to be exact the same or just contain all specified effects.
-     */
-    private Argument<Boolean> exact = new DefaultArgument<>(true);
 
     /**
      * The empty default Constructor.
@@ -109,22 +94,40 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
+    @Nullable
+    public Attribute<PotionMeta> parse(final Instruction instruction) throws QuestException {
         this.type = ExistenceArgument.apply("type", instruction.enumeration(PotionType.class), PotionType.WATER);
-        this.extended = instruction.bool().getFlag(EXTENDED, true);
+        final FlagArgument<Boolean> extended = instruction.bool().getFlag(EXTENDED, true);
         this.upgraded = instruction.bool().getFlag(UPGRADED, true);
-        this.custom = ExistenceArgument.applyList("effects", instruction.parse(CustomEffectHandler::new));
-        this.exact = instruction.bool().map(bool -> !bool).get("effects-containing", true);
+        final ExistenceArgument<List<CustomEffectHandler>> custom = ExistenceArgument.applyList("effects", instruction.parse(CustomEffectHandler::new));
+        final Argument<Boolean> exact = instruction.bool().map(bool -> !bool).get("effects-containing", true);
+        // TODO null check
+        return new NonResolved(type, extended, upgraded, custom, exact);
     }
 
-    @Override
-    public ResolvedAttribute<PotionMeta> resolve(@Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, PotionType> typePair = type.getValue(profile);
-        final Optional<Boolean> extended = this.extended.getValue(profile);
-        final Optional<Boolean> upgraded = this.upgraded.getValue(profile);
-        final Pair<Existence, List<CustomEffectHandler>> customPair = this.custom.getValue(profile);
-        final boolean exact = this.exact.getValue(profile);
-        return new ResolvedPotion(typePair, extended, upgraded, customPair, exact);
+    /**
+     * The attribute with placeholders.
+     *
+     * @param type
+     * @param extended If the potion is extended.
+     * @param upgraded
+     * @param custom   The custom potion effects.
+     * @param exact    If the Potions need to be exact the same or just contain all specified effects.
+     */
+    private record NonResolved(ExistenceArgument<PotionType> type, FlagArgument<Boolean> extended,
+                               FlagArgument<Boolean> upgraded, ExistenceArgument<List<CustomEffectHandler>> custom,
+                               Argument<Boolean> exact)
+            implements Attribute<PotionMeta> {
+
+        @Override
+        public ResolvedAttribute<PotionMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, PotionType> typePair = type.getValue(profile);
+            final Optional<Boolean> extended = this.extended.getValue(profile);
+            final Optional<Boolean> upgraded = this.upgraded.getValue(profile);
+            final Pair<Existence, List<CustomEffectHandler>> customPair = this.custom.getValue(profile);
+            final boolean exact = this.exact.getValue(profile);
+            return new ResolvedPotion(typePair, extended, upgraded, customPair, exact);
+        }
     }
 
     /**
