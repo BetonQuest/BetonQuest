@@ -5,12 +5,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
 import org.betonquest.betonquest.item.handler.Number;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,32 +20,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
  * Handles de-/serialization of Enchantments.
  */
-public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
-
-    /**
-     * The individual Enchantment Handlers.
-     */
-    private ExistenceArgument<List<SingleEnchantmentHandler>> checkers = ExistenceArgument.whateverEmptyList();
-
-    /**
-     * If the Enchantment need to be exact the same or just contain all specified enchantments.
-     */
-    private Argument<Boolean> exact = new DefaultArgument<>(true);
+public class EnchantmentsHandler implements ItemMetaHandler.Standard {
 
     /**
      * The empty default Constructor.
      */
     public EnchantmentsHandler() {
-    }
-
-    @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
     }
 
     @Override
@@ -77,23 +63,38 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        this.checkers = ExistenceArgument.applyList("enchants", instruction.parse(SingleEnchantmentHandler::new));
-        this.exact = instruction.bool().map(bool -> !bool).get("enchants-containing", true);
-    }
-
-    @Override
-    public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, List<SingleEnchantmentHandler>> pair = checkers.getValue(profile);
-        final boolean exact = this.exact.getValue(profile);
-        return new ResolvedEnchantments(pair, exact);
+    @Nullable
+    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<List<SingleEnchantmentHandler>> checkers = ExistenceArgument.applyListOrNull("enchants", instruction.parse(SingleEnchantmentHandler::new));
+        final Optional<Argument<Boolean>> exact = instruction.bool().map(bool -> !bool).get("enchants-containing");
+        if (checkers == null && exact.isEmpty()) {
+            return null;
+        }
+        return new NonParsed(checkers == null ? ExistenceArgument.whateverEmptyList() : checkers, exact.orElse(profile -> true));
     }
 
     /**
-     * Resolved Enchantment Handler.
+     * The attribute with placeholders.
+     *
+     * @param checkers The individual Enchantment Handlers.
+     * @param exact    If the Enchantment need to be exact the same or just contain all specified enchantments.
      */
-    private record ResolvedEnchantments(Pair<Existence, List<SingleEnchantmentHandler>> pair,
-                                        boolean exact) implements ResolvedAttribute.ResolvedItemMeta {
+    private record NonParsed(ExistenceArgument<List<SingleEnchantmentHandler>> checkers, Argument<Boolean> exact)
+            implements Attribute.Standard {
+
+        @Override
+        public ResolvedAttribute.Standard resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, List<SingleEnchantmentHandler>> pair = checkers.getValue(profile);
+            final boolean exact = this.exact.getValue(profile);
+            return new Resolved(pair, exact);
+        }
+    }
+
+    /**
+     * The resolved attribute.
+     */
+    private record Resolved(Pair<Existence, List<SingleEnchantmentHandler>> pair, boolean exact)
+            implements ResolvedAttribute.Standard {
 
         @Override
         public void populate(final ItemMeta meta) {

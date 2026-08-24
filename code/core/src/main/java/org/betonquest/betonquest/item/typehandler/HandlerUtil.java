@@ -116,14 +116,15 @@ public final class HandlerUtil {
      *
      * @param key         the key to get and check for similarity of the data
      * @param instruction the instruction to get the value from
-     * @return if the data is true or the key
+     * @return if the data is true or the key, or null if there is no data for the key
      * @throws QuestException when the data is neither the key nor "true" or "false"
      */
-    public static Argument<Existence> isKeyOrTrue(final String key, final Instruction instruction) throws QuestException {
+    @Nullable
+    public static Argument<Existence> getIsKeyOrTrue(final String key, final Instruction instruction) throws QuestException {
         return instruction
                 .parse(resolved -> new BooleanParser().apply(resolved) ? Existence.REQUIRED : Existence.FORBIDDEN)
                 .prefilter(key, Existence.REQUIRED)
-                .get(key, Existence.WHATEVER);
+                .get(key).orElse(null);
     }
 
     /**

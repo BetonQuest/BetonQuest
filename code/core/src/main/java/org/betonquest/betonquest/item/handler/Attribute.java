@@ -10,14 +10,8 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <M> applicable meta
  */
+@FunctionalInterface
 public interface Attribute<M extends ItemMeta> {
-
-    /**
-     * Gets the class of meta this Attribute works on.
-     *
-     * @return the ItemMeta class for the Attribute
-     */
-    Class<M> metaClass();
 
     /**
      * Resolves all placeholders into a definit state.
@@ -31,11 +25,8 @@ public interface Attribute<M extends ItemMeta> {
     /**
      * Attribute for the standard item meta.
      */
+    @FunctionalInterface
     interface Standard extends Attribute<ItemMeta> {
 
-        @Override
-        default Class<ItemMeta> metaClass() {
-            return ItemMeta.class;
-        }
     }
 }

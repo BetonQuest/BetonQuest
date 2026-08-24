@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
@@ -28,16 +29,6 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
      * The number of values that describe one pattern layer.
      */
     private static final int PATTERN_PARTS = 2;
-
-    /**
-     * The required pattern existence.
-     */
-    private final Existence patternsE = Existence.WHATEVER;
-
-    /**
-     * The ordered banner patterns.
-     */
-    private ExistenceArgument<List<Pattern>> patterns = ExistenceArgument.whateverEmptyList();
 
     /**
      * The empty default constructor.
@@ -67,8 +58,13 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        this.patterns = ExistenceArgument.applyList("patterns", instruction.parse(this::parsePattern));
+    @Nullable
+    public Attribute<BannerMeta> parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<List<Pattern>> patterns = ExistenceArgument.applyListOrNull("patterns", instruction.parse(this::parsePattern));
+        if (patterns == null) {
+            return null;
+        }
+        return new NonResolved(patterns);
     }
 
     private Pattern parsePattern(final String data) throws QuestException {
@@ -91,30 +87,43 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
         return new Pattern(color, type);
     }
 
-    @Override
-    public ResolvedAttribute<BannerMeta> resolve(@Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, List<Pattern>> patterns = this.patterns.getValue(profile);
+    /**
+     * The attribute with placeholders.
+     *
+     * @param patterns The ordered banner patterns.
+     */
+    private record NonResolved(ExistenceArgument<List<Pattern>> patterns) implements Attribute<BannerMeta> {
 
-        return new ResolvedAttribute<>() {
+        @Override
+        public ResolvedAttribute<BannerMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, List<Pattern>> patterns = this.patterns.getValue(profile);
 
-            @Override
-            public Class<BannerMeta> metaClass() {
-                return BannerMeta.class;
-            }
+            return new Resolved(patterns);
+        }
+    }
 
-            @Override
-            public void populate(final BannerMeta bannerMeta) {
-                bannerMeta.setPatterns(patterns.getRight());
-            }
+    /**
+     * The resolved attribute.
+     */
+    private record Resolved(Pair<Existence, List<Pattern>> patterns) implements ResolvedAttribute<BannerMeta> {
 
-            @Override
-            public boolean check(final BannerMeta bannerMeta) {
-                return switch (patternsE) {
-                    case WHATEVER -> true;
-                    case REQUIRED -> patterns.equals(bannerMeta.getPatterns());
-                    case FORBIDDEN -> bannerMeta.getPatterns().isEmpty();
-                };
-            }
-        };
+        @Override
+        public Class<BannerMeta> metaClass() {
+            return BannerMeta.class;
+        }
+
+        @Override
+        public void populate(final BannerMeta bannerMeta) {
+            bannerMeta.setPatterns(patterns.getRight());
+        }
+
+        @Override
+        public boolean check(final BannerMeta bannerMeta) {
+            return switch (patterns.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> patterns.equals(bannerMeta.getPatterns());
+                case FORBIDDEN -> bannerMeta.getPatterns().isEmpty();
+            };
+        }
     }
 }

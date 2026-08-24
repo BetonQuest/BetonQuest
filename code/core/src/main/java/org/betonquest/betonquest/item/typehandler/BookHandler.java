@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
@@ -26,21 +27,6 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
      * The book wrapper used to split pages.
      */
     private final BookPageWrapper bookPageWrapper;
-
-    /**
-     * The title.
-     */
-    private ExistenceArgument<Component> title = ExistenceArgument.whateverNullValue();
-
-    /**
-     * The author.
-     */
-    private ExistenceArgument<Component> author = ExistenceArgument.whateverNullValue();
-
-    /**
-     * The text pages.
-     */
-    private ExistenceArgument<List<Component>> text = ExistenceArgument.whateverValue(List.of(Component.empty()));
 
     /**
      * Creates an empty BookHandler.
@@ -99,55 +85,71 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        this.title = ExistenceArgument.apply("title", instruction.component().map(Component::compact));
-        this.author = ExistenceArgument.apply("author", instruction.component().map(Component::compact));
-        this.text = (ExistenceArgument<List<Component>>) ExistenceArgument.apply(instruction.component().map(bookPageWrapper::splitPages))
-                .get("text", Pair.of(Existence.WHATEVER, List.of(Component.empty())));
+    @Nullable
+    public Attribute<BookMeta> parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<Component> title = ExistenceArgument.applyOrNull("title", instruction.component().map(Component::compact));
+        final ExistenceArgument<Component> author = ExistenceArgument.applyOrNull("author", instruction.component().map(Component::compact));
+        final ExistenceArgument<List<Component>> text = (ExistenceArgument<List<Component>>)
+                ExistenceArgument.apply(instruction.component().map(bookPageWrapper::splitPages)).get("text").orElse(null);
+        if (title == null && author == null && text == null) {
+            return null;
+        }
+        return new NonResolved(ExistenceArgument.fallback(title), ExistenceArgument.fallback(author),
+                text == null ? ExistenceArgument.whateverEmptyList() : text);
     }
 
-    @Override
-    public ResolvedAttribute<BookMeta> resolve(@Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, Component> title = this.title.getValue(profile);
-        final Pair<Existence, Component> author = this.author.getValue(profile);
-        final Pair<Existence, List<Component>> text = this.text.getValue(profile);
-        return new ResolvedAttribute<>() {
+    /**
+     * The attribute with placeholders.
+     */
+    private record NonResolved(ExistenceArgument<Component> title, ExistenceArgument<Component> author,
+                               ExistenceArgument<List<Component>> text) implements Attribute<BookMeta> {
 
-            @Override
-            public Class<BookMeta> metaClass() {
-                return BookMeta.class;
-            }
+        @Override
+        public ResolvedAttribute<BookMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            return new Resolved(title.getValue(profile), author.getValue(profile), text.getValue(profile));
+        }
+    }
 
-            @Override
-            public void populate(final BookMeta bookMeta) {
-                bookMeta.title(title.getRight())
-                        .author(author.getRight())
-                        .addPages(text.getRight().toArray(new Component[0]));
-            }
+    /**
+     * The resolved attribute.
+     */
+    private record Resolved(Pair<Existence, Component> title, Pair<Existence, Component> author,
+                            Pair<Existence, List<Component>> text) implements ResolvedAttribute<BookMeta> {
 
-            @Override
-            public boolean check(final BookMeta bookMeta) {
-                return checkExistence(title, bookMeta.title())
-                        && checkExistence(author, bookMeta.author())
-                        && checkText(text, bookMeta.pages());
-            }
+        @Override
+        public Class<BookMeta> metaClass() {
+            return BookMeta.class;
+        }
 
-            private boolean checkExistence(final Pair<Existence, @Nullable Component> stored, @Nullable final Component onItem) {
-                return switch (stored.getLeft()) {
-                    case WHATEVER -> true;
-                    case REQUIRED -> onItem != null && onItem.compact().equals(stored.getRight());
-                    case FORBIDDEN -> onItem == null || onItem.equals(Component.empty());
-                };
-            }
+        @Override
+        public void populate(final BookMeta bookMeta) {
+            bookMeta.title(title.getRight())
+                    .author(author.getRight())
+                    .addPages(text.getRight().toArray(new Component[0]));
+        }
 
-            private boolean checkText(final Pair<Existence, List<Component>> stored, @Nullable final List<Component> list) {
-                return switch (stored.getLeft()) {
-                    case WHATEVER -> true;
-                    case REQUIRED -> stored.getRight().equals(list);
-                    case FORBIDDEN ->
-                            list == null || list.isEmpty() || list.size() == 1 && list.get(0).equals(Component.empty());
-                };
-            }
-        };
+        @Override
+        public boolean check(final BookMeta bookMeta) {
+            return checkExistence(title, bookMeta.title())
+                    && checkExistence(author, bookMeta.author())
+                    && checkText(text, bookMeta.pages());
+        }
+
+        private boolean checkExistence(final Pair<Existence, @Nullable Component> stored, @Nullable final Component onItem) {
+            return switch (stored.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> onItem != null && onItem.compact().equals(stored.getRight());
+                case FORBIDDEN -> onItem == null || onItem.equals(Component.empty());
+            };
+        }
+
+        private boolean checkText(final Pair<Existence, List<Component>> stored, @Nullable final List<Component> list) {
+            return switch (stored.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> stored.getRight().equals(list);
+                case FORBIDDEN ->
+                        list == null || list.isEmpty() || list.size() == 1 && list.get(0).equals(Component.empty());
+            };
+        }
     }
 }

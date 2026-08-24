@@ -5,12 +5,12 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
 import org.betonquest.betonquest.item.handler.NumberValue;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -21,28 +21,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
  * Handles de-/serialization of Fireworks.
  */
 public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
-
-    /**
-     * The individual Firework Effect Handlers.
-     */
-    private ExistenceArgument<List<FireworkEffectHandler>> effects = ExistenceArgument.whateverEmptyList();
-
-    /**
-     * The firework power.
-     */
-    @Nullable
-    private Argument<NumberValue> power;
-
-    /**
-     * If the Firework need to be exact the same or just contain all specified effects.
-     */
-    private Argument<Boolean> exact = new DefaultArgument<>(true);
 
     /**
      * The empty default Constructor.
@@ -128,26 +113,43 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        this.effects = ExistenceArgument.applyList("firework", instruction.parse(resolved -> {
+    @Nullable
+    public Attribute<FireworkMeta> parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<List<FireworkEffectHandler>> effects = ExistenceArgument.applyListOrNull("firework", instruction.parse(resolved -> {
             final FireworkEffectHandler effect = new FireworkEffectHandler();
             effect.set(resolved);
             return effect;
         }));
-        this.power = NumberValue.create("power", "firework power", instruction);
-        this.exact = instruction.bool().map(bool -> !bool).get("firework-containing", true);
+        final Argument<NumberValue> power = NumberValue.create("power", "firework power", instruction);
+        final Optional<Argument<Boolean>> exact = instruction.bool().map(bool -> !bool).get("firework-containing");
+        if (effects == null && power == null && exact.isEmpty()) {
+            return null;
+        }
+        return new NonResolved(effects == null ? ExistenceArgument.whateverEmptyList() : effects, power, exact.orElse(profile -> false));
     }
 
-    @Override
-    public ResolvedAttribute<FireworkMeta> resolve(@Nullable final Profile profile) throws QuestException {
-        final Pair<Existence, List<FireworkEffectHandler>> pair = this.effects.getValue(profile);
-        final List<FireworkEffect> effects = new LinkedList<>();
-        for (final FireworkEffectHandler effect : pair.getRight()) {
-            effects.add(effect.get());
+    /**
+     * The attribute with placeholders.
+     *
+     * @param effects The individual Firework Effect Handlers.
+     * @param power   The firework power.
+     * @param exact   If the Firework need to be exact the same or just contain all specified effects.
+     */
+    private record NonResolved(ExistenceArgument<List<FireworkEffectHandler>> effects,
+                               @Nullable Argument<NumberValue> power, Argument<Boolean> exact)
+            implements Attribute<FireworkMeta> {
+
+        @Override
+        public ResolvedAttribute<FireworkMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, List<FireworkEffectHandler>> pair = this.effects.getValue(profile);
+            final List<FireworkEffect> effects = new LinkedList<>();
+            for (final FireworkEffectHandler effect : pair.getRight()) {
+                effects.add(effect.get());
+            }
+            final NumberValue power = this.power == null ? null : this.power.getValue(profile);
+            final boolean exact = this.exact.getValue(profile);
+            return new ResolvedFirework(pair.getLeft(), pair.getRight(), effects, power, exact);
         }
-        final NumberValue power = this.power == null ? null : this.power.getValue(profile);
-        final boolean exact = this.exact.getValue(profile);
-        return new ResolvedFirework(pair.getLeft(), pair.getRight(), effects, power, exact);
     }
 
     /**

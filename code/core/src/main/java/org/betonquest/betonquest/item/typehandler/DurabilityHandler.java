@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
 import org.betonquest.betonquest.item.handler.NumberValue;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
@@ -16,12 +17,6 @@ import java.util.Set;
  * Handles de-/serialization of Durability/Damage.
  */
 public class DurabilityHandler implements ItemMetaHandler<Damageable> {
-
-    /**
-     * The durability with their compare state.
-     */
-    @Nullable
-    private Argument<NumberValue> durability;
 
     /**
      * The empty default Constructor.
@@ -49,31 +44,46 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        this.durability = NumberValue.create("durability", "item durability", instruction);
+    @Nullable
+    public Attribute<Damageable> parse(final Instruction instruction) throws QuestException {
+        final Argument<NumberValue> durability = NumberValue.create("durability", "item durability", instruction);
+        if (durability == null) {
+            return null;
+        }
+        return new NonResolved(durability);
     }
 
-    @Override
-    public ResolvedAttribute<Damageable> resolve(@Nullable final Profile profile) throws QuestException {
-        final NumberValue durability = this.durability == null ? null : this.durability.getValue(profile);
-        return new ResolvedAttribute<>() {
+    /**
+     * The attribute with placeholders.
+     *
+     * @param durability The durability with their compare state.
+     */
+    private record NonResolved(Argument<NumberValue> durability) implements Attribute<Damageable> {
 
-            @Override
-            public Class<Damageable> metaClass() {
-                return Damageable.class;
-            }
+        @Override
+        public ResolvedAttribute<Damageable> resolve(@Nullable final Profile profile) throws QuestException {
+            return new Resolved(durability.getValue(profile));
+        }
+    }
 
-            @Override
-            public void populate(final Damageable damageableMeta) {
-                if (durability != null) {
-                    damageableMeta.setDamage(durability.value());
-                }
-            }
+    /**
+     * The resolved attribute.
+     */
+    private record Resolved(NumberValue durability) implements ResolvedAttribute<Damageable> {
 
-            @Override
-            public boolean check(final Damageable meta) {
-                return durability != null && durability.isValid(meta.getDamage());
-            }
-        };
+        @Override
+        public Class<Damageable> metaClass() {
+            return Damageable.class;
+        }
+
+        @Override
+        public void populate(final Damageable damageableMeta) {
+            damageableMeta.setDamage(durability.value());
+        }
+
+        @Override
+        public boolean check(final Damageable meta) {
+            return durability.isValid(meta.getDamage());
+        }
     }
 }

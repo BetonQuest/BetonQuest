@@ -8,7 +8,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@FunctionalInterface
 public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable T>> {
+
+    static <T> ExistenceArgument<T> fallback(@Nullable final ExistenceArgument<T> argument) {
+        return argument == null ? whateverNullValue() : argument;
+    }
 
     static <T> ExistenceArgument<T> whateverNullValue() {
         return profile -> Pair.of(Existence.WHATEVER, null);
@@ -59,5 +64,15 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
                 .map(list -> Pair.of(Existence.REQUIRED, list))
                 .prefilter(Existence.NONE_KEY, Pair.of(Existence.FORBIDDEN, null))
                 .get(key, Pair.of(Existence.WHATEVER, List.of()));
+    }
+
+    @Nullable
+    static <T> ExistenceArgument<List<T>> applyListOrNull(
+            final String key, final DecoratableChainRetriever<T> retriever) throws QuestException {
+        return (ExistenceArgument<List<T>>) retriever
+                .list().notEmpty()
+                .map(list -> Pair.of(Existence.REQUIRED, list))
+                .prefilter(Existence.NONE_KEY, Pair.of(Existence.FORBIDDEN, null))
+                .get(key).orElse(null);
     }
 }

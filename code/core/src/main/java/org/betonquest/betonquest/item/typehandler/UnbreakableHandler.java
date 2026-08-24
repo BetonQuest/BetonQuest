@@ -4,10 +4,10 @@ import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Handles de-/serialization of the Unbreakable state.
  */
-public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
+public class UnbreakableHandler implements ItemMetaHandler.Standard {
 
     /**
      * The unbreakable string.
@@ -24,19 +24,9 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     private static final String UNBREAKABLE = "unbreakable";
 
     /**
-     * The required existence.
-     */
-    private Argument<Existence> unbreakable = new DefaultArgument<>(Existence.WHATEVER);
-
-    /**
      * The empty default Constructor.
      */
     public UnbreakableHandler() {
-    }
-
-    @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
     }
 
     @Override
@@ -54,28 +44,44 @@ public class UnbreakableHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        unbreakable = HandlerUtil.isKeyOrTrue(UNBREAKABLE, instruction);
+    @Nullable
+    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+        final Argument<Existence> unbreakable = HandlerUtil.getIsKeyOrTrue(UNBREAKABLE, instruction);
+        if (unbreakable == null) {
+            return null;
+        }
+        return new NonResolved(unbreakable);
     }
 
-    @Override
-    public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
-        final Existence existence = unbreakable.getValue(profile);
-        return new ResolvedAttribute.ResolvedItemMeta() {
+    /**
+     * The attribute with placeholders.
+     */
+    private record NonResolved(Argument<Existence> unbreakable) implements Attribute.Standard {
 
-            @Override
-            public void populate(final ItemMeta meta) {
-                meta.setUnbreakable(existence == Existence.REQUIRED);
-            }
+        @Override
+        public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Existence existence = unbreakable.getValue(profile);
+            return new Resolved(existence);
+        }
+    }
 
-            @Override
-            public boolean check(final ItemMeta meta) {
-                return switch (existence) {
-                    case WHATEVER -> true;
-                    case REQUIRED -> meta.isUnbreakable();
-                    case FORBIDDEN -> !meta.isUnbreakable();
-                };
-            }
-        };
+    /**
+     * The resolved attribute.
+     */
+    private record Resolved(Existence existence) implements ResolvedAttribute.Standard {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            meta.setUnbreakable(existence == Existence.REQUIRED);
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            return switch (existence) {
+                case WHATEVER -> true;
+                case REQUIRED -> meta.isUnbreakable();
+                case FORBIDDEN -> !meta.isUnbreakable();
+            };
+        }
     }
 }

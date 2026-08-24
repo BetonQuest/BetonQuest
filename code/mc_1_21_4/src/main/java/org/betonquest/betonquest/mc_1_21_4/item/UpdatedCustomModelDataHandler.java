@@ -7,16 +7,14 @@ import org.apache.logging.log4j.util.Strings;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
-import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultFlagArgument;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -35,37 +33,12 @@ import java.util.stream.Collectors;
  * Handles de-/serialization of CustomModelData.
  */
 @SuppressWarnings("UnstableApiUsage")
-public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
-
-    /**
-     * If 'item_model' is forbidden.
-     */
-    private FlagArgument<Boolean> noData = new DefaultFlagArgument<>(false, FlagState.UNDEFINED);
-
-    /**
-     * The CustomModelData with existence.
-     */
-    private Argument<CustomModelData> data = new DefaultArgument<>(new CustomModelData());
-
-    /**
-     * The required 'item_model' existence.
-     */
-    private FlagArgument<Boolean> noModel = new DefaultFlagArgument<>(false, FlagState.UNDEFINED);
-
-    /**
-     * The 'item_model' set.
-     */
-    private Argument<Pair<Existence, @Nullable NamespacedKey>> model = ExistenceArgument.whateverNullValue();
+public class UpdatedCustomModelDataHandler implements ItemMetaHandler.Standard {
 
     /**
      * The empty default Constructor.
      */
     public UpdatedCustomModelDataHandler() {
-    }
-
-    @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
     }
 
     @Override
@@ -96,49 +69,70 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler<ItemMeta> 
     }
 
     @Override
-    public void parse(final Instruction instruction) throws QuestException {
-        this.data = instruction.parse(resolvedString -> {
+    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+        final Argument<CustomModelData> data = instruction.parse(resolvedString -> {
             try {
                 return CustomModelData.parseCmd(resolvedString);
             } catch (final QuestException e) {
-                throw new QuestException("Could not parse custom-model-data '" + data + "': " + e.getMessage(), e);
+                throw new QuestException("Could not parse custom-model-data '" + resolvedString + "': " + e.getMessage(), e);
             }
         }).get("custom-model-data", new CustomModelData());
-        this.noData = instruction.bool().getFlag("no-custom-model-data", true);
-        this.model = ExistenceArgument.apply("item-model", instruction.namespacedKey());
-        this.noModel = instruction.bool().getFlag("no-item-model", true);
+        final FlagArgument<Boolean> noData = instruction.bool().getFlag("no-custom-model-data", true);
+        final Argument<Pair<Existence, @Nullable NamespacedKey>> model = ExistenceArgument.apply("item-model", instruction.namespacedKey());
+        final FlagArgument<Boolean> noModel = instruction.bool().getFlag("no-item-model", true);
+        // TODO null check
+        return new NonResolved(data, noData, model, noModel);
     }
 
-    @Override
-    public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
-        final CustomModelData data = this.data.getValue(profile);
-        final boolean noData = this.noData.getValue(profile).orElse(false);
-        final Pair<Existence, @Nullable NamespacedKey> model = this.model.getValue(profile);
-        final boolean noModel = this.noModel.getValue(profile).orElse(false);
-        return new ResolvedAttribute.ResolvedItemMeta() {
+    /**
+     * The attribute with placeholders.
+     *
+     * @param data    The CustomModelData with existence.
+     * @param noData  If 'custom model data' is forbidden.
+     * @param model   The item model with existence.
+     * @param noModel If 'item_model' is forbidden.
+     */
+    private record NonResolved(Argument<CustomModelData> data, FlagArgument<Boolean> noData,
+                               Argument<Pair<Existence, NamespacedKey>> model, FlagArgument<Boolean> noModel)
+            implements Attribute.Standard {
 
-            @Override
-            public void populate(final ItemMeta meta) {
-                if (data.existence() == Existence.REQUIRED) {
-                    data.set(meta);
-                }
-                if (model.getLeft() == Existence.REQUIRED) {
-                    meta.setItemModel(model.getRight());
-                }
-            }
+        @Override
+        public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final CustomModelData data = this.data.getValue(profile);
+            final boolean noData = this.noData.getValue(profile).orElse(false);
+            final Pair<Existence, @Nullable NamespacedKey> model = this.model.getValue(profile);
+            final boolean noModel = this.noModel.getValue(profile).orElse(false);
+            return new Resolved(data, model, noModel, noData);
+        }
+    }
 
-            @Override
-            public boolean check(final ItemMeta meta) {
-                if (noModel && !meta.hasItemModel()) {
-                    return false;
-                }
-                final Existence modelE = model.getLeft();
-                return (modelE == Existence.WHATEVER
-                        || modelE == Existence.FORBIDDEN && !meta.hasItemModel()
-                        || modelE == Existence.REQUIRED && meta.hasItemModel() && Objects.equals(model.getRight(), meta.getItemModel())
-                ) && data.check(meta, noData);
+    /**
+     * The resolved attribute.
+     */
+    private record Resolved(CustomModelData data, Pair<Existence, @Nullable NamespacedKey> model, boolean noModel,
+                            boolean noData) implements ResolvedAttribute.Standard {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            if (data.existence() == Existence.REQUIRED) {
+                data.set(meta);
             }
-        };
+            if (model.getLeft() == Existence.REQUIRED) {
+                meta.setItemModel(model.getRight());
+            }
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            if (noModel && !meta.hasItemModel()) {
+                return false;
+            }
+            final Existence modelE = model.getLeft();
+            return (modelE == Existence.WHATEVER
+                    || modelE == Existence.FORBIDDEN && !meta.hasItemModel()
+                    || modelE == Existence.REQUIRED && meta.hasItemModel() && Objects.equals(model.getRight(), meta.getItemModel())
+            ) && data.check(meta, noData);
+        }
     }
 
     /**
