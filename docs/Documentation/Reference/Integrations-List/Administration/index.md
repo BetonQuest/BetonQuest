@@ -13,6 +13,7 @@ Those offer structure and functionality that you might want to use in your quest
 
 BetonQuest provides integrations for the following administration plugins:
 
+- [DiscordSRV](DiscordSRV.md)
 - [LuckPerms](LuckPerms.md)
 - [PacketEvents](PacketEvents.md)
 - [PlaceholderAPI](PlaceholderAPI.md)
