@@ -9,6 +9,7 @@ import org.betonquest.betonquest.compatibility.auraskills.AuraSkillsIntegrator;
 import org.betonquest.betonquest.compatibility.brewery.BreweryIntegrator;
 import org.betonquest.betonquest.compatibility.craftengine.CraftEngineIntegrator;
 import org.betonquest.betonquest.compatibility.denizen.DenizenIntegrator;
+import org.betonquest.betonquest.compatibility.discordsrv.DiscordSRVIntegrator;
 import org.betonquest.betonquest.compatibility.effectlib.EffectLibIntegrator;
 import org.betonquest.betonquest.compatibility.fabled.FabledIntegrator;
 import org.betonquest.betonquest.compatibility.fakeblock.FakeBlockIntegrator;
@@ -166,5 +167,6 @@ public final class BundledCompatibility {
         register("CraftEngine", () -> new CraftEngineIntegrator(), CraftEngineIntegrator.REQUIRED_VERSION);
         register("ItemsAdder", () -> new ItemsAdderIntegrator(), ItemsAdderIntegrator.REQUIRED_VERSION);
         register("TheBrewingProject", () -> new TheBrewingProjectIntegrator(), TheBrewingProjectIntegrator.policies());
+        register("DiscordSRV", () -> new DiscordSRVIntegrator(), DiscordSRVIntegrator.REQUIRED_VERSION);
     }
 }

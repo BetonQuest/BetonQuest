@@ -44,6 +44,7 @@ softdepend:
   - Nexo
   - FancyHolograms
   - TheBrewingProject
+  - DiscordSRV
 commands:
   journal:
     description: Adds journal to your inventory
