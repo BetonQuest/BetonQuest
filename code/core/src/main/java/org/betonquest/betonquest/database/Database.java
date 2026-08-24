@@ -3,11 +3,8 @@ package org.betonquest.betonquest.database;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 import java.util.SortedMap;
@@ -44,12 +41,6 @@ public abstract class Database {
     private final BetonQuestLogger log;
 
     /**
-     * The current database connection.
-     */
-    @Nullable
-    protected Connection con;
-
-    /**
      * Creates a new Database instance.
      *
      * @param log                the BetonQuestLogger to use for logging
@@ -72,59 +63,30 @@ public abstract class Database {
      * @return the current database connection
      */
     public Connection getConnection() {
-        try {
-            if (connectionProvider.isManaged()) {
-                return connectionProvider.create();
-            }
-            if (con == null || con.isClosed() || isConnectionBroken(con)) {
-                con = connectionProvider.create();
-            }
-        } catch (final SQLException e) {
-            log.error("Failed opening database connection!", e);
-        }
-        if (con == null) {
-            throw new IllegalStateException("Not able to create a database connection!");
-        }
-        return con;
-    }
-
-    private boolean isConnectionBroken(final Connection connection) {
-        try (PreparedStatement statement = connection.prepareStatement("SELECT 1");
-             ResultSet result = statement.executeQuery()) {
-            return !result.next();
-        } catch (final SQLException e) {
-            return true;
-        }
+        return connectionProvider.create();
     }
 
     /**
      * Closes the database connection if it is open.
      */
     public void closeConnection() {
-        if (con != null) {
-            try {
-                con.close();
-            } catch (final SQLException e) {
-                log.error("Failed to close the database connection!", e);
-            }
-        }
-        con = null;
+        connectionProvider.close();
     }
 
     /**
      * Creates the database tables by executing all migrations that have not been executed yet.
      */
     public final void createTables() {
-        try {
+        try (Connection connection = getConnection()) {
             final SortedMap<MigrationKey, DatabaseUpdate> migrations = getMigrations();
-            final Set<MigrationKey> executedMigrations = queryExecutedMigrations(getConnection());
+            final Set<MigrationKey> executedMigrations = queryExecutedMigrations(connection);
             executedMigrations.forEach(migrations::remove);
 
             while (!migrations.isEmpty()) {
                 final MigrationKey key = migrations.firstKey();
                 final DatabaseUpdate migration = migrations.remove(key);
-                migration.executeUpdate(getConnection());
-                markMigrationExecuted(getConnection(), key);
+                migration.executeUpdate(connection);
+                markMigrationExecuted(connection, key);
             }
         } catch (final SQLException sqlException) {
             log.error("There was an exception with SQL while creating the database tables!", sqlException);

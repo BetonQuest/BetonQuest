@@ -67,23 +67,25 @@ To use a MySQL Database for saving all the data, you need to fill out the mysql 
 ``` YAML linenums="1"
 mysql:
   enabled: true              #(1)!
-  host: ''                   #(2)!
-  port: ''                   #(3)!
-  user: ''                   #(4)!
-  pass: ''                   #(5)!
-  base: ''                   #(6)!
-  prefix: betonquest_        #(7)!
-  reconnect_interval: 1000   #(8)!
+  hikari_pooling: true       #(2)!
+  host: ''                   #(3)!
+  port: ''                   #(4)!
+  user: ''                   #(5)!
+  pass: ''                   #(6)!
+  base: ''                   #(7)!
+  prefix: betonquest_        #(8)!
+  reconnect_interval: 1000   #(9)!
 ```
 
 1. Set this to true.
-2. This is the IP of your MySQL server. If it runs on the same machine as your server, use localhost or 127.0.0.1
-3. This is the port your MySQL server runs on.
-4. The name of the database user that is used to connect to the database server.
-5. The password of that user.
-6. The database that BetonQuest will write to. You need to create it in your database server.
-7. The table prefix of BetonQuest's data in the database.
-8. The time interval the database tries to reconnect if the connection gets lost
+2. HikariCP allows for better database connection handling via pooling.
+3. This is the IP of your MySQL server. If it runs on the same machine as your server, use localhost or 127.0.0.1
+4. This is the port your MySQL server runs on.
+5. The name of the database user that is used to connect to the database server.
+6. The password of that user.
+7. The database that BetonQuest will write to. You need to create it in your database server.
+8. The table prefix of BetonQuest's data in the database.
+9. The time interval the database tries to reconnect if the connection gets lost
 
 ### Migrating a database from SQLite to MySQL or back
 Follow these few steps to migrate your database easily:

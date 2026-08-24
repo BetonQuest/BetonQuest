@@ -9,6 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `drop` objective to track players dropping items
 - `statistic` placeholder to get statistic values from the player
 - `redstonepower` condition to require a block at a specific location to be powered to a certain level
+- `hikari_pooling` config option to use HikariCP for database connections which are more stable
 ### Changed
 - `lore` of `item` placeholder can now be used without number to get all lines
 - `chat` notify io now only sends messages during a conversation if `bypassInterceptor` is set to `true`
