@@ -31,6 +31,7 @@ import java.util.Set;
  * <p>
  * Works only up to MC 1.20.4 with a breaking change for PotionData in the following version.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     /**
@@ -238,7 +239,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         /**
          * The number compare state for the duration.
          */
-        private final org.betonquest.betonquest.item.handler.Number durationE;
+        private final Number durationE;
 
         /**
          * The effect duration, in ticks.
@@ -253,7 +254,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         /**
          * The number compare state for the power.
          */
-        private final org.betonquest.betonquest.item.handler.Number powerE;
+        private final Number powerE;
 
         /**
          * Create a new Custom Potion data from serialized string.
@@ -266,9 +267,9 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             if (parts[0].startsWith("none-")) {
                 customTypeE = Existence.FORBIDDEN;
                 customType = getType(parts[0].substring("none-".length()));
-                powerE = org.betonquest.betonquest.item.handler.Number.WHATEVER;
+                powerE = Number.WHATEVER;
                 power = 1;
-                durationE = org.betonquest.betonquest.item.handler.Number.WHATEVER;
+                durationE = Number.WHATEVER;
                 duration = 60 * 20;
                 return;
             }
@@ -277,7 +278,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             if (parts.length != INSTRUCTION_FORMAT_LENGTH) {
                 throw new QuestException("Wrong effect format");
             }
-            final Map.Entry<org.betonquest.betonquest.item.handler.Number, Integer> effectPower = HandlerUtil.getNumberValue(parts[1], "effect power");
+            final Map.Entry<Number, Integer> effectPower = HandlerUtil.getNumberValue(parts[1], "effect power");
             powerE = effectPower.getKey();
             power = effectPower.getValue() - 1;
             if (power < 0) {

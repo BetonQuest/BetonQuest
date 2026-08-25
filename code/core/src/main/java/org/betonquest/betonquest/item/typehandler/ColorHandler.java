@@ -94,10 +94,12 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
             armorMeta.setColor(color.getRight());
         }
 
+        /**
+         * If it's forbidden, this.color is default leather color (undyed)
+         */
         @Override
         public boolean check(final LeatherArmorMeta armorMeta) {
             return color.getLeft() == Existence.WHATEVER || armorMeta.getColor().equals(color.getRight());
-            // if it's forbidden, this.color is default leather color (undyed)
         }
     }
 }

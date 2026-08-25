@@ -70,23 +70,23 @@ public final class HandlerUtil {
     /**
      * Gets a pair of Number requirement and its non-negative int.
      * <p>
-     * The value will be one in the {@link org.betonquest.betonquest.item.handler.Number#WHATEVER} case.
+     * The value will be one in the {@link Number#WHATEVER} case.
      *
      * @param part        to parse into one pair
      * @param messagePart to put into exceptions to identify what is parsed
      * @return the requirement type and the parsed value
      * @throws QuestException if {@code part} can't be parsed or is negative
      */
-    public static Map.Entry<org.betonquest.betonquest.item.handler.Number, Integer> getNumberValue(final String part, final String messagePart) throws QuestException {
+    public static Map.Entry<Number, Integer> getNumberValue(final String part, final String messagePart) throws QuestException {
         final String whatEver = "?";
         if (whatEver.equals(part)) {
-            return Map.entry(org.betonquest.betonquest.item.handler.Number.WHATEVER, 1);
+            return Map.entry(Number.WHATEVER, 1);
         }
-        final org.betonquest.betonquest.item.handler.Number number;
+        final Number number;
         if (part.endsWith("-")) {
-            number = org.betonquest.betonquest.item.handler.Number.LESS;
+            number = Number.LESS;
         } else if (part.endsWith("+")) {
-            number = org.betonquest.betonquest.item.handler.Number.MORE;
+            number = Number.MORE;
         } else {
             return Map.entry(Number.EQUAL, getNotBelowZero(part, messagePart));
         }

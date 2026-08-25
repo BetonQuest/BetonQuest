@@ -99,7 +99,6 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
         @Override
         public void populate(final ItemMeta meta) {
             if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
-                // why no bulk adding method?!
                 final Map<Enchantment, Integer> map = get();
                 for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
                     enchantMeta.addStoredEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
@@ -177,7 +176,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
         /**
          * The number compare state.
          */
-        private final org.betonquest.betonquest.item.handler.Number number;
+        private final Number number;
 
         /**
          * The set enchantment level.
@@ -189,7 +188,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
             if (parts[0].startsWith("none-")) {
                 existence = Existence.FORBIDDEN;
                 type = getType(parts[0].substring("none-".length()));
-                number = org.betonquest.betonquest.item.handler.Number.WHATEVER;
+                number = Number.WHATEVER;
                 level = 1;
                 return;
             }
