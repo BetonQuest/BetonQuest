@@ -40,7 +40,6 @@ public class NameHandler implements NameMetaHandler {
 
     @Override
     public NameAttribute parse(final Instruction instruction) throws QuestException {
-        // TODO is empty check?
         return new NonResolved(ExistenceArgument.apply("name", instruction.component().map(Component::compact)));
     }
 

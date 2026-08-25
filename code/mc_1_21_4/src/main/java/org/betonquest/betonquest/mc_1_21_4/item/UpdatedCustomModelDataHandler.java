@@ -7,6 +7,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
+import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,19 +71,22 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler.Standard {
     }
 
     @Override
+    @Nullable
     public Attribute.Standard parse(final Instruction instruction) throws QuestException {
-        final Argument<CustomModelData> data = instruction.parse(resolvedString -> {
+        final Optional<Argument<CustomModelData>> data = instruction.parse(resolvedString -> {
             try {
                 return CustomModelData.parseCmd(resolvedString);
             } catch (final QuestException e) {
                 throw new QuestException("Could not parse custom-model-data '" + resolvedString + "': " + e.getMessage(), e);
             }
-        }).get("custom-model-data", new CustomModelData());
+        }).get("custom-model-data");
         final FlagArgument<Boolean> noData = instruction.bool().getFlag("no-custom-model-data", true);
-        final Argument<Pair<Existence, @Nullable NamespacedKey>> model = ExistenceArgument.apply("item-model", instruction.namespacedKey());
+        final ExistenceArgument<@Nullable NamespacedKey> model = ExistenceArgument.applyOrNull("item-model", instruction.namespacedKey());
         final FlagArgument<Boolean> noModel = instruction.bool().getFlag("no-item-model", true);
-        // TODO null check
-        return new NonResolved(data, noData, model, noModel);
+        if (data.isEmpty() && noData.getState() == FlagState.ABSENT && model == null && noModel.getState() == FlagState.ABSENT) {
+            return null;
+        }
+        return new NonResolved(data.orElseGet(() -> profile -> new CustomModelData()), noData, ExistenceArgument.fallback(model), noModel);
     }
 
     /**

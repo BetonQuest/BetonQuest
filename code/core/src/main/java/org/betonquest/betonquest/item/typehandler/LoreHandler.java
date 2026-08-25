@@ -102,6 +102,9 @@ public class LoreHandler implements LoreMetaHandler {
 
         @Override
         public boolean check(final ItemMeta meta) {
+            if (!questResolved.check(meta)) {
+                return false;
+            }
             final List<Component> original = meta.lore();
             final List<Component> lore = original == null ? null
                     : original.subList(0, Math.max(0, original.size() - (questResolved.isLoreSet() ? 1 : 0)));

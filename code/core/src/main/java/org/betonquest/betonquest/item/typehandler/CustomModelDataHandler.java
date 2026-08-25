@@ -3,6 +3,7 @@ package org.betonquest.betonquest.item.typehandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
+import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.handler.Attribute;
@@ -41,8 +42,9 @@ public class CustomModelDataHandler implements ItemMetaHandler.Standard {
     }
 
     @Override
+    @Nullable
     public Attribute.Standard parse(final Instruction instruction) throws QuestException {
-        final ExistenceArgument<Integer> modelData = ExistenceArgument.apply("custom-model-data", instruction.parse(resolvedString -> {
+        final ExistenceArgument<Integer> modelData = ExistenceArgument.applyOrNull("custom-model-data", instruction.parse(resolvedString -> {
             try {
                 return Integer.parseInt(resolvedString);
             } catch (final NumberFormatException e) {
@@ -50,8 +52,10 @@ public class CustomModelDataHandler implements ItemMetaHandler.Standard {
             }
         }));
         final FlagArgument<Boolean> noModelData = instruction.bool().getFlag("no-custom-model-data", true);
-        // TODO null check
-        return new NonResolved(modelData, noModelData);
+        if (modelData == null && noModelData.getState() == FlagState.ABSENT) {
+            return null;
+        }
+        return new NonResolved(ExistenceArgument.fallback(modelData), noModelData);
     }
 
     /**

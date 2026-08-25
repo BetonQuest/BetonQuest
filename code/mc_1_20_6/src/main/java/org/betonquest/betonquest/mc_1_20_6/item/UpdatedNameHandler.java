@@ -50,8 +50,11 @@ public class UpdatedNameHandler extends NameHandler {
     @Override
     public NameAttribute parse(final Instruction instruction) throws QuestException {
         final NameAttribute parsed = super.parse(instruction);
-        // TODO is empty check?
-        return new UpdatedNonResolved(parsed, ExistenceArgument.apply(ITEM_NAME, instruction.component().map(Component::compact)));
+        final ExistenceArgument<Component> itemName = ExistenceArgument.applyOrNull(ITEM_NAME, instruction.component().map(Component::compact));
+        if (itemName == null) {
+            return parsed;
+        }
+        return new UpdatedNonResolved(parsed, itemName);
     }
 
     /**
