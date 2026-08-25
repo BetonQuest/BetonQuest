@@ -183,7 +183,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
          *
          * @param fireworkMeta the meta to populate
          */
-        public void populate(final FireworkEffectMeta fireworkMeta) {
+        private void populate(final FireworkEffectMeta fireworkMeta) {
             fireworkMeta.setEffect(effects.isEmpty() ? null : effects.get(0));
         }
 
@@ -219,7 +219,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
          * @param fireworkMeta the ItemMeta to check
          * @return if the meta satisfies the requirement defined via {@link #parse(Instruction)}
          */
-        public boolean check(final FireworkEffectMeta fireworkMeta) {
+        private boolean check(final FireworkEffectMeta fireworkMeta) {
             final FireworkEffect single = fireworkMeta.getEffect();
             return switch (existence) {
                 case WHATEVER -> true;

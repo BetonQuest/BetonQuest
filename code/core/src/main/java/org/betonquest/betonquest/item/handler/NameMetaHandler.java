@@ -18,6 +18,7 @@ public interface NameMetaHandler extends ItemMetaHandler.Standard {
     /**
      * Specific attribute that resolves into {@link ResolvedNameAttribute} for the {@link QuestItem#getName()} method.
      */
+    @FunctionalInterface
     interface NameAttribute extends Attribute.Standard {
 
         @Override

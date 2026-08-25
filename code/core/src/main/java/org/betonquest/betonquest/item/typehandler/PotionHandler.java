@@ -31,7 +31,6 @@ import java.util.Set;
  * <p>
  * Works only up to MC 1.20.4 with a breaking change for PotionData in the following version.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     /**
@@ -133,9 +132,9 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
      * @param customPair The custom potion effects.
      * @param exact      If the Potions need to be exact the same or just contain all specified effects.
      */
-    protected record ResolvedPotion(Pair<Existence, PotionType> typePair, Optional<Boolean> extended,
-                                    Optional<Boolean> upgraded, Pair<Existence, List<CustomEffectHandler>> customPair,
-                                    boolean exact) implements ResolvedAttribute<PotionMeta> {
+    public record ResolvedPotion(Pair<Existence, PotionType> typePair, Optional<Boolean> extended,
+                                 Optional<Boolean> upgraded, Pair<Existence, List<CustomEffectHandler>> customPair,
+                                 boolean exact) implements ResolvedAttribute<PotionMeta> {
 
         @Override
         public Class<PotionMeta> metaClass() {

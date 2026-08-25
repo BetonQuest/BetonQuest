@@ -21,7 +21,7 @@ public interface ResolvedAttribute<M extends ItemMeta> {
      *
      * @param meta the meta to populate
      */
-    void populate(final M meta);
+    void populate(M meta);
 
     /**
      * Reconstitute this Handler data into the specified meta if it is applicable to {@link #metaClass()}.

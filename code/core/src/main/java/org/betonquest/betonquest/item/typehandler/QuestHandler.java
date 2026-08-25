@@ -136,7 +136,7 @@ public class QuestHandler implements ItemMetaHandler.Standard {
          *
          * @return if the item has an additional lore line
          */
-        public boolean isLoreSet() {
+        protected boolean isLoreSet() {
             return existence == Existence.REQUIRED && loreConsumer instanceof LoreConsumer.Lore;
         }
     }

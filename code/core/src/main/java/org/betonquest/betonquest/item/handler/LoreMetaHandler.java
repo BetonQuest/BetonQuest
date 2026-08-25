@@ -20,6 +20,7 @@ public interface LoreMetaHandler extends ItemMetaHandler.Standard {
     /**
      * Specific attribute that resolves into {@link ResolvedLoreAttribute} for the {@link QuestItem#getLore()} method.
      */
+    @FunctionalInterface
     interface LoreAttribute extends Attribute.Standard {
 
         @Override

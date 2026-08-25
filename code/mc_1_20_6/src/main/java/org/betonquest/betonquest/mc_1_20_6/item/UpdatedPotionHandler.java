@@ -107,7 +107,7 @@ public class UpdatedPotionHandler extends PotionHandler {
         }
 
         @Override
-        public ResolvedAttribute<PotionMeta> resolve(final @Nullable Profile profile) throws QuestException {
+        public ResolvedAttribute<PotionMeta> resolve(@Nullable final Profile profile) throws QuestException {
             final ResolvedPotion resolved = (ResolvedPotion) attribute.resolve(profile);
 
             final PotionType superPotionType = resolved.typePair().getRight();

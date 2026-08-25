@@ -64,7 +64,7 @@ public class UpdatedNameHandler extends NameHandler {
                                       Argument<Pair<Existence, @Nullable Component>> itemName) implements NameAttribute {
 
         @Override
-        public ResolvedNameAttribute resolve(final @Nullable Profile profile) throws QuestException {
+        public ResolvedNameAttribute resolve(@Nullable final Profile profile) throws QuestException {
             final ResolvedNameAttribute displayName = displayName().resolve(profile);
             return new UpdatedResolved(displayName, itemName.getValue(profile));
         }

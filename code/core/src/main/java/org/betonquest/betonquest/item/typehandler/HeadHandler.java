@@ -135,7 +135,7 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
          * @return The profile of the skull's owner.
          */
         @Nullable
-        public Profile getOwner(@Nullable final Profile profile, @Nullable final String owner) {
+        private Profile getOwner(@Nullable final Profile profile, @Nullable final String owner) {
             if (profile != null && owner != null && owner.isEmpty()) {
                 return profile;
             }

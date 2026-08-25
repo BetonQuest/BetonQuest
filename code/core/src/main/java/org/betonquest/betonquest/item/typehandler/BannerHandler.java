@@ -123,7 +123,7 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
         public boolean check(final BannerMeta bannerMeta) {
             return switch (patterns.getLeft()) {
                 case WHATEVER -> true;
-                case REQUIRED -> patterns.equals(bannerMeta.getPatterns());
+                case REQUIRED -> patterns.getRight().equals(bannerMeta.getPatterns());
                 case FORBIDDEN -> bannerMeta.getPatterns().isEmpty();
             };
         }
