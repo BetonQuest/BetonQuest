@@ -15,6 +15,10 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
         return argument == null ? whateverNullValue() : argument;
     }
 
+    static <T> ExistenceArgument<List<T>> fallbackEmptyList(@Nullable final ExistenceArgument<List<T>> argument) {
+        return argument == null ? whateverEmptyList() : argument;
+    }
+
     static <T> ExistenceArgument<T> whateverNullValue() {
         return profile -> Pair.of(Existence.WHATEVER, null);
     }

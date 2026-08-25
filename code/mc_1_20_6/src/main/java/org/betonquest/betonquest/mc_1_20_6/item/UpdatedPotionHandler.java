@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
-import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.bukkit.Keyed;
@@ -88,32 +87,7 @@ public class UpdatedPotionHandler extends PotionHandler {
         if (parsed == null) {
             return null;
         }
-        // TODO null checks?
-        final ExistenceArgument<PotionType> setSuperType = super.type;
-
-        super.type = profile -> {
-            final Pair<Existence, PotionType> typePair = setSuperType.getValue(profile);
-            final String baseType = typePair.getRight().getKey().asMinimalString();
-            final PotionType potionType;
-            if (EXTENDED.equals(baseType)) {
-                potionType = typeSet(LONG_PREFIX, baseType);
-            } else if (UPGRADED.equals(baseType)) {
-                potionType = typeSet(STRONG_PREFIX, baseType);
-            } else {
-                potionType = typePair.getRight();
-            }
-            return Pair.of(typePair.getLeft(), potionType);
-        };
-        return new UpdatedNonResolved(parsed, type);
-    }
-
-    private PotionType typeSet(final String prefix, final String baseType) throws QuestException {
-        final String potionType = prefix + baseType;
-        try {
-            return PotionType.valueOf(potionType.toUpperCase(Locale.ROOT));
-        } catch (final IllegalArgumentException e) {
-            throw new QuestException("Invalid potion type: " + potionType, e);
-        }
+        return new UpdatedNonResolved(parsed);
     }
 
     /**
@@ -121,17 +95,38 @@ public class UpdatedPotionHandler extends PotionHandler {
      */
     private record UpdatedNonResolved(Attribute<PotionMeta> attribute) implements Attribute<PotionMeta> {
 
+        private PotionType typeSet(final String prefix, final String baseType) throws QuestException {
+            final String potionType = prefix + baseType;
+            try {
+                return PotionType.valueOf(potionType.toUpperCase(Locale.ROOT));
+            } catch (final IllegalArgumentException e) {
+                throw new QuestException("Invalid potion type: " + potionType, e);
+            }
+        }
+
         @Override
         public ResolvedAttribute<PotionMeta> resolve(final @Nullable Profile profile) throws QuestException {
             final ResolvedPotion resolved = (ResolvedPotion) attribute.resolve(profile);
-            return new UpdateResolved(resolved);
+
+            final PotionType superPotionType = resolved.typePair().getRight();
+            final String baseType = superPotionType.getKey().asMinimalString();
+            final PotionType potionType;
+            if (resolved.extended().orElse(false)) {
+                potionType = typeSet(LONG_PREFIX, baseType);
+            } else if (resolved.upgraded().orElse(false)) {
+                potionType = typeSet(STRONG_PREFIX, baseType);
+            } else {
+                potionType = superPotionType;
+            }
+            return new UpdateResolved(resolved, potionType, baseType);
         }
     }
 
     /**
      * The resolved attribute.
      */
-    private record UpdateResolved(ResolvedPotion resolved) implements ResolvedAttribute<PotionMeta> {
+    private record UpdateResolved(ResolvedPotion resolved, PotionType basePotionType, String baseType)
+            implements ResolvedAttribute<PotionMeta> {
 
         @Override
         public Class<PotionMeta> metaClass() {
@@ -140,7 +135,7 @@ public class UpdatedPotionHandler extends PotionHandler {
 
         @Override
         public void populate(final PotionMeta potionMeta) {
-            potionMeta.setBasePotionType(resolved.typePair().getRight());
+            potionMeta.setBasePotionType(basePotionType);
             for (final PotionEffect effect : resolved.getCustom()) {
                 potionMeta.addCustomEffect(effect, true);
             }
@@ -156,7 +151,7 @@ public class UpdatedPotionHandler extends PotionHandler {
             return switch (pair.getLeft()) {
                 case WHATEVER -> true;
                 case REQUIRED -> {
-                    if (base == null || !base.getKey().getNamespace().equals(pair.getRight().getKey().getNamespace())) {
+                    if (base == null || !base.getKey().getNamespace().equals(basePotionType.getKey().getNamespace())) {
                         yield false;
                     }
                     final String key = base.getKey().getKey();
@@ -169,7 +164,7 @@ public class UpdatedPotionHandler extends PotionHandler {
                         effect = key;
                     }
 
-                    if (!effect.equals(pair.getRight().name())) {
+                    if (!effect.equals(baseType)) {
                         // TODO definitive test that here
                         //   I don't know if we need to have that at all in the old code.
                         yield false;

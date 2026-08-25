@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
+import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.handler.Attribute;
@@ -12,7 +13,6 @@ import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
 import org.betonquest.betonquest.item.handler.Number;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.betonquest.betonquest.lib.instruction.argument.DefaultFlagArgument;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -42,16 +42,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
      * The 'upgraded' string.
      */
     public static final String UPGRADED = "upgraded";
-
-    /**
-     * The potion type, defaulting to water.
-     */
-    protected ExistenceArgument<PotionType> type = ExistenceArgument.whateverValue(PotionType.WATER);
-
-    /**
-     * If the potion is upgraded.
-     */
-    protected FlagArgument<Boolean> upgraded = new DefaultFlagArgument<>();
 
     /**
      * The empty default Constructor.
@@ -96,28 +86,31 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
     @Override
     @Nullable
     public Attribute<PotionMeta> parse(final Instruction instruction) throws QuestException {
-        this.type = ExistenceArgument.apply("type", instruction.enumeration(PotionType.class), PotionType.WATER);
+        final ExistenceArgument<PotionType> type = ExistenceArgument.applyOrNull("type", instruction.enumeration(PotionType.class));
         final FlagArgument<Boolean> extended = instruction.bool().getFlag(EXTENDED, true);
-        this.upgraded = instruction.bool().getFlag(UPGRADED, true);
-        final ExistenceArgument<List<CustomEffectHandler>> custom = ExistenceArgument.applyList("effects", instruction.parse(CustomEffectHandler::new));
-        final Argument<Boolean> exact = instruction.bool().map(bool -> !bool).get("effects-containing", true);
-        // TODO null check
-        return new NonResolved(type, extended, upgraded, custom, exact);
+        final FlagArgument<Boolean> upgraded = instruction.bool().getFlag(UPGRADED, true);
+        final ExistenceArgument<List<CustomEffectHandler>> custom = ExistenceArgument.applyListOrNull("effects", instruction.parse(CustomEffectHandler::new));
+        final Optional<Argument<Boolean>> exact = instruction.bool().map(bool -> !bool).get("effects-containing");
+        if (type == null && custom == null && exact.isEmpty()
+                && extended.getState() == FlagState.ABSENT && upgraded.getState() == FlagState.ABSENT) {
+            return null;
+        }
+        return new NonResolved(type == null ? ExistenceArgument.whateverValue(PotionType.WATER) : type,
+                extended, upgraded, ExistenceArgument.fallbackEmptyList(custom), exact.orElse(profile -> false));
     }
 
     /**
      * The attribute with placeholders.
      *
-     * @param type
+     * @param type     The potion type, defaulting to water.
      * @param extended If the potion is extended.
-     * @param upgraded
+     * @param upgraded If the potion is upgraded.
      * @param custom   The custom potion effects.
      * @param exact    If the Potions need to be exact the same or just contain all specified effects.
      */
     private record NonResolved(ExistenceArgument<PotionType> type, FlagArgument<Boolean> extended,
                                FlagArgument<Boolean> upgraded, ExistenceArgument<List<CustomEffectHandler>> custom,
-                               Argument<Boolean> exact)
-            implements Attribute<PotionMeta> {
+                               Argument<Boolean> exact) implements Attribute<PotionMeta> {
 
         @Override
         public ResolvedAttribute<PotionMeta> resolve(@Nullable final Profile profile) throws QuestException {
