@@ -36,7 +36,7 @@ public class UpdatedSimpleQuestItemSerializer extends SimpleQuestItemSerializer 
      */
     public UpdatedSimpleQuestItemSerializer(final BookPageWrapper bookPageWrapper) {
         super(List.of(
-                new DurabilityHandler(), new UpdatedNameHandler(), new LoreHandler(profile -> false), new EnchantmentsHandler(),
+                new DurabilityHandler(), new UpdatedNameHandler(), new LoreHandler(new QuestHandler(LoreConsumer.EMPTY_ARGUMENT)), new EnchantmentsHandler(),
                 new BookHandler(bookPageWrapper), new UpdatedPotionHandler(), new BannerHandler(), new ColorHandler(), new HeadHandler(),
                 new FireworkHandler(), new UnbreakableHandler(), new UpdatedCustomModelDataHandler(), new FlagHandler(),
                 new QuestHandler(LoreConsumer.EMPTY_ARGUMENT)
@@ -58,14 +58,13 @@ public class UpdatedSimpleQuestItemSerializer extends SimpleQuestItemSerializer 
         ));
 
         final UpdatedNameHandler name = new UpdatedNameHandler();
-        final LoreHandler lore = new LoreHandler(questHandler::isLoreSet);
+        final LoreHandler lore = new LoreHandler(questHandler);
 
         final List<ItemMetaHandler<?>> handlers = List.of(
                 new DurabilityHandler(),
                 new UpdatedCustomModelDataHandler(),
                 new UnbreakableHandler(),
                 new FlagHandler(),
-                questHandler,
                 new EnchantmentsHandler(),
                 new UpdatedPotionHandler(),
                 new BannerHandler(),

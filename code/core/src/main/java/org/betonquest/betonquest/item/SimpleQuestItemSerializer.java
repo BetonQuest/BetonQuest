@@ -39,7 +39,7 @@ public class SimpleQuestItemSerializer implements QuestItemSerializer {
      */
     public SimpleQuestItemSerializer(final BookPageWrapper bookPageWrapper) {
         this(List.of(
-                new DurabilityHandler(), new NameHandler(), new LoreHandler(profile -> false), new EnchantmentsHandler(),
+                new DurabilityHandler(), new NameHandler(), new LoreHandler(new QuestHandler(LoreConsumer.EMPTY_ARGUMENT)), new EnchantmentsHandler(),
                 new BookHandler(bookPageWrapper), new PotionHandler(), new BannerHandler(), new ColorHandler(), new HeadHandler(),
                 new FireworkHandler(), new UnbreakableHandler(), new CustomModelDataHandler(), new FlagHandler(),
                 new QuestHandler(LoreConsumer.EMPTY_ARGUMENT)

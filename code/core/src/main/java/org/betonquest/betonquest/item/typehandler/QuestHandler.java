@@ -28,6 +28,11 @@ public class QuestHandler implements ItemMetaHandler.Standard {
     public static final NamespacedKey QUEST_ITEM_KEY = new NamespacedKey("betonquest", "quest_item");
 
     /**
+     * The empty nothing doing {@link QuestResolved} which does not set a lore.
+     */
+    protected static final QuestResolved EMPTY = new QuestResolved(Existence.WHATEVER, LoreConsumer.EMPTY);
+
+    /**
      * The quest string.
      */
     private static final String QUEST = "quest-item";
@@ -84,17 +89,6 @@ public class QuestHandler implements ItemMetaHandler.Standard {
     }
 
     /**
-     * Indicates whether the quest item tag is set and changes the lore.
-     *
-     * @param profile the optional profile for resolving arguments
-     * @return if the item has an additional lore line
-     * @throws QuestException when there is an exception while resolving profile specific data
-     */
-    public boolean isLoreSet(@Nullable final Profile profile) throws QuestException {
-        return questItem.getValue(profile) == Existence.REQUIRED && questItemLore.getValue(profile) instanceof LoreConsumer.Lore;
-    }
-
-    /**
      * The attribute with placeholders.
      *
      * @param questItem If the item is a "Quest Item".
@@ -106,14 +100,15 @@ public class QuestHandler implements ItemMetaHandler.Standard {
         public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
             final Existence existence = questItem.getValue(profile);
             final LoreConsumer loreConsumer = questItemLore.getValue(profile);
-            return new Resolved(existence, loreConsumer);
+            return new QuestResolved(existence, loreConsumer);
         }
     }
 
     /**
      * The resolved attribute.
      */
-    private record Resolved(Existence existence, LoreConsumer loreConsumer) implements ResolvedAttribute.Standard {
+    protected record QuestResolved(Existence existence, LoreConsumer loreConsumer)
+            implements ResolvedAttribute.Standard {
 
         @Override
         public void populate(final ItemMeta meta) {
@@ -130,6 +125,15 @@ public class QuestHandler implements ItemMetaHandler.Standard {
                 case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
                 case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
             };
+        }
+
+        /**
+         * Indicates whether the quest item tag is set and changes the lore.
+         *
+         * @return if the item has an additional lore line
+         */
+        public boolean isLoreSet() {
+            return existence == Existence.REQUIRED && loreConsumer instanceof LoreConsumer.Lore;
         }
     }
 }

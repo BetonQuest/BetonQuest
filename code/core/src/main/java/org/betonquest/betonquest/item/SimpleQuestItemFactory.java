@@ -83,13 +83,12 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
         final Localizations localizations = questItemLoreSupplier.get();
         final QuestHandler questHandler = new QuestHandler(localizations == null
                 ? LoreConsumer.EMPTY_ARGUMENT : new LoreConsumer.LoreArgument(localizations));
-        this.loreHandler = new LoreHandler(questHandler::isLoreSet);
+        this.loreHandler = new LoreHandler(questHandler);
         this.handlers = List.of(
                 new DurabilityHandler(),
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),
                 new FlagHandler(),
-                questHandler,
                 new EnchantmentsHandler(),
                 new PotionHandler(),
                 new BannerHandler(),
