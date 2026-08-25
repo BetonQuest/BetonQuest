@@ -12,7 +12,6 @@ import org.betonquest.betonquest.api.item.QuestItemWrapper;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -48,11 +47,6 @@ public record CraftEngineItemWrapper(Argument<BukkitItemDefinition> customItemAr
         private final BukkitItemDefinition definition;
 
         /**
-         * The cached item meta for the custom item.
-         */
-        private final ItemMeta itemMeta;
-
-        /**
          * The context to build the item stack.
          */
         private final ItemBuildContext buildContext;
@@ -65,18 +59,17 @@ public record CraftEngineItemWrapper(Argument<BukkitItemDefinition> customItemAr
          */
         public CraftEngineItem(final BukkitItemDefinition definition, final ItemBuildContext buildContext) {
             this.definition = definition;
-            this.itemMeta = definition.buildBukkitItem().getItemMeta();
             this.buildContext = buildContext;
         }
 
         @Override
         public Component getName() {
-            return Objects.requireNonNullElse(itemMeta.displayName(), Component.empty());
+            return Objects.requireNonNullElse(definition.buildBukkitItem(buildContext).getItemMeta().displayName(), Component.empty());
         }
 
         @Override
         public List<Component> getLore() {
-            return Objects.requireNonNullElse(itemMeta.lore(), List.of());
+            return Objects.requireNonNullElse(definition.buildBukkitItem(buildContext).getItemMeta().lore(), List.of());
         }
 
         @Override
