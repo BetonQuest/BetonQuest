@@ -29,7 +29,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     private final BookPageWrapper bookPageWrapper;
 
     /**
-     * Creates an empty BookHandler.
+     * Creates a BookHandler.
      *
      * @param bookPageWrapper the book wrapper used to split pages
      */
@@ -100,6 +100,10 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     /**
      * The attribute with placeholders.
+     *
+     * @param title  the title
+     * @param author the author
+     * @param text   the text pages
      */
     private record NonResolved(ExistenceArgument<Component> title, ExistenceArgument<Component> author,
                                ExistenceArgument<List<Component>> text) implements Attribute<BookMeta> {
@@ -112,6 +116,10 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     /**
      * The resolved attribute.
+     *
+     * @param title  the title
+     * @param author the author
+     * @param text   the text pages
      */
     private record Resolved(Pair<Existence, Component> title, Pair<Existence, Component> author,
                             Pair<Existence, List<Component>> text) implements ResolvedAttribute<BookMeta> {

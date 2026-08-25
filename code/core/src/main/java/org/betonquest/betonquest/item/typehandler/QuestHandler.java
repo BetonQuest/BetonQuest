@@ -91,7 +91,8 @@ public class QuestHandler implements ItemMetaHandler.Standard {
     /**
      * The attribute with placeholders.
      *
-     * @param questItem If the item is a "Quest Item".
+     * @param questItemLore Consumer to use when the item to generate is a quest item.
+     * @param questItem     If the item is a "Quest Item".
      */
     private record NonResolved(Argument<LoreConsumer> questItemLore, Argument<Existence> questItem)
             implements Attribute.Standard {
@@ -106,6 +107,9 @@ public class QuestHandler implements ItemMetaHandler.Standard {
 
     /**
      * The resolved attribute.
+     *
+     * @param existence    If the item is a "Quest Item".
+     * @param loreConsumer Consumer to use when the item to generate is a quest item.
      */
     protected record QuestResolved(Existence existence, LoreConsumer loreConsumer)
             implements ResolvedAttribute.Standard {

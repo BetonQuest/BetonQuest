@@ -56,6 +56,9 @@ public class UpdatedNameHandler extends NameHandler {
 
     /**
      * The attribute with placeholders.
+     *
+     * @param displayName The display name.
+     * @param itemName    Item Display Name's required existence and value.
      */
     private record UpdatedNonResolved(NameAttribute displayName,
                                       Argument<Pair<Existence, @Nullable Component>> itemName) implements NameAttribute {
@@ -70,7 +73,8 @@ public class UpdatedNameHandler extends NameHandler {
     /**
      * The resolved attribute.
      *
-     * @param itemName Item Display Name's required existence and value.
+     * @param displayName The display name.
+     * @param itemName    Item Display Name's required existence and value.
      */
     public record UpdatedResolved(ResolvedNameAttribute displayName,
                                   Pair<Existence, @Nullable Component> itemName) implements ResolvedNameAttribute {

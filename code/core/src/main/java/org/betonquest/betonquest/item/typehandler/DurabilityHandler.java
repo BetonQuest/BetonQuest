@@ -68,6 +68,8 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
 
     /**
      * The resolved attribute.
+     *
+     * @param durability The durability with their compare state.
      */
     private record Resolved(NumberValue durability) implements ResolvedAttribute<Damageable> {
 

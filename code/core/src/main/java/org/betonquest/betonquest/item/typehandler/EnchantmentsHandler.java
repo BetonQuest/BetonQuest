@@ -92,8 +92,11 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
 
     /**
      * The resolved attribute.
+     *
+     * @param checkers The individual Enchantment Handlers.
+     * @param exact    If the Enchantment need to be exact the same or just contain all specified enchantments.
      */
-    private record Resolved(Pair<Existence, List<SingleEnchantmentHandler>> pair, boolean exact)
+    private record Resolved(Pair<Existence, List<SingleEnchantmentHandler>> checkers, boolean exact)
             implements ResolvedAttribute.Standard {
 
         @Override
@@ -120,12 +123,12 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
         }
 
         private Map<Enchantment, Integer> get() {
-            final Existence checkersE = pair.getLeft();
+            final Existence checkersE = checkers.getLeft();
             final Map<Enchantment, Integer> map = new HashMap<>();
             if (checkersE == Existence.FORBIDDEN) {
                 return map;
             }
-            for (final SingleEnchantmentHandler checker : pair.getRight()) {
+            for (final SingleEnchantmentHandler checker : checkers.getRight()) {
                 if (checker.existence != Existence.FORBIDDEN) {
                     map.put(checker.type, checker.level);
                 }
@@ -134,7 +137,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
         }
 
         private boolean check(final Map<Enchantment, Integer> map) {
-            final Existence checkersE = pair.getLeft();
+            final Existence checkersE = checkers.getLeft();
             if (checkersE == Existence.WHATEVER) {
                 return true;
             }
@@ -144,7 +147,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
             if (exact && map.size() != get().size()) {
                 return false;
             }
-            for (final SingleEnchantmentHandler checker : pair.getRight()) {
+            for (final SingleEnchantmentHandler checker : checkers.getRight()) {
                 if (!checker.check(map.get(checker.type))) {
                     return false;
                 }

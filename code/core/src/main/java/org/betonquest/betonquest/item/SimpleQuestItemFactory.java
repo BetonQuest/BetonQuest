@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
+ * Creates {@link SimpleQuestItemWrapper}s from {@link Instruction}s.
  */
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
@@ -125,7 +125,7 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @throws QuestException when placeholders could not be resolved or handlers not be filled
      */
     @Override
-    public SimpleQuestItem parseInstruction(final Instruction instruction) throws QuestException {
+    public SimpleQuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> selector = instruction.blockSelector().get();
 
         final NameMetaHandler.NameAttribute nameAttribute = nameHandler.parse(instruction);
@@ -139,6 +139,6 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
                 }
             }
         }
-        return new SimpleQuestItem(selector, nameAttribute, loreAttribute, attributes);
+        return new SimpleQuestItemWrapper(selector, nameAttribute, loreAttribute, attributes);
     }
 }

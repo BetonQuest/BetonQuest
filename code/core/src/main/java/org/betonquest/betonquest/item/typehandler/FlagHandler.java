@@ -71,6 +71,9 @@ public class FlagHandler implements ItemMetaHandler.Standard {
 
     /**
      * The resolved attribute.
+     *
+     * @param existence Existence of the flags.
+     * @param flags     Set of ItemFlags on the ItemStack.
      */
     private record Resolved(Existence existence, Set<ItemFlag> flags) implements ResolvedAttribute.Standard {
 

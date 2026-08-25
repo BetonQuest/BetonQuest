@@ -19,7 +19,7 @@ import java.util.Set;
 public class NameHandler implements NameMetaHandler {
 
     /**
-     * Creates an empty NameHandler.
+     * The empty default Constructor.
      */
     public NameHandler() {
     }
@@ -46,6 +46,8 @@ public class NameHandler implements NameMetaHandler {
 
     /**
      * The attribute with placeholders.
+     *
+     * @param name Item Display Name's required existence and value.
      */
     private record NonResolved(ExistenceArgument<@Nullable Component> name) implements NameAttribute {
 

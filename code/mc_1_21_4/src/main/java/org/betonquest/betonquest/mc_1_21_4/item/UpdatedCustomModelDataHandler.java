@@ -108,6 +108,11 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler.Standard {
 
     /**
      * The resolved attribute.
+     *
+     * @param data    The CustomModelData with existence.
+     * @param noData  If 'custom model data' is forbidden.
+     * @param model   The item model with existence.
+     * @param noModel If 'item_model' is forbidden.
      */
     private record Resolved(CustomModelData data, Pair<Existence, @Nullable NamespacedKey> model, boolean noModel,
                             boolean noData) implements ResolvedAttribute.Standard {

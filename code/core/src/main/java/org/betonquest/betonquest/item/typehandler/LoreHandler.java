@@ -66,6 +66,10 @@ public class LoreHandler implements LoreMetaHandler {
 
     /**
      * The lore with placeholders.
+     *
+     * @param lore           The Lore with existence.
+     * @param exact          If the lore need to be exact the same or just contain all specified lines.
+     * @param questAttribute To check if the last lore line should be ignored and to populate/check.
      */
     private record NonResolved(ExistenceArgument<List<Component>> lore, Argument<Boolean> exact,
                                Attribute.Standard questAttribute) implements LoreAttribute {
@@ -81,6 +85,11 @@ public class LoreHandler implements LoreMetaHandler {
 
     /**
      * The resolved lore.
+     *
+     * @param existence     If the lore is required.
+     * @param storedLore    The Lore lines.
+     * @param exact         If the lore need to be exact the same or just contain all specified lines.
+     * @param questResolved To check if the last lore line should be ignored and to populate/check.
      */
     private record Resolved(Existence existence, List<Component> storedLore, boolean exact,
                             QuestHandler.QuestResolved questResolved) implements ResolvedLoreAttribute {

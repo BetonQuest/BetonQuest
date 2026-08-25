@@ -92,6 +92,8 @@ public class UpdatedPotionHandler extends PotionHandler {
 
     /**
      * The attribute with placeholders.
+     *
+     * @param attribute the parent parsed attribute
      */
     private record UpdatedNonResolved(Attribute<PotionMeta> attribute) implements Attribute<PotionMeta> {
 
@@ -124,6 +126,10 @@ public class UpdatedPotionHandler extends PotionHandler {
 
     /**
      * The resolved attribute.
+     *
+     * @param resolved       the parent parsed attribute
+     * @param basePotionType the final potion type to use
+     * @param baseType       the base potion type to use for checking
      */
     private record UpdateResolved(ResolvedPotion resolved, PotionType basePotionType, String baseType)
             implements ResolvedAttribute<PotionMeta> {

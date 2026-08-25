@@ -154,6 +154,12 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     /**
      * Resolved Firework Handler.
+     *
+     * @param existence      If the single effect is required.
+     * @param effectHandlers The effect Handlers to check.
+     * @param effects        The individual Firework Effect Handlers.
+     * @param power          The firework power.
+     * @param exact          If the Firework need to be exact the same or just contain all specified effects.
      */
     private record ResolvedFirework(Existence existence, List<FireworkEffectHandler> effectHandlers,
                                     List<FireworkEffect> effects, @Nullable NumberValue power, boolean exact)

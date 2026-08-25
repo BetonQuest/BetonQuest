@@ -55,6 +55,8 @@ public class UnbreakableHandler implements ItemMetaHandler.Standard {
 
     /**
      * The attribute with placeholders.
+     *
+     * @param unbreakable if the item should be unbreakable
      */
     private record NonResolved(Argument<Existence> unbreakable) implements Attribute.Standard {
 
@@ -67,6 +69,8 @@ public class UnbreakableHandler implements ItemMetaHandler.Standard {
 
     /**
      * The resolved attribute.
+     *
+     * @param existence if the item should be unbreakable
      */
     private record Resolved(Existence existence) implements ResolvedAttribute.Standard {
 

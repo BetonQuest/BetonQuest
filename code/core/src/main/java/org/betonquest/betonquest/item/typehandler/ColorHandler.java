@@ -66,7 +66,8 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
     /**
      * The attribute with placeholders.
      *
-     * @param color the leather color
+     * @param defaultColor the "empty" color
+     * @param color        the leather color
      */
     private record NonResolved(Color defaultColor, ExistenceArgument<Color> color)
             implements Attribute<LeatherArmorMeta> {
@@ -80,6 +81,9 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
 
     /**
      * The resolved attribute.
+     *
+     * @param defaultColor the "empty" color
+     * @param color        the leather color
      */
     private record Resolved(Color defaultColor, Pair<Existence, Color> color)
             implements ResolvedAttribute<LeatherArmorMeta> {

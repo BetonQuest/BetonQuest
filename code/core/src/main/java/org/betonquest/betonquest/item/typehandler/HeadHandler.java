@@ -44,7 +44,7 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
     public static final String META_TEXTURE = "texture";
 
     /**
-     * Construct a new HeadHandler.
+     * The empty default Constructor.
      */
     public HeadHandler() {
     }
@@ -158,6 +158,11 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
 
     /**
      * The resolved attribute.
+     *
+     * @param ownerPair    An optional player name owner of the skull.
+     * @param owner        The resolved owner of the skull.
+     * @param playerIdPair An optional player ID owner of the skull, used in conjunction with the encoded texture.
+     * @param texturePair  An optional encoded texture URL of the skull, used in conjunction with the player UUID.
      */
     private record Resolved(Pair<Existence, String> ownerPair, @Nullable Profile owner,
                             Pair<Existence, UUID> playerIdPair, Pair<Existence, String> texturePair)

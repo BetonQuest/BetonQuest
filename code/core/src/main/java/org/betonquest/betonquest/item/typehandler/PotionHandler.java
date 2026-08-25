@@ -126,6 +126,12 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     /**
      * Resolved Potion Handler.
+     *
+     * @param typePair   The potion type, defaulting to water.
+     * @param extended   If the potion is extended.
+     * @param upgraded   If the potion is upgraded.
+     * @param customPair The custom potion effects.
+     * @param exact      If the Potions need to be exact the same or just contain all specified effects.
      */
     protected record ResolvedPotion(Pair<Existence, PotionType> typePair, Optional<Boolean> extended,
                                     Optional<Boolean> upgraded, Pair<Existence, List<CustomEffectHandler>> customPair,

@@ -104,6 +104,8 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
 
     /**
      * The resolved attribute.
+     *
+     * @param patterns The ordered banner patterns.
      */
     private record Resolved(Pair<Existence, List<Pattern>> patterns) implements ResolvedAttribute<BannerMeta> {
 
