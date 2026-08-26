@@ -141,7 +141,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
             if (checkersE == Existence.WHATEVER) {
                 return true;
             }
-            if (map.isEmpty()) { // TODO remove that? - any value should be set if not whatever? but they could all be '?' too
+            if (map.isEmpty()) {
                 return checkersE == Existence.FORBIDDEN;
             }
             if (exact && map.size() != get().size()) {

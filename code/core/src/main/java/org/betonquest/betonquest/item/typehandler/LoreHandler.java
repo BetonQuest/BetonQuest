@@ -13,8 +13,11 @@ import org.betonquest.betonquest.item.handler.LoreMetaHandler;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Handles de-/serialization of Item Lore.
@@ -57,8 +60,23 @@ public class LoreHandler implements LoreMetaHandler {
 
     @Override
     public LoreAttribute parse(final Instruction instruction) throws QuestException {
-        final ExistenceArgument<List<Component>> lore = ExistenceArgument.apply("lore", instruction.component().list()); // problem when there is more than one "lore"
-        // TODO fix wrong separator, compact and everything else in this diff
+        final String rawLoreLines = instruction.getValueParts().stream()
+                .filter(part -> part.toLowerCase(Locale.ROOT).startsWith("lore:"))
+                .map(part -> part.substring("lore:".length()))
+                .collect(Collectors.joining(";"));
+        final ExistenceArgument<List<Component>> lore;
+        if (rawLoreLines.isEmpty()) {
+            lore = ExistenceArgument.whateverEmptyList();
+        } else {
+            lore = (ExistenceArgument<List<Component>>) instruction.chainForArgument(rawLoreLines).parse(data -> {
+                final String[] split = data.split(";");
+                final List<Component> lorelei = new ArrayList<>(split.length);
+                for (final String line : split) {
+                    lorelei.add(instruction.chainForArgument(line).component().map(Component::compact).get().getValue(null));
+                }
+                return Pair.of(Existence.REQUIRED, lorelei);
+            }).get();
+        }
         final Argument<Boolean> exact = instruction.bool().map(bool -> !bool).get("lore-containing", true);
         final Attribute.Standard questAttribute = questHandler.parse(instruction);
         return new NonResolved(lore, exact, questAttribute == null ? profile -> QuestHandler.EMPTY : questAttribute);
