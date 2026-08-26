@@ -63,31 +63,43 @@ public abstract class Database {
      * @return the current database connection
      */
     public Connection getConnection() {
-        return connectionProvider.create();
+        log.debug("Requesting database connection from provider...");
+        final Connection connection = connectionProvider.create();
+        log.debug("Database connection acquired.");
+        return connection;
     }
 
     /**
      * Closes the database connection if it is open.
      */
     public void closeConnection() {
+        log.debug("Closing database connection...");
         connectionProvider.close();
+        log.debug("Database connection closed.");
     }
 
     /**
      * Creates the database tables by executing all migrations that have not been executed yet.
      */
     public final void createTables() {
+        log.debug("Checking database tables and running pending migrations...");
         try (Connection connection = getConnection()) {
             final SortedMap<MigrationKey, DatabaseUpdate> migrations = getMigrations();
+            log.debug("Found %d registered migrations.".formatted(migrations.size()));
             final Set<MigrationKey> executedMigrations = queryExecutedMigrations(connection);
+            log.debug("Found %d already executed migrations.".formatted(executedMigrations.size()));
             executedMigrations.forEach(migrations::remove);
+            log.debug("Pending migrations to execute: %d".formatted(migrations.size()));
 
             while (!migrations.isEmpty()) {
                 final MigrationKey key = migrations.firstKey();
                 final DatabaseUpdate migration = migrations.remove(key);
+                log.debug("Executing migration: %s".formatted(key));
                 migration.executeUpdate(connection);
                 markMigrationExecuted(connection, key);
+                log.debug("Migration %s successfully executed and marked in database.".formatted(key));
             }
+            log.debug("Database tables checked and up to date.");
         } catch (final SQLException sqlException) {
             log.error("There was an exception with SQL while creating the database tables!", sqlException);
         }

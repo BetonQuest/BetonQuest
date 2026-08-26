@@ -2,6 +2,7 @@ package org.betonquest.betonquest.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,6 +12,11 @@ import java.util.function.Function;
  * A connection provider that uses HikariCP.
  */
 public class HikariProvider implements ConnectionProvider {
+
+    /**
+     * Custom {@link BetonQuestLogger} instance for this class.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * The driver to use.
@@ -25,23 +31,30 @@ public class HikariProvider implements ConnectionProvider {
     /**
      * Create a new HikariCP connection provider.
      *
+     * @param log    the logger to use
      * @param driver the driver to use
      * @param args   the arguments to pass to the driver
      */
-    public HikariProvider(final HikariDriver driver, final String... args) {
+    public HikariProvider(final BetonQuestLogger log, final HikariDriver driver, final String... args) {
+        this.log = log;
         this.driver = driver;
         if (args.length != driver.getRequiredArgs()) {
             throw new IllegalArgumentException("Invalid number of arguments '%s' != '%s' for driver '%s'"
                     .formatted(args.length, driver.getRequiredArgs(), driver.name()));
         }
+        log.debug("Initializing HikariCP pool for driver %s".formatted(driver.name()));
         final HikariConfig config = driver.getConfig(args);
         this.dataSource = new HikariDataSource(config);
+        log.debug("HikariCP pool initialized successfully.");
     }
 
     @Override
     public Connection create() {
         try {
-            return dataSource.getConnection();
+            log.debug("Obtaining database connection from HikariCP pool...");
+            final Connection connection = dataSource.getConnection();
+            log.debug("Database connection obtained from HikariCP pool successfully.");
+            return connection;
         } catch (final SQLException e) {
             throw new IllegalStateException("Failed to create '%s' connection via hikari pool".formatted(driver.name()), e);
         }
@@ -49,7 +62,9 @@ public class HikariProvider implements ConnectionProvider {
 
     @Override
     public void close() {
+        log.debug("Closing HikariCP data source pool...");
         dataSource.close();
+        log.debug("HikariCP data source pool closed.");
     }
 
     /**

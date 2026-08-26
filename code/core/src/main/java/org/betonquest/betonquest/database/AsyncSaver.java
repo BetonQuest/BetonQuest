@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -57,45 +58,61 @@ public class AsyncSaver implements Runnable, Saver {
 
     @Override
     @SuppressFBWarnings("UW_UNCOND_WAIT")
-    @SuppressWarnings("PMD.CognitiveComplexity")
+    @SuppressWarnings("PMD.AssignmentInOperand")
     public void run() {
+        log.debug("AsyncSaver thread started.");
         boolean active = false;
         while (true) {
             while (queue.isEmpty()) {
                 if (!running) {
+                    log.debug("AsyncSaver thread terminating.");
                     return;
                 }
                 synchronized (this) {
                     try {
                         active = false;
+                        log.debug("AsyncSaver queue empty, waiting for new records...");
                         wait();
                     } catch (final InterruptedException e) {
                         log.warn("AsyncSaver got interrupted!");
                     }
                 }
             }
-            while (!active) {
-                try (Connection connection = con.getDatabase().getConnection()) {
-                    active = connection.isValid(5000);
-                } catch (final IllegalStateException | SQLException illegalStateException) {
-                    log.warn("Failed to re-establish connection with the database! Trying again in %s second(s)..."
-                            .formatted(reconnectInterval / 1000), illegalStateException);
-                    try {
-                        Thread.sleep(reconnectInterval);
-                    } catch (final InterruptedException interruptedException) {
-                        log.warn("AsyncSaver got interrupted!", interruptedException);
-                        return;
-                    }
-                }
+            if (!active && !(active = ensureActive())) {
+                return;
             }
             final Record rec = queue.poll();
-            con.updateSQL(rec.type(), new Arguments(rec.args()));
+            if (rec != null) {
+                log.debug("AsyncSaver processing queued record: %s with args: %s".formatted(rec.type(), Arrays.toString(rec.args())));
+                con.updateSQL(rec.type(), new Arguments(rec.args()));
+            }
         }
+    }
+
+    private boolean ensureActive() {
+        try (Connection connection = con.getDatabase().getConnection()) {
+            log.debug("Validating database connection for AsyncSaver...");
+            if (connection.isValid(5000)) {
+                log.debug("Database connection validated for AsyncSaver.");
+                return true;
+            }
+        } catch (final IllegalStateException | SQLException illegalStateException) {
+            log.warn("Failed to re-establish connection with the database! Trying again in %s second(s)..."
+                    .formatted(reconnectInterval / 1000), illegalStateException);
+            try {
+                Thread.sleep(reconnectInterval);
+            } catch (final InterruptedException interruptedException) {
+                log.warn("AsyncSaver got interrupted!", interruptedException);
+                return false;
+            }
+        }
+        return ensureActive();
     }
 
     @Override
     public void add(final Record rec) {
         synchronized (this) {
+            log.debug("AsyncSaver queued record: %s with args: %s (queue size: %d)".formatted(rec.type(), Arrays.toString(rec.args()), queue.size() + 1));
             queue.add(rec);
             notifyAll();
         }
@@ -104,6 +121,7 @@ public class AsyncSaver implements Runnable, Saver {
     @Override
     public void end() {
         synchronized (this) {
+            log.debug("AsyncSaver end() called. Pending records in queue: %d".formatted(queue.size()));
             running = false;
             notifyAll();
         }

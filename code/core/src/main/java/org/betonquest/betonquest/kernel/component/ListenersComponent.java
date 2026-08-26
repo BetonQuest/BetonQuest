@@ -66,7 +66,7 @@ public class ListenersComponent extends AbstractCoreComponent {
                 new QuestItemHandler(config, playerDataStorage, profileProvider, conversations),
                 new QuestItemConvertListener(loggerFactory.create(QuestItemConvertListener.class),
                         () -> config.getBoolean("item.quest.update_legacy_on_join"), localizations, profileProvider),
-                new JoinQuitListener(config, objectiveProcessor, playerDataStorage,
+                new JoinQuitListener(loggerFactory.create(JoinQuitListener.class), config, objectiveProcessor, playerDataStorage,
                         conversations, profileProvider, updater)
         ).forEach(listener -> pluginManager.registerEvents(listener, plugin));
     }

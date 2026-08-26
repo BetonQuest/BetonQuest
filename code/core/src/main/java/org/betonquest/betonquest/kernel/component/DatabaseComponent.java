@@ -66,7 +66,7 @@ public class DatabaseComponent extends AbstractCoreComponent {
             final String username = config.getString("mysql.user", "");
             final String password = config.getString("mysql.pass", "");
             final ConnectionProvider connectionProvider = hikariEnabled
-                    ? new HikariProvider(HikariProvider.HikariDriver.MYSQL, host, port, base, username, password)
+                    ? new HikariProvider(databaseLogger, HikariProvider.HikariDriver.MYSQL, host, port, base, username, password)
                     : new MySqlJdbcProvider(databaseLogger, host, port, base, username, password);
             final Database mySql = new MySQL(databaseLogger, connectionProvider, plugin, config);
             try (Connection connection = mySql.getConnection()) {
@@ -89,7 +89,7 @@ public class DatabaseComponent extends AbstractCoreComponent {
         }
 
         database.createTables();
-        final Connector connector = new Connector(config.getString("mysql.prefix"), database);
+        final Connector connector = new Connector(loggerFactory.create(Connector.class), config.getString("mysql.prefix"), database);
 
         dependencyProvider.take(Connector.class, connector);
         dependencyProvider.take(DatabaseComponent.class, this);

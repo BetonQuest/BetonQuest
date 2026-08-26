@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.listener;
 
 import org.betonquest.betonquest.api.config.ConfigAccessor;
+import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
@@ -28,6 +29,11 @@ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
  * Listener which handles data loading/saving when players are joining/quitting.
  */
 public class JoinQuitListener implements Listener {
+
+    /**
+     * Custom logger for debug messages.
+     */
+    private final BetonQuestLogger log;
 
     /**
      * The plugin configuration file.
@@ -62,6 +68,7 @@ public class JoinQuitListener implements Listener {
     /**
      * Creates new listener, which will handle the data loading/saving.
      *
+     * @param log               the logger for debug messages
      * @param config            the plugin configuration file
      * @param questTypeApi      the object to get player Objectives
      * @param playerDataStorage the storage for un-/loading player data
@@ -69,9 +76,10 @@ public class JoinQuitListener implements Listener {
      * @param profileProvider   the profile provider instance
      * @param updater           the updater to notify players
      */
-    public JoinQuitListener(final ConfigAccessor config,
+    public JoinQuitListener(final BetonQuestLogger log, final ConfigAccessor config,
                             final ObjectiveProcessor questTypeApi, final PlayerDataStorage playerDataStorage,
                             final Conversations conversations, final ProfileProvider profileProvider, final Updater updater) {
+        this.log = log;
         this.config = config;
         this.questTypeApi = questTypeApi;
         this.playerDataStorage = playerDataStorage;
@@ -87,10 +95,12 @@ public class JoinQuitListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerPreLogin(final AsyncPlayerPreLoginEvent event) {
+        log.debug("AsyncPlayerPreLoginEvent: '%s' (%s), result: %s".formatted(event.getName(), event.getUniqueId(), event.getLoginResult()));
         if (event.getLoginResult() != Result.ALLOWED) {
             return;
         }
         final Profile profile = profileProvider.getProfile(Bukkit.getOfflinePlayer(event.getUniqueId()));
+        log.debug("Initializing player data async during pre-login for profile: %s".formatted(profile));
         playerDataStorage.init(profile);
     }
 
@@ -102,6 +112,7 @@ public class JoinQuitListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
+        log.debug("Player joined: '%s' (%s), starting objectives, checking resourcepack and journal...".formatted(player.getName(), player.getUniqueId()));
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         final PlayerData playerData = playerDataStorage.get(onlineProfile);
         questTypeApi.startAll(onlineProfile, playerDataStorage);
@@ -136,6 +147,7 @@ public class JoinQuitListener implements Listener {
      */
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
+        log.debug("Player quit: '%s' (%s), pausing objectives and removing from PlayerDataStorage...".formatted(event.getPlayer().getName(), event.getPlayer().getUniqueId()));
         final OnlineProfile onlineProfile = profileProvider.getProfile(event.getPlayer());
         for (final Objective objective : questTypeApi.getForProfile(onlineProfile)) {
             questTypeApi.pause(onlineProfile, objective.getObjectiveID());

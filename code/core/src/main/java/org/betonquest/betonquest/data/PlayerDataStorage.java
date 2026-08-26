@@ -78,6 +78,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @param conversations  the Conversation API
      */
     public void initProfiles(final Collection<OnlineProfile> onlineProfiles, final Conversations conversations) {
+        log.debug("Initializing profiles and starting objectives for %d online profile(s)...".formatted(onlineProfiles.size()));
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             final PlayerData playerData = get(onlineProfile);
             playerData.startObjectives();
@@ -94,6 +95,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @param onlineProfiles the profiles to update
      */
     public void reloadProfiles(final Collection<OnlineProfile> onlineProfiles) {
+        log.debug("Reloading profiles for %d online profile(s)...".formatted(onlineProfiles.size()));
         for (final OnlineProfile onlineProfile : onlineProfiles) {
             log.debug("Updating auto-once objectives and journal for player " + onlineProfile);
             final PlayerData playerData = get(onlineProfile);
@@ -109,6 +111,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @return the created PlayerData
      */
     public PlayerData init(final Profile profile) {
+        log.debug("Initializing PlayerData for profile: %s".formatted(profile));
         final FutureTask<PlayerData> playerDataFutureTask = playerDataMap.compute(profile, (key, task) -> {
             if (task == null || task.isDone()) {
                 final FutureTask<PlayerData> newTask = new FutureTask<>(() -> playerDataFactory.createPlayerData(key));
@@ -129,6 +132,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @return PlayerData object for the player
      */
     public PlayerData get(final Profile profile) {
+        log.debug("Getting PlayerData for profile: %s (cached=%s, online=%s)".formatted(profile, playerDataMap.containsKey(profile), profile.getOnlineProfile().isPresent()));
         final FutureTask<PlayerData> playerData = playerDataMap.get(profile);
         if (playerData != null) {
             return saveGet(playerData);
@@ -153,6 +157,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @param profile the {@link Profile} of the player whose playerData is to be removed
      */
     public void remove(final Profile profile) {
+        log.debug("Removing PlayerData from storage for profile: %s".formatted(profile));
         playerDataMap.remove(profile);
     }
 
