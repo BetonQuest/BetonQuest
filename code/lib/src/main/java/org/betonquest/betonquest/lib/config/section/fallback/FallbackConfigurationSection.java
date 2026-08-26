@@ -50,7 +50,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
      * @param original The original {@link ConfigurationSection} that should be used.
      * @param fallback The fallback {@link ConfigurationSection} that should be used.
      */
-    public FallbackConfigurationSection(final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
+    protected FallbackConfigurationSection(final ConfigurationSection original, @Nullable final ConfigurationSection fallback) {
         if (!(this instanceof FallbackConfiguration)) {
             throw new IllegalStateException("Cannot construct a root FallbackConfigurationSection when not a Configuration");
         }
