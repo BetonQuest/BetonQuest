@@ -63,6 +63,7 @@
     <craft-engine-bukkit.version>26.5</craft-engine-bukkit.version>
     <api-itemsadder.version>4.0.10</api-itemsadder.version>
     <thebrewingproject-bukkit.version>3.3.0</thebrewingproject-bukkit.version>
+    <discordsrv.version>1.30.0</discordsrv.version>
   </properties>
 
   <dependencies>
@@ -335,6 +336,14 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- from scarsz repository -->
+    <dependency>
+      <groupId>com.discordsrv</groupId>
+      <artifactId>discordsrv</artifactId>
+      <version>${discordsrv.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- from jitpack repository -->
     <dependency>
       <groupId>com.github.toddharrison.BriarCode</groupId>
@@ -508,6 +517,10 @@
     <repository>
       <id>betonquest-breweryteam-repo</id>
       <url>https://repo.breweryteam.dev/releases</url>
+    </repository>
+    <repository>
+      <id>betonquest-scarsz-repo</id>
+      <url>https://nexus.scarsz.me/content/groups/public/</url>
     </repository>
     <repository>
       <id>maven_central</id>

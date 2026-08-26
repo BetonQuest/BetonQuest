@@ -72,6 +72,7 @@ The categories are just to make it easier for you to find the plugins you're loo
 -    [Administration](Administration/index.md)
 
      ---
+    - [DiscordSRV](./Administration/DiscordSRV.md)
     - [LuckPerms](./Administration/LuckPerms.md)
     - [PacketEvents](./Administration/PacketEvents.md)
     - [PlaceholderAPI](./Administration/PlaceholderAPI.md)

@@ -182,6 +182,7 @@ nav:
                   - 'MMOLib': Documentation/Reference/Integrations-List/MMO/MMOLib.md
               - 'Administration':
                   - 'Documentation/Reference/Integrations-List/Administration/index.md'
+                  - 'DiscordSRV': Documentation/Reference/Integrations-List/Administration/DiscordSRV.md
                   - 'LuckPerms': Documentation/Reference/Integrations-List/Administration/LuckPerms.md
                   - 'PacketEvents': Documentation/Reference/Integrations-List/Administration/PacketEvents.md
                   - 'PlaceholderAPI': Documentation/Reference/Integrations-List/Administration/PlaceholderAPI.md
