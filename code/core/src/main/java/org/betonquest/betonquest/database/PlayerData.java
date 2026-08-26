@@ -167,25 +167,25 @@ public class PlayerData implements PersistentDataHolder {
         try {
             loadAllPlayerData();
         } catch (final IllegalStateException e) {
-            log.error("Could not load player data for profile '%s'. %s".formatted(profileID, e.getMessage()), e);
+            log.error("Could not load player data for %s: %s".formatted(profileID, e.getMessage()), e);
         }
     }
 
     private void loadAllPlayerData() {
-        log.debug("Loading player data from database for profile '%s' (profileID: '%s')...".formatted(profile, profileID));
+        log.debug("Loading player data from database for %s".formatted(profile));
         final Arguments args = new Arguments(profileID);
 
         connector.querySQL(QueryType.SELECT_OBJECTIVES, args, resultSet -> {
             while (resultSet.next()) {
                 objectives.put(resultSet.getString("objective"), resultSet.getString("instructions"));
             }
-            log.debug("Loaded %d raw objectives for '%s'".formatted(objectives.size(), profile));
+            log.debug("Loaded %d raw objectives for %s".formatted(objectives.size(), profile));
         }, "Could not load objectives.");
         connector.querySQL(QueryType.SELECT_TAGS, args, resultSet -> {
             while (resultSet.next()) {
                 allTags.add(resultSet.getString("tag"));
             }
-            log.debug("Loaded %d tags for '%s'".formatted(allTags.size(), profile));
+            log.debug("Loaded %d tags for %s".formatted(allTags.size(), profile));
         }, "Could not load tags.");
         connector.querySQL(QueryType.SELECT_JOURNAL, args, resultSet -> {
             while (resultSet.next()) {
@@ -197,33 +197,33 @@ public class PlayerData implements PersistentDataHolder {
                 final String category = resultSet.getString("category");
                 allPoints.put(category, resultSet.getInt("count"));
             }
-            log.debug("Loaded %d points for '%s'".formatted(allPoints.size(), profile));
+            log.debug("Loaded %d points for %s".formatted(allPoints.size(), profile));
         }, "Could not load points.");
         connector.querySQL(QueryType.SELECT_BACKPACK, args, resultSet -> {
             while (resultSet.next()) {
                 addItemToBackpack(resultSet);
             }
-            log.debug("Loaded %d backpack items for '%s'".formatted(backpack.size(), profile));
+            log.debug("Loaded %d backpack items for %s".formatted(backpack.size(), profile));
         }, "Could not load backpack.");
         connector.querySQL(QueryType.SELECT_PLAYER, args, resultSet -> {
             if (resultSet.next()) {
                 profileLanguage = resultSet.getString("language");
-                log.debug("Loaded player language '%s' for '%s'".formatted(profileLanguage, profile));
+                log.debug("Loaded player language '%s' for %s".formatted(profileLanguage, profile));
                 loadActiveConversation(resultSet);
-                log.debug("Loaded active conversation for '%s'".formatted(profile));
+                log.debug("Loaded active conversation for %s".formatted(profile));
             } else {
                 setupProfile();
             }
         }, "Could not load player data.");
 
-        log.debug("Queuing of profile loading for '%s' completed.".formatted(profile));
+        log.debug("Loading player data of %s completed.".formatted(profile));
     }
 
     private void loadJournalPointer(final String pointer, final long date) {
         try {
             final JournalEntryIdentifier entryIdentifier = identifierRegistry.getFactory(JournalEntryIdentifier.class).parseIdentifier(null, pointer);
             entries.add(new Pointer(entryIdentifier, date));
-            log.debug("Loaded journal pointer '%s' (date: %d) for profile %s".formatted(pointer, date, profile));
+            log.debug("Loaded journal pointer '%s' (date: %d) for %s".formatted(pointer, date, profile));
         } catch (final QuestException e) {
             log.warn("Loaded '%s' journal entry from the database, but it is not defined in configuration. Skipping.".formatted(pointer), e);
         }
@@ -237,16 +237,16 @@ public class PlayerData implements PersistentDataHolder {
                     identifierRegistry.getFactory(ConversationIdentifier.class));
             playerConversationState.ifPresent(conversationState -> {
                 activeConversation = conversationState;
-                log.debug("Loaded active conversation for '%s': '%s'".formatted(profile, fullInstruction));
+                log.debug("Loaded active conversation '%s' for %s".formatted(profile, fullInstruction));
             });
         } catch (final QuestException e) {
-            log.debug("The profile '%s' is in a conversation that does not exist anymore: '%s'.".formatted(profile, fullInstruction), e);
+            log.debug("%s is in conversation '%s' that does not exist anymore.".formatted(profile, fullInstruction), e);
             saver.add(new Record(UpdateType.UPDATE_CONVERSATION, "null", profileID));
         }
     }
 
     private void setupProfile() {
-        log.debug("Profile not found in database. Setting up new profile in database for profile '%s' (profileID: '%s')".formatted(profile, profileID));
+        log.debug("Profile not found in database. Setting up new profile in database for %s".formatted(profile));
         saver.add(new Record(UpdateType.ADD_PROFILE, profileID));
         saver.add(new Record(UpdateType.ADD_PLAYER, profile.getPlayer().getUniqueId().toString(),
                 profileID, "default"));
@@ -280,7 +280,7 @@ public class PlayerData implements PersistentDataHolder {
      * this action (so they won't be started twice)
      */
     public void startObjectives() {
-        log.debug("Starting %d raw objectives for profile '%s'".formatted(objectives.size(), profile));
+        log.debug("Starting %d raw objectives for %s".formatted(objectives.size(), profile));
         for (final Map.Entry<String, String> entry : objectives.entrySet()) {
             final String objective = entry.getKey();
             try {
@@ -309,7 +309,7 @@ public class PlayerData implements PersistentDataHolder {
      * @param objectiveID ID of the objective
      */
     public void addNewRawObjective(final ObjectiveIdentifier objectiveID) {
-        log.debug("Adding new raw objective '%s' with default data for profile '%s'".formatted(objectiveID, profile));
+        log.debug("Adding new raw objective '%s' with default data for %s".formatted(objectiveID, profile));
         final Objective obj;
         try {
             obj = objectiveManager.getObjective(objectiveID);
@@ -344,7 +344,7 @@ public class PlayerData implements PersistentDataHolder {
         if (objectives.containsKey(idString)) {
             return false;
         }
-        log.debug("Adding raw objective '%s' for profile '%s'".formatted(objectiveID, profile));
+        log.debug("Adding raw objective '%s' for %s".formatted(objectiveID, profile));
         objectives.put(idString, data);
         return true;
     }
@@ -355,7 +355,7 @@ public class PlayerData implements PersistentDataHolder {
      * @param objectiveID the ID of the objective
      */
     public void removeRawObjective(final ObjectiveIdentifier objectiveID) {
-        log.debug("Removing raw objective '%s' for profile '%s'".formatted(objectiveID, profile));
+        log.debug("Removing raw objective '%s' for %s".formatted(objectiveID, profile));
         objectives.remove(objectiveID.toString());
         removeObjFromDB(objectiveID.toString());
     }
@@ -367,7 +367,7 @@ public class PlayerData implements PersistentDataHolder {
      * @param data        the data string of this objective (the one associated with ObjectiveData)
      */
     public void addObjToDB(final ObjectiveIdentifier objectiveID, final String data) {
-        log.debug("Adding objective '%s' with data '%s' to database for profile '%s'".formatted(objectiveID, data, profile));
+        log.debug("Adding objective '%s' with data '%s' to database for %s".formatted(objectiveID, data, profile));
         saver.add(new Record(UpdateType.ADD_OBJECTIVES, profileID, objectiveID.toString(), data));
     }
 
@@ -377,7 +377,7 @@ public class PlayerData implements PersistentDataHolder {
      * @param objectiveID the ID of the objective to remove
      */
     public void removeObjFromDB(final String objectiveID) {
-        log.debug("Removing objective '%s' from database for profile '%s'".formatted(objectiveID, profile));
+        log.debug("Removing objective '%s' from database for %s".formatted(objectiveID, profile));
         saver.add(new Record(UpdateType.REMOVE_OBJECTIVES, profileID, objectiveID));
     }
 
@@ -396,7 +396,7 @@ public class PlayerData implements PersistentDataHolder {
      * @param list list of all items in the backpack
      */
     public void setBackpack(final List<ItemStack> list) {
-        log.debug("Setting backpack for profile '%s' with %d items.".formatted(profile, list.size()));
+        log.debug("Setting backpack for %s with %d items.".formatted(profile, list.size()));
         this.backpack = (List<ItemStack>) copyItemList(list, new CopyOnWriteArrayList<>());
         refreshBackpack(list);
     }
@@ -419,7 +419,7 @@ public class PlayerData implements PersistentDataHolder {
      * @param amount amount of the items
      */
     public void addItem(final ItemStack item, final int amount) {
-        log.debug("Adding %d item(s) to backpack for profile '%s': '%s'".formatted(amount, profile, item.getType()));
+        log.debug("Adding %d item(s) of type '%s' to backpack for %s".formatted(amount, item.getType(), profile));
         int inputAmount = amount;
         for (final ItemStack itemStack : backpack) {
             if (item.isSimilar(itemStack)) {
@@ -458,7 +458,7 @@ public class PlayerData implements PersistentDataHolder {
     }
 
     private void refreshBackpack(final List<ItemStack> backpack) {
-        log.debug("Refreshing backpack in database for profile '%s' (currently %d items)...".formatted(profile, backpack.size()));
+        log.debug("Refreshing backpack in database for %s (currently %d items)...".formatted(profile, backpack.size()));
         // quite expensive, should be changed
         saver.add(new Record(UpdateType.DELETE_BACKPACK, profileID));
         for (final ItemStack itemStack : backpack) {
@@ -487,7 +487,7 @@ public class PlayerData implements PersistentDataHolder {
         if (Objects.equals(profileLanguage, lang)) {
             return;
         }
-        log.debug("Setting language for profile '%s' to '%s'".formatted(profile, lang));
+        log.debug("Setting language for %s to '%s'".formatted(profile, lang));
         this.profileLanguage = lang;
         if (journal != null) {
             journal.update();
@@ -509,7 +509,7 @@ public class PlayerData implements PersistentDataHolder {
      * Purges all profile's data from the database and from this object.
      */
     public void purgePlayer() {
-        log.debug("Purging all data for profile '%s' (profileID: '%s')".formatted(profile, profileID));
+        log.debug("Purging all data for %s".formatted(profile));
         for (final Objective obj : objectiveManager.getForProfile(profile)) {
             objectiveManager.cancel(profile, obj.getObjectiveID());
         }
@@ -577,7 +577,7 @@ public class PlayerData implements PersistentDataHolder {
         public void add(final String tag) {
             synchronized (allTags) {
                 if (allTags.add(tag)) {
-                    log.debug("Adding tag '%s' for profile '%s'".formatted(tag, profile));
+                    log.debug("Adding tag '%s' for %s".formatted(tag, profile));
                     saver.add(new Record(UpdateType.ADD_TAGS, profileID, tag));
                     new PlayerTagAddEvent(profile, !server.isPrimaryThread(), tag).callEvent();
                 }
@@ -588,7 +588,7 @@ public class PlayerData implements PersistentDataHolder {
         public void remove(final String tag) {
             synchronized (allTags) {
                 if (allTags.contains(tag)) {
-                    log.debug("Removing tag '%s' for profile '%s'".formatted(tag, profile));
+                    log.debug("Removing tag '%s' for %s".formatted(tag, profile));
                     allTags.remove(tag);
                     saver.add(new Record(UpdateType.REMOVE_TAGS, profileID, tag));
                     new PlayerTagRemoveEvent(profile, !server.isPrimaryThread(), tag).callEvent();
@@ -628,7 +628,7 @@ public class PlayerData implements PersistentDataHolder {
         @Override
         public void set(final String category, final int points) {
             synchronized (allPoints) {
-                log.debug("Setting points in category '%s' to %d for profile '%s'".formatted(category, points, profile));
+                log.debug("Setting points in category '%s' to %d for %s".formatted(category, points, profile));
                 saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
                 allPoints.put(category, points);
                 saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(points)));
@@ -639,7 +639,7 @@ public class PlayerData implements PersistentDataHolder {
         @Override
         public void add(final String category, final int points) {
             synchronized (allPoints) {
-                log.debug("Adding %d points in category '%s' for profile '%s'".formatted(points, category, profile));
+                log.debug("Adding %d points in category '%s' for %s".formatted(points, category, profile));
                 saver.add(new Record(UpdateType.REMOVE_POINTS, profileID, category));
                 final int newPoints = allPoints.compute(category, (key, value) -> (value == null ? 0 : value) + points);
                 saver.add(new Record(UpdateType.ADD_POINTS, profileID, category, String.valueOf(newPoints)));
@@ -650,7 +650,7 @@ public class PlayerData implements PersistentDataHolder {
         @Override
         public void remove(final String category) {
             synchronized (allPoints) {
-                log.debug("Removing points category '%s' for profile '%s'".formatted(category, profile));
+                log.debug("Removing points category '%s' for %s".formatted(category, profile));
                 final Integer removed = allPoints.remove(category);
                 if (removed != null) {
                     new PlayerUpdatePointEvent(profile, !server.isPrimaryThread(), category, 0).callEvent();

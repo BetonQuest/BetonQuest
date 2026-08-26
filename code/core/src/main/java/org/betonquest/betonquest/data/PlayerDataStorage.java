@@ -131,7 +131,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @return PlayerData object for the player
      */
     public PlayerData get(final Profile profile) {
-        log.debug("Getting PlayerData for profile: '%s' (cached=%s, online=%s)".formatted(profile, playerDataMap.containsKey(profile), profile.getOnlineProfile().isPresent()));
+        log.debug("Getting PlayerData for %s (cached=%s, online=%s)".formatted(profile, playerDataMap.containsKey(profile), profile.getOnlineProfile().isPresent()));
         final FutureTask<PlayerData> playerData = playerDataMap.get(profile);
         if (playerData != null) {
             return saveGet(playerData);
@@ -156,7 +156,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @param profile the {@link Profile} of the player whose playerData is to be removed
      */
     public void remove(final Profile profile) {
-        log.debug("Removing PlayerData from storage for profile: '%s'".formatted(profile));
+        log.debug("Removing PlayerData from storage for %s".formatted(profile));
         playerDataMap.remove(profile);
     }
 

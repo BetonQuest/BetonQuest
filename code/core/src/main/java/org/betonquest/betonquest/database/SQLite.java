@@ -85,7 +85,7 @@ public class SQLite extends Database {
 
     @Override
     protected void markMigrationExecuted(final Connection connection, final MigrationKey migrationKey) throws SQLException {
-        log.debug("Marking migration as executed: '%s'".formatted(migrationKey));
+        log.debug("Marking migration '%s' as executed.".formatted(migrationKey));
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO " + prefix + "migration (namespace, migration_id) VALUES (?,?)")) {
             statement.setString(1, migrationKey.namespace());
             statement.setInt(2, migrationKey.version());

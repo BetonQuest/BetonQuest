@@ -49,10 +49,10 @@ public class SQliteJdbcProvider implements ConnectionProvider {
         }
         final File file = new File(plugin.getDataFolder(), dbLocation);
         if (!file.exists()) {
-            log.debug("SQLite database file does not exist, creating new file: '%s'".formatted(file.getPath()));
+            log.debug("SQLite database file does not exist, creating new file '%s'".formatted(file.getPath()));
             try {
                 if (file.createNewFile()) {
-                    log.debug("Created SQLite database file: '%s'".formatted(file.getPath()));
+                    log.debug("Created SQLite database file '%s'".formatted(file.getPath()));
                 } else {
                     log.error("Unable to create database file '%s'!".formatted(file.getPath()));
                 }

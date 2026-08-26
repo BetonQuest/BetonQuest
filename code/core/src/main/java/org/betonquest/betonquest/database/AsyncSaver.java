@@ -58,7 +58,6 @@ public class AsyncSaver implements Runnable, Saver {
 
     @Override
     @SuppressFBWarnings("UW_UNCOND_WAIT")
-    @SuppressWarnings("PMD.AssignmentInOperand")
     public void run() {
         log.debug("Thread started.");
         boolean active = false;
@@ -77,12 +76,13 @@ public class AsyncSaver implements Runnable, Saver {
                     }
                 }
             }
-            if (!active && !(active = ensureActive())) {
+            if (!(active || ensureActive())) {
                 return;
             }
+            active = true;
             final Record rec = queue.poll();
             if (rec != null) {
-                log.debug("Processing queued record: '%s' with args: '%s'".formatted(rec.type(), Arrays.toString(rec.args())));
+                log.debug("Processing queued record: '%s' with arguments '%s'".formatted(rec.type(), Arrays.toString(rec.args())));
                 con.updateSQL(rec.type(), new Arguments(rec.args()));
             }
         }
@@ -111,7 +111,7 @@ public class AsyncSaver implements Runnable, Saver {
     @Override
     public void add(final Record rec) {
         synchronized (this) {
-            log.debug("Queued record: '%s' with args: '%s' (queued: %d)".formatted(rec.type(), Arrays.toString(rec.args()), queue.size() + 1));
+            log.debug("Queued record: '%s' with arguments '%s' (queued: %d)".formatted(rec.type(), Arrays.toString(rec.args()), queue.size() + 1));
             queue.add(rec);
             notifyAll();
         }
@@ -120,7 +120,7 @@ public class AsyncSaver implements Runnable, Saver {
     @Override
     public void end() {
         synchronized (this) {
-            log.debug("end() called. Pending records in queue: %d".formatted(queue.size()));
+            log.debug("Terminating with %d pending records in queue.".formatted(queue.size()));
             running = false;
             notifyAll();
         }

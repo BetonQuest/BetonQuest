@@ -128,14 +128,14 @@ public class GlobalData implements PersistentDataHolder {
         @Override
         public void add(final String tag) {
             if (globalTags.add(tag)) {
-                log.debug("Adding global tag: '%s'".formatted(tag));
+                log.debug("Adding global tag '%s'".formatted(tag));
                 saver.add(new Record(UpdateType.ADD_GLOBAL_TAGS, tag));
             }
         }
 
         @Override
         public void remove(final String tag) {
-            log.debug("Removing global tag: '%s'".formatted(tag));
+            log.debug("Removing global tag '%s'".formatted(tag));
             globalTags.remove(tag);
             saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, tag));
         }

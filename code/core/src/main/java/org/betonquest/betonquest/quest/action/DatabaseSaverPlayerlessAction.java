@@ -55,7 +55,7 @@ public class DatabaseSaverPlayerlessAction implements PlayerlessAction {
     public void execute() throws QuestException {
         final Saver.Record record = recordSupplier.get();
         if (log != null) {
-            log.debug("Adding record to saver via DatabaseSaverPlayerlessAction: '%s'".formatted(record));
+            log.debug("Adding record '%s' to saver via DatabaseSaverPlayerlessAction.".formatted(record));
         }
         saver.add(record);
     }

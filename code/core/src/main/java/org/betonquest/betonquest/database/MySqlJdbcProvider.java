@@ -71,11 +71,11 @@ public class MySqlJdbcProvider implements ConnectionProvider {
             connection = DriverManager.getConnection(jdbcPath, this.user, this.password);
             final String connectionClassName = connection.getClass().getName();
             if (!connectionClassName.startsWith("com.mysql.")) {
-                log.warn("External source modified or changed the MySQL connector! We can not guarantee that BetonQuest will work correctly with this connector: '%s'".formatted(connectionClassName));
+                log.warn("External source modified or changed the MySQL connector! We can not guarantee that BetonQuest will work correctly with connector '%s'".formatted(connectionClassName));
             }
             log.debug("MySQL JDBC connection established successfully.");
         } catch (final ClassNotFoundException | SQLException e) {
-            log.warn("MySQL says: '%s'".formatted(e.getMessage()), e);
+            log.warn("MySQL says: %s".formatted(e.getMessage()), e);
         }
         if (connection == null) {
             throw new IllegalStateException("Not able to create a database connection!");

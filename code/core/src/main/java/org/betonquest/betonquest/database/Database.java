@@ -90,7 +90,7 @@ public abstract class Database {
             while (!migrations.isEmpty()) {
                 final MigrationKey key = migrations.firstKey();
                 final DatabaseUpdate migration = migrations.remove(key);
-                log.debug("Executing migration: '%s'".formatted(key));
+                log.debug("Executing migration '%s'".formatted(key));
                 migration.executeUpdate(connection);
                 markMigrationExecuted(connection, key);
                 log.debug("Migration '%s' successfully executed and marked in database.".formatted(key));
