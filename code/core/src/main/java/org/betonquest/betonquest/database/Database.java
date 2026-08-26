@@ -63,19 +63,15 @@ public abstract class Database {
      * @return the current database connection
      */
     public Connection getConnection() {
-        log.debug("Requesting database connection from provider...");
-        final Connection connection = connectionProvider.create();
-        log.debug("Database connection acquired.");
-        return connection;
+        log.debug("New database connection requested");
+        return connectionProvider.create();
     }
 
     /**
      * Closes the database connection if it is open.
      */
     public void closeConnection() {
-        log.debug("Closing database connection...");
         connectionProvider.close();
-        log.debug("Database connection closed.");
     }
 
     /**
@@ -94,10 +90,10 @@ public abstract class Database {
             while (!migrations.isEmpty()) {
                 final MigrationKey key = migrations.firstKey();
                 final DatabaseUpdate migration = migrations.remove(key);
-                log.debug("Executing migration: %s".formatted(key));
+                log.debug("Executing migration: '%s'".formatted(key));
                 migration.executeUpdate(connection);
                 markMigrationExecuted(connection, key);
-                log.debug("Migration %s successfully executed and marked in database.".formatted(key));
+                log.debug("Migration '%s' successfully executed and marked in database.".formatted(key));
             }
             log.debug("Database tables checked and up to date.");
         } catch (final SQLException sqlException) {

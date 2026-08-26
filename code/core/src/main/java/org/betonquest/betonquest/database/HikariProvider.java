@@ -42,7 +42,7 @@ public class HikariProvider implements ConnectionProvider {
             throw new IllegalArgumentException("Invalid number of arguments '%s' != '%s' for driver '%s'"
                     .formatted(args.length, driver.getRequiredArgs(), driver.name()));
         }
-        log.debug("Initializing HikariCP pool for driver %s".formatted(driver.name()));
+        log.debug("Initializing HikariCP pool for driver '%s'".formatted(driver.name()));
         final HikariConfig config = driver.getConfig(args);
         this.dataSource = new HikariDataSource(config);
         log.debug("HikariCP pool initialized successfully.");
@@ -52,9 +52,7 @@ public class HikariProvider implements ConnectionProvider {
     public Connection create() {
         try {
             log.debug("Obtaining database connection from HikariCP pool...");
-            final Connection connection = dataSource.getConnection();
-            log.debug("Database connection obtained from HikariCP pool successfully.");
-            return connection;
+            return dataSource.getConnection();
         } catch (final SQLException e) {
             throw new IllegalStateException("Failed to create '%s' connection via hikari pool".formatted(driver.name()), e);
         }

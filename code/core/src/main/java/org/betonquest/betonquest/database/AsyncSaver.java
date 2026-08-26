@@ -60,21 +60,20 @@ public class AsyncSaver implements Runnable, Saver {
     @SuppressFBWarnings("UW_UNCOND_WAIT")
     @SuppressWarnings("PMD.AssignmentInOperand")
     public void run() {
-        log.debug("AsyncSaver thread started.");
+        log.debug("Thread started.");
         boolean active = false;
         while (true) {
             while (queue.isEmpty()) {
                 if (!running) {
-                    log.debug("AsyncSaver thread terminating.");
+                    log.debug("Thread terminating.");
                     return;
                 }
                 synchronized (this) {
                     try {
                         active = false;
-                        log.debug("AsyncSaver queue empty, waiting for new records...");
                         wait();
                     } catch (final InterruptedException e) {
-                        log.warn("AsyncSaver got interrupted!");
+                        log.warn("Got interrupted!");
                     }
                 }
             }
@@ -83,7 +82,7 @@ public class AsyncSaver implements Runnable, Saver {
             }
             final Record rec = queue.poll();
             if (rec != null) {
-                log.debug("AsyncSaver processing queued record: %s with args: %s".formatted(rec.type(), Arrays.toString(rec.args())));
+                log.debug("Processing queued record: '%s' with args: '%s'".formatted(rec.type(), Arrays.toString(rec.args())));
                 con.updateSQL(rec.type(), new Arguments(rec.args()));
             }
         }
@@ -91,9 +90,9 @@ public class AsyncSaver implements Runnable, Saver {
 
     private boolean ensureActive() {
         try (Connection connection = con.getDatabase().getConnection()) {
-            log.debug("Validating database connection for AsyncSaver...");
+            log.debug("Validating database connection...");
             if (connection.isValid(5000)) {
-                log.debug("Database connection validated for AsyncSaver.");
+                log.debug("Database connection validated.");
                 return true;
             }
         } catch (final IllegalStateException | SQLException illegalStateException) {
@@ -102,7 +101,7 @@ public class AsyncSaver implements Runnable, Saver {
             try {
                 Thread.sleep(reconnectInterval);
             } catch (final InterruptedException interruptedException) {
-                log.warn("AsyncSaver got interrupted!", interruptedException);
+                log.warn("Got interrupted!", interruptedException);
                 return false;
             }
         }
@@ -112,7 +111,7 @@ public class AsyncSaver implements Runnable, Saver {
     @Override
     public void add(final Record rec) {
         synchronized (this) {
-            log.debug("AsyncSaver queued record: %s with args: %s (queue size: %d)".formatted(rec.type(), Arrays.toString(rec.args()), queue.size() + 1));
+            log.debug("Queued record: '%s' with args: '%s' (queued: %d)".formatted(rec.type(), Arrays.toString(rec.args()), queue.size() + 1));
             queue.add(rec);
             notifyAll();
         }
@@ -121,7 +120,7 @@ public class AsyncSaver implements Runnable, Saver {
     @Override
     public void end() {
         synchronized (this) {
-            log.debug("AsyncSaver end() called. Pending records in queue: %d".formatted(queue.size()));
+            log.debug("end() called. Pending records in queue: %d".formatted(queue.size()));
             running = false;
             notifyAll();
         }

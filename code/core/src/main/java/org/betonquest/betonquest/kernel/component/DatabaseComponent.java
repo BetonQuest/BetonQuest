@@ -59,16 +59,15 @@ public class DatabaseComponent extends AbstractCoreComponent {
         Database database = null;
         if (mySQLEnabled) {
             log.debug("Connecting to MySQL database");
-            final BetonQuestLogger databaseLogger = loggerFactory.create(MySQL.class, "Database");
             final String host = config.getString("mysql.host", "");
             final String port = config.getString("mysql.port", "");
             final String base = config.getString("mysql.base", "");
             final String username = config.getString("mysql.user", "");
             final String password = config.getString("mysql.pass", "");
             final ConnectionProvider connectionProvider = hikariEnabled
-                    ? new HikariProvider(databaseLogger, HikariProvider.HikariDriver.MYSQL, host, port, base, username, password)
-                    : new MySqlJdbcProvider(databaseLogger, host, port, base, username, password);
-            final Database mySql = new MySQL(databaseLogger, connectionProvider, plugin, config);
+                    ? new HikariProvider(loggerFactory.create(HikariProvider.class, "HikariCP"), HikariProvider.HikariDriver.MYSQL, host, port, base, username, password)
+                    : new MySqlJdbcProvider(loggerFactory.create(MySqlJdbcProvider.class, "MySql"), host, port, base, username, password);
+            final Database mySql = new MySQL(loggerFactory.create(MySQL.class, "Database"), connectionProvider, plugin, config);
             try (Connection connection = mySql.getConnection()) {
                 this.mySql = connection.isValid(5000);
                 database = mySql;
@@ -78,9 +77,8 @@ public class DatabaseComponent extends AbstractCoreComponent {
             }
         }
         if (database == null) {
-            final BetonQuestLogger databaseLogger = loggerFactory.create(SQLite.class, "Database");
-            final ConnectionProvider connectionProvider = new SQliteJdbcProvider(databaseLogger, plugin, "database.db");
-            database = new SQLite(databaseLogger, connectionProvider, plugin, config);
+            final ConnectionProvider connectionProvider = new SQliteJdbcProvider(loggerFactory.create(SQliteJdbcProvider.class, "SQlite"), plugin, "database.db");
+            database = new SQLite(loggerFactory.create(SQLite.class, "Database"), connectionProvider, plugin, config);
             if (mySQLEnabled) {
                 log.warn("No connection to the mySQL Database! Using SQLite for storing data as fallback!");
             } else {
@@ -89,7 +87,7 @@ public class DatabaseComponent extends AbstractCoreComponent {
         }
 
         database.createTables();
-        final Connector connector = new Connector(loggerFactory.create(Connector.class), config.getString("mysql.prefix"), database);
+        final Connector connector = new Connector(loggerFactory.create(Connector.class, "DatabaseConnector"), config.getString("mysql.prefix"), database);
 
         dependencyProvider.take(Connector.class, connector);
         dependencyProvider.take(DatabaseComponent.class, this);

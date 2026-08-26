@@ -70,7 +70,7 @@ public class MySQL extends Database {
     @Override
     @SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     protected Set<MigrationKey> queryExecutedMigrations(final Connection connection) throws SQLException {
-        log.debug("Querying executed migrations from table %s migration".formatted(prefix));
+        log.debug("Querying executed migrations from table '%s' migration".formatted(prefix));
         final Set<MigrationKey> executedMigrations = new HashSet<>();
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix
@@ -87,7 +87,7 @@ public class MySQL extends Database {
 
     @Override
     protected void markMigrationExecuted(final Connection connection, final MigrationKey migrationKey) throws SQLException {
-        log.debug("Marking migration as executed: %s".formatted(migrationKey));
+        log.debug("Marking migration as executed: '%s'".formatted(migrationKey));
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO " + prefix + "migration (namespace, migration_id) VALUES (?,?)")) {
             statement.setString(1, migrationKey.namespace());
             statement.setInt(2, migrationKey.version());

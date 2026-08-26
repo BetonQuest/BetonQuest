@@ -95,9 +95,8 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @param onlineProfiles the profiles to update
      */
     public void reloadProfiles(final Collection<OnlineProfile> onlineProfiles) {
-        log.debug("Reloading profiles for %d online profile(s)...".formatted(onlineProfiles.size()));
+        log.debug("Reloading %d online profile(s)...".formatted(onlineProfiles.size()));
         for (final OnlineProfile onlineProfile : onlineProfiles) {
-            log.debug("Updating auto-once objectives and journal for player " + onlineProfile);
             final PlayerData playerData = get(onlineProfile);
             objectives.startAll(onlineProfile, this);
             playerData.getJournal().update();
@@ -132,7 +131,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @return PlayerData object for the player
      */
     public PlayerData get(final Profile profile) {
-        log.debug("Getting PlayerData for profile: %s (cached=%s, online=%s)".formatted(profile, playerDataMap.containsKey(profile), profile.getOnlineProfile().isPresent()));
+        log.debug("Getting PlayerData for profile: '%s' (cached=%s, online=%s)".formatted(profile, playerDataMap.containsKey(profile), profile.getOnlineProfile().isPresent()));
         final FutureTask<PlayerData> playerData = playerDataMap.get(profile);
         if (playerData != null) {
             return saveGet(playerData);
@@ -157,7 +156,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      * @param profile the {@link Profile} of the player whose playerData is to be removed
      */
     public void remove(final Profile profile) {
-        log.debug("Removing PlayerData from storage for profile: %s".formatted(profile));
+        log.debug("Removing PlayerData from storage for profile: '%s'".formatted(profile));
         playerDataMap.remove(profile);
     }
 

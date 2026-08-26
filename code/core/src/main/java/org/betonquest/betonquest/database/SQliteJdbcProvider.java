@@ -49,10 +49,10 @@ public class SQliteJdbcProvider implements ConnectionProvider {
         }
         final File file = new File(plugin.getDataFolder(), dbLocation);
         if (!file.exists()) {
-            log.debug("SQLite database file does not exist, creating new file: %s".formatted(file.getPath()));
+            log.debug("SQLite database file does not exist, creating new file: '%s'".formatted(file.getPath()));
             try {
                 if (file.createNewFile()) {
-                    log.debug("Created SQLite database file: %s".formatted(file.getPath()));
+                    log.debug("Created SQLite database file: '%s'".formatted(file.getPath()));
                 } else {
                     log.error("Unable to create database file '%s'!".formatted(file.getPath()));
                 }
@@ -62,9 +62,11 @@ public class SQliteJdbcProvider implements ConnectionProvider {
         }
         Connection connection = null;
         try {
-            log.debug("Connecting via SQLite JDBC to jdbc:sqlite:%s/%s".formatted(plugin.getDataFolder().toPath(), dbLocation));
+            final String jdbcPath = "jdbc:sqlite:%s/%s".formatted(plugin.getDataFolder().toPath(), dbLocation);
+            log.debug("Checking for SQLite JDBC driver...");
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:%s/%s".formatted(plugin.getDataFolder().toPath(), dbLocation));
+            log.debug("Connecting via SQLite JDBC to '%s'".formatted(jdbcPath));
+            connection = DriverManager.getConnection(jdbcPath);
             log.debug("SQLite JDBC connection established successfully.");
         } catch (ClassNotFoundException | SQLException e) {
             log.error("There was an exception with creating the Sqlite connection.", e);

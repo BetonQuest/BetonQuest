@@ -61,18 +61,15 @@ public class GlobalData implements PersistentDataHolder {
             while (resultSet.next()) {
                 this.globalTags.add(resultSet.getString("tag"));
             }
+            log.debug("Loaded %d global tags from database".formatted(this.globalTags.size()));
         }, "Could not load global tags.");
-        log.debug("Loaded %d global tags from database".formatted(this.globalTags.size()));
         connector.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS, new Arguments(), resultSet -> {
             while (resultSet.next()) {
                 final String category = resultSet.getString("category");
                 this.globalPoints.put(category, resultSet.getInt("count"));
             }
+            log.debug("Loaded %d global points from database".formatted(this.globalPoints.size()));
         }, "Could not load global points.");
-        log.debug("Loaded %d global points from database".formatted(this.globalPoints.size()));
-
-        log.debug("There are " + this.globalTags.size() + " global_tags and " + this.globalPoints.size()
-                + " global_points loaded");
     }
 
     /**
@@ -131,14 +128,14 @@ public class GlobalData implements PersistentDataHolder {
         @Override
         public void add(final String tag) {
             if (globalTags.add(tag)) {
-                log.debug("Adding global tag: %s".formatted(tag));
+                log.debug("Adding global tag: '%s'".formatted(tag));
                 saver.add(new Record(UpdateType.ADD_GLOBAL_TAGS, tag));
             }
         }
 
         @Override
         public void remove(final String tag) {
-            log.debug("Removing global tag: %s".formatted(tag));
+            log.debug("Removing global tag: '%s'".formatted(tag));
             globalTags.remove(tag);
             saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, tag));
         }
