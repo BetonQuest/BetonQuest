@@ -63,14 +63,17 @@ public class MySqlJdbcProvider implements ConnectionProvider {
     @Override
     public Connection create() {
         Connection connection = null;
+        final String jdbcPath = "jdbc:mysql://%s:%s/%s?&useSSL=false".formatted(this.hostname, this.port, this.database);
         try {
+            log.debug("Checking for MySQL JDBC driver...");
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://%s:%s/%s?&useSSL=false"
-                    .formatted(this.hostname, this.port, this.database), this.user, this.password);
+            log.debug("Connecting via MySQL JDBC to '%s' with user '%s'".formatted(jdbcPath, this.user));
+            connection = DriverManager.getConnection(jdbcPath, this.user, this.password);
             final String connectionClassName = connection.getClass().getName();
             if (!connectionClassName.startsWith("com.mysql.")) {
-                log.warn("External source modified or changed the MySQL connector! We can not guarantee that BetonQuest will work correctly with this connector: %s".formatted(connectionClassName));
+                log.warn("External source modified or changed the MySQL connector! We can not guarantee that BetonQuest will work correctly with connector '%s'".formatted(connectionClassName));
             }
+            log.debug("MySQL JDBC connection established successfully.");
         } catch (final ClassNotFoundException | SQLException e) {
             log.warn("MySQL says: %s".formatted(e.getMessage()), e);
         }

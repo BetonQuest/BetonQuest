@@ -68,6 +68,7 @@ public class SQLite extends Database {
 
     @Override
     protected Set<MigrationKey> queryExecutedMigrations(final Connection connection) throws SQLException {
+        log.debug("Querying executed migrations from table '%s' migration".formatted(prefix));
         final Set<MigrationKey> executedMigrations = new HashSet<>();
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix
@@ -84,6 +85,7 @@ public class SQLite extends Database {
 
     @Override
     protected void markMigrationExecuted(final Connection connection, final MigrationKey migrationKey) throws SQLException {
+        log.debug("Marking migration '%s' as executed.".formatted(migrationKey));
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO " + prefix + "migration (namespace, migration_id) VALUES (?,?)")) {
             statement.setString(1, migrationKey.namespace());
             statement.setInt(2, migrationKey.version());
@@ -99,6 +101,7 @@ public class SQLite extends Database {
      */
     @SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     private void migration1(final Connection connection) throws SQLException {
+        log.debug("Running SQLite migration 1 (initial table creation)...");
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix + "objectives ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -147,6 +150,7 @@ public class SQLite extends Database {
      */
     @SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     private void migration2(final Connection connection) throws SQLException {
+        log.debug("Running SQLite migration 2 (profiles table migration)...");
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("CREATE TABLE " + prefix + "profile ("
                     + "profileID CHAR(36) PRIMARY KEY NOT NULL)");
@@ -249,6 +253,7 @@ public class SQLite extends Database {
     }
 
     private void migration3(final Connection connection) throws SQLException {
+        log.debug("Running SQLite migration 3 (player_profile name migration)...");
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("UPDATE " + prefix + "player_profile "
                     + "SET name = '" + profileInitialName + "' WHERE name IS NULL");
@@ -270,6 +275,7 @@ public class SQLite extends Database {
 
     @SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION")
     private void migration4(final Connection connection) throws SQLException {
+        log.debug("Running SQLite migration 4 (backpack serialization migration)...");
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("CREATE TABLE " + prefix + "backpack_tmp ("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
@@ -315,6 +321,7 @@ public class SQLite extends Database {
     }
 
     private void migration5(final Connection connection) throws SQLException {
+        log.debug("Running SQLite migration 5 (package separator migration)...");
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("UPDATE " + prefix + "tags SET tag = REPLACE(tag, '.', '>')");
             statement.executeUpdate("UPDATE " + prefix + "global_tags SET tag = REPLACE(tag, '.', '>')");
@@ -327,6 +334,7 @@ public class SQLite extends Database {
 
     @SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION")
     private void migration6(final Connection connection) throws SQLException {
+        log.debug("Running SQLite migration 6 (quest item key migration)...");
         try (ResultSet resultSet = connection.createStatement().executeQuery("SELECT id, serialized FROM " + prefix + "backpack");
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "UPDATE " + prefix + "backpack SET serialized = ? WHERE id = ?")) {
@@ -346,6 +354,7 @@ public class SQLite extends Database {
     }
 
     private void migration7(final Connection connection) throws SQLException {
+        log.debug("Running SQLite migration 7 (auto-once tag rename migration)...");
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("UPDATE " + prefix + "tags SET tag = REPLACE(tag, 'global-', 'auto-once-') WHERE tag LIKE '%>global-%'");
         }
