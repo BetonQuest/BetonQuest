@@ -895,6 +895,29 @@ objectives:
   wolf: "tame WOLF 2 actions:wolfs_tamed"
 ```
 
+## `Trade`
+
+__Context__: @snippet:objective-meta:online@  
+__Syntax__: `trade [ingredients] [results] {exact}`  
+__Description__: The player has to trade with a merchant inventory.
+
+The player has to complete a trade that matches the specified ingredients and results.
+If no ingredients or results are specified, any trade will complete the objective.
+If the `exact` flag is not set, any subset of the defined items will also complete the objective.
+
+| Parameter                  | Type                   | Explanation                                                                                                |
+|----------------------------|------------------------|------------------------------------------------------------------------------------------------------------|
+| ingredients <br>List[Item] | Optional <br>[any]     | A list of items of which any must be present in the trade's ingredients.                                   |
+| results <br>List[Item]     | Optional <br>[any]     | A list of items of which any must be present in the trade's results.                                       |
+| exact <br>[Boolean]        | Flag <br>[false, true] | If set, the trade must exactly match the specified ingredients and results instead of matching any subset. |
+
+```YAML title="Examples"
+objectives:
+  anyTrade: "trade"
+  buyBread: "trade results:bread"
+  exactTrade: "trade ingredients:emerald results:bread exact"
+```
+
 ## `Timer`
 
 __Context__: @snippet:objective-meta:online@  
