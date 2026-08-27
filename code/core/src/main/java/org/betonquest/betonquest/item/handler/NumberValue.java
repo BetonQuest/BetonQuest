@@ -27,7 +27,7 @@ public interface NumberValue {
     @Nullable
     static Argument<NumberValue> create(final String key, final String messagePart, final Instruction instruction) throws QuestException {
         return instruction.parse(resolved -> {
-            final Map.Entry<Number, Integer> entry = HandlerUtil.getNumberValue(key, messagePart);
+            final Map.Entry<Number, Integer> entry = HandlerUtil.getNumberValue(resolved, messagePart);
             return (NumberValue) new DefaultNumberValue(entry.getKey(), entry.getValue());
         }).get(key).orElse(null);
     }
