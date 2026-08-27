@@ -68,14 +68,14 @@ public class LoreHandler implements LoreMetaHandler {
         if (rawLoreLines.isEmpty()) {
             lore = ExistenceArgument.whateverEmptyList();
         } else {
-            lore = (ExistenceArgument<List<Component>>) instruction.chainForArgument(rawLoreLines).parse(data -> {
+            lore = instruction.chainForArgument(rawLoreLines).parse(data -> {
                 final String[] split = data.split(";");
                 final List<Component> lorelei = new ArrayList<>(split.length);
                 for (final String line : split) {
                     lorelei.add(instruction.chainForArgument(line).component().map(Component::compact).get().getValue(null));
                 }
                 return Pair.of(Existence.REQUIRED, lorelei);
-            }).get();
+            }).get()::getValue;
         }
         final Argument<Boolean> exact = instruction.bool().map(bool -> !bool).get("lore-containing", true);
         final Attribute.Standard questAttribute = questHandler.parse(instruction);

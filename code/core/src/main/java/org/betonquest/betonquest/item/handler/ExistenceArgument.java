@@ -113,8 +113,7 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
      */
     static <T> ExistenceArgument<@Nullable T> apply(
             final String key, final DecoratableChainRetriever<T> retriever) throws QuestException {
-        return (ExistenceArgument<T>) apply(retriever)
-                .get(key, Pair.of(Existence.WHATEVER, null));
+        return apply(retriever).get(key, Pair.of(Existence.WHATEVER, null))::getValue;
     }
 
     /**
@@ -136,7 +135,10 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
     @Nullable
     static <T> ExistenceArgument<@Nullable T> applyOrNull(
             final String key, final DecoratableChainRetriever<T> retriever) throws QuestException {
-        return (ExistenceArgument<T>) apply(retriever).get(key).orElse(null);
+        return apply(retriever)
+                .get(key)
+                .map(argument -> (ExistenceArgument<T>) argument::getValue)
+                .orElse(null);
     }
 
     /**
@@ -157,10 +159,12 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
     @Nullable
     static <T> ExistenceArgument<List<T>> applyListOrNull(
             final String key, final DecoratableChainRetriever<T> retriever) throws QuestException {
-        return (ExistenceArgument<List<T>>) retriever
+        return retriever
                 .list().notEmpty()
                 .map(list -> Pair.of(Existence.REQUIRED, list))
                 .prefilter(Existence.NONE_KEY, Pair.of(Existence.FORBIDDEN, List.of()))
-                .get(key).orElse(null);
+                .get(key)
+                .map(argument -> (ExistenceArgument<List<T>>) argument::getValue)
+                .orElse(null);
     }
 }

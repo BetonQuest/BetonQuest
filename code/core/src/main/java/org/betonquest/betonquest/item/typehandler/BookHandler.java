@@ -89,8 +89,8 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     public Attribute<BookMeta> parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<Component> title = ExistenceArgument.applyOrNull("title", instruction.component().map(Component::compact));
         final ExistenceArgument<Component> author = ExistenceArgument.applyOrNull("author", instruction.component().map(Component::compact));
-        final ExistenceArgument<List<Component>> text = (ExistenceArgument<List<Component>>)
-                ExistenceArgument.apply(instruction.component().map(bookPageWrapper::splitPages)).get("text").orElse(null);
+        final ExistenceArgument<List<Component>> text = ExistenceArgument.apply(instruction.component().map(bookPageWrapper::splitPages)).get("text")
+                .map(argument -> (ExistenceArgument<List<Component>>) argument::getValue).orElse(null);
         if (title == null && author == null && text == null) {
             return null;
         }

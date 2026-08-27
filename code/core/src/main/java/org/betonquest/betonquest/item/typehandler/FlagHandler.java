@@ -44,11 +44,13 @@ public class FlagHandler implements ItemMetaHandler.Standard {
     @Override
     @Nullable
     public Attribute.Standard parse(final Instruction instruction) throws QuestException {
-        final ExistenceArgument<Set<ItemFlag>> flags = (ExistenceArgument<Set<ItemFlag>>) instruction.enumeration(ItemFlag.class)
+        final ExistenceArgument<Set<ItemFlag>> flags = instruction.enumeration(ItemFlag.class)
                 .list()
                 .map(list -> Pair.of(Existence.REQUIRED, Set.copyOf(list)))
                 .prefilter("", Pair.of(Existence.FORBIDDEN, Set.of()))
-                .get("flags").orElse(null);
+                .get("flags")
+                .map(argument -> (ExistenceArgument<Set<ItemFlag>>) argument::getValue)
+                .orElse(null);
         if (flags == null) {
             return null;
         }
