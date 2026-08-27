@@ -157,6 +157,9 @@ public class UpdatedPotionHandler extends PotionHandler {
             return switch (pair.getLeft()) {
                 case WHATEVER -> true;
                 case REQUIRED -> {
+                    if (basePotionType == base) {
+                        yield true;
+                    }
                     if (base == null || !base.getKey().getNamespace().equals(basePotionType.getKey().getNamespace())) {
                         yield false;
                     }
@@ -171,8 +174,6 @@ public class UpdatedPotionHandler extends PotionHandler {
                     }
 
                     if (!effect.equals(baseType)) {
-                        // TODO definitive test that here
-                        //   I don't know if we need to have that at all in the old code.
                         yield false;
                     }
                     final Optional<Boolean> extended = resolved.extended();
