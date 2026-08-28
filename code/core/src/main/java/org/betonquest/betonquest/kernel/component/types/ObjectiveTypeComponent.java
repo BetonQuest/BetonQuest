@@ -48,6 +48,7 @@ import org.betonquest.betonquest.quest.objective.stage.StageObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.step.StepObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.tame.TameObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.timer.TimerObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.trade.TradeObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.variable.VariableObjectiveFactory;
 import org.bukkit.plugin.Plugin;
 
@@ -119,6 +120,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
         objectiveTypes.register("tag", new TagObjectiveFactory(dataStorage));
         objectiveTypes.register("tame", new TameObjectiveFactory());
         objectiveTypes.register("timer", new TimerObjectiveFactory(actionManager));
+        objectiveTypes.register("trade", new TradeObjectiveFactory());
         objectiveTypes.register("variable", new VariableObjectiveFactory());
         objectiveTypes.register("equip", new EquipItemObjectiveFactory());
         objectiveTypes.register("jump", new JumpObjectiveFactory());
