@@ -4858,6 +4858,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#trade">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Trade</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#timer">
     <span class="md-ellipsis">
 
@@ -10169,6 +10192,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#trade">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Trade</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#timer">
     <span class="md-ellipsis">
 
@@ -11670,6 +11716,44 @@ notification interval after a colon.</p>
 <code>left</code> is the amount of animals still needed to tame and <code>total</code> is the amount of animals initially required.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">wolf</span><span class="p">:</span><span class="w"> </span><span class="s">"tame</span><span class="nv"> </span><span class="s">WOLF</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">actions:wolfs_tamed"</span>
+</code></pre></div>
+<h2 id="trade"><code>Trade</code><a class="headerlink" href="#trade" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
+<strong>Syntax</strong>: <code>trade [ingredients] [results] {exact}</code><br>
+<strong>Description</strong>: The player has to trade with a merchant inventory.</p>
+<p>The player has to complete a trade that matches the specified ingredients and results.
+If no ingredients or results are specified, any trade will complete the objective.
+If the <code>exact</code> flag is not set, any subset of the defined items will also complete the objective.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ingredients <br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[any]</td>
+<td>A list of items of which any must be present in the trade's ingredients.</td>
+</tr>
+<tr>
+<td>results <br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[any]</td>
+<td>A list of items of which any must be present in the trade's results.</td>
+</tr>
+<tr>
+<td>exact <br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr> <br>[false, true]</td>
+<td>If set, the trade must exactly match the specified ingredients and results instead of matching any subset.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">anyTrade</span><span class="p">:</span><span class="w"> </span><span class="s">"trade"</span>
+<span class="w">  </span><span class="nt">buyBread</span><span class="p">:</span><span class="w"> </span><span class="s">"trade</span><span class="nv"> </span><span class="s">results:bread"</span>
+<span class="w">  </span><span class="nt">exactTrade</span><span class="p">:</span><span class="w"> </span><span class="s">"trade</span><span class="nv"> </span><span class="s">ingredients:emerald</span><span class="nv"> </span><span class="s">results:bread</span><span class="nv"> </span><span class="s">exact"</span>
 </code></pre></div>
 <h2 id="timer"><code>Timer</code><a class="headerlink" href="#timer" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
