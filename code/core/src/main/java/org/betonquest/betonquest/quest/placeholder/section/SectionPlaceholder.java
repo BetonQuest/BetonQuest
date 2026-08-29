@@ -104,7 +104,10 @@ public class SectionPlaceholder implements NullablePlaceholder {
             Collections.shuffle(keys);
         }
 
-        List<String> result = keys.stream().limit(limit).map(key -> PackageIdentifierParser.INSTANCE.apply(questPackage, key)).toList();
+        List<String> result = keys.stream().limit(limit)
+                .map(key -> identifier + pathSeparator + key)
+                .map(key -> PackageIdentifierParser.INSTANCE.apply(questPackage, key))
+                .toList();
         if (shuffle) {
             result = new ArrayList<>(result);
             Collections.shuffle(result);
