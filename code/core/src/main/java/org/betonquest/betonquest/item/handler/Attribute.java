@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Values to be set on an item meta which may be resolved per {@link Profile}.
- *
  */
 @FunctionalInterface
 public interface Attribute {

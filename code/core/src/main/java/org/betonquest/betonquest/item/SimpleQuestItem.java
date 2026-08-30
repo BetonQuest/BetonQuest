@@ -23,7 +23,7 @@ import java.util.Locale;
  * @param lore     providing lore lines for placeholders
  * @param handlers the resolved attributes defining the QuestItem, excluding explicit given one (name and lore)
  */
-record SimpleQuestItem(BlockSelector selector, NameMetaHandler.ResolvedNameAttribute name,
+public record SimpleQuestItem(BlockSelector selector, NameMetaHandler.ResolvedNameAttribute name,
                        LoreMetaHandler.ResolvedLoreAttribute lore,
                        List<ResolvedAttribute<?>> handlers) implements QuestItem {
 

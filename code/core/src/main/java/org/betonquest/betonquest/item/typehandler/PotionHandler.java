@@ -194,7 +194,6 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
          * @return if the given effects satisfies the stored
          */
         public boolean checkCustom(final List<PotionEffect> custom) {
-
             final Existence customE = customPair.getLeft();
             if (customE == Existence.WHATEVER) {
                 return true;
