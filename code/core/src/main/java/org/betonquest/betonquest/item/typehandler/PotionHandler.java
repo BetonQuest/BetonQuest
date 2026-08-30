@@ -96,7 +96,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
             return null;
         }
         return new NonResolved(type == null ? ExistenceArgument.whateverValue(PotionType.WATER) : type,
-                extended, upgraded, ExistenceArgument.fallbackEmptyList(custom), exact.orElse(profile -> false));
+                extended, upgraded, ExistenceArgument.fallbackEmptyList(custom), exact.orElse(profile -> true));
     }
 
     /**

@@ -125,7 +125,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         if (effects == null && power == null && exact.isEmpty()) {
             return null;
         }
-        return new NonResolved(ExistenceArgument.fallbackEmptyList(effects), power, exact.orElse(profile -> false));
+        return new NonResolved(ExistenceArgument.fallbackEmptyList(effects), power, exact.orElse(profile -> true));
     }
 
     /**
@@ -155,14 +155,14 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
     /**
      * Resolved Firework Handler.
      *
-     * @param existence      If the single effect is required.
-     * @param effectHandlers The effect Handlers to check.
-     * @param effects        The individual Firework Effect Handlers.
-     * @param power          The firework power.
-     * @param exact          If the Firework need to be exact the same or just contain all specified effects.
+     * @param existence       If the single effect is required.
+     * @param effects         The effect Handlers to check.
+     * @param resolvedEffects The individual Firework Effect Handlers.
+     * @param power           The firework power.
+     * @param exact           If the Firework need to be exact the same or just contain all specified effects.
      */
-    private record ResolvedFirework(Existence existence, List<FireworkEffectHandler> effectHandlers,
-                                    List<FireworkEffect> effects, @Nullable NumberValue power, boolean exact)
+    private record ResolvedFirework(Existence existence, List<FireworkEffectHandler> effects,
+                                    List<FireworkEffect> resolvedEffects, @Nullable NumberValue power, boolean exact)
             implements ResolvedAttribute<FireworkMeta> {
 
         @Override
@@ -172,7 +172,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
         @Override
         public void populate(final FireworkMeta fireworkMeta) {
-            fireworkMeta.addEffects(effects);
+            fireworkMeta.addEffects(resolvedEffects);
             if (power != null) {
                 fireworkMeta.setPower(power.value());
             }
@@ -184,7 +184,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
          * @param fireworkMeta the meta to populate
          */
         private void populate(final FireworkEffectMeta fireworkMeta) {
-            fireworkMeta.setEffect(effects.isEmpty() ? null : effects.get(0));
+            fireworkMeta.setEffect(resolvedEffects.isEmpty() ? null : resolvedEffects.get(0));
         }
 
         @Override
@@ -223,7 +223,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
             final FireworkEffect single = fireworkMeta.getEffect();
             return switch (existence) {
                 case WHATEVER -> true;
-                case REQUIRED -> single != null && !effectHandlers.isEmpty() && effectHandlers.get(0).check(single);
+                case REQUIRED -> single != null && !effects.isEmpty() && effects.get(0).check(single);
                 case FORBIDDEN -> single == null;
             };
         }
@@ -231,12 +231,12 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         private boolean checkEffects(final List<FireworkEffect> list) {
             return switch (existence) {
                 case WHATEVER -> true;
-                case REQUIRED -> checkRequired(effectHandlers, list);
+                case REQUIRED -> checkRequired(list);
                 case FORBIDDEN -> list.isEmpty();
             };
         }
 
-        private boolean checkRequired(final List<FireworkEffectHandler> effects, final List<FireworkEffect> list) {
+        private boolean checkRequired(final List<FireworkEffect> list) {
             if (exact && list.size() != effects.size()) {
                 return false;
             }
