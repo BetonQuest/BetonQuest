@@ -4,6 +4,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
+import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
 import org.betonquest.betonquest.item.handler.Existence;
@@ -121,10 +123,13 @@ public final class HandlerUtil {
      */
     @Nullable
     public static Argument<Existence> getIsKeyOrTrue(final String key, final Instruction instruction) throws QuestException {
-        return instruction
+        final FlagArgument<Existence> argument = instruction
                 .parse(resolved -> new BooleanParser().apply(resolved) ? Existence.REQUIRED : Existence.FORBIDDEN)
-                .prefilter(key, Existence.REQUIRED)
-                .get(key).orElse(null);
+                .getFlag(key, Existence.REQUIRED);
+        if (argument.getState() == FlagState.ABSENT) {
+            return null;
+        }
+        return profile -> argument.getValue(profile).orElseThrow();
     }
 
     /**
