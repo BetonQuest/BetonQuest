@@ -70,7 +70,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
         if (checkers == null && exact.isEmpty()) {
             return null;
         }
-        return new NonParsed(checkers == null ? ExistenceArgument.whateverEmptyList() : checkers, exact.orElse(profile -> true));
+        return new NonParsed(ExistenceArgument.fallbackEmptyList(checkers), exact.orElse(profile -> true));
     }
 
     /**

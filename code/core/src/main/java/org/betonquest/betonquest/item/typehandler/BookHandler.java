@@ -95,7 +95,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
             return null;
         }
         return new NonResolved(ExistenceArgument.fallback(title), ExistenceArgument.fallback(author),
-                text == null ? ExistenceArgument.whateverEmptyList() : text);
+                ExistenceArgument.fallbackEmptyList(text));
     }
 
     /**

@@ -10,21 +10,21 @@ import org.bukkit.inventory.meta.ItemMeta;
 public interface ResolvedAttribute<M extends ItemMeta> {
 
     /**
-     * Gets the class of meta this Handler works on.
+     * Gets the class of meta this attribute is for.
      *
      * @return the ItemMeta class for the Handler
      */
     Class<M> metaClass();
 
     /**
-     * Reconstitute this Handler data into the specified meta.
+     * Reconstitute this Attribute data into the specified meta.
      *
      * @param meta the meta to populate
      */
     void populate(M meta);
 
     /**
-     * Reconstitute this Handler data into the specified meta if it is applicable to {@link #metaClass()}.
+     * Reconstitute this Attribute data into the specified meta if it is applicable to {@link #metaClass()}.
      * <p>
      * When the meta is not applicable nothing changes.
      *
@@ -38,7 +38,7 @@ public interface ResolvedAttribute<M extends ItemMeta> {
     }
 
     /**
-     * Check to see if the specified ItemMeta matches the Handler.
+     * Check to see if the specified ItemMeta matches the Attribute.
      *
      * @param meta the ItemMeta to check
      * @return if the meta satisfies the requirement
@@ -46,7 +46,7 @@ public interface ResolvedAttribute<M extends ItemMeta> {
     boolean check(M meta);
 
     /**
-     * Check to see if the specified ItemMeta matches the Handler if it is applicable to {@link #metaClass()}.
+     * Check to see if the specified ItemMeta matches the Attribute if it is applicable to {@link #metaClass()}.
      * <p>
      * When the meta is not applicable it will return {@code true}.
      *

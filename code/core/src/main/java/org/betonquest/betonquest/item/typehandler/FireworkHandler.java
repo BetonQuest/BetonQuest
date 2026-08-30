@@ -125,7 +125,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
         if (effects == null && power == null && exact.isEmpty()) {
             return null;
         }
-        return new NonResolved(effects == null ? ExistenceArgument.whateverEmptyList() : effects, power, exact.orElse(profile -> false));
+        return new NonResolved(ExistenceArgument.fallbackEmptyList(effects), power, exact.orElse(profile -> false));
     }
 
     /**
