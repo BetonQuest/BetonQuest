@@ -21,7 +21,7 @@ public interface LoreMetaHandler extends ItemMetaHandler.Standard {
      * Specific attribute that resolves into {@link ResolvedLoreAttribute} for the {@link QuestItem#getLore()} method.
      */
     @FunctionalInterface
-    interface LoreAttribute extends Attribute.Standard {
+    interface LoreAttribute extends Attribute {
 
         @Override
         ResolvedLoreAttribute resolve(@Nullable Profile profile) throws QuestException;

@@ -72,7 +72,7 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler.Standard {
 
     @Override
     @Nullable
-    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final Optional<Argument<CustomModelData>> data = instruction.parse(resolvedString -> {
             try {
                 return CustomModelData.parseCmd(resolvedString);
@@ -99,7 +99,7 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler.Standard {
      */
     private record NonResolved(Argument<CustomModelData> data, FlagArgument<Boolean> noData,
                                Argument<Pair<Existence, NamespacedKey>> model, FlagArgument<Boolean> noModel)
-            implements Attribute.Standard {
+            implements Attribute {
 
         @Override
         public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {

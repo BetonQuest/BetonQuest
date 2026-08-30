@@ -45,7 +45,7 @@ public class UnbreakableHandler implements ItemMetaHandler.Standard {
 
     @Override
     @Nullable
-    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final Argument<Existence> unbreakable = HandlerUtil.getIsKeyOrTrue(UNBREAKABLE, instruction);
         if (unbreakable == null) {
             return null;
@@ -58,7 +58,7 @@ public class UnbreakableHandler implements ItemMetaHandler.Standard {
      *
      * @param unbreakable if the item should be unbreakable
      */
-    private record NonResolved(Argument<Existence> unbreakable) implements Attribute.Standard {
+    private record NonResolved(Argument<Existence> unbreakable) implements Attribute {
 
         @Override
         public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {

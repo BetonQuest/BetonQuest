@@ -78,7 +78,7 @@ public class LoreHandler implements LoreMetaHandler {
             }).get()::getValue;
         }
         final Argument<Boolean> exact = instruction.bool().map(bool -> !bool).get("lore-containing", true);
-        final Attribute.Standard questAttribute = questHandler.parse(instruction);
+        final Attribute questAttribute = questHandler.parse(instruction);
         return new NonResolved(lore, exact, questAttribute == null ? profile -> QuestHandler.EMPTY : questAttribute);
     }
 
@@ -90,7 +90,7 @@ public class LoreHandler implements LoreMetaHandler {
      * @param questAttribute To check if the last lore line should be ignored and to populate/check.
      */
     private record NonResolved(ExistenceArgument<List<Component>> lore, Argument<Boolean> exact,
-                               Attribute.Standard questAttribute) implements LoreAttribute {
+                               Attribute questAttribute) implements LoreAttribute {
 
         @Override
         public ResolvedLoreAttribute resolve(@Nullable final Profile profile) throws QuestException {

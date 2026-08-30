@@ -59,7 +59,7 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
 
     @Override
     @Nullable
-    public Attribute<BannerMeta> parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<List<Pattern>> patterns = ExistenceArgument.applyListOrNull("patterns", instruction.parse(this::parsePattern));
         if (patterns == null) {
             return null;
@@ -92,7 +92,7 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
      *
      * @param patterns The ordered banner patterns.
      */
-    private record NonResolved(ExistenceArgument<List<Pattern>> patterns) implements Attribute<BannerMeta> {
+    private record NonResolved(ExistenceArgument<List<Pattern>> patterns) implements Attribute {
 
         @Override
         public ResolvedAttribute<BannerMeta> resolve(@Nullable final Profile profile) throws QuestException {

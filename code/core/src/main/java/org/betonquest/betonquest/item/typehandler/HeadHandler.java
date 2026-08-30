@@ -104,7 +104,7 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
 
     @Override
     @Nullable
-    public Attribute<SkullMeta> parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<String> owner = ExistenceArgument.applyOrNull(META_OWNER, instruction.string());
         final ExistenceArgument<UUID> playerId = ExistenceArgument.applyOrNull(META_PLAYER_ID, instruction.uuid());
         final ExistenceArgument<String> texture = ExistenceArgument.applyOrNull(META_TEXTURE, instruction.string());
@@ -124,7 +124,7 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
      */
     private record NonResolved(ExistenceArgument<String> owner, ExistenceArgument<UUID> playerId,
                                ExistenceArgument<String> texture)
-            implements Attribute<SkullMeta> {
+            implements Attribute {
 
         /**
          * Get the profile of the skull's owner.

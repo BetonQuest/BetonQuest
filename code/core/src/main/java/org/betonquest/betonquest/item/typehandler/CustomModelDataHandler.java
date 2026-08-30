@@ -43,7 +43,7 @@ public class CustomModelDataHandler implements ItemMetaHandler.Standard {
 
     @Override
     @Nullable
-    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<Integer> modelData = ExistenceArgument.applyOrNull("custom-model-data", instruction.parse(resolvedString -> {
             try {
                 return Integer.parseInt(resolvedString);
@@ -65,7 +65,7 @@ public class CustomModelDataHandler implements ItemMetaHandler.Standard {
      * @param noModelData If 'custom model data' is forbidden.
      */
     private record NonResolved(ExistenceArgument<Integer> modelData, FlagArgument<Boolean> noModelData)
-            implements Attribute.Standard {
+            implements Attribute {
 
         @Override
         public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {

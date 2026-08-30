@@ -43,7 +43,7 @@ public class FlagHandler implements ItemMetaHandler.Standard {
 
     @Override
     @Nullable
-    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<Set<ItemFlag>> flags = instruction.enumeration(ItemFlag.class)
                 .list()
                 .map(list -> Pair.of(Existence.REQUIRED, Set.copyOf(list)))
@@ -62,7 +62,7 @@ public class FlagHandler implements ItemMetaHandler.Standard {
      *
      * @param flags Set of ItemFlags on the ItemStack.
      */
-    private record NonResolved(ExistenceArgument<Set<ItemFlag>> flags) implements Attribute.Standard {
+    private record NonResolved(ExistenceArgument<Set<ItemFlag>> flags) implements Attribute {
 
         @Override
         public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {

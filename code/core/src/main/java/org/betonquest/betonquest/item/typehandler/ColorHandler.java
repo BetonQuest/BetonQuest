@@ -55,7 +55,7 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
 
     @Override
     @Nullable
-    public Attribute<LeatherArmorMeta> parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<Color> color = ExistenceArgument.applyOrNull("color", instruction.parse(HandlerUtil::getColor));
         if (color == null) {
             return null;
@@ -70,7 +70,7 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
      * @param color        the leather color
      */
     private record NonResolved(Color defaultColor, ExistenceArgument<Color> color)
-            implements Attribute<LeatherArmorMeta> {
+            implements Attribute {
 
         @Override
         public ResolvedAttribute<LeatherArmorMeta> resolve(@Nullable final Profile profile) throws QuestException {

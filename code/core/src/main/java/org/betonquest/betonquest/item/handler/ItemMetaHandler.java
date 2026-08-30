@@ -65,7 +65,7 @@ public interface ItemMetaHandler<M extends ItemMeta> {
      * @throws QuestException if the data is malformed
      */
     @Nullable
-    Attribute<M> parse(Instruction instruction) throws QuestException;
+    Attribute parse(Instruction instruction) throws QuestException;
 
     /**
      * Handler for the standard item meta.

@@ -45,7 +45,7 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
 
     @Override
     @Nullable
-    public Attribute<Damageable> parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final Argument<NumberValue> durability = NumberValue.create("durability", "item durability", instruction);
         if (durability == null) {
             return null;
@@ -58,7 +58,7 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
      *
      * @param durability The durability with their compare state.
      */
-    private record NonResolved(Argument<NumberValue> durability) implements Attribute<Damageable> {
+    private record NonResolved(Argument<NumberValue> durability) implements Attribute {
 
         @Override
         public ResolvedAttribute<Damageable> resolve(@Nullable final Profile profile) throws QuestException {

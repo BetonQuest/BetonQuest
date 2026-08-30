@@ -86,7 +86,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     @Override
     @Nullable
-    public Attribute<BookMeta> parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<Component> title = ExistenceArgument.applyOrNull("title", instruction.component().map(Component::compact));
         final ExistenceArgument<Component> author = ExistenceArgument.applyOrNull("author", instruction.component().map(Component::compact));
         final ExistenceArgument<List<Component>> text = ExistenceArgument.apply(instruction.component().map(bookPageWrapper::splitPages)).get("text")
@@ -106,7 +106,7 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
      * @param text   the text pages
      */
     private record NonResolved(ExistenceArgument<Component> title, ExistenceArgument<Component> author,
-                               ExistenceArgument<List<Component>> text) implements Attribute<BookMeta> {
+                               ExistenceArgument<List<Component>> text) implements Attribute {
 
         @Override
         public ResolvedAttribute<BookMeta> resolve(@Nullable final Profile profile) throws QuestException {

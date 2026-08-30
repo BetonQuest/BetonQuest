@@ -114,7 +114,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
     @Override
     @Nullable
-    public Attribute<FireworkMeta> parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<List<FireworkEffectHandler>> effects = ExistenceArgument.applyListOrNull("firework", instruction.parse(resolved -> {
             final FireworkEffectHandler effect = new FireworkEffectHandler();
             effect.set(resolved);
@@ -137,7 +137,7 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
      */
     private record NonResolved(ExistenceArgument<List<FireworkEffectHandler>> effects,
                                @Nullable Argument<NumberValue> power, Argument<Boolean> exact)
-            implements Attribute<FireworkMeta> {
+            implements Attribute {
 
         @Override
         public ResolvedAttribute<FireworkMeta> resolve(@Nullable final Profile profile) throws QuestException {

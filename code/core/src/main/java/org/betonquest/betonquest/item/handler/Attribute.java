@@ -2,16 +2,14 @@ package org.betonquest.betonquest.item.handler;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.profile.Profile;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Values to be set on an item meta which may be resolved per {@link Profile}.
  *
- * @param <M> applicable meta
  */
 @FunctionalInterface
-public interface Attribute<M extends ItemMeta> {
+public interface Attribute {
 
     /**
      * Resolves all placeholders into a definit state.
@@ -20,13 +18,5 @@ public interface Attribute<M extends ItemMeta> {
      * @return the fully resolved argument
      * @throws QuestException if argument resolving for the profile fails
      */
-    ResolvedAttribute<M> resolve(@Nullable Profile profile) throws QuestException;
-
-    /**
-     * Attribute for the standard item meta.
-     */
-    @FunctionalInterface
-    interface Standard extends Attribute<ItemMeta> {
-
-    }
+    ResolvedAttribute<?> resolve(@Nullable Profile profile) throws QuestException;
 }

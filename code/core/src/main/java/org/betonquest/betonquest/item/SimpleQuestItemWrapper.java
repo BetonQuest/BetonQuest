@@ -10,7 +10,6 @@ import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.LoreMetaHandler;
 import org.betonquest.betonquest.item.handler.NameMetaHandler;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class SimpleQuestItemWrapper implements QuestItemWrapper {
     /**
      * Handlers defining the QuestItem.
      */
-    private final List<Attribute<?>> attributes;
+    private final List<Attribute> attributes;
 
     /**
      * Creates a new QuestItem with "Vanilla Handlers".
@@ -50,7 +49,7 @@ public class SimpleQuestItemWrapper implements QuestItemWrapper {
      * @param attributes the populated attributes defining the QuestItem, excluding explicit given one (name and lore)
      */
     public SimpleQuestItemWrapper(final Argument<BlockSelector> selector, final NameMetaHandler.NameAttribute name,
-                                  final LoreMetaHandler.LoreAttribute lore, final List<Attribute<?>> attributes) {
+                                  final LoreMetaHandler.LoreAttribute lore, final List<Attribute> attributes) {
         this.selector = selector;
         this.attributes = attributes;
         this.name = name;
@@ -63,7 +62,7 @@ public class SimpleQuestItemWrapper implements QuestItemWrapper {
         final NameMetaHandler.ResolvedNameAttribute name = this.name.resolve(profile);
         final LoreMetaHandler.ResolvedLoreAttribute lore = this.lore.resolve(profile);
         final List<ResolvedAttribute<?>> resolvedHandlers = new ArrayList<>();
-        for (final Attribute<? extends ItemMeta> attribute : this.attributes) {
+        for (final Attribute attribute : this.attributes) {
             resolvedHandlers.add(attribute.resolve(profile));
         }
         resolvedHandlers.add(name);

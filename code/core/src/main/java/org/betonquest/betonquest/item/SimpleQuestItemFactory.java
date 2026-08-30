@@ -130,10 +130,10 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
         final NameMetaHandler.NameAttribute nameAttribute = nameHandler.parse(instruction);
         final LoreMetaHandler.LoreAttribute loreAttribute = loreHandler.parse(instruction);
-        final List<Attribute<?>> attributes = new ArrayList<>();
+        final List<Attribute> attributes = new ArrayList<>();
         if (instruction.hasNext()) {
             for (final ItemMetaHandler<?> handler : handlers) {
-                final Attribute<?> attribute = handler.parse(instruction);
+                final Attribute attribute = handler.parse(instruction);
                 if (attribute != null) {
                     attributes.add(attribute);
                 }

@@ -82,8 +82,8 @@ public class UpdatedPotionHandler extends PotionHandler {
 
     @Override
     @Nullable
-    public Attribute<PotionMeta> parse(final Instruction instruction) throws QuestException {
-        final Attribute<PotionMeta> parsed = super.parse(instruction);
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final Attribute parsed = super.parse(instruction);
         if (parsed == null) {
             return null;
         }
@@ -95,7 +95,7 @@ public class UpdatedPotionHandler extends PotionHandler {
      *
      * @param attribute the parent parsed attribute
      */
-    private record UpdatedNonResolved(Attribute<PotionMeta> attribute) implements Attribute<PotionMeta> {
+    private record UpdatedNonResolved(Attribute attribute) implements Attribute {
 
         private PotionType typeSet(final String prefix, final String baseType) throws QuestException {
             final String potionType = prefix + baseType;

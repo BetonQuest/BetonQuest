@@ -64,7 +64,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
 
     @Override
     @Nullable
-    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<List<SingleEnchantmentHandler>> checkers = ExistenceArgument.applyListOrNull("enchants", instruction.parse(SingleEnchantmentHandler::new));
         final Optional<Argument<Boolean>> exact = instruction.bool().map(bool -> !bool).get("enchants-containing");
         if (checkers == null && exact.isEmpty()) {
@@ -80,7 +80,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
      * @param exact    If the Enchantment need to be exact the same or just contain all specified enchantments.
      */
     private record NonParsed(ExistenceArgument<List<SingleEnchantmentHandler>> checkers, Argument<Boolean> exact)
-            implements Attribute.Standard {
+            implements Attribute {
 
         @Override
         public ResolvedAttribute.Standard resolve(@Nullable final Profile profile) throws QuestException {

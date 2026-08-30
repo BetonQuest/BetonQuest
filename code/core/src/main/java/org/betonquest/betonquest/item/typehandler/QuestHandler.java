@@ -80,7 +80,7 @@ public class QuestHandler implements ItemMetaHandler.Standard {
 
     @Override
     @Nullable
-    public Attribute.Standard parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final Argument<Existence> questItem = HandlerUtil.getIsKeyOrTrue(QUEST, instruction);
         if (questItem == null) {
             return null;
@@ -95,7 +95,7 @@ public class QuestHandler implements ItemMetaHandler.Standard {
      * @param questItem     If the item is a "Quest Item".
      */
     private record NonResolved(Argument<LoreConsumer> questItemLore, Argument<Existence> questItem)
-            implements Attribute.Standard {
+            implements Attribute {
 
         @Override
         public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {

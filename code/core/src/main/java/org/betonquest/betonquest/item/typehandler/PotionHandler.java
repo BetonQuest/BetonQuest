@@ -85,7 +85,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
     @Override
     @Nullable
-    public Attribute<PotionMeta> parse(final Instruction instruction) throws QuestException {
+    public Attribute parse(final Instruction instruction) throws QuestException {
         final ExistenceArgument<PotionType> type = ExistenceArgument.applyOrNull("type", instruction.enumeration(PotionType.class));
         final FlagArgument<Boolean> extended = instruction.bool().getFlag(EXTENDED, true);
         final FlagArgument<Boolean> upgraded = instruction.bool().getFlag(UPGRADED, true);
@@ -110,7 +110,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
      */
     private record NonResolved(ExistenceArgument<PotionType> type, FlagArgument<Boolean> extended,
                                FlagArgument<Boolean> upgraded, ExistenceArgument<List<CustomEffectHandler>> custom,
-                               Argument<Boolean> exact) implements Attribute<PotionMeta> {
+                               Argument<Boolean> exact) implements Attribute {
 
         @Override
         public ResolvedAttribute<PotionMeta> resolve(@Nullable final Profile profile) throws QuestException {
