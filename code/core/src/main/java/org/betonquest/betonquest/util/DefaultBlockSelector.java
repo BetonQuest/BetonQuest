@@ -211,10 +211,19 @@ public class DefaultBlockSelector implements BlockSelector {
         return -1;
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    /**
+     * The full material check is explicit for modifications of the {@link Material} with custom namespaces.
+     */
     private List<Material> getMaterials(final String namespaceString, final String keyString) throws QuestException {
         final List<Material> materials = new ArrayList<>();
-        final Material fullMatch = Material.matchMaterial(namespaceString + ":" + keyString);
+        if (NamespacedKey.MINECRAFT_NAMESPACE.equals(namespaceString)) {
+            final Material match = Material.getMaterial(keyString.toUpperCase(Locale.ROOT));
+            if (match != null) {
+                materials.add(match);
+                return materials;
+            }
+        }
+        final Material fullMatch = Material.getMaterial((namespaceString + ":" + keyString).toUpperCase(Locale.ROOT));
         if (fullMatch != null) {
             materials.add(fullMatch);
             return materials;
