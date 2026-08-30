@@ -33,7 +33,7 @@ import java.util.regex.PatternSyntaxException;
  * - state - (optional) The block states can be provided in a comma separated `key=value` list surrounded by square
  * brackets. Regex allowed
  */
-@SuppressWarnings("PMD.GodClass")
+@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public class DefaultBlockSelector implements BlockSelector {
 
     /**
@@ -160,7 +160,7 @@ public class DefaultBlockSelector implements BlockSelector {
             final String blockState = blockStates.get(singleState);
             final String state = entry.getValue();
             if (!blockState.equals(state)) {
-                final Pattern statePattern = Pattern.compile("^" + state + "$");
+                final Pattern statePattern = Pattern.compile(state);
                 final Matcher stateMatcher = statePattern.matcher(blockState);
                 if (!stateMatcher.find()) {
                     return false;
@@ -230,7 +230,7 @@ public class DefaultBlockSelector implements BlockSelector {
         }
 
         if (keyString.contains(":")) {
-            final String[] groupParts = keyString.split(":");
+            final String[] groupParts = keyString.split(":", 2);
             final NamespacedKey namespacedKey = new NamespacedKey(namespaceString, groupParts[1]);
             final String registry = groupParts[0];
             try {
@@ -244,14 +244,19 @@ public class DefaultBlockSelector implements BlockSelector {
             return materials;
         }
 
+        return getMaterialsByRegex(namespaceString, keyString);
+    }
+
+    private List<Material> getMaterialsByRegex(final String namespaceString, final String keyString) throws QuestException {
         final Pattern namespacePattern;
         final Pattern keyPattern;
         try {
-            namespacePattern = Pattern.compile("^" + namespaceString + "$");
-            keyPattern = Pattern.compile("^" + keyString + "$");
+            namespacePattern = Pattern.compile(namespaceString);
+            keyPattern = Pattern.compile(keyString);
         } catch (final PatternSyntaxException exception) {
             throw new QuestException("Invalid Regex: " + exception.getMessage(), exception);
         }
+        final List<Material> materials = new ArrayList<>();
         for (final Material material : Material.values()) {
             if (material.isLegacy()) {
                 continue;
