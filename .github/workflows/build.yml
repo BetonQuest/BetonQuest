@@ -302,8 +302,8 @@ jobs:
           RELEASE_NAME: BetonQuest ${{ env.VERSION }}
         with:
           args: |
-            target/code/BetonQuest-${VERSION}.jar
-            target/docs/Docs-${VERSION}.zip
+            target/code/BetonQuest-${{ env.VERSION }}.jar
+            target/docs/Docs-${{ env.VERSION }}.zip
 
   publish-prepare:
     name: Publish Prepare
