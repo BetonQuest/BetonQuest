@@ -19,8 +19,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 /**
  * Stores loaded {@link PlayerData}.
@@ -50,7 +48,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
     /**
      * Stored player data for online players.
      */
-    private final Map<Profile, FutureTask<PlayerData>> playerDataMap;
+    private final Map<Profile, PlayerData> playerDataMap;
 
     /**
      * Create a new Storage for Player Data.
@@ -111,15 +109,7 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      */
     public PlayerData init(final Profile profile) {
         log.debug("Initializing PlayerData for profile: %s".formatted(profile));
-        final FutureTask<PlayerData> playerDataFutureTask = playerDataMap.compute(profile, (key, task) -> {
-            if (task == null || task.isDone()) {
-                final FutureTask<PlayerData> newTask = new FutureTask<>(() -> playerDataFactory.createPlayerData(key));
-                newTask.run();
-                return newTask;
-            }
-            return task;
-        });
-        return saveGet(playerDataFutureTask);
+        return playerDataMap.computeIfAbsent(profile, playerDataFactory::createPlayerData);
     }
 
     /**
@@ -132,22 +122,14 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
      */
     public PlayerData get(final Profile profile) {
         log.debug("Getting PlayerData for %s (cached=%s, online=%s)".formatted(profile, playerDataMap.containsKey(profile), profile.getOnlineProfile().isPresent()));
-        final FutureTask<PlayerData> playerData = playerDataMap.get(profile);
+        final PlayerData playerData = playerDataMap.get(profile);
         if (playerData != null) {
-            return saveGet(playerData);
+            return playerData;
         }
         if (profile.getOnlineProfile().isPresent()) {
             return init(profile);
         }
         return playerDataFactory.createPlayerData(profile);
-    }
-
-    private PlayerData saveGet(final FutureTask<PlayerData> playerData) {
-        try {
-            return playerData.get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new IllegalStateException("Failed to load profile data!", e);
-        }
     }
 
     /**
@@ -164,25 +146,9 @@ public class PlayerDataStorage implements FastStatsMetricsProvider {
     public Set<Metric<?>> getMetrics() {
         return Set.of(
                 Metric.number("profiles_personal_lang_count", () -> playerDataMap.values().stream()
-                        .map(future -> {
-                            try {
-                                return future.get();
-                            } catch (InterruptedException | ExecutionException e) {
-                                return null;
-                            }
-                        })
-                        .filter(Objects::nonNull)
                         .filter(data -> data.getLanguage().isPresent()
                                 && !"default".equalsIgnoreCase(data.getLanguage().get())).count()),
                 Metric.stringArray("profiles_personal_lang", () -> playerDataMap.values().stream()
-                        .map(future -> {
-                            try {
-                                return future.get();
-                            } catch (InterruptedException | ExecutionException e) {
-                                return null;
-                            }
-                        })
-                        .filter(Objects::nonNull)
                         .map(data -> data.getLanguage().orElse(null)).filter(Objects::nonNull)
                         .filter(lang -> !"default".equalsIgnoreCase(lang))
                         .toList().toArray(new String[0]))
