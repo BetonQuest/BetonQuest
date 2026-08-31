@@ -76,6 +76,7 @@ A list of all data types that require a special and more elaborate explanation.
       - `redstone_wire[power=5,facing=1]` - Matches all blocks of type REDSTONE_WIRE and which have both a power of 5 and are facing 1
       - `.*_LOG` - Matches all LOGS
       - `.*` - Matches everything, including air
+      - `^(?!air$).*` - Matches everything, excluding air
       - `.*[waterlogged=true]` - Matches all waterlogged blocks
       - `minecraft:blocks:flowers` - Matches all flowers
       - `:blocks:crops[age=0]` - Matches all crops with an age of 0 meaning, not grown / just planted

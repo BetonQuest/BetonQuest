@@ -16,6 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `lore` of `item` placeholder can now be used without number to get all lines
 - `chat` notify io now only sends messages during a conversation if `bypassInterceptor` is set to `true`
 - `non-positive` (<= 0) update intervals deactivate automatic updating
+- `block selector` no longer uses `matchMaterial` which strips regex characters and resolved to unwanted values
 ### Deprecated
 ### Removed
 ### Fixed
