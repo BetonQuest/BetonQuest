@@ -41,9 +41,9 @@ class GitHubReleaseSourceTest {
 
         assertEquals(2, versions.size(), "Expected two versions from getReleaseVersions");
         final String url1 = versions.get(BetonQuestVersion.parse("1.12.0"));
-        assertEquals(apiUrlReleases + "/download/v1.12.0/BetonQuest.jar", url1, "The download URL is not correct");
+        assertEquals(apiUrlReleases + "/download/v1.12.0/BetonQuest-1.12.0.jar", url1, "The download URL is not correct");
         final String url2 = versions.get(BetonQuestVersion.parse("1.12.1"));
-        assertEquals(apiUrlReleases + "/download/v1.12.1/BetonQuest.jar", url2, "The download URL is not correct");
+        assertEquals(apiUrlReleases + "/download/v1.12.1/BetonQuest-1.12.1.jar", url2, "The download URL is not correct");
     }
 
     @Nested
