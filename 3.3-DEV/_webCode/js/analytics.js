@@ -1,21 +1,23 @@
-// Import FastStats Web Analytics using ESM version 0.7.x (latest patch).
-import { WebAnalytics } from "https://esm.sh/@faststats/web@0.7";
+import { init } from "https://esm.sh/@faststats/web@0.8";
+import { errorTracking } from "https://esm.sh/@faststats/web@0.8/error";
+import { outboundLinks } from "https://esm.sh/@faststats/web@0.8/outbound-links";
+import { sessionReplay } from "https://esm.sh/@faststats/web@0.8/replay";
+import { webVitals } from "https://esm.sh/@faststats/web@0.8/web-vitals";
 
 function getConsentMode() {
   const consent = globalThis.__md_get("__consent");
-  if (!consent) return "pending";
+  if (!consent) return "anonymous";
 
-  // "denied" currently puts analytics in cookieless mode until a full consent manager exists
   return consent.analytics ? "granted" : "denied";
 }
 
-new WebAnalytics({
+init({
   siteKey: "50d515577b9fff402b3b07c8c777f751",
-  errorTracking: {enabled: true},
-  webVitals: {enabled: true},
-  sessionReplays: {enabled: true},
-  consent: {
-    mode: getConsentMode(),
-    pendingBehavior: "anonymous",
-  },
+  consent: getConsentMode(),
+  extensions: [
+    outboundLinks(),
+    errorTracking(),
+    webVitals(),
+    sessionReplay(),
+  ],
 });
