@@ -241,7 +241,7 @@ By combining an offset with point placeholders or math calculations, you can imp
 ```YAML
 menus:
   questMenu:
-    title: "Quest Log (Page %point.quest_page.amount%)"
+    title: "Quest Log"
     height: 4
     slots:
       # Displays 14 items per page in a 2x7 rectangle (slots 10 to 25), skipping items from previous pages
