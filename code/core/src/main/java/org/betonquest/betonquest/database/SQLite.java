@@ -13,6 +13,7 @@ import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgument
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
@@ -292,8 +293,8 @@ public class SQLite extends Database {
                 final FontRegistry fontRegistry = new DefaultFontRegistry(defaultkey);
                 final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
 
-                final TextParser textParser = (message) ->
-                        LegacyComponentSerializer.legacySection().deserialize(message.replace("_", " "));
+                final TextParser textParser = (message) -> LegacyComponentSerializer.legacySection().deserialize(
+                        ChatColor.translateAlternateColorCodes('&', message.replace("_", " ")));
 
                 @SuppressWarnings({"DataFlowIssue", "NullAway"}) final ArgumentParsers argumentParsers = new DefaultArgumentParsers(
                         (profile, itemIdentifier) -> null,
