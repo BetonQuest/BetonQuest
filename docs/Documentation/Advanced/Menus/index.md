@@ -225,14 +225,14 @@ the slots in this rectangle are filled up one by one using the items whose condi
 ![RectangleExample](../../../_media/content/Documentation/Menu/RectangleExample.png)
 
 ### Offset & Pagination
-You can define an item offset by prefixing the item list with `<offset> <itmes>` in any slot assignment:
+You can define an item offset by prefixing the item list with `<offset> <items>` in any slot assignment:
 
 ```YAML
 <slot(s)>: "<offset> <items>"
 ```
 
 The offset determines how many displayed items (items whose conditions evaluate to `true`) are skipped before assigning items to the slot(s).
-A value must be a number greater than or equal to `0`, zero acts the same as not present, and behaves like a normal slot assignment.
+A value must be a number greater than or equal to `0`. Zero acts the same as not present, and behaves like a normal slot assignment.
 If the offset is equal to or greater than the number of valid items, the slot(s) remain empty.
 
 #### Pagination Example
