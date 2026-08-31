@@ -12,7 +12,7 @@ insert_final_newline = unset
 indent_style = unset
 indent_size = unset
 
-[CHANGELOG.md]
+[{CHANGELOG.md,*-CHANGELOG.md,*_CHANGELOG.md}]
 indent_size = 4
 
 [*.java]
