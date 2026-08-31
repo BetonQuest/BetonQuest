@@ -56,11 +56,9 @@ public interface ItemMetaHandler<M extends ItemMeta> {
     /**
      * Reads the data from the instruction into an {@link Attribute}.
      * <p>
-     * The data may be the same as the key if it is just a keyword.
-     * <p>
      * When there is no applicable part in the instruction {@code null} should be returned.
      *
-     * @param instruction the instruction to read from associated data
+     * @param instruction the instruction to read from
      * @return the read attributes if present, null otherwise
      * @throws QuestException if the data is malformed
      */
