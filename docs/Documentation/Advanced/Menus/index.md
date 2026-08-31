@@ -232,11 +232,8 @@ You can define an item offset by prefixing the item list with `<offset> <itmes>`
 ```
 
 The offset determines how many displayed items (items whose conditions evaluate to `true`) are skipped before assigning items to the slot(s).
-
-- **Condition-aware**: Items whose conditions evaluate to `false` are ignored and do **not** count towards the offset.
-- **Dynamic Offsets & Placeholders**: The offset can be a static number (e.g., `5 quest1,quest2`) or a [placeholder](../../Reference/Placeholders-List.md) (e.g., `%math.calc:point.menu_page.amount*9% quest1,quest2,...`). The resolved value must be a number greater than or equal to `0`.
-- **Default Offset**: If no offset is specified (no space prefix or an empty prefix like ` item1,item2`), the offset defaults to `0`.
-- **Exceeding Offset**: If the offset is equal to or greater than the number of valid items, the slot(s) remain empty.
+A value must be a number greater than or equal to `0`, zero acts the same as not present, and behaves like a normal slot assignment.
+If the offset is equal to or greater than the number of valid items, the slot(s) remain empty.
 
 #### Pagination Example
 By combining an offset with point placeholders or math calculations, you can implement multi-page menus (e.g., paginating quest lists, shops, or server warp lists).
