@@ -41,7 +41,7 @@ public class ItemTypesComponent extends AbstractCoreComponent {
 
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
         itemRegistry.register("simple", new SimpleQuestItemFactory(bookPageWrapper,
-                new LoreConsumer.SupplierArgument(() -> config.getBoolean("item.quest.lore") ? localizations : null)));
+                new LoreConsumer.SupplierArgument(() -> config.getBoolean("item.quest.lore") ? localizations : null)), true);
         itemRegistry.registerSerializer("simple", new SimpleQuestItemSerializer(bookPageWrapper));
     }
 }
