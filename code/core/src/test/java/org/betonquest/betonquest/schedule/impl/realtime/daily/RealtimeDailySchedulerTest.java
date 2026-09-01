@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
  */
 // TODO version switch:
 //  Remove suppression PMD.CloseResource when only Java 21 is supported
-@SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
+@SuppressWarnings("PMD.DoNotUseThreads")
 @ExtendWith(MockitoExtension.class)
 class RealtimeDailySchedulerTest {
 

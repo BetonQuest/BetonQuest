@@ -58,7 +58,8 @@ public class UnmodifiableConfigurationSection extends HandleModificationConfigur
 
     @Contract("null -> null; !null -> !null")
     @Nullable
-    static /* default */ Object getObject(@Nullable final Object obj) {
+    /* default */
+    static Object getObject(@Nullable final Object obj) {
         if (obj instanceof UnmodifiableConfigurationSection) {
             return obj;
         }

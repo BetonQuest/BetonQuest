@@ -54,6 +54,7 @@ public class CitizensWalkingListener implements Listener {
      * @param event the event
      */
     @EventHandler(ignoreCancelled = true)
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     public void onConversationStart(final PlayerConversationStartEvent event) {
         if (event.getConversation() instanceof final NpcConversation<?> npcConv
                 && npcConv.getNPC().getOriginal() instanceof final NPC npc

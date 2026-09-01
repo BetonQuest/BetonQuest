@@ -195,7 +195,7 @@ class RealtimeCronSchedulerTest {
     @Test
     // TODO version switch:
     //  Remove suppression PMD.CloseResource when only Java 21 is supported
-    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.UnitTestContainsTooManyAsserts", "PMD.CloseResource"})
+    @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.UnitTestContainsTooManyAsserts"})
     void testStartSchedule() {
         final Duration duration = Duration.ofSeconds(20);
         final LastExecutionCache cache = mock(LastExecutionCache.class);

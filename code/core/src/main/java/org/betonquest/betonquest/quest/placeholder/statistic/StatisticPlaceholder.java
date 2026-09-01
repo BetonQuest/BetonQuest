@@ -98,7 +98,7 @@ public class StatisticPlaceholder implements PlayerPlaceholder {
         return getStatistic(player, statistic, entityTypeValue, materialValue);
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
     private String getStatistic(final OfflinePlayer statSource, final Statistic statistic, @Nullable final EntityType entityType, @Nullable final Material material) throws QuestException {
         final String statKey = statistic.getKey().asString();
         final int statValue = switch (statistic.getType()) {

@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings({"PMD.ShortMethodName", "PMD.AvoidFieldNameMatchingMethodName", "PMD.UseUtilityClass",
+@SuppressWarnings({"PMD.ShortMethodName", "PMD.AvoidFieldNameMatchingMethodName", "PMD.InstantiableUtilityClass",
         "PMD.AvoidLiteralsInIfCondition", "PMD.MutableStaticState", "PMD.CyclomaticComplexity", "PMD.CognitiveComplexity"})
 class DemoFunctionsFixture {
 

@@ -246,6 +246,7 @@ public class Display {
         checkNewSelectFromIndexOption(scroll, options, selectedIndex, previousLastViewableOptions);
     }
 
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     private void checkNewSelectFromIndexOption(final Scroll scroll, final List<ToggleableIndexLine> options, final int index,
                                                final Set<Integer> previousLastViewableOptions) {
         final int selectedIndex = index + scroll.getModification();

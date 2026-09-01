@@ -254,7 +254,7 @@ public class ConfigurationBuilderFixture {
      *
      * @return The {@link ConfigurationBuilderFixture} for chaining
      */
-    @SuppressWarnings("PMD.UselessPureMethodCall")
+    @SuppressWarnings("PMD.UnusedReturnValue")
     public ConfigurationBuilderFixture setupItem() {
         final ItemStack value = spy(new ItemStack(Material.BONE, 42));
         doReturn("ItemStack {type=BONE, amount=42}").when(value).toString();

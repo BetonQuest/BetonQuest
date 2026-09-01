@@ -49,7 +49,6 @@ public interface QuestMigration {
      * @param oldValue    the old value
      * @param newValue    the new value
      */
-    @SuppressWarnings("PMD.UseObjectForClearerAPI")
     default void replaceValueInSection(final ConfigurationSection config, final String sectionName,
                                        final String typeName, final String oldValue, final String newValue) {
         replace(config, sectionName,

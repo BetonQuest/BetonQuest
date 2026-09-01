@@ -79,6 +79,7 @@ public class NpcRangeObjective extends DefaultObjective {
                 () -> getExceptionHandler().handle(this::loop), 0, 20);
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     private QuestBiPredicate<Profile, Boolean> getStuff(final Argument<Trigger> trigger) {
         return (profile, inside) -> switch (trigger.getValue(profile)) {
             case INSIDE -> !inside;

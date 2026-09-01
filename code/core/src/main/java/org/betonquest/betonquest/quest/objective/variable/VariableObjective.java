@@ -85,7 +85,8 @@ public class VariableObjective extends DefaultObjective {
         return null;
     }
 
-    /* default */ VariableData getVariableData(final Profile profile) {
+    /* default */
+    VariableData getVariableData(final Profile profile) {
         final String data = getService().getData().get(profile);
         return new VariableData(data, profile, getObjectiveID());
     }

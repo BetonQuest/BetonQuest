@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for the {@link MultiFallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.TestClassWithoutTestCases", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
+@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
 public class FallbackConfigurationSectionNestedWithMultiFallbackTest extends FallbackConfigurationSectionNestedTest {
 
     @Override

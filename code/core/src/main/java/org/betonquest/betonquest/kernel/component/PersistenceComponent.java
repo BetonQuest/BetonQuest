@@ -48,8 +48,9 @@ public class PersistenceComponent extends AbstractCoreComponent {
      * @param globalData        the global data
      * @param playerDataStorage the player data storage
      */
-    /* default */ record DefaultPersistence(GlobalData globalData,
-                                            PlayerDataStorage playerDataStorage) implements Persistence {
+    /* default */
+    record DefaultPersistence(GlobalData globalData,
+                              PlayerDataStorage playerDataStorage) implements Persistence {
 
         @Override
         public PersistentDataHolder global() {

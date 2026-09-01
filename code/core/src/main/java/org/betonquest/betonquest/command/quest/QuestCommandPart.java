@@ -129,7 +129,8 @@ public abstract class QuestCommandPart implements SubCommand {
         return playerDataStorage.get(profile);
     }
 
-    /* default */ void sendMessage(final CommandSender sender, final String messageName, final VariableReplacement... replacements) {
+    /* default */
+    void sendMessage(final CommandSender sender, final String messageName, final VariableReplacement... replacements) {
         final OnlineProfile profile = sender instanceof final Player player ? profileProvider.getProfile(player) : null;
         try {
             sender.sendMessage(localizations.getMessage(profile, messageName, replacements));
@@ -139,7 +140,8 @@ public abstract class QuestCommandPart implements SubCommand {
         }
     }
 
-    /* default */ <T> Predicate<T> createListFilter(final String[] args, final int filterIndex, final Function<T, String> getId) {
+    /* default */
+    <T> Predicate<T> createListFilter(final String[] args, final int filterIndex, final Function<T, String> getId) {
         if (args.length > filterIndex) {
             return createCaseInsensitivePrefixPredicate(args[filterIndex], getId);
         }
@@ -150,7 +152,8 @@ public abstract class QuestCommandPart implements SubCommand {
         return element -> getId.apply(element).regionMatches(true, 0, prefix, 0, prefix.length());
     }
 
-    /* default */ <I extends Identifier> I getIdentifier(final Class<I> identifierClass, final String identifier) throws QuestException {
+    /* default */
+    <I extends Identifier> I getIdentifier(final Class<I> identifierClass, final String identifier) throws QuestException {
         final IdentifierFactory<I> identifierFactory = identifiers.getFactory(identifierClass);
         return identifierFactory.parseIdentifier(null, identifier);
     }
@@ -160,7 +163,8 @@ public abstract class QuestCommandPart implements SubCommand {
      *
      * @param type - the type of the ID, null for unspecific
      */
-    /* default */ Optional<List<String>> completeId(final String[] args, @Nullable final AccessorType type) {
+    /* default */
+    Optional<List<String>> completeId(final String[] args, @Nullable final AccessorType type) {
         final String last = args[args.length - 1];
         if (last == null || !last.contains(Identifier.SEPARATOR)) {
             return completePackage();
@@ -192,7 +196,8 @@ public abstract class QuestCommandPart implements SubCommand {
     /**
      * Returns a list of all packages for the tab completer.
      */
-    /* default */ Optional<List<String>> completePackage() {
+    /* default */
+    Optional<List<String>> completePackage() {
         return Optional.of(new ArrayList<>(questPackageManager.getPackages().keySet()));
     }
 }

@@ -32,7 +32,8 @@ public enum PlayerNameType {
         this.valueExtractor = valueExtractor;
     }
 
-    /* default */ String extractValue(final Profile profile) throws QuestException {
+    /* default */
+    String extractValue(final Profile profile) throws QuestException {
         return valueExtractor.apply(profile);
     }
 }

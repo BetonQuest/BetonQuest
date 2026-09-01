@@ -25,13 +25,13 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     private SilentConsoleCommandSender silentSender;
 
     @Override
-    public ConsoleCommandSender getCommandSender() {
+    protected ConsoleCommandSender getCommandSender() {
         sender = mock(ConsoleCommandSender.class);
         return sender;
     }
 
     @Override
-    public SilentConsoleCommandSender getSilentCommandSender() {
+    protected SilentConsoleCommandSender getSilentCommandSender() {
         silentSender = new SilentConsoleCommandSender(logger, sender);
         return silentSender;
     }

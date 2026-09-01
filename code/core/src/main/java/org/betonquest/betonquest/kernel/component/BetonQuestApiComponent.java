@@ -103,7 +103,8 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
      *
      * @param plugin the plugin this manager and the api is created for
      */
-    /* default */ record DefaultBukkitManager(Plugin plugin) implements BukkitManager {
+    /* default */
+    record DefaultBukkitManager(Plugin plugin) implements BukkitManager {
 
         @Override
         public void registerEvents(final Listener listener) {
@@ -135,16 +136,17 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
      * @param bukkit         the bukkit manager
      * @param functions      the function api accessor
      */
-    /* default */ record DefaultBetonQuestApi(Plugin attachedPlugin, ProfileProvider profiles,
-                                              QuestPackageManager packages,
-                                              BetonQuestLoggerFactory loggerFactory, Instructions instructions,
-                                              Actions actions, Conditions conditions, Objectives objectives,
-                                              Placeholders placeholders, Items items, Npcs npcs,
-                                              Conversations conversations, Identifiers identifiers,
-                                              FontRegistry fonts, Reloader reloader,
-                                              Persistence persistence, CompassManager compasses,
-                                              Localizations localizations, BukkitManager bukkit,
-                                              Functions functions) implements BetonQuestApi {
+    /* default */
+    record DefaultBetonQuestApi(Plugin attachedPlugin, ProfileProvider profiles,
+                                QuestPackageManager packages,
+                                BetonQuestLoggerFactory loggerFactory, Instructions instructions,
+                                Actions actions, Conditions conditions, Objectives objectives,
+                                Placeholders placeholders, Items items, Npcs npcs,
+                                Conversations conversations, Identifiers identifiers,
+                                FontRegistry fonts, Reloader reloader,
+                                Persistence persistence, CompassManager compasses,
+                                Localizations localizations, BukkitManager bukkit,
+                                Functions functions) implements BetonQuestApi {
 
     }
 }

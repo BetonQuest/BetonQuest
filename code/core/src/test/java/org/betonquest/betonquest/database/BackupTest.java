@@ -22,7 +22,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(BetonQuestLoggerExtension.class)
 class BackupTest {
 
-    @SuppressWarnings("PMD.CloseResource")
     @Test
     void enum_existence(@TempDir final Path tempDir, final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger) throws SQLException {
         final Connector connector = mock(Connector.class);

@@ -73,7 +73,8 @@ public class ItemsComponent extends AbstractCoreComponent {
      * @param manager  the item manager
      * @param registry the item registry
      */
-    /* default */ record DefaultItems(ItemManager manager, ItemRegistry registry) implements Items {
+    /* default */
+    record DefaultItems(ItemManager manager, ItemRegistry registry) implements Items {
 
     }
 }
