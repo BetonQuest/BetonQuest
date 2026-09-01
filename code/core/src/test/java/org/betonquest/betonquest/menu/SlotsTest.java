@@ -82,13 +82,13 @@ class SlotsTest {
 
     @Test
     void get_items_with_offset_and_conditions() throws QuestException {
-        final MenuItemIdentifier item1 = createMockItem(true); // matches -> skipped (1)
-        final MenuItemIdentifier item2 = createMockItem(false); // does not match
-        final MenuItemIdentifier item3 = createMockItem(true); // matches -> skipped (2)
-        final MenuItemIdentifier item4 = createMockItem(true); // matches -> skipped (3)
-        final MenuItemIdentifier item5 = createMockItem(true); // matches -> included (0)
-        final MenuItemIdentifier item6 = createMockItem(false); // does not match
-        final MenuItemIdentifier item7 = createMockItem(true); // matches -> included (1)
+        final MenuItemIdentifier item1 = createMockItem(true);
+        final MenuItemIdentifier item2 = createMockItem(false);
+        final MenuItemIdentifier item3 = createMockItem(true);
+        final MenuItemIdentifier item4 = createMockItem(true);
+        final MenuItemIdentifier item5 = createMockItem(true);
+        final MenuItemIdentifier item6 = createMockItem(false);
+        final MenuItemIdentifier item7 = createMockItem(true);
 
         final Argument<List<MenuItemIdentifier>> itemsArg = mock(Argument.class);
         when(itemsArg.getValue(profile)).thenReturn(List.of(item1, item2, item3, item4, item5, item6, item7));
