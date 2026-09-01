@@ -206,7 +206,8 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
      * @param schedule the schedule to which the missed run belongs
      * @param runTime  the time when the missed run should have taken place.
      */
-    /* default */ record MissedRun(CronSchedule schedule, ZonedDateTime runTime) {
+    /* default */
+    record MissedRun(CronSchedule schedule, ZonedDateTime runTime) {
 
     }
 }

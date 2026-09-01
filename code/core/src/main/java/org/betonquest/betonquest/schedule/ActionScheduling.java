@@ -88,12 +88,14 @@ public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Sched
      */
     public record ScheduleType<S extends Schedule, T>(ScheduleFactory<S> scheduleFactory, Scheduler<S, T> scheduler) {
 
-        /* default */ S newScheduleInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction)
+        /* default */
+        S newScheduleInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction)
                 throws QuestException {
             return scheduleFactory.createNewInstance(scheduleID, instruction);
         }
 
-        /* default */ Schedule createAndScheduleNewInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction)
+        /* default */
+        Schedule createAndScheduleNewInstance(final ScheduleIdentifier scheduleID, final SectionInstruction instruction)
                 throws QuestException {
             final S schedule = newScheduleInstance(scheduleID, instruction);
             scheduler.addSchedule(schedule);

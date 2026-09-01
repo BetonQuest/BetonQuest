@@ -357,6 +357,7 @@ public class Journal {
     /**
      * Adds journal to player inventory.
      */
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     public void addToInv() {
         if (profile.getOnlineProfile().isEmpty()) {
             return;
@@ -407,6 +408,7 @@ public class Journal {
      * @return the journal ItemStack
      * @throws QuestException if the journal cannot be generated
      */
+    @SuppressWarnings("PMD.AvoidDeeplyNestedIfStmts")
     public ItemStack getAsItem() throws QuestException {
         final ItemStack item = new ItemStack(Material.WRITTEN_BOOK);
 

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Tag;
  * This is a test for the {@link MultiFallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
+@SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class MultiSectionConfigurationWithMultiFallbackTest extends MultiSectionConfigurationTest {
 
     @Override

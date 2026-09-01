@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Tag;
  * Tests the {@link FallbackConfigurationSection} class.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.TestClassWithoutTestCases", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
+@SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class FallbackConfigurationSectionNonFallbackTest extends ConfigurationSectionBaseTest {
 
     @Override

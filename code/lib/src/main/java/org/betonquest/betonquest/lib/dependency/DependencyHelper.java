@@ -28,7 +28,6 @@ public final class DependencyHelper {
      * @param loaded   the loaded dependencies
      * @return the remaining dependencies
      */
-    /* default */
     public static Set<Class<?>> remainingDependencies(final Collection<Class<?>> required, final Collection<LoadedDependency<?>> loaded) {
         return required.stream()
                 .filter(requirement -> loaded.stream().noneMatch(dependency -> dependency.match(requirement)))
@@ -56,7 +55,6 @@ public final class DependencyHelper {
      * @param instanceType         the type of the instance to check for requiredness
      * @return true if the instance is required, false otherwise
      */
-    /* default */
     public static boolean isRequired(final Collection<Class<?>> requiredDependencies, final Class<?> instanceType) {
         return requiredDependencies.stream().anyMatch(requirement -> requirement.isAssignableFrom(instanceType));
     }
@@ -70,7 +68,6 @@ public final class DependencyHelper {
      * @param instanceType         the type of the instance to check for requiredness
      * @return true if the instance is still required, false otherwise
      */
-    /* default */
     public static boolean isStillRequired(final Collection<Class<?>> requiredDependencies,
                                           final Collection<LoadedDependency<?>> loadedDependencies, final Class<?> instanceType) {
         return isRequired(remainingDependencies(requiredDependencies, loadedDependencies), instanceType);

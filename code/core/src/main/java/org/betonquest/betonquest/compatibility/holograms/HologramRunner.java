@@ -45,7 +45,8 @@ public final class HologramRunner {
      *
      * @param hologram Hologram to be added.
      */
-    static /* default */ void addHologram(final HologramWrapper hologram) {
+    /* default */
+    static void addHologram(final HologramWrapper hologram) {
         RUNNERS.computeIfAbsent(hologram.interval(), k -> new HologramRunner())
                 .addRunnerHologram(hologram);
     }
@@ -55,7 +56,8 @@ public final class HologramRunner {
      *
      * @param plugin the plugin to start tasks
      */
-    static /* default */ void start(final Plugin plugin) {
+    /* default */
+    static void start(final Plugin plugin) {
         for (final Map.Entry<Integer, HologramRunner> entry : RUNNERS.entrySet()) {
             final HologramRunner runner = entry.getValue();
             final int updateInterval = entry.getKey();

@@ -207,8 +207,8 @@ final class UpdaterConfigTest {
      * @param strategy           strategy
      * @param automatic          automatic
      */
-    /* default */ record Input(Version version, boolean enabled, boolean ingameNotification, String strategy,
-                               boolean automatic) {
+    /* default */
+    record Input(Version version, boolean enabled, boolean ingameNotification, String strategy, boolean automatic) {
 
     }
 
