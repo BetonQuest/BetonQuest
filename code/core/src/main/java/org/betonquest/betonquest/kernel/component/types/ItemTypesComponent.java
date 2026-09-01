@@ -8,6 +8,7 @@ import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
+import org.betonquest.betonquest.item.SimpleQuestItemHandlerRegistry;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 
@@ -27,9 +28,12 @@ public class ItemTypesComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(ConfigAccessor.class,
-                Localizations.class,
-                ItemRegistry.class, FontRegistry.class);
+        return Set.of(ConfigAccessor.class, Localizations.class, ItemRegistry.class, FontRegistry.class);
+    }
+
+    @Override
+    public Set<Class<?>> provides() {
+        return Set.of(SimpleQuestItemHandlerRegistry.class);
     }
 
     @Override
@@ -40,8 +44,14 @@ public class ItemTypesComponent extends AbstractCoreComponent {
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
 
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
-        itemRegistry.register("simple", new SimpleQuestItemFactory(bookPageWrapper,
-                new LoreConsumer.SupplierArgument(() -> config.getBoolean("item.quest.lore") ? localizations : null)), true);
-        itemRegistry.registerSerializer("simple", new SimpleQuestItemSerializer(bookPageWrapper));
+
+        final SimpleQuestItemHandlerRegistry handlerRegistry = new SimpleQuestItemHandlerRegistry(bookPageWrapper, new LoreConsumer.SupplierArgument(
+                () -> config.getBoolean("item.quest.lore") ? localizations : null
+        ));
+
+        dependencyProvider.take(SimpleQuestItemHandlerRegistry.class, handlerRegistry);
+
+        itemRegistry.register("simple", new SimpleQuestItemFactory(handlerRegistry), true);
+        itemRegistry.registerSerializer("simple", new SimpleQuestItemSerializer(handlerRegistry));
     }
 }

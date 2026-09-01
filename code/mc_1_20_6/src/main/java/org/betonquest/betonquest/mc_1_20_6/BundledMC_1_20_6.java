@@ -2,11 +2,10 @@ package org.betonquest.betonquest.mc_1_20_6;
 
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.integration.Integration;
-import org.betonquest.betonquest.api.service.item.ItemRegistry;
-import org.betonquest.betonquest.item.SimpleQuestItemFactory;
-import org.betonquest.betonquest.mc_1_20_6.item.UpdatedSimpleQuestItemSerializer;
+import org.betonquest.betonquest.item.SimpleQuestItemHandlerRegistry;
+import org.betonquest.betonquest.mc_1_20_6.item.UpdatedNameHandler;
+import org.betonquest.betonquest.mc_1_20_6.item.UpdatedPotionHandler;
 
 /**
  * Allows to register features with Minecraft 1.20.6.
@@ -30,12 +29,9 @@ public class BundledMC_1_20_6 implements Integration {
 
     @Override
     public void enable(final BetonQuestApi api) {
-        final ItemRegistry item = api.items().registry();
-        final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
-
-        final SimpleQuestItemFactory itemFactory = UpdatedSimpleQuestItemSerializer.create(betonQuest.getPluginConfig(), api, bookPageWrapper);
-        item.register("simple", itemFactory, true);
-        item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(bookPageWrapper));
+        final SimpleQuestItemHandlerRegistry handlerRegistry = betonQuest.getComponentLoader().get(SimpleQuestItemHandlerRegistry.class);
+        handlerRegistry.register(new UpdatedNameHandler());
+        handlerRegistry.register(new UpdatedPotionHandler());
     }
 
     @Override

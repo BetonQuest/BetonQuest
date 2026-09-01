@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
+import org.betonquest.betonquest.item.SimpleQuestItemHandlerRegistry;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -303,7 +304,8 @@ public class SQLite extends Database {
                         textParser, null, null, null
                 );
 
-                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(bookPageWrapper, LoreConsumer.EMPTY_ARGUMENT);
+                final SimpleQuestItemHandlerRegistry handlerRegistry = new SimpleQuestItemHandlerRegistry(bookPageWrapper, LoreConsumer.EMPTY_ARGUMENT);
+                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(handlerRegistry);
 
                 while (resultSet.next()) {
                     final int rowId = resultSet.getInt("id");

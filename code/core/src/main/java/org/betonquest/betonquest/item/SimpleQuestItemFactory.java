@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -14,20 +13,6 @@ import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
 import org.betonquest.betonquest.item.handler.LoreMetaHandler;
 import org.betonquest.betonquest.item.handler.NameMetaHandler;
-import org.betonquest.betonquest.item.typehandler.BannerHandler;
-import org.betonquest.betonquest.item.typehandler.BookHandler;
-import org.betonquest.betonquest.item.typehandler.ColorHandler;
-import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
-import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
-import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
-import org.betonquest.betonquest.item.typehandler.FireworkHandler;
-import org.betonquest.betonquest.item.typehandler.FlagHandler;
-import org.betonquest.betonquest.item.typehandler.HeadHandler;
-import org.betonquest.betonquest.item.typehandler.LoreHandler;
-import org.betonquest.betonquest.item.typehandler.NameHandler;
-import org.betonquest.betonquest.item.typehandler.PotionHandler;
-import org.betonquest.betonquest.item.typehandler.QuestHandler;
-import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
 import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.util.DefaultBlockSelector;
 
@@ -41,58 +26,17 @@ import java.util.Map;
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
-     * Name meta handler to for {@link QuestItem#getName()}.
+     * Name meta handlers.
      */
-    protected final NameMetaHandler nameHandler;
-
-    /**
-     * Lore meta handler to for {@link QuestItem#getLore()}.
-     */
-    protected final LoreMetaHandler loreHandler;
-
-    /**
-     * All other meta handler to parse attributes of the simple item.
-     */
-    protected final List<ItemMetaHandler<?>> handlers;
+    private final SimpleQuestItemHandlerRegistry handlerRegistry;
 
     /**
      * Creates a new simple Quest Item Factory with custom handlers.
      *
-     * @param nameHandler the name meta handler for {@link QuestItem#getName()}
-     * @param loreHandler the lore meta handler for {@link QuestItem#getLore()}
-     * @param handlers    the handler which allow defining items, exclusive the name and lore handler
+     * @param handlerRegistry the handler to use for deserialization
      */
-    public SimpleQuestItemFactory(final NameMetaHandler nameHandler, final LoreMetaHandler loreHandler,
-                                  final List<ItemMetaHandler<?>> handlers) {
-        this.nameHandler = nameHandler;
-        this.loreHandler = loreHandler;
-        this.handlers = handlers;
-    }
-
-    /**
-     * Creates a new simple Quest Item Factory.
-     *
-     * @param bookPageWrapper       the book page wrapper used to split pages
-     * @param questItemLoreSupplier supplies the Localizations instance if the "quest item" lore line should be added
-     */
-    public SimpleQuestItemFactory(final BookPageWrapper bookPageWrapper, final Argument<LoreConsumer> questItemLoreSupplier) {
-        this.nameHandler = new NameHandler();
-
-        final QuestHandler questHandler = new QuestHandler(questItemLoreSupplier);
-        this.loreHandler = new LoreHandler(questHandler);
-        this.handlers = List.of(
-                new DurabilityHandler(),
-                new CustomModelDataHandler(),
-                new UnbreakableHandler(),
-                new FlagHandler(),
-                new EnchantmentsHandler(),
-                new PotionHandler(),
-                new BannerHandler(),
-                new BookHandler(bookPageWrapper),
-                new HeadHandler(),
-                new ColorHandler(),
-                new FireworkHandler()
-        );
+    public SimpleQuestItemFactory(final SimpleQuestItemHandlerRegistry handlerRegistry) {
+        this.handlerRegistry = handlerRegistry;
     }
 
     /**
@@ -124,11 +68,13 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
     public SimpleQuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
         final Argument<BlockSelector> selector = instruction.blockSelector().get();
 
-        final NameMetaHandler.NameAttribute nameAttribute = nameHandler.parse(instruction);
-        final LoreMetaHandler.LoreAttribute loreAttribute = loreHandler.parse(instruction);
+        final SimpleQuestItemHandlerRegistry.Baked baked = handlerRegistry.get();
+
+        final NameMetaHandler.NameAttribute nameAttribute = baked.name().parse(instruction);
+        final LoreMetaHandler.LoreAttribute loreAttribute = baked.lore().parse(instruction);
         final List<Attribute> attributes = new ArrayList<>();
         if (instruction.hasNext()) {
-            for (final ItemMetaHandler<?> handler : handlers) {
+            for (final ItemMetaHandler<?> handler : baked.handlers()) {
                 final Attribute attribute = handler.parse(instruction);
                 if (attribute != null) {
                     attributes.add(attribute);
