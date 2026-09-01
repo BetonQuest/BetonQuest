@@ -209,12 +209,9 @@ setupPrepare() {
 setupPrepareSelectTimeDefaultValue() {
   DEFAULT_RELEASE_TIME=''
   set +e
-  GH_RELEASE_DATE="$(gh release view "v$CURRENT_VERSION" --repo "BetonQuest/BetonQuest" --json publishedAt >&1 2> /dev/null)"
+  GH_RELEASE_JSON="$(gh release view "v$CURRENT_VERSION" --repo "BetonQuest/BetonQuest" --json publishedAt >&1 2> /dev/null)"
   set -e
-  GH_RELEASE_KEY="${GH_RELEASE_DATE:0:16}"
-  if [ "$GH_RELEASE_KEY" == '{\"publishedAt\":\"' ]; then
-    DEFAULT_RELEASE_TIME=${GH_RELEASE_DATE:16:10}
-  fi
+  DEFAULT_RELEASE_TIME="$(jq -r '.publishedAt[:10]' <<< "$GH_RELEASE_JSON")"
 }
 
 setupCommit() {
@@ -296,7 +293,7 @@ bumpCommit() {
   else
     echo '    Updating API-CHANGELOG.md file...'
     NEW_CHANGELOG="## \[Unreleased\] - \${maven.build.timestamp}\n### API\n#### Added\n#### Changed\n#### Deprecated\n#### Removed\n### Library\n#### Added\n#### Changed\n#### Deprecated\n#### Removed\n"
-    sed -i "s~## \[Unreleased\] - \${maven\.build\.timestamp}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $RELEASE_TIME~g" API-CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
+    sed -i "s~## \[Unreleased\] - \${maven\.build\.timestamp}~$NEW_CHANGELOG\n## \[$CURRENT_VERSION\] - $API_LIB_RELEASE_TIME~g" API-CHANGELOG.md 2>&1 > /dev/null | sed 's/^/        /'
   fi
 
   echo '    Committing changed files...'
@@ -379,6 +376,23 @@ bumpPrepare() {
     promptSetupRemote
     promptSetupBranch "$NEW_VERSION"
   fi
+  bumpPrepareSelectTimeDefaultValue
+  promptApiLibReleaseTime "$LAST_API_LIB_VERSION" "$DEFAULT_API_LIB_RELEASE_TIME"
+}
+
+bumpPrepareSelectTimeDefaultValue() {
+  DEFAULT_API_LIB_RELEASE_TIME=''
+  last_tag="$(git tag -l "v*-api" -l "v*-lib" --sort=-v:refname | head -n 1)"
+  if [ -n "$last_tag" ]; then
+    LAST_API_LIB_VERSION="${last_tag#v}"
+    LAST_API_LIB_VERSION="${LAST_API_LIB_VERSION%-*}"
+  else
+    LAST_API_LIB_VERSION="$CURRENT_VERSION"
+  fi
+  set +e
+  GH_RELEASE_JSON="$(gh release view "v$LAST_API_LIB_VERSION" --repo "BetonQuest/BetonQuest" --json publishedAt >&1 2> /dev/null)"
+  set -e
+  DEFAULT_API_LIB_RELEASE_TIME="$(jq -r '.publishedAt[:10]' <<< "$GH_RELEASE_JSON")"
 }
 
 #
