@@ -12,6 +12,7 @@ import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.argument.parser.DefaultArgumentParsers;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -283,7 +284,7 @@ public class MySQL extends Database {
                         textParser, null, null, null
                 );
 
-                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(bookPageWrapper, () -> null);
+                final SimpleQuestItemFactory itemFactory = new SimpleQuestItemFactory(bookPageWrapper, LoreConsumer.EMPTY_ARGUMENT);
 
                 while (resultSet.next()) {
                     final int rowId = resultSet.getInt("id");

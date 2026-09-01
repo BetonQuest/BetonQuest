@@ -2,7 +2,6 @@ package org.betonquest.betonquest.item;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
-import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -35,7 +34,6 @@ import org.betonquest.betonquest.util.DefaultBlockSelector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * Creates {@link SimpleQuestItemWrapper}s from {@link Instruction}s.
@@ -77,12 +75,10 @@ public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
      * @param bookPageWrapper       the book page wrapper used to split pages
      * @param questItemLoreSupplier supplies the Localizations instance if the "quest item" lore line should be added
      */
-    public SimpleQuestItemFactory(final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
+    public SimpleQuestItemFactory(final BookPageWrapper bookPageWrapper, final Argument<LoreConsumer> questItemLoreSupplier) {
         this.nameHandler = new NameHandler();
 
-        final Localizations localizations = questItemLoreSupplier.get();
-        final QuestHandler questHandler = new QuestHandler(localizations == null
-                ? LoreConsumer.EMPTY_ARGUMENT : new LoreConsumer.LoreArgument(localizations));
+        final QuestHandler questHandler = new QuestHandler(questItemLoreSupplier);
         this.loreHandler = new LoreHandler(questHandler);
         this.handlers = List.of(
                 new DurabilityHandler(),

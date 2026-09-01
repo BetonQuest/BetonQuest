@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
+import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
@@ -40,7 +41,7 @@ public class ItemTypesComponent extends AbstractCoreComponent {
 
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
         itemRegistry.register("simple", new SimpleQuestItemFactory(bookPageWrapper,
-                () -> config.getBoolean("item.quest.lore") ? localizations : null));
+                new LoreConsumer.SupplierArgument(() -> config.getBoolean("item.quest.lore") ? localizations : null)));
         itemRegistry.registerSerializer("simple", new SimpleQuestItemSerializer(bookPageWrapper));
     }
 }
