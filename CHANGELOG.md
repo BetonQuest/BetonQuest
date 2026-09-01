@@ -13,6 +13,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `discordsrv` integration added with a condition and an objective for account linking
 - `trade` objective to track trades
 ### Changed
+- documentation of the counting objective `notify` keyword is now consistent
 - `lore` of `item` placeholder can now be used without number to get all lines
 - `chat` notify io now only sends messages during a conversation if `bypassInterceptor` is set to `true`
 - `non-positive` (<= 0) update intervals deactivate automatic updating

@@ -66,8 +66,8 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `nujobs_payment <amount>`  
 __Description__: Triggers when the player makes the specified amount of money from jobs.
 
-You can use the `notify` keyword to display a message each time the player advances the objective,
-optionally with the notification interval after a colon.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of money already received,
 `left` is the amount of money still needed to receive and `total` is the amount of money initially required.

@@ -95,8 +95,9 @@ __Syntax__: `mmocorebreakblock <amount> [block]`
 __Description__: The player needs to break [special blocks from MMOCore](https://gitlab.com/phoenix-dvpmt/mmocore/-/wikis/Mining%20and%20Block%20Regen).
 
 Please note that you *must* use this objective over `block` if you are using MMOCore's custom mining system.
-All three different block types and an amount can be defined. You can also send notifications to the player by appending
-the `notify` keyword optionally with the notification interval after a colon.
+All three different block types and an amount can be defined.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of blocks already broken,
 `left` is the amount of blocks still left to break and `total` is the amount of blocks initially required.

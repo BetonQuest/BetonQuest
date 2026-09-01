@@ -69,7 +69,7 @@ __Description__: The NPC kill objective requires the player to kill a NPC.
 |-----------|---------------|------------------------|-------------------------------------------------------------------------------------------------------------------|
 | _NpcID_   | npcId         | :octicons-x-circle-16: | The NpcId.                                                                                                        |
 | _amount_  | amount:number | 1                      | The time the NPC needs to be killed.                                                                              |
-| _notify_  | notify        | Disabled               | Display a message to the player each time they kill a NPC. Optionally with the notification interval after colon. |
+| _Notifications_ | Keyword (`notify`) | Disabled          | Displays messages to the player each time they progress the objective. Optionally with the notification interval after a colon. |
 
 <h5> Placeholder Properties </h5>
 
