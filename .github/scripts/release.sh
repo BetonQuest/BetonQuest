@@ -203,19 +203,17 @@ setupPrepare() {
   promptSetupRemote
   promptSetupBranch "$NEW_VERSION"
   setupPrepareSelectTimeDefaultValue
-  promptReleaseTime "$CURRENT_VERSION" "$DEFAULT_RELEASE_TIME_MESSAGE" "$DEFAULT_RELEASE_TIME"
+  promptReleaseTime "$CURRENT_VERSION" "$DEFAULT_RELEASE_TIME"
 }
 
 setupPrepareSelectTimeDefaultValue() {
-  DEFAULT_RELEASE_TIME="$(date +%Y-%m-%d)"
-  DEFAULT_RELEASE_TIME_MESSAGE=''
+  DEFAULT_RELEASE_TIME=''
   set +e
   GH_RELEASE_DATE="$(gh release view "v$CURRENT_VERSION" --repo "BetonQuest/BetonQuest" --json publishedAt >&1 2> /dev/null)"
   set -e
   GH_RELEASE_KEY="${GH_RELEASE_DATE:0:16}"
   if [ "$GH_RELEASE_KEY" == '{\"publishedAt\":\"' ]; then
     DEFAULT_RELEASE_TIME=${GH_RELEASE_DATE:16:10}
-    DEFAULT_RELEASE_TIME_MESSAGE='(the default time was extracted from the release tag)'
   fi
 }
 

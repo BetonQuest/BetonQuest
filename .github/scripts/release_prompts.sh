@@ -90,10 +90,9 @@ promptSetupBranch() {
 
 promptReleaseTime() {
   local version="$1"
-  local message="$2"
-  local default="$3"
+  local default="$2"
   prompt \
-    "Enter the time when the release '$version' was created $message" \
+    "Enter the time when the release '$version' was created \
     "Timestamp $version" \
     RELEASE_TIME \
     "$default" \
