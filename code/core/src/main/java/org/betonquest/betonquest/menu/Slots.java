@@ -35,20 +35,27 @@ public class Slots {
     private final Argument<List<MenuItemIdentifier>> items;
 
     /**
+     * Offset of items to skip.
+     */
+    private final Argument<Number> offset;
+
+    /**
      * The slots form.
      */
     private final Type type;
 
     /**
-     * .
+     * Create a new Slots definition with an offset.
      *
      * @param rpgMenu the rpg menu instance to get Menu Items
      * @param slots   the slot definition
      * @param items   the items to put at the slots
+     * @param offset  the offset of items to skip
      * @throws IllegalArgumentException when the slot form is invalid or a number cannot be parsed
      */
     @SuppressWarnings("PMD.CyclomaticComplexity")
-    public Slots(final RPGMenu rpgMenu, final String slots, final Argument<List<MenuItemIdentifier>> items) {
+    public Slots(final RPGMenu rpgMenu, final String slots, final Argument<List<MenuItemIdentifier>> items,
+                 final Argument<Number> offset) {
         this.rpgMenu = rpgMenu;
         if (slots.matches("\\d+")) {
             this.type = Type.SINGLE;
@@ -77,6 +84,7 @@ public class Slots {
             throw new IllegalArgumentException(slots + " is not a valid slot identifier");
         }
         this.items = items;
+        this.offset = offset;
     }
 
     /**
@@ -162,9 +170,15 @@ public class Slots {
      */
     public List<MenuItem> getItems(final Profile profile) throws QuestException {
         final List<MenuItem> items = new ArrayList<>();
+        int skipped = 0;
+        final int skipCount = offset.getValue(profile).intValue();
         for (final MenuItemIdentifier itemID : this.items.getValue(profile)) {
             final MenuItem item = rpgMenu.getMenuItemProcessor().get(itemID);
             if (item.display(profile)) {
+                if (skipped < skipCount) {
+                    skipped++;
+                    continue;
+                }
                 items.add(item);
             }
         }

@@ -19,6 +19,7 @@ import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.text.Text;
+import org.betonquest.betonquest.lib.instruction.argument.DefaultArgument;
 import org.betonquest.betonquest.menu.Menu;
 import org.betonquest.betonquest.menu.RPGMenu;
 import org.betonquest.betonquest.menu.Slots;
@@ -123,9 +124,22 @@ public class MenuProcessor extends RPGMenuProcessor<MenuIdentifier, Menu> {
                                   final List<Map.Entry<String, String>> slots) throws QuestException {
         final List<Slots> loadedSlots = new ArrayList<>();
         for (final Map.Entry<String, String> slot : slots) {
-            final Argument<List<MenuItemIdentifier>> items = parserFunction.apply(slot.getValue())
-                    .identifier(MenuItemIdentifier.class).list().get();
-            loadedSlots.add(new Slots(rpgMenu, slot.getKey(), items));
+            final String value = slot.getValue();
+            final int spaceIndex = value.indexOf(' ');
+            final Argument<List<MenuItemIdentifier>> items;
+            final Argument<Number> offset;
+            if (spaceIndex == -1) {
+                offset = new DefaultArgument<>(0);
+                items = parserFunction.apply(value).identifier(MenuItemIdentifier.class).list().get();
+            } else {
+                final String rawOffset = value.substring(0, spaceIndex);
+                final String rawItems = value.substring(spaceIndex + 1);
+                offset = rawOffset.isEmpty() ? new DefaultArgument<>(0) : parserFunction.apply(rawOffset).number()
+                        .validate(effectiveOffset -> effectiveOffset.intValue() >= 0,
+                                "The slot '" + slot.getKey() + "' must have an offset of at least 0, but was %s").get();
+                items = parserFunction.apply(rawItems).identifier(MenuItemIdentifier.class).list().get();
+            }
+            loadedSlots.add(new Slots(rpgMenu, slot.getKey(), items, offset));
         }
         return loadedSlots;
     }

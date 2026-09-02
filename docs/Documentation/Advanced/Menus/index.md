@@ -223,3 +223,34 @@ the slots in this rectangle are filled up one by one using the items whose condi
 ```
 
 ![RectangleExample](../../../_media/content/Documentation/Menu/RectangleExample.png)
+
+### Offset & Pagination
+You can define an item offset by prefixing the item list with `<offset> <items>` in any slot assignment:
+
+```YAML
+<slot(s)>: "<offset> <items>"
+```
+
+The offset determines how many displayed items (items whose conditions evaluate to `true`) are skipped before assigning items to the slot(s).
+A value must be a number greater than or equal to `0`. Zero acts the same as not present, and behaves like a normal slot assignment.
+If the offset is equal to or greater than the number of valid items, the slot(s) remain empty.
+
+#### Pagination Example
+By combining an offset with point placeholders or math calculations, you can implement multi-page menus (e.g., paginating quest lists, shops, or server warp lists).
+
+```YAML
+menus:
+  questMenu:
+    title: "Quest Log"
+    height: 4
+    slots:
+      # Displays 14 items per page in a 2x7 rectangle (slots 10 to 25), skipping items from previous pages
+      10*25: "%math.calc:point.quest_page.amount*14% quest1,quest2,quest3,quest4,quest5,quest6,quest7,quest8,quest9,quest10,quest11,quest12,quest13,quest14,quest15,quest16" #(1)!
+      # Previous & Next page navigation buttons
+      27: "previousPage" #(2)!
+      35: "nextPage" #(3)!
+```
+
+1. Each page displays up to 14 quests. On page `0`, the offset is `0` (quests 1–14). On page `1`, the offset is `14` (skipping the first 14 visible quests, displaying quest 15 and onwards).
+2. Menu item with click actions to decrement the `quest_page` point and update the menu.
+3. Menu item with click actions to increment the `quest_page` point and update the menu.
