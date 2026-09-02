@@ -8686,6 +8686,59 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#offset-pagination">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Offset &amp; Pagination
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+  <nav aria-label="Offset &amp; Pagination" class="md-nav">
+    <ul class="md-nav__list">
+      
+      
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#pagination-example">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          Pagination Example
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
+    </ul>
+  </nav>
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -9059,6 +9112,31 @@ the slots in this rectangle are filled up one by one using the items whose condi
 <div class="highlight"><pre><span></span><code><span class="nt">14*25</span><span class="p">:</span><span class="w"> </span><span class="s">"quest1,quest2,quest3"</span>
 </code></pre></div>
 <p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../../_media/content/Documentation/Menu/RectangleExample.png" data-desc-position="bottom"><img alt="RectangleExample" src="../../../_media/content/Documentation/Menu/RectangleExample.png"></a></p>
+<h3 id="offset-pagination">Offset &amp; Pagination<a class="headerlink" href="#offset-pagination" title="Permanent link">🔗</a></h3>
+<p>You can define an item offset by prefixing the item list with <code>&lt;offset&gt; &lt;items&gt;</code> in any slot assignment:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;slot(s)&gt;</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;offset&gt;</span><span class="nv"> </span><span class="s">&lt;items&gt;"</span>
+</code></pre></div>
+<p>The offset determines how many displayed items (items whose conditions evaluate to <code>true</code>) are skipped before assigning items to the slot(s).
+A value must be a number greater than or equal to <code>0</code>. Zero acts the same as not present, and behaves like a normal slot assignment.
+If the offset is equal to or greater than the number of valid items, the slot(s) remain empty.</p>
+<h4 id="pagination-example">Pagination Example<a class="headerlink" href="#pagination-example" title="Permanent link">🔗</a></h4>
+<p>By combining an offset with point placeholders or math calculations, you can implement multi-page menus (e.g., paginating quest lists, shops, or server warp lists).</p>
+<div class="highlight"><pre><span></span><code><span class="nt">menus</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">questMenu</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">"Quest</span><span class="nv"> </span><span class="s">Log"</span>
+<span class="w">    </span><span class="nt">height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">    </span><span class="nt">slots</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># Displays 14 items per page in a 2x7 rectangle (slots 10 to 25), skipping items from previous pages</span>
+<span class="w">      </span><span class="nt">10*25</span><span class="p">:</span><span class="w"> </span><span class="s">"%math.calc:point.quest_page.amount*14%</span><span class="nv"> </span><span class="s">quest1,quest2,quest3,quest4,quest5,quest6,quest7,quest8,quest9,quest10,quest11,quest12,quest13,quest14,quest15,quest16"</span><span class="w"> </span><span class="c1">#(1)!</span>
+<span class="w">      </span><span class="c1"># Previous &amp; Next page navigation buttons</span>
+<span class="w">      </span><span class="nt">27</span><span class="p">:</span><span class="w"> </span><span class="s">"previousPage"</span><span class="w"> </span><span class="c1">#(2)!</span>
+<span class="w">      </span><span class="nt">35</span><span class="p">:</span><span class="w"> </span><span class="s">"nextPage"</span><span class="w"> </span><span class="c1">#(3)!</span>
+</code></pre></div>
+<ol>
+<li>Each page displays up to 14 quests. On page <code>0</code>, the offset is <code>0</code> (quests 1–14). On page <code>1</code>, the offset is <code>14</code> (skipping the first 14 visible quests, displaying quest 15 and onwards).</li>
+<li>Menu item with click actions to decrement the <code>quest_page</code> point and update the menu.</li>
+<li>Menu item with click actions to increment the <code>quest_page</code> point and update the menu.</li>
+</ol>
 
 
 
