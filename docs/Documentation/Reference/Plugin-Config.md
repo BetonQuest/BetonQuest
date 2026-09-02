@@ -74,7 +74,6 @@ mysql:
   pass: ''                   #(6)!
   base: ''                   #(7)!
   prefix: betonquest_        #(8)!
-  reconnect_interval: 1000   #(9)!
 ```
 
 1. Set this to true.
@@ -85,7 +84,6 @@ mysql:
 6. The password of that user.
 7. The database that BetonQuest will write to. You need to create it in your database server.
 8. The table prefix of BetonQuest's data in the database.
-9. The time interval the database tries to reconnect if the connection gets lost
 
 ### Migrating a database from SQLite to MySQL or back
 Follow these few steps to migrate your database easily:
