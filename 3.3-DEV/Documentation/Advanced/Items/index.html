@@ -9133,7 +9133,7 @@ If you want to specifically say that the item must not have any name, use <code>
 <div class="annotate">
 <ul>
 <li><code>lore</code> - Text under the item's name. Default styling of lore is purple and italic. 
-To make a new line, use <code>;</code> character. If you require the item to not have lore at all, use <code>none</code> keyword.
+To make a new line, use <code>;</code> character. (2) If you require the item to not have lore at all, use <code>none</code> keyword.
 By default, lore will match only if all lines are exactly the same.
 If you want to accept all items that contain specified lines (and/or more lines),
 add <code>lore-containing</code> argument to the instruction string. (1)  <ul>
@@ -9144,6 +9144,7 @@ add <code>lore-containing</code> argument to the instruction string. (1)  <ul>
 </div>
 <ol>
 <li>If you do not want the default styling, you must append <code>&lt;!i&gt;&lt;colorValue&gt;</code> before the text in your <code>lore</code> argument.</li>
+<li>Each line is parsed independently. That means you need to specify color codes and specific message parser for each line.</li>
 </ol>
 <div class="annotate">
 <div class="admonition warning inline end">
