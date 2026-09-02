@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.kernel.component;
 
-import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
@@ -27,7 +26,7 @@ public class AsyncSaverComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(Plugin.class, BetonQuestLoggerFactory.class, ConfigAccessorFactory.class, ConfigAccessor.class, Connector.class);
+        return Set.of(Plugin.class, BetonQuestLoggerFactory.class, ConfigAccessorFactory.class, Connector.class);
     }
 
     @Override
@@ -40,10 +39,9 @@ public class AsyncSaverComponent extends AbstractCoreComponent {
         final Plugin plugin = getDependency(Plugin.class);
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final ConfigAccessorFactory configAccessorFactory = getDependency(ConfigAccessorFactory.class);
-        final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final Connector connector = getDependency(Connector.class);
 
-        final AsyncSaver saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "AsyncSaver"), config.getLong("mysql.reconnect_interval"), connector);
+        final AsyncSaver saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "AsyncSaver"), connector);
         new Thread(saver).start();
         new Backup(loggerFactory, loggerFactory.create(Backup.class), configAccessorFactory, plugin.getDataFolder(), connector)
                 .loadDatabaseFromBackup();
