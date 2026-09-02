@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -42,20 +43,25 @@ public class LoreHandler implements LoreMetaHandler {
 
     @Override
     public Set<String> keys() {
-        return Set.of("lore", "lore-containing");
+        final Set<String> set = new HashSet<>(Set.of("lore", "lore-containing"));
+        set.addAll(questHandler.keys());
+        return set;
     }
 
     @Override
     @Nullable
     public String serializeToString(final ItemMeta meta) {
+        final StringBuilder string = new StringBuilder(22);
         if (meta.hasLore()) {
-            final StringBuilder string = new StringBuilder(22);
             for (final Component line : meta.lore()) {
                 string.append(' ').append(HandlerUtil.toKeyValue("lore", line));
             }
-            return string.substring(1);
         }
-        return null;
+        final String quest = questHandler.serializeToString(meta);
+        if (quest != null) {
+            string.append(' ').append(quest);
+        }
+        return string.isEmpty() ? null : string.substring(1);
     }
 
     @Override
