@@ -19,11 +19,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `block selector` no longer uses `matchMaterial` which strips regex characters and resolved to unwanted values
 ### Deprecated
 ### Removed
+- `mysql.reconnect_interval` config option since it is no longer used
 ### Fixed
 - JobsReborn integration missed some null checks resulting in not working actions and conditions
 - concurrency issue when loading player data on join causing multiple profiles to get created with a database exception
 - `extends` in `conversations` sometimes crashing with IllegalStateException
 - `section` placeholder did not include target path to subsections
+- async database handling by using default java executor service implementation instead of manual thread handling
 ### Security
 
 ## [3.2.0] - 2026-08-17

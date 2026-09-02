@@ -1,4 +1,7 @@
 # Put patches for BetonQuest's config here. The syntax is documented in the docs/API/Configuration-Files.md
+3.3.0.3:
+  - type: REMOVE
+    key: mysql.reconnect_interval
 3.3.0.2:
   - type: SET
     key: hook.discordsrv

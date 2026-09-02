@@ -23,7 +23,6 @@ mysql:
   pass: ''
   base: ''
   prefix: betonquest_
-  reconnect_interval: 1000
 profile:
   initial_name: 'default'
 language:
