@@ -3,7 +3,6 @@ package org.betonquest.betonquest.compatibility.mmogroup.mmoitems;
 import net.Indyuce.mmoitems.api.Type;
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.item.QuestItem;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -66,7 +65,7 @@ public class MMOQuestItem implements QuestItem {
     }
 
     @Override
-    public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
+    public ItemStack generate(final int stackSize) {
         if (stackSize <= 0) {
             return new ItemStack(Material.AIR);
         }

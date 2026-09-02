@@ -1,39 +1,30 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Handles metadata about item flags.
  */
-public class FlagHandler implements ItemMetaHandler<ItemMeta> {
-
-    /**
-     * Set of ItemFlags on the ItemStack.
-     */
-    private Set<ItemFlag> itemFlags;
-
-    /**
-     * Existence of the flags.
-     */
-    private Existence existence = Existence.WHATEVER;
+public class FlagHandler implements ItemMetaHandler.Standard {
 
     /**
      * Construct a new FlagHandler.
      */
     public FlagHandler() {
-        itemFlags = Set.of();
-    }
 
-    @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
     }
 
     @Override
@@ -51,34 +42,53 @@ public class FlagHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!"flags".equals(key)) {
-            throw new QuestException("Invalid flag key: " + key);
+    @Nullable
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<Set<ItemFlag>> flags = instruction.enumeration(ItemFlag.class)
+                .list()
+                .map(list -> Pair.of(Existence.REQUIRED, Set.copyOf(list)))
+                .prefilter("", Pair.of(Existence.FORBIDDEN, Set.of()))
+                .get("flags")
+                .map(argument -> (ExistenceArgument<Set<ItemFlag>>) argument::getValue)
+                .orElse(null);
+        if (flags == null) {
+            return null;
         }
-        final Set<ItemFlag> flags;
-        try {
-            flags = Arrays.stream(data.split(",")).map(ItemFlag::valueOf).collect(Collectors.toSet());
-        } catch (final IllegalArgumentException e) {
-            throw new QuestException("Invalid flag : " + e.getMessage(), e);
-        }
-        if (flags.isEmpty()) {
-            this.itemFlags = Set.of();
-            this.existence = Existence.FORBIDDEN;
-        } else {
-            this.itemFlags = Set.copyOf(flags);
-            this.existence = Existence.REQUIRED;
+        return new NonResolved(flags);
+    }
+
+    /**
+     * The attribute with placeholders.
+     *
+     * @param flags Set of ItemFlags on the ItemStack.
+     */
+    private record NonResolved(ExistenceArgument<Set<ItemFlag>> flags) implements Attribute {
+
+        @Override
+        public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, Set<ItemFlag>> pair = flags.getValue(profile);
+            return new Resolved(pair.getLeft(), pair.getRight());
         }
     }
 
-    @Override
-    public void populate(final ItemMeta meta) {
-        itemFlags.forEach(meta::addItemFlags);
-    }
+    /**
+     * The resolved attribute.
+     *
+     * @param existence Existence of the flags.
+     * @param flags     Set of ItemFlags on the ItemStack.
+     */
+    private record Resolved(Existence existence, Set<ItemFlag> flags) implements ResolvedAttribute.Standard {
 
-    @Override
-    public boolean check(final ItemMeta data) {
-        return existence == Existence.WHATEVER
-                || existence == Existence.FORBIDDEN && data.getItemFlags().isEmpty()
-                || existence == Existence.REQUIRED && !data.getItemFlags().isEmpty() && itemFlags.equals(data.getItemFlags());
+        @Override
+        public void populate(final ItemMeta meta) {
+            flags.forEach(meta::addItemFlags);
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            return existence == Existence.WHATEVER
+                    || existence == Existence.FORBIDDEN && meta.getItemFlags().isEmpty()
+                    || existence == Existence.REQUIRED && !meta.getItemFlags().isEmpty() && flags.equals(meta.getItemFlags());
+        }
     }
 }

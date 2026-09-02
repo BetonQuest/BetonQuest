@@ -9,7 +9,6 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.TypeFactory;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -57,7 +56,7 @@ public class MagicItemFactory implements TypeFactory<QuestItemWrapper> {
             if (itemStack == null) {
                 throw new QuestException("Magic item not found: '" + dataValue.getKey() + "'");
             }
-            return new MagicItem(mageController, itemStack, itemData);
+            return new MagicItem(mageController, itemStack);
         };
     }
 
@@ -66,10 +65,8 @@ public class MagicItemFactory implements TypeFactory<QuestItemWrapper> {
      *
      * @param controller the MageController instance
      * @param itemStack  the underlying Magic item
-     * @param itemData   the item data from the Magic API
      */
-    private record MagicItem(MageController controller, ItemStack itemStack,
-                             Argument<ItemData> itemData) implements QuestItem {
+    private record MagicItem(MageController controller, ItemStack itemStack) implements QuestItem {
 
         @Override
         public Component getName() {
@@ -83,14 +80,9 @@ public class MagicItemFactory implements TypeFactory<QuestItemWrapper> {
         }
 
         @Override
-        public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
+        public ItemStack generate(final int stackSize) {
             if (stackSize <= 0) {
                 return new ItemStack(Material.AIR);
-            }
-            final ItemData value = itemData.getValue(profile);
-            final ItemStack itemStack = value.getItemStack();
-            if (itemStack == null) {
-                throw new QuestException("Magic item not found: '" + value.getKey() + "'");
             }
             return itemStack.asQuantity(stackSize);
         }

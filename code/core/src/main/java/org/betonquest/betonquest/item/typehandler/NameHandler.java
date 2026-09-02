@@ -1,8 +1,13 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.NameMetaHandler;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,36 +16,12 @@ import java.util.Set;
 /**
  * Handles de-/serialization of Display Names.
  */
-public class NameHandler implements ItemMetaHandler<ItemMeta> {
+public class NameHandler implements NameMetaHandler {
 
     /**
-     * The text parser used to parse text.
+     * The empty default Constructor.
      */
-    protected final TextParser textParser;
-
-    /**
-     * The Item Display Name.
-     */
-    @Nullable
-    private Component name;
-
-    /**
-     * The required existence.
-     */
-    private Existence existence = Existence.WHATEVER;
-
-    /**
-     * Creates an empty NameHandler.
-     *
-     * @param textParser the text parser used to parse text
-     */
-    public NameHandler(final TextParser textParser) {
-        this.textParser = textParser;
-    }
-
-    @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
+    public NameHandler() {
     }
 
     @Override
@@ -58,43 +39,49 @@ public class NameHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!"name".equals(key)) {
-            throw new QuestException("Invalid name: " + key);
-        }
-        if (data.isEmpty()) {
-            throw new QuestException("Name cannot be empty");
-        }
-        if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-            existence = Existence.FORBIDDEN;
-        } else {
-            this.name = textParser.parse(data).compact();
-            existence = Existence.REQUIRED;
-        }
-    }
-
-    @Override
-    public void populate(final ItemMeta meta) {
-        meta.displayName(get());
-    }
-
-    @Override
-    public boolean check(final ItemMeta meta) {
-        final Component displayName = meta.hasDisplayName() ? meta.displayName() : null;
-        return switch (existence) {
-            case WHATEVER -> true;
-            case REQUIRED -> displayName != null && displayName.compact().equals(this.name);
-            case FORBIDDEN -> displayName == null;
-        };
+    public NameAttribute parse(final Instruction instruction) throws QuestException {
+        return new NonResolved(ExistenceArgument.apply("name", instruction.component().map(Component::compact)));
     }
 
     /**
-     * Get the name.
+     * The attribute with placeholders.
      *
-     * @return the name
+     * @param name Item Display Name's required existence and value.
      */
-    @Nullable
-    public Component get() {
-        return name;
+    private record NonResolved(ExistenceArgument<@Nullable Component> name) implements NameAttribute {
+
+        @Override
+        public ResolvedNameAttribute resolve(@Nullable final Profile profile) throws QuestException {
+            return new Resolved(name.getValue(profile));
+        }
+    }
+
+    /**
+     * The resolved attribute.
+     *
+     * @param name Item Display Name's required existence and value.
+     */
+    private record Resolved(Pair<Existence, @Nullable Component> name) implements ResolvedNameAttribute {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            meta.displayName(get());
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            final Component displayName = meta.hasDisplayName() ? meta.displayName() : null;
+            return switch (name.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> displayName != null && displayName.compact().equals(name.getRight());
+                case FORBIDDEN -> displayName == null;
+            };
+        }
+
+        @Override
+        @Nullable
+        public Component get() {
+            return name.getRight();
+        }
     }
 }

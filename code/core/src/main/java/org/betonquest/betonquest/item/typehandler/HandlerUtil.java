@@ -3,7 +3,13 @@ package org.betonquest.betonquest.item.typehandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
+import org.betonquest.betonquest.api.instruction.FlagState;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.Number;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.intellij.lang.annotations.Language;
@@ -106,17 +112,24 @@ public final class HandlerUtil {
     }
 
     /**
-     * Checks if the data parses to {@code true} or equals the key.
+     * Checks if the value of the key parses to {@code true} or equals the key.
      * <p>
      * Used for keywords which may be denied.
      *
-     * @param key  the key to check for similarity of the data
-     * @param data the data to parse
-     * @return if the data is true or the key
+     * @param key         the key to get and check for similarity of the data
+     * @param instruction the instruction to get the value from
+     * @return if the data is true or the key, or null if there is no data for the key
      * @throws QuestException when the data is neither the key nor "true" or "false"
      */
-    public static boolean isKeyOrTrue(final String key, final String data) throws QuestException {
-        return key.equals(data) || new BooleanParser().apply(data);
+    @Nullable
+    public static Argument<Existence> getIsKeyOrTrue(final String key, final Instruction instruction) throws QuestException {
+        final FlagArgument<Existence> argument = instruction
+                .parse(resolved -> new BooleanParser().apply(resolved) ? Existence.REQUIRED : Existence.FORBIDDEN)
+                .getFlag(key, Existence.REQUIRED);
+        if (argument.getState() == FlagState.ABSENT) {
+            return null;
+        }
+        return profile -> argument.getValue(profile).orElseThrow();
     }
 
     /**

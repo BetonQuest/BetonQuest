@@ -66,7 +66,7 @@ public record MythicItemWrapper(ItemManager itemManager, Argument<String> itemNa
         }
 
         @Override
-        public ItemStack generate(final int stackSize, @Nullable final Profile profile) {
+        public ItemStack generate(final int stackSize) {
             return stack.asQuantity(stackSize);
         }
 

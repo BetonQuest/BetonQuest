@@ -2,40 +2,73 @@ package org.betonquest.betonquest.item;
 
 import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.function.QuestBiConsumer;
 import org.betonquest.betonquest.api.config.Localizations;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * A BiConsumer on ItemMeta and nullable Profile.
  */
 @FunctionalInterface
-public interface LoreConsumer extends QuestBiConsumer<ItemMeta, Profile> {
+public interface LoreConsumer extends Consumer<ItemMeta> {
 
     /**
      * Consumer that does nothing.
      */
-    LoreConsumer EMPTY = (meta, profile) -> {
+    LoreConsumer EMPTY = (meta) -> {
     };
 
+    /**
+     * Argument that provides {@link #EMPTY}.
+     */
+    Argument<LoreConsumer> EMPTY_ARGUMENT = profile -> EMPTY;
+
     @Override
-    void accept(ItemMeta meta, @Nullable Profile profile) throws QuestException;
+    void accept(ItemMeta meta);
+
+    /**
+     * Adds the quest item lore to the item meta.
+     *
+     * @param localizationsSupplier supplies the Localizations instance if the "quest item" lore line should be added
+     */
+    record SupplierArgument(Supplier<Localizations> localizationsSupplier) implements Argument<LoreConsumer> {
+
+        @Override
+        public LoreConsumer getValue(@Nullable final Profile profile) throws QuestException {
+            final Localizations localizations = localizationsSupplier.get();
+            return localizations == null ? EMPTY : new LoreArgument(localizations).getValue(profile);
+        }
+    }
 
     /**
      * Adds the quest item lore to the item meta.
      *
      * @param localizations the Localizations instance to get the lore line
      */
-    record Lore(Localizations localizations) implements LoreConsumer {
+    record LoreArgument(Localizations localizations) implements Argument<LoreConsumer> {
 
         @Override
-        public void accept(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-            final Component loreLine = localizations.getMessage(profile, "quest_item");
+        public Lore getValue(@Nullable final Profile profile) throws QuestException {
+            return new Lore(localizations.getMessage(profile, "quest_item"));
+        }
+    }
+
+    /**
+     * Adds the quest item lore to the item meta.
+     *
+     * @param loreLine the actual line to add
+     */
+    record Lore(Component loreLine) implements LoreConsumer {
+
+        @Override
+        public void accept(final ItemMeta meta) {
             if (meta.hasLore()) {
                 final List<Component> lore = new ArrayList<>(meta.lore());
                 lore.add(loreLine);

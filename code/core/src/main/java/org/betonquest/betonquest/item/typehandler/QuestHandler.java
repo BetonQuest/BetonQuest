@@ -1,13 +1,18 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.LoreConsumer;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -15,12 +20,17 @@ import java.util.Set;
 /**
  * Handles Quest Item state.
  */
-public class QuestHandler implements ItemMetaHandler<ItemMeta> {
+public class QuestHandler implements ItemMetaHandler.Standard {
 
     /**
      * Key indicating an ItemStack should be treated as "Quest Item".
      */
     public static final NamespacedKey QUEST_ITEM_KEY = new NamespacedKey("betonquest", "quest_item");
+
+    /**
+     * The empty nothing doing {@link QuestResolved} which does not set a lore.
+     */
+    protected static final QuestResolved EMPTY = new QuestResolved(Existence.WHATEVER, LoreConsumer.EMPTY);
 
     /**
      * The quest string.
@@ -30,19 +40,14 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     /**
      * Consumer to use when the item to generate is a quest item.
      */
-    private final LoreConsumer questItemLore;
-
-    /**
-     * If the item is a "Quest Item".
-     */
-    private Existence questItem = Existence.WHATEVER;
+    private final Argument<LoreConsumer> questItemLore;
 
     /**
      * The constructor.
      *
      * @param questItemLore the consumer to use when the item to generate is a quest item
      */
-    public QuestHandler(final LoreConsumer questItemLore) {
+    public QuestHandler(final Argument<LoreConsumer> questItemLore) {
         this.questItemLore = questItemLore;
     }
 
@@ -60,11 +65,6 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
-    }
-
-    @Override
     public Set<String> keys() {
         return Set.of(QUEST);
     }
@@ -79,46 +79,65 @@ public class QuestHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!QUEST.equals(key)) {
-            throw new QuestException("Unknown unbreakable key: " + key);
+    @Nullable
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final Argument<Existence> questItem = HandlerUtil.getIsKeyOrTrue(QUEST, instruction);
+        if (questItem == null) {
+            return null;
         }
-        if (HandlerUtil.isKeyOrTrue(QUEST, data)) {
-            questItem = Existence.REQUIRED;
-        } else {
-            questItem = Existence.FORBIDDEN;
-        }
-    }
-
-    @Contract("_ -> fail")
-    @Override
-    public void populate(final ItemMeta meta) {
-        throw new UnsupportedOperationException("Use #populate(ItemMeta, Profile) instead");
-    }
-
-    @Override
-    public void populate(final ItemMeta meta, @Nullable final Profile profile) throws QuestException {
-        if (questItem == Existence.REQUIRED) {
-            meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
-            questItemLore.accept(meta, profile);
-        }
-    }
-
-    @Override
-    public boolean check(final ItemMeta meta) {
-        return switch (questItem) {
-            case WHATEVER -> true;
-            case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
-            case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
-        };
+        return new NonResolved(questItemLore, questItem);
     }
 
     /**
-     * Indicates whether the quest item tag is set and changes the lore.
+     * The attribute with placeholders.
      *
-     * @return if the item has an additional lore line
+     * @param questItemLore Consumer to use when the item to generate is a quest item.
+     * @param questItem     If the item is a "Quest Item".
      */
-    public boolean isLoreSet() {
-        return questItem == Existence.REQUIRED && questItemLore instanceof LoreConsumer.Lore;
+    private record NonResolved(Argument<LoreConsumer> questItemLore, Argument<Existence> questItem)
+            implements Attribute {
+
+        @Override
+        public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Existence existence = questItem.getValue(profile);
+            final LoreConsumer loreConsumer = questItemLore.getValue(profile);
+            return new QuestResolved(existence, loreConsumer);
+        }
+    }
+
+    /**
+     * The resolved attribute.
+     *
+     * @param existence    If the item is a "Quest Item".
+     * @param loreConsumer Consumer to use when the item to generate is a quest item.
+     */
+    protected record QuestResolved(Existence existence, LoreConsumer loreConsumer)
+            implements ResolvedAttribute.Standard {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            if (existence == Existence.REQUIRED) {
+                meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
+                loreConsumer.accept(meta);
+            }
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            return switch (existence) {
+                case WHATEVER -> true;
+                case REQUIRED -> meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
+                case FORBIDDEN -> !meta.getPersistentDataContainer().has(QUEST_ITEM_KEY);
+            };
+        }
+
+        /**
+         * Indicates whether the quest item tag is set and changes the lore.
+         *
+         * @return if the item has an additional lore line
+         */
+        protected boolean isLoreSet() {
+            return existence == Existence.REQUIRED && loreConsumer instanceof LoreConsumer.Lore;
+        }
     }
 }

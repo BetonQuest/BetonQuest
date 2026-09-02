@@ -1,31 +1,22 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.NumberValue;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.inventory.meta.Damageable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
  * Handles de-/serialization of Durability/Damage.
  */
 public class DurabilityHandler implements ItemMetaHandler<Damageable> {
-
-    /**
-     * If a durability is set.
-     */
-    private boolean isSet;
-
-    /**
-     * The durability.
-     */
-    private int durability;
-
-    /**
-     * The number compare state.
-     */
-    private Number number = Number.WHATEVER;
 
     /**
      * The empty default Constructor.
@@ -53,25 +44,48 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!"durability".equals(key)) {
-            throw new QuestException("Unknown durability key: " + key);
+    @Nullable
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final Argument<NumberValue> durability = NumberValue.create("durability", "item durability", instruction);
+        if (durability == null) {
+            return null;
         }
-        final Map.Entry<Number, Integer> itemDurability = HandlerUtil.getNumberValue(data, "item durability");
-        this.number = itemDurability.getKey();
-        this.durability = itemDurability.getValue();
-        isSet = true;
+        return new NonResolved(durability);
     }
 
-    @Override
-    public void populate(final Damageable damageableMeta) {
-        if (isSet) {
-            damageableMeta.setDamage(durability);
+    /**
+     * The attribute with placeholders.
+     *
+     * @param durability The durability with their compare state.
+     */
+    private record NonResolved(Argument<NumberValue> durability) implements Attribute {
+
+        @Override
+        public ResolvedAttribute<Damageable> resolve(@Nullable final Profile profile) throws QuestException {
+            return new Resolved(durability.getValue(profile));
         }
     }
 
-    @Override
-    public boolean check(final Damageable meta) {
-        return number.isValid(meta.getDamage(), this.durability);
+    /**
+     * The resolved attribute.
+     *
+     * @param durability The durability with their compare state.
+     */
+    private record Resolved(NumberValue durability) implements ResolvedAttribute<Damageable> {
+
+        @Override
+        public Class<Damageable> metaClass() {
+            return Damageable.class;
+        }
+
+        @Override
+        public void populate(final Damageable damageableMeta) {
+            damageableMeta.setDamage(durability.value());
+        }
+
+        @Override
+        public boolean check(final Damageable meta) {
+            return durability.isValid(meta.getDamage());
+        }
     }
 }

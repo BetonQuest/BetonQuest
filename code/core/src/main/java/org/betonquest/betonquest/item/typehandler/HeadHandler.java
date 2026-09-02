@@ -2,13 +2,19 @@ package org.betonquest.betonquest.item.typehandler;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -20,7 +26,6 @@ import java.util.stream.Collectors;
 /**
  * Handles metadata about player Skulls.
  */
-@SuppressWarnings({"PMD.TooManyMethods", "PMD.GodClass"})
 public class HeadHandler implements ItemMetaHandler<SkullMeta> {
 
     /**
@@ -39,40 +44,7 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
     public static final String META_TEXTURE = "texture";
 
     /**
-     * Existence of the player UUID.
-     */
-    private Existence playerIdE = Existence.WHATEVER;
-
-    /**
-     * Existence of the encoded texture.
-     */
-    private Existence textureE = Existence.WHATEVER;
-
-    /**
-     * An optional player name owner of the skull.
-     */
-    @Nullable
-    private String owner;
-
-    /**
-     * An optional player ID owner of the skull, used in conjunction with the encoded texture.
-     */
-    @Nullable
-    private UUID playerId;
-
-    /**
-     * An optional encoded texture URL of the skull, used in conjunction with the player UUID.
-     */
-    @Nullable
-    private String texture;
-
-    /**
-     * Existence of the owner.
-     */
-    private Existence ownerE = Existence.WHATEVER;
-
-    /**
-     * Construct a new HeadHandler.
+     * The empty default Constructor.
      */
     public HeadHandler() {
     }
@@ -109,35 +81,6 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
     }
 
     @Override
-    public void populate(final SkullMeta skullMeta, @Nullable final Profile profile) {
-        final Profile owner = getOwner(profile);
-        final UUID playerId = getPlayerId();
-        final String texture = getTexture();
-
-        if (owner != null) {
-            skullMeta.setOwningPlayer(owner.getPlayer());
-        }
-        if (playerId != null && texture != null) {
-            final PlayerProfile playerProfile = Bukkit.getServer().createProfile(playerId);
-            playerProfile.getProperties().add(new ProfileProperty("textures", texture));
-            skullMeta.setPlayerProfile(playerProfile);
-        }
-    }
-
-    @Override
-    public boolean check(final SkullMeta skullMeta) {
-        final OfflinePlayer owner = skullMeta.getOwningPlayer();
-        final String ownerName = owner == null ? null : owner.getName();
-        final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
-        if (playerProfile != null) {
-            final UUID playerUniqueId = playerProfile.getId();
-            final String texture = encodeSkin(playerProfile);
-            return checkOwner(ownerName) && checkPlayerId(playerUniqueId) && checkTexture(texture);
-        }
-        return checkOwner(ownerName);
-    }
-
-    @Override
     public Class<SkullMeta> metaClass() {
         return SkullMeta.class;
     }
@@ -160,116 +103,117 @@ public class HeadHandler implements ItemMetaHandler<SkullMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        switch (key) {
-            case META_OWNER -> {
-                if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-                    ownerE = Existence.FORBIDDEN;
-                } else {
-                    owner = data;
-                    ownerE = Existence.REQUIRED;
-                }
+    @Nullable
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<String> owner = ExistenceArgument.applyOrNull(META_OWNER, instruction.string());
+        final ExistenceArgument<UUID> playerId = ExistenceArgument.applyOrNull(META_PLAYER_ID, instruction.uuid());
+        final ExistenceArgument<String> texture = ExistenceArgument.applyOrNull(META_TEXTURE, instruction.string());
+        if (owner == null && playerId == null && texture == null) {
+            return null;
+        }
+        return new NonResolved(ExistenceArgument.fallback(owner), ExistenceArgument.fallback(playerId),
+                ExistenceArgument.fallback(texture));
+    }
+
+    /**
+     * The attribute with placeholders.
+     *
+     * @param owner    An optional player name owner of the skull.
+     * @param playerId An optional player ID owner of the skull, used in conjunction with the encoded texture.
+     * @param texture  An optional encoded texture URL of the skull, used in conjunction with the player UUID.
+     */
+    private record NonResolved(ExistenceArgument<String> owner, ExistenceArgument<UUID> playerId,
+                               ExistenceArgument<String> texture)
+            implements Attribute {
+
+        /**
+         * Get the profile of the skull's owner.
+         * Also resolves the owner name to a player if it is a placeholder.
+         *
+         * @param profile The Profile that the item is made for
+         * @param owner   The owner string to use
+         * @return The profile of the skull's owner.
+         */
+        @Nullable
+        private Profile getOwner(@Nullable final Profile profile, @Nullable final String owner) {
+            if (profile != null && owner != null && owner.isEmpty()) {
+                return profile;
             }
-            case META_PLAYER_ID -> {
-                try {
-                    this.playerId = UUID.fromString(data);
-                } catch (final IllegalArgumentException e) {
-                    throw new QuestException("Invalid player UUID: " + data, e);
-                }
-                this.playerIdE = Existence.REQUIRED;
+            if (owner != null) {
+                final OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
+                return BetonQuest.getInstance().getBetonQuestApi().profiles().getProfile(player);
             }
-            case META_TEXTURE -> {
-                this.texture = data;
-                this.textureE = Existence.REQUIRED;
-            }
-            default -> throw new QuestException("Unknown head key: " + key);
+            return null;
+        }
+
+        @Override
+        public ResolvedAttribute<SkullMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, String> ownerPair = this.owner.getValue(profile);
+            final Profile owner = getOwner(profile, ownerPair.getRight());
+            final Pair<Existence, UUID> playerIdPair = this.playerId.getValue(profile);
+            final Pair<Existence, String> texturePair = this.texture.getValue(profile);
+            return new Resolved(ownerPair, owner, playerIdPair, texturePair);
         }
     }
 
-    @Contract("_ -> fail")
-    @Override
-    public void populate(final SkullMeta meta) {
-        throw new UnsupportedOperationException("Use #populate(SkullMeta, Profile) instead");
-    }
-
     /**
-     * Get the profile of the skull's owner.
-     * Also resolves the owner name to a player if it is a placeholder.
+     * The resolved attribute.
      *
-     * @param profile The Profile that the item is made for
-     * @return The profile of the skull's owner.
+     * @param ownerPair    An optional player name owner of the skull.
+     * @param owner        The resolved owner of the skull.
+     * @param playerIdPair An optional player ID owner of the skull, used in conjunction with the encoded texture.
+     * @param texturePair  An optional encoded texture URL of the skull, used in conjunction with the player UUID.
      */
-    @Nullable
-    public Profile getOwner(@Nullable final Profile profile) {
-        if (profile != null && owner != null && owner.isEmpty()) {
-            return profile;
+    private record Resolved(Pair<Existence, String> ownerPair, @Nullable Profile owner,
+                            Pair<Existence, UUID> playerIdPair, Pair<Existence, String> texturePair)
+            implements ResolvedAttribute<SkullMeta> {
+
+        @Override
+        public Class<SkullMeta> metaClass() {
+            return SkullMeta.class;
         }
-        if (owner != null) {
-            final OfflinePlayer player = Bukkit.getOfflinePlayer(owner);
-            return BetonQuest.getInstance().getBetonQuestApi().profiles().getProfile(player);
+
+        @Override
+        public void populate(final SkullMeta skullMeta) {
+            if (owner != null) {
+                skullMeta.setOwningPlayer(owner.getPlayer());
+            }
+            final UUID playerId = playerIdPair.getRight();
+            final String texture = texturePair.getRight();
+            if (playerId != null && texture != null) {
+                final PlayerProfile playerProfile = Bukkit.getServer().createProfile(playerId);
+                playerProfile.getProperties().add(new ProfileProperty("textures", texture));
+                skullMeta.setPlayerProfile(playerProfile);
+            }
         }
-        return null;
-    }
 
-    /**
-     * Get the player UUID.
-     *
-     * @return The player ID.
-     */
-    @Nullable
-    public UUID getPlayerId() {
-        return playerId;
-    }
+        @Override
+        public boolean check(final SkullMeta skullMeta) {
+            final OfflinePlayer owner = skullMeta.getOwningPlayer();
+            final String ownerName = owner == null ? null : owner.getName();
+            final PlayerProfile playerProfile = skullMeta.getPlayerProfile();
+            if (playerProfile != null) {
+                final UUID playerUniqueId = playerProfile.getId();
+                final String texture = encodeSkin(playerProfile);
+                return check(ownerPair, ownerName) && checkPlayerId(playerIdPair, playerUniqueId) && check(texturePair, texture);
+            }
+            return check(ownerPair, ownerName);
+        }
 
-    /**
-     * Get the encoded texture.
-     *
-     * @return The encoded texture.
-     */
-    @Nullable
-    public String getTexture() {
-        return texture;
-    }
+        private boolean check(final Pair<Existence, String> pair, @Nullable final String string) {
+            return switch (pair.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> string != null && string.equals(pair.getRight());
+                case FORBIDDEN -> string == null;
+            };
+        }
 
-    /**
-     * Check to see if the specified owner name matches this HeadHandler metadata.
-     *
-     * @param string The owner to check.
-     * @return True if this metadata is required and matches, false otherwise.
-     */
-    public boolean checkOwner(@Nullable final String string) {
-        return switch (ownerE) {
-            case WHATEVER -> true;
-            case REQUIRED -> string != null && string.equals(owner);
-            case FORBIDDEN -> string == null;
-        };
-    }
-
-    /**
-     * Check to see if the specified player UUID matches this HeadHandler metadata.
-     *
-     * @param playerId The player UUID to check.
-     * @return True if this metadata is required and matches, false otherwise.
-     */
-    public boolean checkPlayerId(@Nullable final UUID playerId) {
-        return switch (playerIdE) {
-            case WHATEVER -> true;
-            case REQUIRED -> playerId != null && playerId.equals(this.playerId);
-            case FORBIDDEN -> playerId == null;
-        };
-    }
-
-    /**
-     * Check to see if the specified encoded texture matches this HeadHandler metadata.
-     *
-     * @param string The encoded texture to check.
-     * @return True if this metadata is required and matches, false otherwise.
-     */
-    public boolean checkTexture(@Nullable final String string) {
-        return switch (textureE) {
-            case WHATEVER -> true;
-            case REQUIRED -> string != null && string.equals(texture);
-            case FORBIDDEN -> string == null;
-        };
+        private boolean checkPlayerId(final Pair<Existence, UUID> pair, @Nullable final UUID playerId) {
+            return switch (pair.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> playerId != null && playerId.equals(pair.getRight());
+                case FORBIDDEN -> playerId == null;
+            };
+        }
     }
 }

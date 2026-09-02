@@ -1,9 +1,13 @@
 package org.betonquest.betonquest.mc_1_20_6.item;
 
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.item.typehandler.Existence;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.typehandler.HandlerUtil;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -22,23 +26,10 @@ public class UpdatedNameHandler extends NameHandler {
     private static final String ITEM_NAME = "item-name";
 
     /**
-     * The Item Name.
-     */
-    @Nullable
-    private Component itemName;
-
-    /**
-     * The required item name existence.
-     */
-    private Existence itemNameE = Existence.WHATEVER;
-
-    /**
      * Creates an empty NameHandler with also an 'itemName'.
-     *
-     * @param textParser the text parser used to parse text
      */
-    public UpdatedNameHandler(final TextParser textParser) {
-        super(textParser);
+    public UpdatedNameHandler() {
+        super();
     }
 
     @Override
@@ -57,45 +48,64 @@ public class UpdatedNameHandler extends NameHandler {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (data.isEmpty()) {
-            throw new QuestException("Item-/Name cannot be empty");
+    public NameAttribute parse(final Instruction instruction) throws QuestException {
+        final NameAttribute parsed = super.parse(instruction);
+        final ExistenceArgument<Component> itemName = ExistenceArgument.applyOrNull(ITEM_NAME, instruction.component().map(Component::compact));
+        if (itemName == null) {
+            return parsed;
         }
-        if (ITEM_NAME.equals(key)) {
-            if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-                itemNameE = Existence.FORBIDDEN;
-            } else {
-                this.itemName = textParser.parse(data).compact();
-                itemNameE = Existence.REQUIRED;
+        return new UpdatedNonResolved(parsed, itemName);
+    }
+
+    /**
+     * The attribute with placeholders.
+     *
+     * @param displayName The display name.
+     * @param itemName    Item Display Name's required existence and value.
+     */
+    private record UpdatedNonResolved(NameAttribute displayName,
+                                      Argument<Pair<Existence, @Nullable Component>> itemName) implements NameAttribute {
+
+        @Override
+        public ResolvedNameAttribute resolve(@Nullable final Profile profile) throws QuestException {
+            final ResolvedNameAttribute displayName = displayName().resolve(profile);
+            return new UpdatedResolved(displayName, itemName.getValue(profile));
+        }
+    }
+
+    /**
+     * The resolved attribute.
+     *
+     * @param displayName The display name.
+     * @param itemName    Item Display Name's required existence and value.
+     */
+    public record UpdatedResolved(ResolvedNameAttribute displayName,
+                                  Pair<Existence, @Nullable Component> itemName) implements ResolvedNameAttribute {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            displayName.populate(meta);
+            meta.itemName(itemName.getRight());
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            if (!displayName.check(meta)) {
+                return false;
             }
-        } else {
-            super.set(key, data);
+            final Component itemName = meta.hasItemName() ? meta.itemName() : null;
+            return switch (this.itemName.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> itemName != null && itemName.compact().equals(this.itemName.getRight());
+                case FORBIDDEN -> itemName == null;
+            };
         }
-    }
 
-    @Override
-    public void populate(final ItemMeta meta) {
-        super.populate(meta);
-        meta.itemName(itemName);
-    }
-
-    @Override
-    public boolean check(final ItemMeta meta) {
-        if (!super.check(meta)) {
-            return false;
+        @Override
+        @Nullable
+        public Component get() {
+            final Component display = displayName.get();
+            return display == null ? itemName.getRight() : display;
         }
-        final Component itemName = meta.hasItemName() ? meta.itemName() : null;
-        return switch (itemNameE) {
-            case WHATEVER -> true;
-            case REQUIRED -> itemName != null && itemName.compact().equals(this.itemName);
-            case FORBIDDEN -> itemName == null;
-        };
-    }
-
-    @Override
-    @Nullable
-    public Component get() {
-        final Component display = super.get();
-        return display == null ? itemName : display;
     }
 }

@@ -1,155 +1,182 @@
 package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.LoreMetaHandler;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Handles de-/serialization of Item Lore.
  */
-public class LoreHandler implements ItemMetaHandler<ItemMeta> {
+public class LoreHandler implements LoreMetaHandler {
 
     /**
-     * The text parser used to parse text.
+     * Handler to use and to check
+     * if the last lore line should be interpreted as 'quest-item' line and ignored in checks.
      */
-    private final TextParser textParser;
-
-    /**
-     * If the last lore line should be interpreted as 'quest-item' line and ignored in checks.
-     */
-    private final Supplier<Boolean> ignoreLastLine;
-
-    /**
-     * The lore.
-     */
-    private final List<Component> lore = new LinkedList<>();
-
-    /**
-     * The required existence.
-     */
-    private Existence existence = Existence.WHATEVER;
-
-    /**
-     * If the lore need to be exact the same or just contain all specified lines.
-     */
-    private boolean exact = true;
+    private final QuestHandler questHandler;
 
     /**
      * Creates an empty LoreHandler.
      *
-     * @param textParser     the text parser used to parse text
-     * @param ignoreLastLine if the last lore line should be interpreted as 'quest-item' line and ignored in checks
+     * @param questHandler the handler to parse from and use to check
+     *                     if the last lore line should be interpreted as 'quest-item' line and ignored in checks
      */
-    public LoreHandler(final TextParser textParser, final Supplier<Boolean> ignoreLastLine) {
-        this.textParser = textParser;
-        this.ignoreLastLine = ignoreLastLine;
-    }
-
-    @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
+    public LoreHandler(final QuestHandler questHandler) {
+        this.questHandler = questHandler;
     }
 
     @Override
     public Set<String> keys() {
-        return Set.of("lore", "lore-containing");
+        final Set<String> set = new HashSet<>(Set.of("lore", "lore-containing"));
+        set.addAll(questHandler.keys());
+        return set;
     }
 
     @Override
     @Nullable
     public String serializeToString(final ItemMeta meta) {
+        final StringBuilder string = new StringBuilder(22);
         if (meta.hasLore()) {
-            final StringBuilder string = new StringBuilder(22);
             for (final Component line : meta.lore()) {
                 string.append(' ').append(HandlerUtil.toKeyValue("lore", line));
             }
-            return string.substring(1);
         }
-        return null;
+        final String quest = questHandler.serializeToString(meta);
+        if (quest != null) {
+            string.append(' ').append(quest);
+        }
+        return string.isEmpty() ? null : string.substring(1);
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        switch (key) {
-            case "lore" -> {
-                if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-                    existence = Existence.FORBIDDEN;
-                } else {
-                    existence = Existence.REQUIRED;
-                    for (final String line : data.split(";")) {
-                        this.lore.add(textParser.parse(line).compact());
-                    }
+    public LoreAttribute parse(final Instruction instruction) throws QuestException {
+        final String rawLoreLines = instruction.getValueParts().stream()
+                .filter(part -> part.toLowerCase(Locale.ROOT).startsWith("lore:"))
+                .map(part -> part.substring("lore:".length()))
+                .collect(Collectors.joining(";"));
+        final ExistenceArgument<List<Component>> lore;
+        if (rawLoreLines.isEmpty()) {
+            lore = ExistenceArgument.whateverEmptyList();
+        } else {
+            lore = instruction.chainForArgument(rawLoreLines).parse(data -> {
+                final String[] split = data.split(";");
+                final List<Component> lorelei = new ArrayList<>(split.length);
+                for (final String line : split) {
+                    lorelei.add(instruction.chainForArgument(line).component().map(Component::compact).get().getValue(null));
                 }
-            }
-            case "lore-containing" -> exact = false;
-            default -> throw new QuestException("Unknown lore key: " + key);
+                return Pair.of(Existence.REQUIRED, lorelei);
+            }).get()::getValue;
         }
-    }
-
-    @Override
-    public void populate(final ItemMeta meta) {
-        meta.lore(get());
-    }
-
-    @Override
-    public boolean check(final ItemMeta meta) {
-        final List<Component> original = meta.lore();
-        final List<Component> lore = original == null ? null
-                : original.subList(0, Math.max(0, original.size() - (ignoreLastLine.get() ? 1 : 0)));
-        return switch (existence) {
-            case WHATEVER -> true;
-            case REQUIRED -> checkRequired(lore);
-            case FORBIDDEN -> lore == null || lore.isEmpty();
-        };
+        final Argument<Boolean> exact = instruction.bool().map(bool -> !bool).get("lore-containing", true);
+        final Attribute questAttribute = questHandler.parse(instruction);
+        return new NonResolved(lore, exact, questAttribute == null ? profile -> QuestHandler.EMPTY : questAttribute);
     }
 
     /**
-     * Gets the lore.
+     * The lore with placeholders.
      *
-     * @return the list of lore lines, can be empty
+     * @param lore           The Lore with existence.
+     * @param exact          If the lore need to be exact the same or just contain all specified lines.
+     * @param questAttribute To check if the last lore line should be ignored and to populate/check.
      */
-    public List<Component> get() {
-        return lore;
+    private record NonResolved(ExistenceArgument<List<Component>> lore, Argument<Boolean> exact,
+                               Attribute questAttribute) implements LoreAttribute {
+
+        @Override
+        public ResolvedLoreAttribute resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, List<Component>> pair = this.lore.getValue(profile);
+            final boolean exact = this.exact.getValue(profile);
+            final QuestHandler.QuestResolved questResolved = (QuestHandler.QuestResolved) questAttribute.resolve(profile);
+            return new Resolved(pair.getLeft(), pair.getRight(), exact, questResolved);
+        }
     }
 
-    private boolean checkRequired(@Nullable final List<Component> lore) {
-        if (lore == null) {
-            return false;
+    /**
+     * The resolved lore.
+     *
+     * @param existence     If the lore is required.
+     * @param storedLore    The Lore lines.
+     * @param exact         If the lore need to be exact the same or just contain all specified lines.
+     * @param questResolved To check if the last lore line should be ignored and to populate/check.
+     */
+    private record Resolved(Existence existence, List<Component> storedLore, boolean exact,
+                            QuestHandler.QuestResolved questResolved) implements ResolvedLoreAttribute {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            meta.lore(get());
+            questResolved.populate(meta);
         }
-        if (!exact) {
-            return !checkNonExact(lore);
-        }
-        if (this.lore.size() != lore.size()) {
-            return false;
-        }
-        for (int i = 0; i < lore.size(); i++) {
-            if (!this.lore.get(i).equals(lore.get(i).compact())) {
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            if (!questResolved.check(meta)) {
                 return false;
             }
-        }
-        return true;
-    }
+            final List<Component> original = meta.lore();
+            final List<Component> lore = original == null ? null
+                    : original.subList(0, Math.max(0, original.size() - (questResolved.isLoreSet() ? 1 : 0)));
 
-    private boolean checkNonExact(final List<Component> lore) {
-        for (final Component line : this.lore) {
-            boolean has = false;
-            for (final Component itemLine : lore) {
-                if (itemLine.compact().equals(line)) {
-                    has = true;
-                    break;
+            return switch (existence) {
+                case WHATEVER -> true;
+                case REQUIRED -> checkRequired(lore);
+                case FORBIDDEN -> lore == null || lore.isEmpty();
+            };
+        }
+
+        @Override
+        public List<Component> get() {
+            return storedLore;
+        }
+
+        private boolean checkRequired(@Nullable final List<Component> lore) {
+            if (lore == null) {
+                return false;
+            }
+            if (!exact) {
+                return !checkNonExact(lore);
+            }
+            if (storedLore.size() != lore.size()) {
+                return false;
+            }
+            for (int i = 0; i < lore.size(); i++) {
+                if (!storedLore.get(i).equals(lore.get(i).compact())) {
+                    return false;
                 }
             }
-            if (!has) {
-                return true;
-            }
+            return true;
         }
-        return false;
+
+        private boolean checkNonExact(final List<Component> lore) {
+            for (final Component line : storedLore) {
+                boolean has = false;
+                for (final Component itemLine : lore) {
+                    if (itemLine.compact().equals(line)) {
+                        has = true;
+                        break;
+                    }
+                }
+                if (!has) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

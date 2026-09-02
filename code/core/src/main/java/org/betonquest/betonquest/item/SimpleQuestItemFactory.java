@@ -1,225 +1,86 @@
 package org.betonquest.betonquest.item;
 
 import org.betonquest.betonquest.api.QuestException;
-import org.betonquest.betonquest.api.common.component.BookPageWrapper;
-import org.betonquest.betonquest.api.config.Localizations;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
 import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.item.QuestItemWrapper;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.TypeFactory;
-import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
-import org.betonquest.betonquest.api.text.TextParser;
-import org.betonquest.betonquest.item.typehandler.BannerHandler;
-import org.betonquest.betonquest.item.typehandler.BookHandler;
-import org.betonquest.betonquest.item.typehandler.ColorHandler;
-import org.betonquest.betonquest.item.typehandler.CustomModelDataHandler;
-import org.betonquest.betonquest.item.typehandler.DurabilityHandler;
-import org.betonquest.betonquest.item.typehandler.EnchantmentsHandler;
-import org.betonquest.betonquest.item.typehandler.FireworkHandler;
-import org.betonquest.betonquest.item.typehandler.FlagHandler;
-import org.betonquest.betonquest.item.typehandler.HeadHandler;
-import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
-import org.betonquest.betonquest.item.typehandler.LoreHandler;
-import org.betonquest.betonquest.item.typehandler.NameHandler;
-import org.betonquest.betonquest.item.typehandler.PotionHandler;
-import org.betonquest.betonquest.item.typehandler.QuestHandler;
-import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.LoreMetaHandler;
+import org.betonquest.betonquest.item.handler.NameMetaHandler;
+import org.betonquest.betonquest.kernel.processor.quest.PlaceholderProcessor;
 import org.betonquest.betonquest.util.DefaultBlockSelector;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
- * Creates {@link SimpleQuestItem}s from {@link Instruction}s.
+ * Creates {@link SimpleQuestItemWrapper}s from {@link Instruction}s.
  */
 public class SimpleQuestItemFactory implements TypeFactory<QuestItemWrapper> {
 
     /**
-     * The quest package manager to get quest packages from.
+     * Name meta handlers.
      */
-    protected final QuestPackageManager packManager;
+    private final SimpleQuestItemHandlerRegistry handlerRegistry;
 
     /**
-     * The text parser used to parse text.
-     */
-    protected final TextParser textParser;
-
-    /**
-     * The book page wrapper used to split pages.
-     */
-    protected final BookPageWrapper bookPageWrapper;
-
-    /**
-     * Supplier for the Localizations.
-     */
-    protected final Supplier<Localizations> questItemLoreSupplier;
-
-    /**
-     * The {@link PlaceholderManager} to create and resolve placeholders.
-     */
-    private final PlaceholderManager placeholders;
-
-    /**
-     * Creates a new simple Quest Item Factory.
+     * Creates a new simple Quest Item Factory with custom handlers.
      *
-     * @param placeholders          the {@link PlaceholderManager} to create and resolve placeholders
-     * @param packManager           the quest package manager to get quest packages from
-     * @param textParser            the text parser used to parse text
-     * @param bookPageWrapper       the book page wrapper used to split pages
-     * @param questItemLoreSupplier supplies the Localizations instance if the "quest item" lore line should be added
+     * @param handlerRegistry the handler to use for deserialization
      */
-    public SimpleQuestItemFactory(final PlaceholderManager placeholders, final QuestPackageManager packManager, final TextParser textParser,
-                                  final BookPageWrapper bookPageWrapper, final Supplier<Localizations> questItemLoreSupplier) {
-        this.placeholders = placeholders;
-        this.packManager = packManager;
-        this.textParser = textParser;
-        this.bookPageWrapper = bookPageWrapper;
-        this.questItemLoreSupplier = questItemLoreSupplier;
+    public SimpleQuestItemFactory(final SimpleQuestItemHandlerRegistry handlerRegistry) {
+        this.handlerRegistry = handlerRegistry;
     }
 
     /**
      * Parses the instruction string as Simple Quest Item.
+     * <p>
+     * This method exists solely for the database migration and will fail blatantly when using any placeholder or newer
+     * feature in the instruction string.
      *
-     * @param string the instruction string, starting with {@link DefaultBlockSelector}
+     * @param argumentParsers the argument parsers used for creating a new instruction
+     * @param string          the instruction string, starting with {@link DefaultBlockSelector}
      * @return the parsed QuestItem
      * @throws QuestException when an error occurs while parsing
      */
-    public QuestItem parseInstruction(final String string) throws QuestException {
-        final String[] split = string.split(" ");
-        final String material = split[0];
-        final List<String> arguments = split.length > 1 ? List.of(split).subList(1, split.length) : List.of();
-        return parseInstruction(material, arguments);
+    @SuppressWarnings({"NullAway", "DataFlowIssue"})
+    public QuestItem parseInstruction(final ArgumentParsers argumentParsers, final String string) throws QuestException {
+        final Instruction instruction = new DefaultInstruction(PlaceholderProcessor.EMPTY_PLACEHOLDER, Map::of, null,
+                null, argumentParsers, "simple " + string);
+        return parseInstruction(instruction).getItem(null);
     }
 
     /**
      * Parses the Quest Item from material and handler arguments.
      *
-     * @param material  the {@link DefaultBlockSelector} string
-     * @param arguments the arguments for the Handlers
+     * @param instruction the instruction for the Handlers
      * @return the parsed Quest Item
      * @throws QuestException when placeholders could not be resolved or handlers not be filled
      */
-    protected QuestItem parseInstruction(final String material, final List<String> arguments) throws QuestException {
-        final BlockSelector selector = new DefaultBlockSelector(material);
-
-        final NameHandler name = new NameHandler(textParser);
-
-        final Localizations localizations = questItemLoreSupplier.get();
-        final QuestHandler questHandler = new QuestHandler(localizations == null
-                ? LoreConsumer.EMPTY : new LoreConsumer.Lore(localizations));
-        final LoreHandler lore = new LoreHandler(textParser, questHandler::isLoreSet);
-        final List<ItemMetaHandler<?>> handlers = List.of(
-                new DurabilityHandler(),
-                new CustomModelDataHandler(),
-                new UnbreakableHandler(),
-                new FlagHandler(),
-                name,
-                lore,
-                questHandler,
-                new EnchantmentsHandler(),
-                new PotionHandler(),
-                new BannerHandler(),
-                new BookHandler(textParser, bookPageWrapper),
-                new HeadHandler(),
-                new ColorHandler(),
-                new FireworkHandler()
-        );
-
-        if (!arguments.isEmpty()) {
-            fillHandler(handlers, arguments);
-        }
-        return new SimpleQuestItem(selector, handlers, name, lore);
-    }
-
     @Override
-    public QuestItemWrapper parseInstruction(final Instruction rawInstruction) throws QuestException {
-        final String instructionString = rawInstruction.chainForArgument(rawInstruction.toString()).string().get().getValue(null);
-        final Instruction instruction = new DefaultInstruction(placeholders, packManager, rawInstruction.getPackage(),
-                rawInstruction.getID(), rawInstruction.getParsers(), instructionString);
-        final String material = instruction.nextElement();
-        final List<String> arguments;
+    public SimpleQuestItemWrapper parseInstruction(final Instruction instruction) throws QuestException {
+        final Argument<BlockSelector> selector = instruction.blockSelector().get();
+
+        final SimpleQuestItemHandlerRegistry.Baked baked = handlerRegistry.get();
+
+        final NameMetaHandler.NameAttribute nameAttribute = baked.name().parse(instruction);
+        final LoreMetaHandler.LoreAttribute loreAttribute = baked.lore().parse(instruction);
+        final List<Attribute> attributes = new ArrayList<>();
         if (instruction.hasNext()) {
-            final List<String> valueParts = instruction.getValueParts();
-            arguments = valueParts.subList(1, valueParts.size());
-        } else {
-            arguments = List.of();
-        }
-        return new ShallowWrapper(parseInstruction(material, arguments));
-    }
-
-    /**
-     * Fills the handlers with arguments.
-     *
-     * @param handlers  the handlers to fill
-     * @param arguments the instruction arguments to fill into the handlers
-     * @throws QuestException when the argument is invalid for a handler or no handler accepts that argument
-     */
-    protected void fillHandler(final List<ItemMetaHandler<?>> handlers, final List<String> arguments) throws QuestException {
-        final Map<String, ItemMetaHandler<?>> keyToHandler = new HashMap<>();
-        for (final ItemMetaHandler<?> handler : handlers) {
-            for (final String key : handler.keys()) {
-                keyToHandler.put(key, handler);
+            for (final ItemMetaHandler<?> handler : baked.handlers()) {
+                final Attribute attribute = handler.parse(instruction);
+                if (attribute != null) {
+                    attributes.add(attribute);
+                }
             }
         }
-        for (final String part : arguments) {
-            if (part.isEmpty()) {
-                continue; //catch empty string caused by multiple whitespaces in instruction split
-            }
-
-            final String argumentName = getArgumentName(part.toLowerCase(Locale.ROOT));
-            final String data = getArgumentData(part);
-
-            final ItemMetaHandler<?> handler = keyToHandler.get(argumentName);
-            if (handler == null) {
-                throw new QuestException("Unknown argument '%s'!".formatted(argumentName));
-            }
-            handler.set(argumentName, data);
-        }
-    }
-
-    /**
-     * Returns the data behind the argument name.
-     * If the argument does not contain a colon, it returns the full argument.
-     *
-     * @param argument the full argument
-     * @return the data behind the argument name
-     */
-    private String getArgumentData(final String argument) {
-        return argument.substring(argument.indexOf(':') + 1);
-    }
-
-    /**
-     * Returns the argument name.
-     * If the argument does not contain a colon, it returns the full argument.
-     *
-     * @param argument the full argument
-     * @return the argument name
-     */
-    private String getArgumentName(final String argument) {
-        if (argument.contains(":")) {
-            return argument.substring(0, argument.indexOf(':'));
-        }
-        return argument;
-    }
-
-    /**
-     * A wrapper for a quest Item without placeholders to resolve.
-     *
-     * @param questItem the quest item to wrap.
-     */
-    public record ShallowWrapper(QuestItem questItem) implements QuestItemWrapper {
-
-        @Override
-        public QuestItem getItem(@Nullable final Profile profile) {
-            return questItem;
-        }
+        return new SimpleQuestItemWrapper(selector, nameAttribute, loreAttribute, attributes);
     }
 }

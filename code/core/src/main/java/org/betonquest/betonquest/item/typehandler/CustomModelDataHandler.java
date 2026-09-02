@@ -1,6 +1,16 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
+import org.betonquest.betonquest.api.instruction.FlagState;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,27 +19,12 @@ import java.util.Set;
 /**
  * Handles de-/serialization of CustomModelData.
  */
-public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
-
-    /**
-     * The required existence.
-     */
-    private Existence existence = Existence.WHATEVER;
-
-    /**
-     * The CustomModelData.
-     */
-    private int modelData;
+public class CustomModelDataHandler implements ItemMetaHandler.Standard {
 
     /**
      * The empty default Constructor.
      */
     public CustomModelDataHandler() {
-    }
-
-    @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
     }
 
     @Override
@@ -47,37 +42,65 @@ public class CustomModelDataHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        switch (key) {
-            case "custom-model-data" -> {
-                try {
-                    this.existence = Existence.REQUIRED;
-                    this.modelData = Integer.parseInt(data);
-                } catch (final NumberFormatException e) {
-                    throw new QuestException("Could not parse custom model data value: " + data, e);
-                }
+    @Nullable
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<Integer> modelData = ExistenceArgument.applyOrNull("custom-model-data", instruction.parse(resolvedString -> {
+            try {
+                return Integer.parseInt(resolvedString);
+            } catch (final NumberFormatException e) {
+                throw new QuestException("Could not parse custom model data value: " + resolvedString, e);
             }
-            case "no-custom-model-data" -> this.existence = Existence.FORBIDDEN;
-            default -> throw new QuestException("Unknown custom model data key: " + key);
+        }));
+        final FlagArgument<Boolean> noModelData = instruction.bool().getFlag("no-custom-model-data", true);
+        if (modelData == null && noModelData.getState() == FlagState.ABSENT) {
+            return null;
+        }
+        return new NonResolved(ExistenceArgument.fallback(modelData), noModelData);
+    }
+
+    /**
+     * The attribute with placeholders.
+     *
+     * @param modelData   The CustomModelData with existence.
+     * @param noModelData If 'custom model data' is forbidden.
+     */
+    private record NonResolved(ExistenceArgument<Integer> modelData, FlagArgument<Boolean> noModelData)
+            implements Attribute {
+
+        @Override
+        public ResolvedAttribute<ItemMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, Integer> modelData = this.modelData.getValue(profile);
+            final boolean noModelData = this.noModelData.getValue(profile).orElse(false);
+            return new Resolved(modelData, noModelData);
         }
     }
 
-    @Override
-    public void populate(final ItemMeta meta) {
-        if (existence == Existence.REQUIRED) {
-            meta.setCustomModelData(modelData);
+    /**
+     * The resolved attribute.
+     *
+     * @param modelData   The CustomModelData with existence.
+     * @param noModelData If 'custom model data' is forbidden.
+     */
+    private record Resolved(Pair<Existence, Integer> modelData, boolean noModelData)
+            implements ResolvedAttribute.Standard {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            final Integer cmd = modelData.getRight();
+            if (cmd != null) {
+                meta.setCustomModelData(cmd);
+            }
         }
-    }
 
-    @Override
-    public boolean check(final ItemMeta data) {
-        return existence == Existence.WHATEVER
-                || existence == Existence.FORBIDDEN && !data.hasCustomModelData()
-                || existence == Existence.REQUIRED && data.hasCustomModelData() && modelData == data.getCustomModelData();
-    }
-
-    @Override
-    public String toString() {
-        return existence == Existence.REQUIRED ? "custom-model-data:" + modelData : "";
+        @Override
+        public boolean check(final ItemMeta meta) {
+            if (noModelData && meta.hasCustomModelData()) {
+                return false;
+            }
+            final Existence existence = modelData.getLeft();
+            return existence == Existence.WHATEVER
+                    || existence == Existence.FORBIDDEN && !meta.hasCustomModelData()
+                    || existence == Existence.REQUIRED && meta.hasCustomModelData() && modelData.getRight() == meta.getCustomModelData();
+        }
     }
 }

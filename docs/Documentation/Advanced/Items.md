@@ -54,7 +54,7 @@ If you want to specifically say that the item must not have any name, use `none`
 
 <div class="annotate" markdown>
 * `lore` - Text under the item's name. Default styling of lore is purple and italic. 
-To make a new line, use `;` character. If you require the item to not have lore at all, use `none` keyword.
+To make a new line, use `;` character. (2) If you require the item to not have lore at all, use `none` keyword.
 By default, lore will match only if all lines are exactly the same.
 If you want to accept all items that contain specified lines (and/or more lines),
 add `lore-containing` argument to the instruction string. (1)  
@@ -62,6 +62,7 @@ add `lore-containing` argument to the instruction string. (1)
 </div>
 
 1. If you do not want the default styling, you must append `<!i><colorValue>` before the text in your `lore` argument.
+2. Each line is parsed independently. That means you need to specify color codes and specific message parser for each line.
 
 <div class="annotate" markdown>
 !!! warning inline end

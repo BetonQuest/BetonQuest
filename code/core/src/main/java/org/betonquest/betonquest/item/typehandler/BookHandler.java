@@ -2,13 +2,19 @@ package org.betonquest.betonquest.item.typehandler;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.common.component.BookPageWrapper;
-import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,55 +24,16 @@ import java.util.Set;
 public class BookHandler implements ItemMetaHandler<BookMeta> {
 
     /**
-     * The text parser used to parse text.
-     */
-    private final TextParser textParser;
-
-    /**
      * The book wrapper used to split pages.
      */
     private final BookPageWrapper bookPageWrapper;
 
     /**
-     * The title.
-     */
-    @Nullable
-    private Component title;
-
-    /**
-     * The required title existence.
-     */
-    private Existence titleE = Existence.WHATEVER;
-
-    /**
-     * The author.
-     */
-    @Nullable
-    private Component author;
-
-    /**
-     * The required author existence.
-     */
-    private Existence authorE = Existence.WHATEVER;
-
-    /**
-     * The text pages.
-     */
-    private List<Component> text = new ArrayList<>();
-
-    /**
-     * The required text existence.
-     */
-    private Existence textE = Existence.WHATEVER;
-
-    /**
-     * Creates an empty BookHandler.
+     * Creates a BookHandler.
      *
-     * @param textParser      the text parser used to parse text
      * @param bookPageWrapper the book wrapper used to split pages
      */
-    public BookHandler(final TextParser textParser, final BookPageWrapper bookPageWrapper) {
-        this.textParser = textParser;
+    public BookHandler(final BookPageWrapper bookPageWrapper) {
         this.bookPageWrapper = bookPageWrapper;
     }
 
@@ -118,69 +85,79 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        switch (key) {
-            case "title" -> setTitle(data);
-            case "author" -> setAuthor(data);
-            case "text" -> setText(data);
-            default -> throw new QuestException("Unknown book key: " + key);
+    @Nullable
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<Component> title = ExistenceArgument.applyOrNull("title", instruction.component().map(Component::compact));
+        final ExistenceArgument<Component> author = ExistenceArgument.applyOrNull("author", instruction.component().map(Component::compact));
+        final ExistenceArgument<List<Component>> text = ExistenceArgument.apply(instruction.component().map(bookPageWrapper::splitPages)).get("text")
+                .map(argument -> (ExistenceArgument<List<Component>>) argument::getValue).orElse(null);
+        if (title == null && author == null && text == null) {
+            return null;
+        }
+        return new NonResolved(ExistenceArgument.fallback(title), ExistenceArgument.fallback(author),
+                ExistenceArgument.fallbackEmptyList(text));
+    }
+
+    /**
+     * The attribute with placeholders.
+     *
+     * @param title  the title
+     * @param author the author
+     * @param text   the text pages
+     */
+    private record NonResolved(ExistenceArgument<Component> title, ExistenceArgument<Component> author,
+                               ExistenceArgument<List<Component>> text) implements Attribute {
+
+        @Override
+        public ResolvedAttribute<BookMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            return new Resolved(title.getValue(profile), author.getValue(profile), text.getValue(profile));
         }
     }
 
-    @Override
-    public void populate(final BookMeta bookMeta) {
-        bookMeta.title(title).author(author).addPages(text.toArray(new Component[0]));
-    }
+    /**
+     * The resolved attribute.
+     *
+     * @param title  the title
+     * @param author the author
+     * @param text   the text pages
+     */
+    private record Resolved(Pair<Existence, Component> title, Pair<Existence, Component> author,
+                            Pair<Existence, List<Component>> text) implements ResolvedAttribute<BookMeta> {
 
-    @Override
-    public boolean check(final BookMeta bookMeta) {
-        return checkExistence(titleE, title, bookMeta.title())
-                && checkExistence(authorE, author, bookMeta.author())
-                && checkText(bookMeta.pages());
-    }
-
-    private void setTitle(final String string) throws QuestException {
-        if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
-            titleE = Existence.FORBIDDEN;
-        } else {
-            title = textParser.parse(string).compact();
-            titleE = Existence.REQUIRED;
+        @Override
+        public Class<BookMeta> metaClass() {
+            return BookMeta.class;
         }
-    }
 
-    private void setAuthor(final String string) throws QuestException {
-        if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
-            authorE = Existence.FORBIDDEN;
-        } else {
-            author = textParser.parse(string).compact();
-            authorE = Existence.REQUIRED;
+        @Override
+        public void populate(final BookMeta bookMeta) {
+            bookMeta.title(title.getRight())
+                    .author(author.getRight())
+                    .addPages(text.getRight().toArray(new Component[0]));
         }
-    }
 
-    private void setText(final String string) throws QuestException {
-        if (Existence.NONE_KEY.equalsIgnoreCase(string)) {
-            text.add(Component.empty());
-            textE = Existence.FORBIDDEN;
-        } else {
-            text = bookPageWrapper.splitPages(textParser.parse(string));
-            textE = Existence.REQUIRED;
+        @Override
+        public boolean check(final BookMeta bookMeta) {
+            return checkExistence(title, bookMeta.title())
+                    && checkExistence(author, bookMeta.author())
+                    && checkText(text, bookMeta.pages());
         }
-    }
 
-    private boolean checkExistence(final Existence existence, @Nullable final Component stored, @Nullable final Component onItem) {
-        return switch (existence) {
-            case WHATEVER -> true;
-            case REQUIRED -> onItem != null && onItem.compact().equals(stored);
-            case FORBIDDEN -> onItem == null || onItem.equals(Component.empty());
-        };
-    }
+        private boolean checkExistence(final Pair<Existence, @Nullable Component> stored, @Nullable final Component onItem) {
+            return switch (stored.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> onItem != null && onItem.compact().equals(stored.getRight());
+                case FORBIDDEN -> onItem == null || onItem.equals(Component.empty());
+            };
+        }
 
-    private boolean checkText(@Nullable final List<Component> list) {
-        return switch (textE) {
-            case WHATEVER -> true;
-            case REQUIRED -> text.equals(list);
-            case FORBIDDEN ->
-                    list == null || list.isEmpty() || list.size() == 1 && list.get(0).equals(Component.empty());
-        };
+        private boolean checkText(final Pair<Existence, List<Component>> stored, @Nullable final List<Component> list) {
+            return switch (stored.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> stored.getRight().equals(list);
+                case FORBIDDEN ->
+                        list == null || list.isEmpty() || list.size() == 1 && list.get(0).equals(Component.empty());
+            };
+        }
     }
 }

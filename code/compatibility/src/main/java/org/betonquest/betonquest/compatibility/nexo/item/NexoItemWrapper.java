@@ -44,7 +44,7 @@ public record NexoItemWrapper(Argument<ItemBuilder> itemBuilderArgument) impleme
         }
 
         @Override
-        public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
+        public ItemStack generate(final int stackSize) {
             return itemBuilder.setAmount(stackSize).build();
         }
 

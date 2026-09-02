@@ -4,10 +4,9 @@ import net.kyori.adventure.text.Component;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.type.BlockSelector;
 import org.betonquest.betonquest.api.item.QuestItem;
-import org.betonquest.betonquest.api.profile.Profile;
-import org.betonquest.betonquest.item.typehandler.ItemMetaHandler;
-import org.betonquest.betonquest.item.typehandler.LoreHandler;
-import org.betonquest.betonquest.item.typehandler.NameHandler;
+import org.betonquest.betonquest.item.handler.LoreMetaHandler;
+import org.betonquest.betonquest.item.handler.NameMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,58 +14,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
- * Represents a Quest item handled by the standard BetonQuest configuration.
+ * Represents a Quest item handled by the standard BetonQuest configuration with all variables resolved.
+ *
+ * @param selector the base Material Selector for the ItemStack generation
+ * @param name     providing display name for placeholders
+ * @param lore     providing lore lines for placeholders
+ * @param handlers the resolved attributes defining the QuestItem, excluding explicit given one (name and lore)
  */
-public class SimpleQuestItem implements QuestItem {
-
-    /**
-     * The base Material Selector for the ItemStack generation.
-     */
-    private final BlockSelector selector;
-
-    /**
-     * Providing display name for placeholders.
-     */
-    private final NameHandler name;
-
-    /**
-     * Providing lore lines for placeholders.
-     */
-    private final LoreHandler lore;
-
-    /**
-     * Handlers defining the QuestItem.
-     */
-    private final List<ItemMetaHandler<? extends ItemMeta>> handlers;
-
-    /**
-     * Creates a new QuestItem with "Vanilla Handlers".
-     *
-     * @param selector the base Material Selector for the ItemStack generation
-     * @param handlers the populated handlers defining the QuestItem, including name and lore
-     * @param name     providing display name for placeholders
-     * @param lore     providing lore lines for placeholders
-     */
-    public SimpleQuestItem(final BlockSelector selector, final List<ItemMetaHandler<?>> handlers,
-                           final NameHandler name, final LoreHandler lore) {
-        this.selector = selector;
-        this.handlers = handlers;
-        this.name = name;
-        this.lore = lore;
-    }
-
-    @Override
-    public boolean equals(@Nullable final Object other) {
-        return other instanceof final SimpleQuestItem item && item.handlers.equals(handlers);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(selector, handlers);
-    }
+public record SimpleQuestItem(BlockSelector selector, NameMetaHandler.ResolvedNameAttribute name,
+                       LoreMetaHandler.ResolvedLoreAttribute lore,
+                       List<ResolvedAttribute<?>> handlers) implements QuestItem {
 
     @Override
     public boolean matches(@Nullable final ItemStack item) {
@@ -81,7 +40,7 @@ public class SimpleQuestItem implements QuestItem {
             return true;
         }
 
-        for (final ItemMetaHandler<? extends ItemMeta> handler : handlers) {
+        for (final ResolvedAttribute<? extends ItemMeta> handler : handlers) {
             if (!handler.rawCheck(meta)) {
                 return false;
             }
@@ -90,7 +49,7 @@ public class SimpleQuestItem implements QuestItem {
     }
 
     @Override
-    public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
+    public ItemStack generate(final int stackSize) throws QuestException {
         if (stackSize <= 0) {
             return new ItemStack(Material.AIR);
         }
@@ -105,8 +64,8 @@ public class SimpleQuestItem implements QuestItem {
             return item;
         }
 
-        for (final ItemMetaHandler<? extends ItemMeta> handler : handlers) {
-            handler.rawPopulate(meta, profile);
+        for (final ResolvedAttribute<? extends ItemMeta> handler : handlers) {
+            handler.rawPopulate(meta);
         }
 
         item.setItemMeta(meta);

@@ -1,47 +1,37 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Argument;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.Number;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
  * Handles de-/serialization of Enchantments.
  */
-public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
-
-    /**
-     * The individual Enchantment Handlers.
-     */
-    private List<SingleEnchantmentHandler> checkers = new ArrayList<>();
-
-    /**
-     * The required existence.
-     */
-    private Existence checkersE = Existence.WHATEVER;
-
-    /**
-     * If the Enchantment need to be exact the same or just contain all specified enchantments.
-     */
-    private boolean exact = true;
+public class EnchantmentsHandler implements ItemMetaHandler.Standard {
 
     /**
      * The empty default Constructor.
      */
     public EnchantmentsHandler() {
-    }
-
-    @Override
-    public Class<ItemMeta> metaClass() {
-        return ItemMeta.class;
     }
 
     @Override
@@ -73,81 +63,97 @@ public class EnchantmentsHandler implements ItemMetaHandler<ItemMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        switch (key) {
-            case "enchants" -> set(data);
-            case "enchants-containing" -> exact = false;
-            default -> throw new QuestException("Unknown enchantment key: " + key);
+    @Nullable
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<List<SingleEnchantmentHandler>> checkers = ExistenceArgument.applyListOrNull("enchants", instruction.parse(SingleEnchantmentHandler::new));
+        final Optional<Argument<Boolean>> exact = instruction.bool().map(bool -> !bool).get("enchants-containing");
+        if (checkers == null && exact.isEmpty()) {
+            return null;
+        }
+        return new NonParsed(ExistenceArgument.fallbackEmptyList(checkers), exact.orElse(profile -> true));
+    }
+
+    /**
+     * The attribute with placeholders.
+     *
+     * @param checkers The individual Enchantment Handlers.
+     * @param exact    If the Enchantment need to be exact the same or just contain all specified enchantments.
+     */
+    private record NonParsed(ExistenceArgument<List<SingleEnchantmentHandler>> checkers, Argument<Boolean> exact)
+            implements Attribute {
+
+        @Override
+        public ResolvedAttribute.Standard resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, List<SingleEnchantmentHandler>> pair = checkers.getValue(profile);
+            final boolean exact = this.exact.getValue(profile);
+            return new Resolved(pair, exact);
         }
     }
 
-    @Override
-    public void populate(final ItemMeta meta) {
-        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
-            // why no bulk adding method?!
-            final Map<Enchantment, Integer> map = get();
-            for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
-                enchantMeta.addStoredEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
+    /**
+     * The resolved attribute.
+     *
+     * @param checkers The individual Enchantment Handlers.
+     * @param exact    If the Enchantment need to be exact the same or just contain all specified enchantments.
+     */
+    private record Resolved(Pair<Existence, List<SingleEnchantmentHandler>> checkers, boolean exact)
+            implements ResolvedAttribute.Standard {
+
+        @Override
+        public void populate(final ItemMeta meta) {
+            if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
+                final Map<Enchantment, Integer> map = get();
+                for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
+                    enchantMeta.addStoredEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
+                }
+            } else {
+                final Map<Enchantment, Integer> map = get();
+                for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
+                    meta.addEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
+                }
             }
-        } else {
-            final Map<Enchantment, Integer> map = get();
-            for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
-                meta.addEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
+        }
+
+        @Override
+        public boolean check(final ItemMeta meta) {
+            if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
+                return check(enchantMeta.getStoredEnchants());
             }
+            return check(meta.getEnchants());
         }
-    }
 
-    @Override
-    public boolean check(final ItemMeta meta) {
-        if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
-            return check(enchantMeta.getStoredEnchants());
-        }
-        return check(meta.getEnchants());
-    }
-
-    private void set(final String enchants) throws QuestException {
-        final String[] parts = HandlerUtil.getSplit(enchants, "Enchantments are null!", ",");
-        if (Existence.NONE_KEY.equalsIgnoreCase(parts[0])) {
-            checkersE = Existence.FORBIDDEN;
-            return;
-        }
-        checkers = new ArrayList<>(parts.length);
-        for (final String part : parts) {
-            final SingleEnchantmentHandler checker = new SingleEnchantmentHandler(part);
-            checkers.add(checker);
-        }
-        checkersE = Existence.REQUIRED;
-    }
-
-    private Map<Enchantment, Integer> get() {
-        final Map<Enchantment, Integer> map = new HashMap<>();
-        if (checkersE == Existence.FORBIDDEN) {
+        private Map<Enchantment, Integer> get() {
+            final Existence checkersE = checkers.getLeft();
+            final Map<Enchantment, Integer> map = new HashMap<>();
+            if (checkersE == Existence.FORBIDDEN) {
+                return map;
+            }
+            for (final SingleEnchantmentHandler checker : checkers.getRight()) {
+                if (checker.existence != Existence.FORBIDDEN) {
+                    map.put(checker.type, checker.level);
+                }
+            }
             return map;
         }
-        for (final SingleEnchantmentHandler checker : checkers) {
-            if (checker.existence != Existence.FORBIDDEN) {
-                map.put(checker.type, checker.level);
-            }
-        }
-        return map;
-    }
 
-    private boolean check(final Map<Enchantment, Integer> map) {
-        if (checkersE == Existence.WHATEVER) {
-            return true;
-        }
-        if (map.isEmpty()) {
-            return checkersE == Existence.FORBIDDEN;
-        }
-        if (exact && map.size() != get().size()) {
-            return false;
-        }
-        for (final SingleEnchantmentHandler checker : checkers) {
-            if (!checker.check(map.get(checker.type))) {
+        private boolean check(final Map<Enchantment, Integer> map) {
+            final Existence checkersE = checkers.getLeft();
+            if (checkersE == Existence.WHATEVER) {
+                return true;
+            }
+            if (map.isEmpty()) {
+                return checkersE == Existence.FORBIDDEN;
+            }
+            if (exact && map.size() != get().size()) {
                 return false;
             }
+            for (final SingleEnchantmentHandler checker : checkers.getRight()) {
+                if (!checker.check(map.get(checker.type))) {
+                    return false;
+                }
+            }
+            return true;
         }
-        return true;
     }
 
     /**

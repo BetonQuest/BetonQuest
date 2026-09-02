@@ -33,10 +33,12 @@ public interface QuestItem {
 
     /**
      * Generates this quest item as ItemStack with given amount.
+     * <p>
+     * That method will <b>no longer have a default implementation</b> with {@code 4.0.0}.
      *
      * @param stackSize size of generated stack
      * @return the ItemStack equal to this quest item
-     * @throws QuestException when there is an exception while resolving profile specific data
+     * @throws QuestException when there is an exception generating the item
      * @since 3.0.0
      */
     default ItemStack generate(final int stackSize) throws QuestException {
@@ -51,8 +53,13 @@ public interface QuestItem {
      * @return the ItemStack equal to this quest item
      * @throws QuestException when there is an exception while resolving profile specific data
      * @since 3.0.0
+     * @deprecated for removal in {@code 4.0.0}, the item's contained profile specific data which needs to be respected
+     * should already be fully resolved for a profile from a {@link QuestItemWrapper}
      */
-    ItemStack generate(int stackSize, @Nullable Profile profile) throws QuestException;
+    @Deprecated(forRemoval = true, since = "3.3.0")
+    default ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
+        return generate(stackSize);
+    }
 
     /**
      * Compares ItemStack to the quest item.

@@ -3,20 +3,18 @@ package org.betonquest.betonquest.mc_1_21_4;
 import org.apache.commons.lang3.function.TriFunction;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.BetonQuestApi;
-import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.dependency.CoreComponentLoader;
 import org.betonquest.betonquest.api.integration.Integration;
-import org.betonquest.betonquest.api.service.item.ItemRegistry;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.conversation.ConversationColors;
 import org.betonquest.betonquest.conversation.menu.MenuConvIOFactory;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
+import org.betonquest.betonquest.item.SimpleQuestItemHandlerRegistry;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.betonquest.betonquest.mc_1_21_4.conversation.InputEventSession;
-import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleItemFactory;
-import org.betonquest.betonquest.mc_1_21_4.item.UpdatedSimpleQuestItemSerializer;
+import org.betonquest.betonquest.mc_1_21_4.item.UpdatedCustomModelDataHandler;
 import org.betonquest.betonquest.mc_1_21_4.listener.BundleListener;
 import org.betonquest.betonquest.mc_1_21_4.notify.io.UpdatedTotemNotifyIOFactory;
 import org.betonquest.betonquest.mc_1_21_4.quest.condition.biome.UpdatedBiomeConditionFactory;
@@ -44,14 +42,12 @@ public class BundledMC_1_21_4 implements Integration {
 
     @Override
     public void enable(final BetonQuestApi api) {
-        final ItemRegistry item = api.items().registry();
         final CoreComponentLoader componentLoader = betonQuest.getComponentLoader();
+
+        final SimpleQuestItemHandlerRegistry handlerRegistry = componentLoader.get(SimpleQuestItemHandlerRegistry.class);
+        handlerRegistry.register(new UpdatedCustomModelDataHandler());
+
         final TextParser textParser = componentLoader.get(TextParser.class);
-        final BookPageWrapper bookPageWrapper = new BookPageWrapper(api.fonts(), 114, 14);
-        item.register("simple", new UpdatedSimpleItemFactory(api.placeholders().manager(),
-                api.packages(), textParser, bookPageWrapper,
-                () -> betonQuest.getPluginConfig().getBoolean("item.quest.lore") ? api.localizations() : null), true);
-        item.registerSerializer("simple", new UpdatedSimpleQuestItemSerializer(textParser, bookPageWrapper));
 
         final TriFunction<Player, ConversationAction, Boolean, ConversationSession> inputFunction = (player, control, setSpeed)
                 -> new InputEventSession(betonQuest, player, control, setSpeed, betonQuest.getPluginConfig().getBoolean("conversation.io.menu.base_speed"));

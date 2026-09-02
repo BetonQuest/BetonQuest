@@ -1,6 +1,14 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -15,14 +23,9 @@ import java.util.Set;
 public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
 
     /**
-     * The leather color, defaults to server default as "empty".
+     * The server leather color, default as "empty".
      */
-    private Color color = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();
-
-    /**
-     * The required existence.
-     */
-    private Existence colorE = Existence.WHATEVER;
+    private final Color defaultColor = Bukkit.getServer().getItemFactory().getDefaultLeatherColor();
 
     /**
      * The empty default Constructor.
@@ -51,26 +54,56 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!"color".equals(key)) {
-            throw new QuestException("Invalid color key: " + key);
+    @Nullable
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<Color> color = ExistenceArgument.applyOrNull("color", instruction.parse(HandlerUtil::getColor));
+        if (color == null) {
+            return null;
         }
-        if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-            colorE = Existence.FORBIDDEN;
-            return;
-        }
-        color = HandlerUtil.getColor(data);
-        colorE = Existence.REQUIRED;
+        return new NonResolved(this.defaultColor, color);
     }
 
-    @Override
-    public void populate(final LeatherArmorMeta armorMeta) {
-        armorMeta.setColor(color);
+    /**
+     * The attribute with placeholders.
+     *
+     * @param defaultColor the "empty" color
+     * @param color        the leather color
+     */
+    private record NonResolved(Color defaultColor, ExistenceArgument<Color> color)
+            implements Attribute {
+
+        @Override
+        public ResolvedAttribute<LeatherArmorMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, Color> color = this.color.getValue(profile);
+            return new Resolved(defaultColor, color);
+        }
     }
 
-    @Override
-    public boolean check(final LeatherArmorMeta armorMeta) {
-        return colorE == Existence.WHATEVER || armorMeta.getColor().equals(this.color);
-        // if it's forbidden, this.color is default leather color (undyed)
+    /**
+     * The resolved attribute.
+     *
+     * @param defaultColor the "empty" color
+     * @param color        the leather color
+     */
+    private record Resolved(Color defaultColor, Pair<Existence, Color> color)
+            implements ResolvedAttribute<LeatherArmorMeta> {
+
+        @Override
+        public Class<LeatherArmorMeta> metaClass() {
+            return LeatherArmorMeta.class;
+        }
+
+        @Override
+        public void populate(final LeatherArmorMeta armorMeta) {
+            armorMeta.setColor(color.getRight());
+        }
+
+        /**
+         * If it's forbidden, this.color is default leather color (undyed)
+         */
+        @Override
+        public boolean check(final LeatherArmorMeta armorMeta) {
+            return color.getLeft() == Existence.WHATEVER || armorMeta.getColor().equals(color.getRight());
+        }
     }
 }

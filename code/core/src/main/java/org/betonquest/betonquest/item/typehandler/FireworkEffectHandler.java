@@ -2,6 +2,7 @@ package org.betonquest.betonquest.item.typehandler;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.argument.parser.BooleanParser;
+import org.betonquest.betonquest.item.handler.Existence;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -72,7 +73,6 @@ public class FireworkEffectHandler {
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public void set(final String string) throws QuestException {
         final String[] parts = HandlerUtil.getSplit(string, "Effect is missing!", ":");
-        // if "whatever" then all type checking is unnecessary
         if (!"?".equals(parts[0])) {
             if (parts[0].toLowerCase(Locale.ROOT).startsWith("none-")) {
                 parts[0] = parts[0].substring(5);

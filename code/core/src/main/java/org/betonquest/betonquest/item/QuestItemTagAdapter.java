@@ -6,7 +6,6 @@ import org.betonquest.betonquest.api.item.QuestItem;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,10 +40,10 @@ public record QuestItemTagAdapter(QuestItem original, LoreConsumer loreConsumer)
     @Override
     public ItemStack generate(final int stackSize, @Nullable final Profile profile) throws QuestException {
         final ItemStack stack = original.generate(stackSize, profile);
-        final ItemMeta meta = stack.getItemMeta();
-        meta.getPersistentDataContainer().set(QuestHandler.QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
-        loreConsumer.accept(meta, profile);
-        stack.setItemMeta(meta);
+        stack.editMeta(meta -> {
+            meta.getPersistentDataContainer().set(QuestHandler.QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
+            loreConsumer.accept(meta);
+        });
         return stack;
     }
 

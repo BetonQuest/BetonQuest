@@ -1,13 +1,20 @@
 package org.betonquest.betonquest.item.typehandler;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.Instruction;
+import org.betonquest.betonquest.api.profile.Profile;
+import org.betonquest.betonquest.item.handler.Attribute;
+import org.betonquest.betonquest.item.handler.Existence;
+import org.betonquest.betonquest.item.handler.ExistenceArgument;
+import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -22,16 +29,6 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
      * The number of values that describe one pattern layer.
      */
     private static final int PATTERN_PARTS = 2;
-
-    /**
-     * The ordered banner patterns.
-     */
-    private List<Pattern> patterns = List.of();
-
-    /**
-     * The required pattern existence.
-     */
-    private Existence patternsE = Existence.WHATEVER;
 
     /**
      * The empty default constructor.
@@ -61,21 +58,13 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     }
 
     @Override
-    public void set(final String key, final String data) throws QuestException {
-        if (!"patterns".equals(key)) {
-            throw new QuestException("Invalid banner key: " + key);
+    @Nullable
+    public Attribute parse(final Instruction instruction) throws QuestException {
+        final ExistenceArgument<List<Pattern>> patterns = ExistenceArgument.applyListOrNull("patterns", instruction.parse(this::parsePattern));
+        if (patterns == null) {
+            return null;
         }
-        if (Existence.NONE_KEY.equalsIgnoreCase(data)) {
-            patternsE = Existence.FORBIDDEN;
-            return;
-        }
-        final String[] patternData = HandlerUtil.getSplit(data, "Banner patterns are null!", ",");
-        final List<Pattern> parsedPatterns = new ArrayList<>(patternData.length);
-        for (final String pattern : patternData) {
-            parsedPatterns.add(parsePattern(pattern));
-        }
-        patterns = parsedPatterns;
-        patternsE = Existence.REQUIRED;
+        return new NonResolved(patterns);
     }
 
     private Pattern parsePattern(final String data) throws QuestException {
@@ -98,17 +87,45 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
         return new Pattern(color, type);
     }
 
-    @Override
-    public void populate(final BannerMeta bannerMeta) {
-        bannerMeta.setPatterns(patterns);
+    /**
+     * The attribute with placeholders.
+     *
+     * @param patterns The ordered banner patterns.
+     */
+    private record NonResolved(ExistenceArgument<List<Pattern>> patterns) implements Attribute {
+
+        @Override
+        public ResolvedAttribute<BannerMeta> resolve(@Nullable final Profile profile) throws QuestException {
+            final Pair<Existence, List<Pattern>> patterns = this.patterns.getValue(profile);
+
+            return new Resolved(patterns);
+        }
     }
 
-    @Override
-    public boolean check(final BannerMeta bannerMeta) {
-        return switch (patternsE) {
-            case WHATEVER -> true;
-            case REQUIRED -> patterns.equals(bannerMeta.getPatterns());
-            case FORBIDDEN -> bannerMeta.getPatterns().isEmpty();
-        };
+    /**
+     * The resolved attribute.
+     *
+     * @param patterns The ordered banner patterns.
+     */
+    private record Resolved(Pair<Existence, List<Pattern>> patterns) implements ResolvedAttribute<BannerMeta> {
+
+        @Override
+        public Class<BannerMeta> metaClass() {
+            return BannerMeta.class;
+        }
+
+        @Override
+        public void populate(final BannerMeta bannerMeta) {
+            bannerMeta.setPatterns(patterns.getRight());
+        }
+
+        @Override
+        public boolean check(final BannerMeta bannerMeta) {
+            return switch (patterns.getLeft()) {
+                case WHATEVER -> true;
+                case REQUIRED -> patterns.getRight().equals(bannerMeta.getPatterns());
+                case FORBIDDEN -> bannerMeta.getPatterns().isEmpty();
+            };
+        }
     }
 }

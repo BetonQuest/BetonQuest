@@ -4,12 +4,11 @@ import org.betonquest.betonquest.api.common.component.BookPageWrapper;
 import org.betonquest.betonquest.api.common.component.font.FontRegistry;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.Localizations;
-import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.service.item.ItemRegistry;
-import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
-import org.betonquest.betonquest.api.text.TextParser;
+import org.betonquest.betonquest.item.LoreConsumer;
 import org.betonquest.betonquest.item.SimpleQuestItemFactory;
+import org.betonquest.betonquest.item.SimpleQuestItemHandlerRegistry;
 import org.betonquest.betonquest.item.SimpleQuestItemSerializer;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 
@@ -29,24 +28,30 @@ public class ItemTypesComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(QuestPackageManager.class, ConfigAccessor.class,
-                Localizations.class, TextParser.class,
-                ItemRegistry.class, FontRegistry.class, PlaceholderManager.class);
+        return Set.of(ConfigAccessor.class, Localizations.class, ItemRegistry.class, FontRegistry.class);
+    }
+
+    @Override
+    public Set<Class<?>> provides() {
+        return Set.of(SimpleQuestItemHandlerRegistry.class);
     }
 
     @Override
     protected void load(final DependencyProvider dependencyProvider) {
-        final QuestPackageManager packManager = getDependency(QuestPackageManager.class);
         final ConfigAccessor config = getDependency(ConfigAccessor.class);
         final Localizations localizations = getDependency(Localizations.class);
-        final TextParser textParser = getDependency(TextParser.class);
         final ItemRegistry itemRegistry = getDependency(ItemRegistry.class);
         final FontRegistry fontRegistry = getDependency(FontRegistry.class);
-        final PlaceholderManager placeholders = getDependency(PlaceholderManager.class);
 
         final BookPageWrapper bookPageWrapper = new BookPageWrapper(fontRegistry, 114, 14);
-        itemRegistry.register("simple", new SimpleQuestItemFactory(placeholders, packManager, textParser, bookPageWrapper,
-                () -> config.getBoolean("item.quest.lore") ? localizations : null));
-        itemRegistry.registerSerializer("simple", new SimpleQuestItemSerializer(textParser, bookPageWrapper));
+
+        final SimpleQuestItemHandlerRegistry handlerRegistry = new SimpleQuestItemHandlerRegistry(bookPageWrapper, new LoreConsumer.SupplierArgument(
+                () -> config.getBoolean("item.quest.lore") ? localizations : null
+        ));
+
+        dependencyProvider.take(SimpleQuestItemHandlerRegistry.class, handlerRegistry);
+
+        itemRegistry.register("simple", new SimpleQuestItemFactory(handlerRegistry), true);
+        itemRegistry.registerSerializer("simple", new SimpleQuestItemSerializer(handlerRegistry));
     }
 }
