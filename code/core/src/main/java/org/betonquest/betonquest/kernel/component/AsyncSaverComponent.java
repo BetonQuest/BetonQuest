@@ -14,7 +14,6 @@ import java.util.Set;
 /**
  * The implementation of {@link AbstractCoreComponent} for {@link AsyncSaver}.
  */
-@SuppressWarnings("PMD.DoNotUseThreads")
 public class AsyncSaverComponent extends AbstractCoreComponent {
 
     /**
@@ -42,7 +41,6 @@ public class AsyncSaverComponent extends AbstractCoreComponent {
         final Connector connector = getDependency(Connector.class);
 
         final AsyncSaver saver = new AsyncSaver(loggerFactory.create(AsyncSaver.class, "AsyncSaver"), connector);
-        new Thread(saver).start();
         new Backup(loggerFactory, loggerFactory.create(Backup.class), configAccessorFactory, plugin.getDataFolder(), connector)
                 .loadDatabaseFromBackup();
 

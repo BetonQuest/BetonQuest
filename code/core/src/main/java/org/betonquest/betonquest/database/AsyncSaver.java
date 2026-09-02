@@ -3,14 +3,15 @@ package org.betonquest.betonquest.database;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
 import java.util.Arrays;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Saves the data to the database asynchronously.
  */
-@SuppressWarnings("PMD.AvoidSynchronizedStatement")
-public class AsyncSaver implements Runnable, Saver {
+@SuppressWarnings("PMD.DoNotUseThreads")
+public class AsyncSaver implements Saver {
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -23,14 +24,9 @@ public class AsyncSaver implements Runnable, Saver {
     private final Connector con;
 
     /**
-     * The queue of records to be saved to the database.
+     * The executor service that will run the saver.
      */
-    private final Queue<Record> queue;
-
-    /**
-     * Whether the saver is currently running or not.
-     */
-    private boolean running;
+    private final ExecutorService executor;
 
     /**
      * Creates a new database saver thread.
@@ -41,56 +37,32 @@ public class AsyncSaver implements Runnable, Saver {
     public AsyncSaver(final BetonQuestLogger log, final Connector connector) {
         this.log = log;
         this.con = connector;
-        this.queue = new ConcurrentLinkedQueue<>();
-        this.running = true;
+        this.executor = Executors.newSingleThreadExecutor();
     }
 
-    @Override
-    public void run() {
-        log.debug("Thread started.");
-        while (true) {
-            synchronized (this) {
-                while (queue.isEmpty()) {
-                    if (!running) {
-                        log.debug("Thread terminating.");
-                        return;
-                    }
-                    try {
-                        wait();
-                    } catch (final InterruptedException e) {
-                        log.warn("Got interrupted!");
-                    }
-                }
-                consumeQueue();
-            }
-        }
-    }
-
-    private void consumeQueue() {
-        while (!queue.isEmpty()) {
-            final Record rec = queue.poll();
-            if (rec != null) {
-                log.debug("Processing queued record: '%s' with arguments '%s'".formatted(rec.type(), Arrays.toString(rec.args())));
-                con.updateSQL(rec.type(), new Arguments(rec.args()));
-            }
-        }
+    private void process(final Record rec) {
+        log.debug("Processing record: '%s' with arguments '%s'".formatted(rec.type(), Arrays.toString(rec.args())));
+        con.updateSQL(rec.type(), new Arguments(rec.args()));
+        log.debug("Processing record done: '%s' with arguments '%s'".formatted(rec.type(), Arrays.toString(rec.args())));
     }
 
     @Override
     public void add(final Record rec) {
-        synchronized (this) {
-            log.debug("Queued record: '%s' with arguments '%s' (queued: %d)".formatted(rec.type(), Arrays.toString(rec.args()), queue.size() + 1));
-            queue.add(rec);
-            notifyAll();
-        }
+        executor.execute(() -> process(rec));
     }
 
     @Override
     public void end() {
-        synchronized (this) {
-            log.debug("Terminating with %d pending records in queue.".formatted(queue.size()));
-            running = false;
-            notifyAll();
+        log.debug("Terminating executor service.");
+        try {
+            executor.shutdown();
+            if (executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                log.debug("Executor service terminated.");
+            } else {
+                log.error("Executor service did not terminate correctly!");
+            }
+        } catch (final InterruptedException e) {
+            log.error("Interrupted while waiting for executor service to terminate.", e);
         }
     }
 }
