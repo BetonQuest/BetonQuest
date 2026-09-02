@@ -9569,16 +9569,15 @@ It mainly brings limited support for cross-server support.
 In general, MySQL has a lot of advantages over SQLite, such as better performance.<br>
 To use a MySQL Database for saving all the data, you need to fill out the mysql config section.<br>
 <strong>This option needs a server restart to take effect when changed!</strong></p>
-<div class="highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">mysql</span><span class="p">:</span>
+<div class="highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">mysql</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">              </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">hikari_pooling</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1">#(2)!</span>
 <span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">''</span><span class="w">                   </span><span class="c1">#(3)!</span>
@@ -9587,7 +9586,6 @@ To use a MySQL Database for saving all the data, you need to fill out the mysql 
 <span class="w">  </span><span class="nt">pass</span><span class="p">:</span><span class="w"> </span><span class="s">''</span><span class="w">                   </span><span class="c1">#(6)!</span>
 <span class="w">  </span><span class="nt">base</span><span class="p">:</span><span class="w"> </span><span class="s">''</span><span class="w">                   </span><span class="c1">#(7)!</span>
 <span class="w">  </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">betonquest_</span><span class="w">        </span><span class="c1">#(8)!</span>
-<span class="w">  </span><span class="nt">reconnect_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">   </span><span class="c1">#(9)!</span>
 </code></pre></div></td></tr></tbody></table></div>
 <ol>
 <li>Set this to true.</li>
@@ -9598,7 +9596,6 @@ To use a MySQL Database for saving all the data, you need to fill out the mysql 
 <li>The password of that user.</li>
 <li>The database that BetonQuest will write to. You need to create it in your database server.</li>
 <li>The table prefix of BetonQuest's data in the database.</li>
-<li>The time interval the database tries to reconnect if the connection gets lost</li>
 </ol>
 <h3 id="migrating-a-database-from-sqlite-to-mysql-or-back">Migrating a database from SQLite to MySQL or back<a class="headerlink" href="#migrating-a-database-from-sqlite-to-mysql-or-back" title="Permanent link">🔗</a></h3>
 <p>Follow these few steps to migrate your database easily:</p>
