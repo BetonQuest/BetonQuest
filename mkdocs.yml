@@ -208,6 +208,7 @@ nav:
   - 'API':
       - 'Overview': API/Overview.md
       - 'Obtaining API': API/Obtaining-API.md
+      - 'Changelog': API/CHANGELOG.md
       - 'Concepts':
           - 'Overview': API/Concepts/Overview.md
           - 'Actions': API/Concepts/Actions.md
