@@ -20,6 +20,7 @@ jobs:
       VERSION_MAVEN: ${{ steps.version.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ steps.version.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ steps.modules.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ steps.changes.outputs.API_CHANGE }}
 
     steps:
       - name: Checkout source code
@@ -37,9 +38,11 @@ jobs:
           MAVEN_WRAPPER_DIR: '~/.m2/wrapper'
           SUB_MODULE: 'betonquest'
       - name: Check module versions
+        id: changes
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
           read -ra modules <<< "$MODULES_TO_CHECK"
+          API_CHANGE=False
           for module in "${modules[@]}"; do
             version=$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")
             tag="v${version}-${module}"
@@ -48,8 +51,12 @@ jobs:
                 echo "Module '"$module"' has code changes compared to tag '$tag', but the version was not bumped!"
                 exit 1
               fi
+            else
+              API_CHANGE=True            
             fi
           done
+          
+          echo "API_CHANGE=$API_CHANGE" >> "$GITHUB_OUTPUT"
       - name: Determine modules to skip
         if: "steps.version.outputs.VERSION_TYPE == 'release'"
         id: modules
@@ -83,6 +90,7 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ needs.prepare.outputs.API_CHANGE }}
 
     steps:
       - name: Checkout source code
@@ -125,6 +133,7 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ needs.prepare.outputs.API_CHANGE }}
 
     steps:
       - name: Checkout source code
@@ -143,6 +152,33 @@ jobs:
           VERSION_TYPE: ${{ env.VERSION_TYPE }}
           VERSION_MAVEN: ${{ env.VERSION_MAVEN }}
           REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
+      - name: Set api changelog version
+        if: needs.prepare.outputs.API_CHANGE
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          sed -i "s~## \[Unreleased\]~## \[${VERSION}\]~g" ./API-CHANGELOG.md
+          DATE="$(date +%Y-%m-%d)"
+          sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./API-CHANGELOG.md
+          echo "$(cat ./API-CHANGELOG.md)" >> './docs/API/CHANGELOG.md'
+        env:
+          VERSION: ${{ inputs.VERSION }}
+      - name: Reset api changelog
+        if: ${{ !needs.prepare.outputs.API_CHANGE }}
+        shell: bash --noprofile --norc -euo pipefail {0}
+        run: |
+          awk '
+              /^## \[Unreleased\]/ {
+                skip = 1
+                next
+              }
+              skip && /^## \[[^]]+\]/ {
+                skip = 0
+              }
+              !skip
+            ' ./API-CHANGELOG.md > ./API-CHANGELOG.tmp
+          echo "$(cat ./API-CHANGELOG.tmp)" >> './docs/API/CHANGELOG.md'
+        env:
+          VERSION: ${{ inputs.VERSION }}
       - name: Build with mkdocs
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
@@ -168,6 +204,7 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ needs.prepare.outputs.API_CHANGE }}
 
     outputs:
       UPLOAD_PATH: ${{ steps.save_upload_path.outputs.upload_path }}
@@ -221,6 +258,7 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ needs.prepare.outputs.API_CHANGE }}
 
     steps:
       - name: Checkout source code
@@ -272,6 +310,7 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ needs.prepare.outputs.API_CHANGE }}
 
     steps:
       - name: Checkout source code
@@ -317,6 +356,7 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ needs.prepare.outputs.API_CHANGE }}
 
     outputs:
       PLUGIN_API_VERSION: ${{ steps.api_version.outputs.PLUGIN_API_VERSION }}
@@ -390,6 +430,7 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ needs.prepare.outputs.API_CHANGE }}
       UPLOAD_PATH: ${{ needs.deploy-code.outputs.UPLOAD_PATH }}
       COMMIT_DESCRIPTION: ${{ needs.publish-prepare.outputs.COMMIT_DESCRIPTION }}
 
@@ -437,6 +478,7 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ needs.prepare.outputs.API_CHANGE }}
       PLUGIN_API_VERSION: ${{ needs.publish-prepare.outputs.PLUGIN_API_VERSION }}
       RELEASE_DESCRIPTION: ${{ needs.publish-prepare.outputs.RELEASE_DESCRIPTION }}
 
@@ -478,6 +520,7 @@ jobs:
       VERSION_MAVEN: ${{ needs.prepare.outputs.VERSION_MAVEN }}
       VERSION_IS_NEW: ${{ needs.prepare.outputs.VERSION_IS_NEW }}
       SKIP_MODULES: ${{ needs.prepare.outputs.SKIP_MODULES }}
+      API_CHANGE: ${{ needs.prepare.outputs.API_CHANGE }}
       PLUGIN_API_VERSION: ${{ needs.publish-prepare.outputs.PLUGIN_API_VERSION }}
       RELEASE_DESCRIPTION: ${{ needs.publish-prepare.outputs.RELEASE_DESCRIPTION }}
 
