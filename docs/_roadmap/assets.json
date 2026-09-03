@@ -103,5 +103,21 @@
       "height": 300,
       "width": 300
     }
+  },
+  "grindstone": {
+    "url": "https://minecraft.wiki/images/Grindstone_(floor)_(N).png",
+    "path": "_media/content/Roadmap/deco/grindstone.webp",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "stonecutter": {
+    "url": "https://minecraft.wiki/images/Stonecutter_JE2_BE1.gif",
+    "path": "_media/content/Roadmap/deco/stonecutter.webp",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
   }
 }
