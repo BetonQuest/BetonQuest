@@ -85,6 +85,63 @@
       }
     },
     {
+      "id": "3.5",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 3.5.0",
+          "features": [
+            "to be determined..."
+          ]
+        },
+        "north-east": {
+          "title": "tbd",
+          "features": [
+          ]
+        },
+        "east": {
+          "title": "tbd",
+          "features": [
+          ]
+        },
+        "south-east": {
+          "title": "tbd",
+          "features": [
+          ]
+        }
+      }
+    },
+    {
+      "id": "3.4",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 3.4.0",
+          "features": [
+            "- Element Polishing: actions, objectives, and conditions"
+          ]
+        },
+        "north-west": {
+          "title": "",
+          "features": [
+          ]
+        },
+        "west": {
+          "title": "",
+          "features": [
+          ]
+        },
+        "south-west": {
+          "title": "Element Polishing",
+          "features": [
+            "- Polish all existing actions, objectives, and conditions",
+            "- Includes new options, improvements, more placeholder support",
+            "- New elements might be added along the way"
+          ]
+        }
+      }
+    },
+    {
       "id": "3.3",
       "style": "default",
       "tiles": {
