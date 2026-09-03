@@ -33,7 +33,7 @@ public class GlobalPointAction implements NullableAction {
     /**
      * The point type, how the points should be modified.
      */
-    private final PointType pointType;
+    private final Argument<PointType> pointType;
 
     /**
      * Creates a new global point action.
@@ -43,7 +43,7 @@ public class GlobalPointAction implements NullableAction {
      * @param count      the count
      * @param pointType  the point type
      */
-    public GlobalPointAction(final GlobalData globalData, final Argument<String> category, final Argument<Number> count, final PointType pointType) {
+    public GlobalPointAction(final GlobalData globalData, final Argument<String> category, final Argument<Number> count, final Argument<PointType> pointType) {
         this.globalData = globalData;
         this.category = category;
         this.count = count;
@@ -56,7 +56,8 @@ public class GlobalPointAction implements NullableAction {
         final Optional<Map.Entry<String, Integer>> globalPoint = globalData.points().get().entrySet().stream()
                 .filter(p -> p.getKey().equalsIgnoreCase(category))
                 .findFirst();
-        globalData.points().set(category, pointType.modify(
+        final PointType pointTypeValue = pointType.getValue(profile);
+        globalData.points().set(category, pointTypeValue.modify(
                 globalPoint.map(Map.Entry::getValue).orElse(0), count.getValue(profile).doubleValue()));
     }
 }

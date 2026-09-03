@@ -273,18 +273,17 @@ actions:
 
 __Context__: @snippet:action-meta:online-independent@  
 __Syntax__: `drop <items> [location]`  
-__Description__: Drop the specified items at the specified location.
+__Description__: Drop the specified items at a location.
 
-The action takes two parameters: `items` and `location`. Items is a list of [items](../Advanced/Items.md) to be
-dropped.
-Every item can optionally be followed by a colon to define an amount `<item>:<amount>` otherwise the amount is 1.
-The optional location defines where the items will be dropped. It must be specified in the [unified location format](Definition-Encyclopedia.md#unified-location-format).
-If no location is given then the items will be dropped at the player's current location.
+If no location is specified, the items are dropped at the player's current position.
+In an independent context, omitting the location will cause an error.
 
-If the drop action is used without a player, like in a schedule,
-and no location is given then the items will be dropped for **every** player at their respective locations.
+| Parameter                                                                      | Type               | Explanation                                                                                              |
+|--------------------------------------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------|
+| items<br>List[Item]                                                            | Required           | A list of items to drop. Each item can have an optional amount separated by a colon (e.g., `emerald:5`). |
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Optional<br>[None] | The location where the items should be dropped. If omitted, the player's current location is used.       |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   dropSword: "drop items:magical_sword location:200;17;300;world"
   dropRare: "drop items:loot_rare,loot_common:3"
@@ -504,35 +503,46 @@ actions:
 ## `GlobalPoint`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `globalpoint <category> <amount> <action>`  
-__Description__: Manage global points.
+__Syntax__: `globalpoint <category> <amount> [action]`  
+__Description__: Manage points in a global, player-independent context.
 
-This works the same way as the normal [point action](#point) but instead to manipulating the points for a category of a specific
-player it manipulates points in a global category. These global categories are player independent, so you could for
-example add a point to such a global category every time a player does a quest and give some special rewards for
-the 100th player who does the quest.
+Global points are not tied to specific players and can be used to track server-wide progress.
 
-See the [`point` action](#point) for argument explanation.
+| Parameter                                                              | Type               | Explanation                                                                         |
+|------------------------------------------------------------------------|--------------------|-------------------------------------------------------------------------------------|
+| category<br>[[Identifier]](./Definition-Encyclopedia.md#identifiers)   | Required           | The name of the global point category.                                              |
+| amount<br>[Number]                                                     | Required           | The number of points to use in the operation.                                       |
+| action<br>[PointType]                                                  | Optional<br>[ADD]  | The operation to perform on the category.                                           |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   increaseUserCount: "globalpoint global_knownusers 1 action:add"
   resetDailyLogins: "globalpoint daily_login 0 action:set"
   doubleReputation: "globalpoint reputation 2 action:multiply"
 ```
 
+*[PointType]: ADD, SUBTRACT, SET, MULTIPLY
+
 ## `GlobalTag`
 
 __Context__: @snippet:action-meta:independent@  
 __Syntax__: `globaltag <operation> <tags>`  
-__Description__: Manage global tags.
+__Description__: Manage tags that apply globally to the entire server.
 
-Works the same way as a normal tag action, but instead of setting a tag for one player it sets it globally for all players.
+Unlike regular tags, global tags are not associated with individual players.
 
-```YAML title="Example"
+| Parameter                | Type               | Explanation                                                                |
+|--------------------------|--------------------|----------------------------------------------------------------------------|
+| operation<br>[TagOpType] | Required           | Whether to add or delete the global tags.                                  |
+| tags<br>List[String]     | Required           | A list of tag names, separated by commas. Tags cannot contain spaces.      |
+
+```YAML title="Examples"
 actions:
-  setNpcsAggressive: "globaltag add global_areNPCsAggressive"
+  enable_aggression: "globaltag add global_npcs_aggressive"
+  disable_event: "globaltag delete holiday_event_active"
 ```
+
+*[TagOpType]: add, delete
 
 ## `Heal`
 

@@ -46,7 +46,7 @@ public class GlobalPointActionFactory implements PlayerActionFactory, Playerless
     private GlobalPointAction createGlobalPointAction(final Instruction instruction) throws QuestException {
         final Argument<String> category = instruction.packageIdentifier().get();
         final Argument<Number> number = instruction.number().get();
-        final PointType type = instruction.enumeration(PointType.class).get("action", PointType.ADD).getValue(null);
+        final Argument<PointType> type = instruction.enumeration(PointType.class).get("action", PointType.ADD);
         return new GlobalPointAction(globalData, category, number, type);
     }
 }
