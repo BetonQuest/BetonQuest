@@ -11759,15 +11759,31 @@ When using this argument the conversation will start without its header.</p>
 <h2 id="drop"><code>Drop</code><a class="headerlink" href="#drop" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>drop &lt;items&gt; [location]</code><br>
-<strong>Description</strong>: Drop the specified items at the specified location.</p>
-<p>The action takes two parameters: <code>items</code> and <code>location</code>. Items is a list of <a href="../../Advanced/Items/">items</a> to be
-dropped.
-Every item can optionally be followed by a colon to define an amount <code>&lt;item&gt;:&lt;amount&gt;</code> otherwise the amount is 1.
-The optional location defines where the items will be dropped. It must be specified in the <a href="../Definition-Encyclopedia/#unified-location-format">unified location format</a>.
-If no location is given then the items will be dropped at the player's current location.</p>
-<p>If the drop action is used without a player, like in a schedule,
-and no location is given then the items will be dropped for <strong>every</strong> player at their respective locations.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<strong>Description</strong>: Drop the specified items at a location.</p>
+<p>If no location is specified, the items are dropped at the player's current position.
+In an independent context, omitting the location will cause an error.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>items<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>A list of items to drop. Each item can have an optional amount separated by a colon (e.g., <code>emerald:5</code>).</td>
+</tr>
+<tr>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
+<td>The location where the items should be dropped. If omitted, the player's current location is used.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">dropSword</span><span class="p">:</span><span class="w"> </span><span class="s">"drop</span><span class="nv"> </span><span class="s">items:magical_sword</span><span class="nv"> </span><span class="s">location:200;17;300;world"</span>
 <span class="w">  </span><span class="nt">dropRare</span><span class="p">:</span><span class="w"> </span><span class="s">"drop</span><span class="nv"> </span><span class="s">items:loot_rare,loot_common:3"</span>
 <span class="w">  </span><span class="nt">dropMyItem</span><span class="p">:</span><span class="w"> </span><span class="s">"drop</span><span class="nv"> </span><span class="s">items:myItem</span><span class="nv"> </span><span class="s">location:%objective.MyQuestPlaceholder.DropLocation%"</span>
@@ -12005,14 +12021,36 @@ The optional <code>backpack</code> argument forces quest items to be placed in t
 </code></pre></div>
 <h2 id="globalpoint"><code>GlobalPoint</code><a class="headerlink" href="#globalpoint" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
-<strong>Syntax</strong>: <code>globalpoint &lt;category&gt; &lt;amount&gt; &lt;action&gt;</code><br>
-<strong>Description</strong>: Manage global points.</p>
-<p>This works the same way as the normal <a href="#point">point action</a> but instead to manipulating the points for a category of a specific
-player it manipulates points in a global category. These global categories are player independent, so you could for
-example add a point to such a global category every time a player does a quest and give some special rewards for
-the 100<sup>th</sup> player who does the quest.</p>
-<p>See the <a href="#point"><code>point</code> action</a> for argument explanation.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<strong>Syntax</strong>: <code>globalpoint &lt;category&gt; &lt;amount&gt; [action]</code><br>
+<strong>Description</strong>: Manage points in a global, player-independent context.</p>
+<p>Global points are not tied to specific players and can be used to track server-wide progress.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category<br><a href="../Definition-Encyclopedia/#identifiers">[Identifier]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The name of the global point category.</td>
+</tr>
+<tr>
+<td>amount<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The number of points to use in the operation.</td>
+</tr>
+<tr>
+<td>action<br>[<abbr title="ADD, SUBTRACT, SET, MULTIPLY">PointType</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[ADD]</td>
+<td>The operation to perform on the category.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">increaseUserCount</span><span class="p">:</span><span class="w"> </span><span class="s">"globalpoint</span><span class="nv"> </span><span class="s">global_knownusers</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">action:add"</span>
 <span class="w">  </span><span class="nt">resetDailyLogins</span><span class="p">:</span><span class="w"> </span><span class="s">"globalpoint</span><span class="nv"> </span><span class="s">daily_login</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">action:set"</span>
 <span class="w">  </span><span class="nt">doubleReputation</span><span class="p">:</span><span class="w"> </span><span class="s">"globalpoint</span><span class="nv"> </span><span class="s">reputation</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">action:multiply"</span>
@@ -12020,10 +12058,32 @@ the 100<sup>th</sup> player who does the quest.</p>
 <h2 id="globaltag"><code>GlobalTag</code><a class="headerlink" href="#globaltag" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>globaltag &lt;operation&gt; &lt;tags&gt;</code><br>
-<strong>Description</strong>: Manage global tags.</p>
-<p>Works the same way as a normal tag action, but instead of setting a tag for one player it sets it globally for all players.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">setNpcsAggressive</span><span class="p">:</span><span class="w"> </span><span class="s">"globaltag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">global_areNPCsAggressive"</span>
+<strong>Description</strong>: Manage tags that apply globally to the entire server.</p>
+<p>Unlike regular tags, global tags are not associated with individual players.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operation<br>[<abbr title="add, delete">TagOpType</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>Whether to add or delete the global tags.</td>
+</tr>
+<tr>
+<td>tags<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>A list of tag names, separated by commas. Tags cannot contain spaces.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enable_aggression</span><span class="p">:</span><span class="w"> </span><span class="s">"globaltag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">global_npcs_aggressive"</span>
+<span class="w">  </span><span class="nt">disable_event</span><span class="p">:</span><span class="w"> </span><span class="s">"globaltag</span><span class="nv"> </span><span class="s">delete</span><span class="nv"> </span><span class="s">holiday_event_active"</span>
 </code></pre></div>
 <h2 id="heal"><code>Heal</code><a class="headerlink" href="#heal" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
