@@ -23,7 +23,7 @@
     <betonquest.api.version>3.2.0${changelist}</betonquest.api.version>
 
     <!-- dependency versions -->
-    <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+    <paper-api.version>1.20.6-R0.1-SNAPSHOT</paper-api.version>
     <minedown-adventure.version>1.7.4-SNAPSHOT</minedown-adventure.version>
     <log4j-api.version>3.0.0-beta2</log4j-api.version>
     <log4j-core.version>3.0.0-beta2</log4j-core.version>

@@ -108,7 +108,7 @@ class BStatsMetricsTest {
         when(plugin.getDescription()).thenReturn(description);
 
         when(plugin.getServer()).thenReturn(server);
-        when(server.getBukkitVersion()).thenReturn("1.18.2-R0.1");
+        when(server.getBukkitVersion()).thenReturn("1.20.6-R0.1");
 
         final Metrics metrics = mock(Metrics.class);
         new BStatsMetrics(plugin, metrics, Collections.emptyMap(), mock(Compatibility.class), mock(Instructions.class));
@@ -126,7 +126,7 @@ class BStatsMetricsTest {
         when(plugin.getDescription()).thenReturn(description);
 
         when(plugin.getServer()).thenReturn(server);
-        when(server.getBukkitVersion()).thenReturn("1.18.2-R0.1");
+        when(server.getBukkitVersion()).thenReturn("1.20.6-R0.1");
 
         final Metrics bstatsMetrics = mock(Metrics.class);
         final ArgumentCaptor<CustomChart> chartArgumentCaptor = ArgumentCaptor.forClass(CustomChart.class);
