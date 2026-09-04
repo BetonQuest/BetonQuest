@@ -65,7 +65,8 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `mmobkill <identifier> [mode] [amount] [minLevel] [maxLevel] [neutralDeathRadiusAllPlayers] [deathRadiusAllPlayers] [marked]`  
 __Description__: The player needs to kill the specified amount of MythicMobs.
 
-You can add a `notify` keyword if you want to send a notification to players whenever the objective progresses.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 | Parameter                          | Syntax                                      | Default Value          | Explanation                                                                                                                                             |
 |------------------------------------|---------------------------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
