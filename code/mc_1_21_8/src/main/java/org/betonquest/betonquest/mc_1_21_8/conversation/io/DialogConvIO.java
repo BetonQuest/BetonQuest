@@ -158,6 +158,7 @@ public class DialogConvIO implements ConversationIO {
 
         return DialogBase.builder(title)
                 .canCloseWithEscape(settings.closeButtonEnabled() && settings.closeWithEscape() && !conv.isMovementBlock())
+                .pause(false)
                 .afterAction(DialogBase.DialogAfterAction.NONE)
                 .body(bodies)
                 .build();
