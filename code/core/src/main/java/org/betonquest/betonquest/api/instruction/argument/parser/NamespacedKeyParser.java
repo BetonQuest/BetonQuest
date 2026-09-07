@@ -15,12 +15,23 @@ public class NamespacedKeyParser implements SimpleArgumentParser<NamespacedKey> 
     public NamespacedKeyParser() {
     }
 
-    @Override
-    public NamespacedKey apply(final String string) throws QuestException {
+    /**
+     * Parses the given value to a namespaced key.
+     *
+     * @param string the value to parse
+     * @return the parsed key
+     * @throws QuestException if the value could not be parsed
+     */
+    public static NamespacedKey parse(final String string) throws QuestException {
         final NamespacedKey key = NamespacedKey.fromString(string);
         if (key == null) {
             throw new QuestException("Invalid NamespacedKey '%s'!".formatted(string));
         }
         return key;
+    }
+
+    @Override
+    public NamespacedKey apply(final String string) throws QuestException {
+        return parse(string);
     }
 }
