@@ -76,7 +76,9 @@ public class UnbreakableHandler implements ItemMetaHandler.Standard {
 
         @Override
         public void populate(final ItemMeta meta) {
-            meta.setUnbreakable(existence == Existence.REQUIRED);
+            if (existence == Existence.REQUIRED) {
+                meta.setUnbreakable(true);
+            }
         }
 
         @Override
