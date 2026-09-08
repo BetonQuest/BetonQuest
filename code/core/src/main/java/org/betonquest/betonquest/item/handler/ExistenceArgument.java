@@ -92,7 +92,9 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
             final DecoratableChainRetriever<T> retriever) {
         return retriever
                 .map(value -> Pair.of(Existence.REQUIRED, value))
-                .prefilter(Existence.NONE_KEY, Pair.of(Existence.FORBIDDEN, null));
+                .prefilter(Existence.NONE_KEY, Pair.of(Existence.FORBIDDEN, null))
+                //;
+                .cache();
     }
 
     /**
@@ -163,6 +165,7 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
                 .list().notEmpty()
                 .map(list -> Pair.of(Existence.REQUIRED, list))
                 .prefilter(Existence.NONE_KEY, Pair.of(Existence.FORBIDDEN, List.of()))
+                .cache()
                 .get(key)
                 .map(argument -> (ExistenceArgument<List<T>>) argument::getValue)
                 .orElse(null);

@@ -9,6 +9,7 @@ import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.FlagState;
 import org.betonquest.betonquest.api.instruction.ValueParser;
+import org.betonquest.betonquest.api.instruction.argument.CachingArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.ChainableInstruction;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
@@ -109,7 +110,7 @@ public class DefaultChainableInstruction implements ChainableInstruction {
     @Override
     public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser) throws QuestException {
         return new DefaultArgument<>(placeholders, pack, instructionReaderStrategy.getNext(),
-                value -> argumentParser.apply(placeholders, packManager, pack, value));
+                value -> argumentParser.apply(placeholders, packManager, pack, value), true, argumentParser instanceof CachingArgumentParser);
     }
 
     @Override
@@ -119,17 +120,17 @@ public class DefaultChainableInstruction implements ChainableInstruction {
             return Optional.empty();
         }
         final ValueParser<T> valueParser = value -> argumentParser.apply(placeholders, packManager, pack, value);
-        return Optional.of(new DefaultArgument<>(placeholders, pack, argumentValue, valueParser));
+        return Optional.of(new DefaultArgument<>(placeholders, pack, argumentValue, valueParser, true, argumentParser instanceof CachingArgumentParser));
     }
 
     @Override
-    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
+    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T defaultValue) throws QuestException {
         final String argumentValue = instructionReaderStrategy.getOptional(argumentKey);
         if (argumentValue == null) {
             return new DefaultArgument<>(defaultValue);
         }
-        final ValueParser<T> valueParser = value -> argument.apply(placeholders, packManager, pack, value);
-        return new DefaultArgument<>(placeholders, pack, argumentValue, valueParser);
+        final ValueParser<T> valueParser = value -> argumentParser.apply(placeholders, packManager, pack, value);
+        return new DefaultArgument<>(placeholders, pack, argumentValue, valueParser, true, argumentParser instanceof CachingArgumentParser);
     }
 
     @Override
@@ -149,7 +150,7 @@ public class DefaultChainableInstruction implements ChainableInstruction {
         final Map<String, Argument<T>> result = new HashMap<>();
         for (final Map.Entry<String, String> entry : map.entrySet()) {
             result.put(entry.getKey(), new DefaultArgument<>(placeholders, pack, entry.getValue(),
-                    value -> argumentParser.apply(placeholders, packManager, pack, value)));
+                    value -> argumentParser.apply(placeholders, packManager, pack, value), true, argumentParser instanceof CachingArgumentParser));
         }
         return result;
     }
