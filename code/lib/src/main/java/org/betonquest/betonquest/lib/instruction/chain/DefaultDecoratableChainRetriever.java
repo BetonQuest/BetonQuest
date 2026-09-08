@@ -36,6 +36,11 @@ public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChain
     }
 
     @Override
+    public DecoratableChainRetriever<T> cache() {
+        return new DefaultDecoratableChainRetriever<>(instruction, decoratable().cache());
+    }
+
+    @Override
     public ListChainRetriever<T> list() {
         return new DefaultListChainRetriever<>(instruction, decoratable().list());
     }

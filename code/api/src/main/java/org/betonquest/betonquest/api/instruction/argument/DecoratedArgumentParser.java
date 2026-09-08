@@ -21,6 +21,17 @@ import java.util.stream.Collectors;
 public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T> {
 
     /**
+     * Instead of parsing the input every time for resolving if there are no placeholders, it is then parsed one time.
+     * <p>
+     * Should only be used for immutable objects, since the really same object will be returned each time.
+     *
+     * @return the new parser as {@link CachingArgumentParser}
+     * @since 3.3.0
+     */
+    @Contract(value = "-> new", pure = true)
+    DecoratedArgumentParser<T> cache();
+
+    /**
      * Instead of reading the input as a single value, treat it as a list of inputs and parse them as a list.
      * Default implementation forwards to {@link #collect(Collector)} using {@link Collectors#toList()}.
      *

@@ -4,6 +4,7 @@ import org.betonquest.betonquest.api.common.function.QuestFunction;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.ValueValidator;
+import org.betonquest.betonquest.api.instruction.argument.CachingArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
@@ -23,6 +24,17 @@ import java.util.stream.Collectors;
  * @since 3.0.0
  */
 public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<T> {
+
+    /**
+     * Instead of parsing the input every time for resolving if there are no placeholders, it is then parsed one time.
+     * <p>
+     * Should only be used for immutable objects, since the really same object will be returned each time.
+     *
+     * @return the new parser as {@link CachingArgumentParser}
+     * @since 3.3.0
+     */
+    @Contract(value = "-> new", pure = true)
+    DecoratableChainRetriever<T> cache();
 
     /**
      * Instead of reading a single value, parse the argument as a list of values.
