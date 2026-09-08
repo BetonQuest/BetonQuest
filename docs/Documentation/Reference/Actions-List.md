@@ -622,6 +622,23 @@ actions:
   damageChest: "itemdurability CHEST SUBTRACT %randomnumber.whole.15~30% ignoreUnbreakable ignoreEvents"
 ```
 
+## `itemOverride`
+
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `itemoverride <itemId>`  
+__Description__: Overrides the values defining the item.
+
+Only `simple` items are valid identifiers for this action.
+
+```YAML title="Example"
+actions:
+  setNameToHand: "itemoverride named"
+  updateStatistic: "itemoverride statistic"
+items:
+  named: "simple name:Test"
+  statistic: 'simple "lore:Used %point.uses.amount% times!"'
+```
+
 ## `Journal`
 
 __Context__: @snippet:action-meta:online-offline-independent@  
