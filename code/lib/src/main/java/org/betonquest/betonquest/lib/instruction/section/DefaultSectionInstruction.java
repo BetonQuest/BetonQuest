@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.config.quest.QuestPackage;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.argument.ArgumentParsers;
+import org.betonquest.betonquest.api.instruction.argument.CachingArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.chain.InstructionChainParser;
 import org.betonquest.betonquest.api.instruction.section.SectionInstruction;
@@ -154,7 +155,7 @@ public class DefaultSectionInstruction implements SectionInstruction {
             throw new QuestException("Path '%s' does not exist in section '%s' for package '%s'".formatted(argumentPath, section.getCurrentPath(), questPackage));
         }
         return new DefaultArgument<>(placeholders, questPackage, pathMode ? argumentPath : section.getString(argumentPath),
-                value -> parser.apply(placeholders, packageManager, questPackage, value), earlyValidation);
+                value -> parser.apply(placeholders, packageManager, questPackage, value), earlyValidation, parser instanceof CachingArgumentParser);
     }
 
     @Override
