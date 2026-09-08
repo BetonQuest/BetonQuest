@@ -3,7 +3,6 @@ package org.betonquest.betonquest.item.typehandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.instruction.Instruction;
-import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
@@ -64,7 +63,7 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
         if (patterns == null) {
             return null;
         }
-        return new NonResolved(patterns);
+        return profile -> new Resolved(patterns.getValue(profile));
     }
 
     private Pattern parsePattern(final String data) throws QuestException {
@@ -88,21 +87,6 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     }
 
     /**
-     * The attribute with placeholders.
-     *
-     * @param patterns The ordered banner patterns.
-     */
-    private record NonResolved(ExistenceArgument<List<Pattern>> patterns) implements Attribute {
-
-        @Override
-        public ResolvedAttribute<BannerMeta> resolve(@Nullable final Profile profile) throws QuestException {
-            final Pair<Existence, List<Pattern>> patterns = this.patterns.getValue(profile);
-
-            return new Resolved(patterns);
-        }
-    }
-
-    /**
      * The resolved attribute.
      *
      * @param patterns The ordered banner patterns.
@@ -116,7 +100,10 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
 
         @Override
         public void populate(final BannerMeta bannerMeta) {
-            bannerMeta.setPatterns(patterns.getRight());
+            final List<Pattern> patterns = this.patterns.getRight();
+            if (!patterns.isEmpty()) {
+                bannerMeta.setPatterns(patterns);
+            }
         }
 
         @Override

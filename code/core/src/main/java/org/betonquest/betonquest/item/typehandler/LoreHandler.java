@@ -120,7 +120,10 @@ public class LoreHandler implements LoreMetaHandler {
 
         @Override
         public void populate(final ItemMeta meta) {
-            meta.lore(get());
+            final List<Component> lore = get();
+            if (!lore.isEmpty()) {
+                meta.lore(lore);
+            }
             questResolved.populate(meta);
         }
 
