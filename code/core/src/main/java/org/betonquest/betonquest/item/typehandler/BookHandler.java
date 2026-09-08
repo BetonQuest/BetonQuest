@@ -131,9 +131,18 @@ public class BookHandler implements ItemMetaHandler<BookMeta> {
 
         @Override
         public void populate(final BookMeta bookMeta) {
-            bookMeta.title(title.getRight())
-                    .author(author.getRight())
-                    .addPages(text.getRight().toArray(new Component[0]));
+            final Component title = this.title.getRight();
+            if (title != null) {
+                bookMeta.title(title);
+            }
+            final Component author = this.author.getRight();
+            if (author != null) {
+                bookMeta.author(author);
+            }
+            final List<Component> text = this.text.getRight();
+            if (!text.isEmpty()) {
+                bookMeta.pages(text);
+            }
         }
 
         @Override

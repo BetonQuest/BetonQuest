@@ -95,7 +95,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
                 && extended.getState() == FlagState.ABSENT && upgraded.getState() == FlagState.ABSENT) {
             return null;
         }
-        return new NonResolved(type == null ? ExistenceArgument.whateverValue(PotionType.WATER) : type,
+        return new NonResolved(ExistenceArgument.fallback(type),
                 extended, upgraded, ExistenceArgument.fallbackEmptyList(custom), exact.orElse(profile -> true));
     }
 
@@ -143,8 +143,11 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
 
         @Override
         public void populate(final PotionMeta potionMeta) {
-            potionMeta.setBasePotionData(new PotionData(typePair.getValue(),
-                    extended.orElse(false), upgraded.orElse(false)));
+            final PotionType type = typePair.getRight();
+            if (type != null) {
+                potionMeta.setBasePotionData(new PotionData(type,
+                        extended.orElse(false), upgraded.orElse(false)));
+            }
             for (final PotionEffect effect : getCustom()) {
                 potionMeta.addCustomEffect(effect, true);
             }
