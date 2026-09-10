@@ -18,9 +18,10 @@ public class DefaultNumberChainRetriever extends DefaultDecoratableChainRetrieve
      *
      * @param instruction the instruction used to retrieve the argument
      * @param argument    the argument parser
+     * @param cache       if the argument should be cached if it does not contain placeholders
      */
-    public DefaultNumberChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<Number> argument) {
-        super(instruction, argument);
+    public DefaultNumberChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<Number> argument, final boolean cache) {
+        super(instruction, argument, cache); // TODO non api breaking constructor
     }
 
     private NumberArgumentParser decoratable() {
@@ -29,31 +30,31 @@ public class DefaultNumberChainRetriever extends DefaultDecoratableChainRetrieve
 
     @Override
     public NumberChainRetriever validate(final ValueValidator<Number> validator) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().validate(validator));
+        return new DefaultNumberChainRetriever(instruction, decoratable().validate(validator), cache);
     }
 
     @Override
     public NumberChainRetriever validate(final ValueValidator<Number> validator, final String errorMessage) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().validate(validator, errorMessage));
+        return new DefaultNumberChainRetriever(instruction, decoratable().validate(validator, errorMessage), cache);
     }
 
     @Override
     public NumberChainRetriever prefilter(final String expected, final Number fixedValue) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().prefilter(expected, fixedValue));
+        return new DefaultNumberChainRetriever(instruction, decoratable().prefilter(expected, fixedValue), cache);
     }
 
     @Override
     public NumberChainRetriever atLeast(final Number inclusiveMin) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().atLeast(inclusiveMin));
+        return new DefaultNumberChainRetriever(instruction, decoratable().atLeast(inclusiveMin), cache);
     }
 
     @Override
     public NumberChainRetriever atMost(final Number inclusiveMax) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().atMost(inclusiveMax));
+        return new DefaultNumberChainRetriever(instruction, decoratable().atMost(inclusiveMax), cache);
     }
 
     @Override
     public NumberChainRetriever inRange(final Number inclusiveMin, final Number exclusiveMax) {
-        return new DefaultNumberChainRetriever(instruction, decoratable().inRange(inclusiveMin, exclusiveMax));
+        return new DefaultNumberChainRetriever(instruction, decoratable().inRange(inclusiveMin, exclusiveMax), cache);
     }
 }
