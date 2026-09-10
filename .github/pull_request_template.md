@@ -18,7 +18,7 @@ Closes #XXXX
 Did the contributor...
 - [ ]  ... test their changes?
 - [ ]  ... increment the [Version](https://betonquest.org/DEV/Participate/Misc/Versioning-and-Releasing/#versioning)?
-- [ ]  ... update the [Changelog](https://betonquest.org/DEV/Participate/Process/Maintaining-the-Changelog/)?
+- [ ]  ... update both [Changelogs](https://betonquest.org/DEV/Participate/Process/Maintaining-the-Changelog/)?
 - [ ]  ... update the [Documentation](https://betonquest.org/DEV/Participate/Process/Docs/Workflow/)?
 - [ ]  ... write a migration?
 - [ ]  ... clean the commit history?
