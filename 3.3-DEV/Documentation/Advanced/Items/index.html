@@ -9235,6 +9235,21 @@ colons: (2)</p>
 <li>HIDE_DYE: Hides the dye labels on colored leather armor</li>
 </ul>
 </li>
+<li>
+<p><code>pdc</code> - List of PersistentDataContainer values, which are used to store data in items.<br>
+  The base format is <code>key;type;value</code>.(4) (5)<br>
+  To use nested entries (<code>TAG_CONTAINER</code> type) you need to prefix the <code>key</code> with a "path" of <code>keys</code>, separated by <code>&gt;</code>.(6)<br>
+  Supported value types:</p>
+<ul>
+<li>BYTE</li>
+<li>SHORT</li>
+<li>INTEGER</li>
+<li>LONG</li>
+<li>FLOAT</li>
+<li>DOUBLE</li>
+<li>STRING</li>
+</ul>
+</li>
 </ul>
 </div>
 <ol>
@@ -9243,6 +9258,10 @@ colons: (2)</p>
 <li>You can also add <code>+</code>/<code>-</code> characters to the 
 enchantment level to make the check require levels greater/less (and equal) than specified. If you don't care about 
 the level, replace the number with <code>?</code>.</li>
+<li>Base Example: <code>"pdc:custom_namespace:1;String;Text with spaces."</code>, with <code>custom_namespace:1</code> as key, <code>String</code> as type
+and <code>Text with spaces.</code> as value. To allow spaces we need to quote the argument.</li>
+<li>List Example: <code>"pdc:custom_namespace:1;BYTE;7,custom_namespace:2;Double;3.14"</code></li>
+<li>Nested Example: <code>"pdc:custom_namespace:1&gt;c_n:2&gt;c_n:value;BYTE;7"</code></li>
 </ol>
 <details class="example">
 <summary>Item Creation Examples</summary>
