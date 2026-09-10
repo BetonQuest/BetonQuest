@@ -41,9 +41,9 @@ class IntegrationManagerTest {
 
     private static final Version INVALID_PLUGIN_VERSION = VersionParser.parse(DefaultVersionType.SIMPLE_SEMANTIC_VERSION, "3.0.0");
 
-    private static final String MINECRAFT_VERSION = "1.18.2";
+    private static final String MINECRAFT_VERSION = "1.20.6";
 
-    private static final String INVALID_MINECRAFT_VERSION = "1.20.4";
+    private static final String INVALID_MINECRAFT_VERSION = "1.21.0";
 
     private static ServicesManager servicesManager;
 

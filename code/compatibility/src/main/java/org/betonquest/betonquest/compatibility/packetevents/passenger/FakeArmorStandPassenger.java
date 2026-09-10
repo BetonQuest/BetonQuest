@@ -30,10 +30,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityMountEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BoundingBox;
 import org.jetbrains.annotations.Nullable;
-import org.spigotmc.event.entity.EntityMountEvent;
 
 import java.lang.reflect.Method;
 import java.util.Collection;

@@ -221,7 +221,10 @@ class ComponentLineWrapperTest extends ComponentFixture {
                                 List.of(Component.text("This is only a hopefully long ").color(NamedTextColor.RED).append(Component.text("enough text so it gets wrapped,").color(NamedTextColor.YELLOW)),
                                         Component.empty().color(NamedTextColor.RED)
                                                 .append(Component.text(" some edge cases are tested").color(NamedTextColor.YELLOW))
-                                                .append(Component.text(" later like links translation keys and key bindings."))
+                                                .append(Component.empty()
+                                                        .append(Component.text(" ").color(NamedTextColor.YELLOW))
+                                                        .append(Component.text("later")))
+                                                .append(Component.text(" like links translation keys and key bindings."))
                                 ),
                                 500),
                         Arguments.of("How are you? And if I continue writing, it should now break bold text actually correct at the end of the line!",
@@ -235,7 +238,7 @@ class ComponentLineWrapperTest extends ComponentFixture {
                                         Component.empty().append(Component.text("line").decoration(TextDecoration.BOLD, true)).append(Component.text("!"))
                                 ),
                                 320),
-                        Arguments.of("Hello <rainbow>test</rainbow>!",
+                        Arguments.of("Hello <#f3801f>t</#f3801f><#4bff2c>e</#4bff2c><#0c80e0>s</#0c80e0><#b401d3>t</#b401d3>!",
                                 List.of(Component.text("Hello"),
                                         Component.empty()
                                                 .append(Component.text("t").color(TextColor.fromHexString("#f3801f")))
