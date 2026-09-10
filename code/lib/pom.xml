@@ -24,7 +24,6 @@
 
     <!-- dependency versions -->
     <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
-    <minedown-adventure.version>1.7.4-SNAPSHOT</minedown-adventure.version>
     <log4j-api.version>3.0.0-beta2</log4j-api.version>
     <log4j-core.version>3.0.0-beta2</log4j-core.version>
     <maven-artifact.version>4.0.0-beta-3</maven-artifact.version>
@@ -53,13 +52,6 @@
           <artifactId>junit</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-
-    <!-- from minebench repository -->
-    <dependency>
-      <groupId>de.themoep</groupId>
-      <artifactId>minedown-adventure</artifactId>
-      <version>${minedown-adventure.version}</version>
     </dependency>
 
     <!-- only dependencies from maven central that are no MC Plugins -->
@@ -111,10 +103,6 @@
     <repository>
       <id>betonquest-papermc-repo</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
-    </repository>
-    <repository>
-      <id>betonquest-minebench-repo</id>
-      <url>https://repo.minebench.de/</url>
     </repository>
     <repository>
       <id>maven_central</id>
