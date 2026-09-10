@@ -1,19 +1,28 @@
 ---
 icon: material/cards-variant
 ---
-Before you make a commit, you should keep in mind, that you need to add a changelog entry.
+Before you make a commit, you should keep in mind that you need to add a changelog entry.
+
+There are two different types of changelog that are maintained within the project:
+
+* [User Changelog](../../Documentation/CHANGELOG.md) - contains user-facing changes
+* [Developer Changelog](../../API/CHANGELOG.md) - contains developer-facing api changes
+
+Both are located at the root of the project.
+
+## User Changelog
 
 We have 6 categories in the CHANGELOG.md file for each version.
 These are general rules:
 
 * Write user-friendly entries - they are the ones that read the changelog after all.
 * Do not repeat the heading for individual entries 
-```
+```md hl_lines="3"
 Added:
   * {--added--} new conversation style: Hologram
   * new conversation style: Hologram
 ```
-* Mark actions, objectives etc. names with `` ` `` around them.
+* Mark actions, objectives etc. names with `` ` `` (backticks) around them.
 
 Here is a breakdown of what belongs in each section:
 
@@ -79,6 +88,62 @@ Here is a breakdown of what belongs in each section:
        - the take action is now threadsafe
        - a deadlock in conversations was fixed
      ```
+
+## Developer Changelog
+
+We generally have 4 categories in the API-CHANGELOG.md file for each version further separated into `API` and `Library`.
+The categories `Fixes` and `Security` are considered redundant for most versions and are therefore not included by default.
+These are general rules:
+
+* Write developer-friendly entries - they are the ones that read the changelog after all.
+* Be concise and clearly state the targeted interfaces or classes
+* Do not repeat the heading for individual entries
+```md hl_lines="3"
+Added:
+  * {--added--} `Functions` interface to access functions defined in the user script
+  * `Functions` interface to access functions defined in the user script
+```
+* Mark interface and class names with `` ` `` (backticks) around them.
+
+??? info "Added"
+    Do write what class or method was added and describe it shortly.
+
+    ```MD
+    Added:
+      - `Functions` interface to access functions defined in the user script
+      - `BetonQuestApi::functions` to retrieve the `Functions` instance
+    ```
+
+??? info "Changed"
+    Give qualified information that indicates what the developer may have to be aware of.
+    Try to be as concise as possible. Only include changes that affect developers using the API; 
+    implementation details of the library are not relevant if the behavior is unchanged.
+
+     ```MD
+     Changed:
+       - constructor of `FallbackConfigurationSection` from `public` to `protected`
+       - `Someclass::myMethod` to `Someclass::myMethodName`
+     ```
+
+??? info "Deprecated"
+    List things that have been marked for removal. Also mention possible replacements or reasons for deprecation.
+
+     ```MD
+     Deprecated:
+       - the static `BetonQuest.getInstance()` method is deprecated for api retrieval
+       - `InstructionParts` as old api that is kept for compatibility reasons
+     ```
+
+??? info "Removed"
+    After something has been marked for removal in the category `Deprecated` it will end up here eventually.
+    Repeat possible replacements, clearly state the classes or methods that have been removed.
+
+     ```MD
+     Removed:
+       - `Someclass::myMethod` has been removed as by deprecation since version 1.2.3
+       - `OldApi` has been removed as it is no longer used; use `NewApi` instead
+     ```
+
 
 ---
 ## Next Steps
