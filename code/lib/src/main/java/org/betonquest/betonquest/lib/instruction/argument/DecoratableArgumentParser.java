@@ -45,11 +45,6 @@ public class DecoratableArgumentParser<T> implements DecoratedArgumentParser<T> 
     }
 
     @Override
-    public DecoratedArgumentParser<T> cache() {
-        return new DefaultCachingArgumentParser<>(argumentParser);
-    }
-
-    @Override
     public ListArgumentParser<T> list() {
         return new DefaultListArgumentParser<>(collect(Collectors.toCollection(ArrayList::new)));
     }
