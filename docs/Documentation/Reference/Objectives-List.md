@@ -62,7 +62,7 @@ __Description__: The player has to break or place the specified amount of blocks
 | _Block Type_     | [Block Selector](Definition-Encyclopedia.md#block-selectors) | :octicons-x-circle-16:                         | The block which must be broken / placed.                                                                                                                                                                                                                                  |
 | _Amount_         | Number                                                       | :octicons-x-circle-16:                         | The amount of blocks to break / place. Less than 0 for breaking and more than 0 for placing blocks.                                                                                                                                                                       |
 | _Safety Check_   | Keyword (`noSafety`)                                         | Safety Check Enabled                           | The Safety Check prevents faking the objective. The progress will be reduced when the player does to opposite of what they are supposed to do. Example: Player must break 10 blocks. They place 10 of their stored blocks. Now the total amount of blocks to break is 20. |
-| _Notifications_  | Keyword (`notify`)                                           | Disabled                                       | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.                                                                                                                                             |
+| _Notifications_  | Keyword (`notify`)                                           | Disabled                                       | Displays messages to the player each time they progress the objective. Optionally with the notification interval after a colon.                                                                                                                                           |
 | _Location_       | loc:location                                                 | Optional. Default: none                        | Adds an optional location to the objective, only counting blocks broken/placed at the specific location.                                                                                                                                                                  |
 | _Region definer_ | region:location                                              | Optional. Default: none                        | Adds an optional second location to only count blocks broken/placed in a rectangle between the specified location and this location. This won't have an effect if parameter location isn't set.                                                                           |
 | _ignorecancel_   | Keyword (`ignorecancel`)                                     | Protected blocks will not affect the objective | Allows the objective to progress, even if the action is cancelled by the Server. For example if the player is not allowed to build.                                                                                                                                       |
@@ -101,9 +101,9 @@ __Description__: The player has to breed animals of the specified type.
 
 The first argument is the [animal type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html) 
 and the second argument is the amount (positive integer).
-You can add the `notify` argument to display a message with the remaining amount each time
-the animal is bred, optionally with the notification interval after a colon. While you can specify any entity, the
-objective will be completable only for breedable ones.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
+While you can specify any entity, the objective will be completable only for breedable ones.
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of animals already breed,
 `left` is the amount of animals still needed to breed and `total` is the amount of animals initially required.
@@ -120,8 +120,8 @@ __Syntax__: `brew <item> [amount]`
 __Description__: The player has to brew the specified items.
 
 The first argument is a potion ID from the _items_ section. Second argument is amount of potions.
-You can optionally add `notify` argument to make the objective display progress to players,
-optionally with the notification interval after a colon.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 Progress will be counted for the player who last added or changed an item before the brew process completed. Only newly
 created potions are counted.
@@ -198,7 +198,7 @@ __Description__: The player has to consume the specified item.
 |-----------|---------------------------------------|------------------------|-------------------------------------------|
 | _Item_    | [Quest Item](../Advanced/Items.md) | :octicons-x-circle-16: | The item or potion that must be consumed. |
 | _Amount_  | amount:number                         | 1                      | The amount of items to consume.           |
-
+| _Notifications_ | Keyword (`notify`)                | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after a colon. |
 
 ```YAML title="Example"
 objectives:
@@ -222,8 +222,9 @@ __Syntax__: `craft <item> [amount]`
 __Description__: The player has to craft the specified item.
 
 First argument is ID of the item, as in the _items_ section.
-Next is amount (integer). You can use the `notify` keyword to display a message each time the player advances the
-objective, optionally with the notification interval after a colon.
+Next is amount (integer).
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already crafted,
 `left` is the amount of items still needed to craft and `total` is the amount of items initially required.
@@ -350,6 +351,7 @@ __Description__: The player has to enchant the specified item with the specified
 | _enchants_        | enchantment:level                     | :octicons-x-circle-16: | The enchants that must be added to the item. [Enchantment names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html) are different from the vanilla ones. If a level is present, the enchanted level must be equal or bigger then the specified one. Multiple enchants are supported: `ARROW_DAMAGE:1,ARROW_FIRE:1` |
 | _requirementMode_ | requirementMode:mode                  | `all`                  | Use `one` if any enchantment from `enchants` should complete the objective. Use `all` if all are required at the same time.                                                                                                                                                                                                                        |
 | _amount_          | amount:number                         | 1                      | The amount of items to enchant.                                                                                                                                                                                                                                                                                                                    |
+| _Notifications_   | Keyword (`notify`)                    | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after a colon.                                                                                                                                                                                                                    |
 
 ```YAML title="Example"
 objectives:
@@ -393,8 +395,8 @@ The objective is checked every time the player gets experience naturally, such a
 Additionally, it is checked if the player reaches a new level in any way (vanilla level up, commands or other plugins).
 The objective will also imminently complete if the player already has the experience level or more.
 And it will also be completed if the player joins the game with the specified amount of experience levels or more.
-You can use the `notify` keyword to display a message each time the player advances the objective,
-optionally with the notification interval after a colon.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the current amount of experience levels,
 `left` is the amount of experience levels still needed and `total` is the amount of experience required.
@@ -416,7 +418,7 @@ It doesn't have to be a fish, it can also be any other item.
 |-----------------|-----------------------------------------------------------------------------|------------------------|------------------------------------------------------------------------------------------------------------------------|
 | _Item_          | [Quest Item](../Advanced/Items.md)                                          | :octicons-x-circle-16: | The item that must be caught.                                                                                          |
 | _amount_        | Any Number                                                                  | :octicons-x-circle-16: | The amount that must be caught.                                                                                        |
-| _notifications_ | notify:number                                                               | notify:0               | Add `notify` to display a notification when a fish is caught. Optionally with the notification interval after a colon. |
+| _Notifications_ | Keyword (`notify`)                                                          | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after a colon. |
 | _hookLocation_  | hookLocation:[Location](Definition-Encyclopedia.md#unified-location-format) | Everywhere             | The location at which the item must be caught. Range must also be defined.                                             |
 | _range_         | range:number                                                                | Everywhere             | The range around the `hookLocation`.                                                                                   |
 
@@ -454,7 +456,7 @@ __Description__: The player has to interact with the specified entities.
 | _realname_      | realname:text                                                                                          | Disabled               | To check for the real name (e.g. if you renamed players to include their rank).                                                     |
 | _marked_        | marked:text                                                                                            | Disabled               | If the clicked entity needs to be marked by the [spawn action](Actions-List.md#spawn) (see its description for marking explanation) |
 | _hand_          | hand:(`hand`,`off_hand`, `any`)                                                                        | `hand`                 | The hand the player must use to click the block, `any` can the objective cause to be completed multiple times                       |
-| _Notifications_ | Keyword (_notify_)                                                                                     | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after colon.       |
+| _Notifications_ | Keyword (`notify`)                                                                                     | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after a colon.     |
 | _Cancel_        | Keyword (_cancel_)                                                                                     | Disabled               | if the click shouldn't do what it usually does (i.e. left click won't hurt the entity).                                             |
 | _Location_      | loc:[Location](Definition-Encyclopedia.md#unified-location-format)                                     | Everywhere             | The location at which the entity must be interacted.                                                                                |
 | _range_         | range:number                                                                                           | 1                      | The range around the `loc`. Requires defined `loc`.                                                                                 |
@@ -479,8 +481,9 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `jump <amount>`  
 __Description__: The player has to jump.
 
-The only argument is amount. You can use the `notify` keyword to display a
-message each time the player advances the objective, optionally with the notification interval after a colon.
+The only argument is amount.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of jumps already done,
 `left` is the amount of jumps still needed and `total` is the amount of jumps initially required.
@@ -499,7 +502,8 @@ __Description__: The player has to kill another player.
 The first argument is amount of players to kill.
 You can also specify additional arguments: `name:` followed by the name will only accept killing players with this name,
 `required:` followed by a list of conditions separated with commas will only accept killing players meeting these conditions
-and `notify` will display notifications when a player is killed, optionally with the notification interval after a colon.
+and `notify` displays a message each time the player progresses the objective,
+optionally with the notification interval after a colon (`notify:5`).
 
 The kill objective has three properties: `left` is the amount of players still left to kill, `amount` is the amount of
 already killed players and `total` is the initially required amount to kill.
@@ -577,7 +581,7 @@ All entities work, make sure to use their [correct types](https://hub.spigotmc.o
 | _amount_  | Positive Number         | :octicons-x-circle-16: | Amount of mobs to kill in total.                                                                                  |
 | _name_    | name:text               | Disabled               | Only count named mobs.                                                                                            |
 | _marked_  | marked:keyword          | Disabled               | Only count marked mobs. See the [spawn action](Actions-List.md#spawn) for more information.                       |
-| _notify_  | notify:interval         | Disabled               | Display a message to the player each time they kill a mob. Optionally with the notification interval after colon. |
+| _Notifications_ | Keyword (`notify`) | Disabled               | Displays messages to the player each time they progress the objective. Optionally with the notification interval after a colon. |
 
 ```YAML title="Example"
 objectives:
@@ -689,10 +693,9 @@ __Description__: The player has to pick up the specified items.
  
 The first argument must be the internal name of an item defined in the `items` section. This can also be a comma-separated list of multiple items.
 You can optionally add the `amount:` argument to specify how many of these items the player needs to pickup. 
-This amount is a total amount though, it does not count per each individual item. You can use the `notify` keyword to
-display a message each time the player advances the objective, optionally with the notification interval after a colon.
-
-You can also add the `notify` keyword to display how many items are left to pickup.
+This amount is a total amount though, it does not count per each individual item.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already picked up,
 `left` is the amount of items still needed to pick up and `total` is the amount of items initially required.
@@ -770,8 +773,8 @@ __Description__: The player has to shear the specified amount of sheep.
 The first, required argument is amount (integer). Optionally, you can add a `name:` argument to only count specific sheep.
 If you want to use spaces use [quoting](../Basics/Quoting-&-YAML.md#quoting) syntax.
 You can also check for the sheep's `color:` using these [color names](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html).
-You can use the `notify` keyword to display a message each time the player advances the objective,
-optionally with the notification interval after a colon.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of sheep already sheared,
 `left` is the amount of sheep still needed to shear and `total` is the amount of sheep initially required.
@@ -792,8 +795,8 @@ __Description__: The player has to gain the specified item by smelting.
 Note that you must define the output item, not the ingredient. The first argument is the name of a [Quest Item](../Advanced/Items.md).
 The second one is the amount (integer).
 
-You can use the `notify` keyword to display a message each time the player advances the objective,
-optionally with the notification interval after a colon.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of items already smelted,
 `left` is the amount of items still needed to smelt and `total` is the amount of items initially required.
@@ -883,9 +886,9 @@ __Syntax__: `tame <entity> <amount>`
 __Description__: The player has to tame the specified animals.
 
 First argument is type, second is amount. The mob must be tamable for the objective to be valid, e.g.: `CAT`, 
-`DONKEY`, `HORSE`, `LLAMA`, `PARROT` or `WOLF`. You
-can use the `notify` keyword to display a message each time the player advances the objective, optionally with the
-notification interval after a colon.
+`DONKEY`, `HORSE`, `LLAMA`, `PARROT` or `WOLF`.
+You can add the `notify` keyword to display a message each time the player progresses the
+objective. Optionally add the notification interval after a colon (`notify:5`).
 
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of animals already tamed,
 `left` is the amount of animals still needed to tame and `total` is the amount of animals initially required.
@@ -935,6 +938,7 @@ If you don't define the amount, the objective will run indefinitely until you co
 | _interval_ | interval:number | interval:20   | How often the objective checks the conditions and adds time, in seconds.            |
 | _amount_   | amount:number   | Disabled      | The amount of time in seconds to track before the objective is completed.           |
 | _done_     | done:actions    | Disabled      | Actions that will be executed when the objective is done, but before it is removed. |
+| _Notifications_ | Keyword (`notify`) | Disabled  | Displays messages to the player each time they progress the objective. Optionally with the notification interval after a colon. |
 
 If you want to access the time tracked by this objective in seconds, you can use the `amount`, `left` and `total` properties. 
 They are only available while the objective is active, this is still the case in the `done` actions, but not in the 
