@@ -7,8 +7,8 @@ The advantage of using IntelliJ is that this guide contains some steps and the p
 that help to fulfill our requirements regarding code and documentation style.
 You can still use your preferred IDE, but then you need to check on your own that your changes fulfill our requirements.
 
-##Installing IntelliJ 
-First download [IntelliJ](https://www.jetbrains.com/idea/download) and install it.
+## Installing IntelliJ 
+First, download [IntelliJ](https://www.jetbrains.com/idea/download) and install it.
 
 ## Check out the repository
 You need a Git installation to be able to check out code from GitHub.
