@@ -22,10 +22,22 @@ public class DefaultListChainRetriever<T> extends DefaultDecoratableChainRetriev
      *
      * @param instruction the instruction used to retrieve the argument
      * @param argument    the argument parser
+     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultListChainRetriever(ChainableInstruction, InstructionArgumentParser, boolean)}
+     */
+    @Deprecated(forRemoval = true, since = "3.3.0")
+    public DefaultListChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<List<T>> argument) {
+        this(instruction, argument, false);
+    }
+
+    /**
+     * Creates a new instruction chain retriever.
+     *
+     * @param instruction the instruction used to retrieve the argument
+     * @param argument    the argument parser
      * @param cache       if the argument should be cached if it does not contain placeholders
      */
     public DefaultListChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<List<T>> argument, final boolean cache) {
-        super(instruction, argument, cache); // TODO non api breaking constructor
+        super(instruction, argument, cache);
     }
 
     private DefaultListArgumentParser<T> decoratable() {

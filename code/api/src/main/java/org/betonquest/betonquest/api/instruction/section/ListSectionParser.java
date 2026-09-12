@@ -50,6 +50,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the element list into a list of values of type T using the given parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
      * @param parser the parser to use
      * @param <T>    the type of the argument
@@ -72,6 +75,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the subsection into a value of type T.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
      * @param parser the parser to use
      * @param <T>    the type of the parsed value
@@ -82,6 +88,9 @@ public interface ListSectionParser {
 
     /**
      * Use the given parser to parse a number of named subsections into a list of values of T.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
      * @param sectionParser the parser to use for each of the subsections
      * @param <T>           the type of the parsed values
@@ -92,6 +101,9 @@ public interface ListSectionParser {
 
     /**
      * Use the given parser to parse a number of named key-value sections into a list of values of T.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
      * @param sectionParser the parser to use for each of the sections
      * @param <T>           the type of the parsed values
@@ -114,15 +126,20 @@ public interface ListSectionParser {
 
     /**
      * Use the given parser to parse a number of named key-value sections into a list of strings.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
-     * @param <T> the type of the parsed values
      * @return a new {@link ListSectionRetriever} for the parsed values
      * @since 3.0.0
      */
-    <T> ListSectionRetriever<Map.Entry<String, String>> namedStrings();
+    ListSectionRetriever<Map.Entry<String, String>> namedStrings();
 
     /**
      * Parses the element list into a list of strings.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link ListSectionRetriever} for strings
      * @since 3.0.0
@@ -131,6 +148,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the element list into a list of numbers.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link ListSectionRetriever} for numbers
      * @since 3.0.0
@@ -139,6 +159,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the element list into a list of items.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link ListSectionRetriever} for items
      * @since 3.0.0
@@ -147,6 +170,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the element list into a list of vectors.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
      * @return a new {@link ListSectionRetriever} for vectors
      * @since 3.0.0
@@ -155,6 +181,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the element list into a list of locations.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
      * @return a new {@link ListSectionRetriever} for locations
      * @since 3.0.0
@@ -162,7 +191,22 @@ public interface ListSectionParser {
     ListSectionRetriever<Location> location();
 
     /**
+     * Parses the element list into a list of worlds.
+     * <p>
+     * <b>World objects should never be stored persistent to prevent memory leaks when they are unloaded!</b>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
+     *
+     * @return a new {@link ListSectionRetriever} for worlds
+     * @since 3.0.0
+     */
+    ListSectionRetriever<World> world();
+
+    /**
      * Parses the element list into a list of namespaced keys.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link ListSectionRetriever} for namespaced keys
      * @since 3.0.0
@@ -171,6 +215,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the element list into a list of components.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link ListSectionRetriever} for components
      * @since 3.0.0
@@ -178,15 +225,10 @@ public interface ListSectionParser {
     ListSectionRetriever<Component> component();
 
     /**
-     * Parses the element list into a list of worlds.
-     *
-     * @return a new {@link ListSectionRetriever} for worlds
-     * @since 3.0.0
-     */
-    ListSectionRetriever<World> world();
-
-    /**
      * Parses the element list into a list of block selectors.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link ListSectionRetriever} for block selectors
      * @since 3.0.0
@@ -195,6 +237,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the element list into a list of package identifiers.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link ListSectionRetriever} for package identifiers
      * @since 3.0.0
@@ -203,6 +248,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the element list into a list of UUIDs.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link ListSectionRetriever} for UUIDs
      * @since 3.0.0
@@ -211,6 +259,9 @@ public interface ListSectionParser {
 
     /**
      * Parses the element list into a list of enumerations.
+     * <p>
+     * <p>
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @param enumClass the type of the enum
      * @param <E>       the enum type
