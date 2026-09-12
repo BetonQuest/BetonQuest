@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -145,7 +146,7 @@ public class DefaultArgument<T> implements Argument<T> {
      *
      * @param <T> the type of the argument
      */
-    private static class CachingArgument<T> implements Argument<T> {
+    private static final class CachingArgument<T> implements Argument<T> {
 
         /**
          * Value parser to convert the resolved argument to the given type.
@@ -173,8 +174,7 @@ public class DefaultArgument<T> implements Argument<T> {
         @Override
         public T getValue(@Nullable final Profile profile) throws QuestException {
             if (value == null) {
-                assert valueParser != null;
-                value = valueParser.apply(resolved);
+                value = Objects.requireNonNull(valueParser).apply(resolved);
                 valueParser = null;
                 resolved = null;
             }
