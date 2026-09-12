@@ -35,7 +35,8 @@ public interface SectionChainInstruction {
      * @return the parsed value
      * @throws QuestException if the value cannot be parsed
      * @since 3.0.0
-     * @deprecated for removal in {@code 4.0.0}, use {@link #get(ValueSource, InstructionArgumentParser, boolean, boolean, boolean)}
+     * @deprecated for removal in {@code 4.0.0},
+     * use {@link #get(ValueSource, InstructionArgumentParser, boolean, boolean, boolean)}
      */
     @Deprecated(forRemoval = true, since = "3.3.0")
     default <T> Argument<T> get(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser, final boolean pathMode, final boolean earlyValidation) throws QuestException {
@@ -68,7 +69,8 @@ public interface SectionChainInstruction {
      * @return the parsed value wrapped in an optional
      * @throws QuestException if the value cannot be parsed
      * @since 3.0.0
-     * @deprecated for removal in {@code 4.0.0}, use {@link #getOptional(ValueSource, InstructionArgumentParser, boolean, boolean, boolean)}
+     * @deprecated for removal in {@code 4.0.0},
+     * use {@link #getOptional(ValueSource, InstructionArgumentParser, boolean, boolean, boolean)}
      */
     @Deprecated(forRemoval = true, since = "3.3.0")
     default <T> Optional<Argument<T>> getOptional(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser, final boolean pathMode, final boolean earlyValidation) throws QuestException {
@@ -102,7 +104,8 @@ public interface SectionChainInstruction {
      * @return the parsed value
      * @throws QuestException if the value cannot be parsed
      * @since 3.0.0
-     * @deprecated for removal in {@code 4.0.0}, use {@link #getOptional(ValueSource, InstructionArgumentParser, boolean, boolean, Object, boolean)}
+     * @deprecated for removal in {@code 4.0.0},
+     * use {@link #getOptional(ValueSource, InstructionArgumentParser, boolean, boolean, Object, boolean)}
      */
     @Deprecated(forRemoval = true, since = "3.3.0")
     default <T> Argument<T> getOptional(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser, final boolean pathMode, final boolean earlyValidation, final T defaultValue) throws QuestException {
