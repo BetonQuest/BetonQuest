@@ -139,7 +139,7 @@ public class DefaultChainableInstruction implements ChainableInstruction {
             case ABSENT -> new DefaultFlagArgument<>();
             case UNDEFINED -> new DefaultFlagArgument<>(presenceDefault, FlagState.UNDEFINED);
             case DEFINED -> new DefaultFlagArgument<>(placeholders, pack, flag.getValue(),
-                    value -> Optional.of(argumentParser.apply(placeholders, packManager, pack, value)));
+                    value -> Optional.of(argumentParser.apply(placeholders, packManager, pack, value)), true);
         };
     }
 
