@@ -50,7 +50,7 @@ public class CitizensMoveActionFactory implements PlayerActionFactory {
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<NpcIdentifier> npcId = instruction.parse(citizensArgument).get();
+        final Argument<NpcIdentifier> npcId = instruction.parse(citizensArgument).cache(true).get();
         final Argument<List<Location>> locations = instruction.location().list().invalidate(List::isEmpty).get();
         final Argument<Number> waitTicks = instruction.number().get("wait", 0);
         final Argument<List<ActionIdentifier>> doneActions = instruction.identifier(ActionIdentifier.class).list().get("done", Collections.emptyList());

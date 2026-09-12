@@ -58,7 +58,7 @@ public class SpawnMobActionFactory implements PlayerActionFactory, PlayerlessAct
      */
     public NullableActionAdapter createSpawnMobAction(final Instruction instruction) throws QuestException {
         final Argument<Location> loc = instruction.location().get();
-        final Argument<EntityType> type = instruction.parse(entityTypeParser).get();
+        final Argument<EntityType> type = instruction.parse(entityTypeParser).cache(true).get();
         final Argument<Number> amount = instruction.number().get();
         final Argument<Component> name = instruction.component().get("name").orElse(null);
         final Argument<String> marked = instruction.packageIdentifier().get("marked").orElse(null);

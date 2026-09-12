@@ -28,8 +28,8 @@ public class PermissionActionFactory implements PlayerActionFactory {
 
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<Boolean> add = instruction.parse("add"::equalsIgnoreCase).get();
-        final Argument<Boolean> perm = instruction.parse("perm"::equalsIgnoreCase).get();
+        final Argument<Boolean> add = instruction.parse("add"::equalsIgnoreCase).cache(true).get();
+        final Argument<Boolean> perm = instruction.parse("perm"::equalsIgnoreCase).cache(true).get();
         final Argument<String> permission = instruction.string().get();
         final Argument<String> world;
         if (instruction.size() >= 5 && !instruction.nextElement().startsWith("conditions:")) {

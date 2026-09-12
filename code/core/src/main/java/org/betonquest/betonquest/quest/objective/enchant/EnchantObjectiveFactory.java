@@ -32,7 +32,7 @@ public class EnchantObjectiveFactory implements ObjectiveFactory {
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
         final Argument<ItemWrapper> item = instruction.item().get();
         final Argument<List<EnchantObjective.EnchantmentData>> desiredEnchantments =
-                instruction.parse(EnchantObjective.EnchantmentData::convert).list().notEmpty().get();
+                instruction.parse(EnchantObjective.EnchantmentData::convert).list().notEmpty().cache(true).get();
         final boolean requireOne = instruction.parse(JUST_ONE_ENCHANT::equalsIgnoreCase)
                 .get("requirementMode", false).getValue(null);
         final EnchantObjective objective = new EnchantObjective(service, targetAmount, item, desiredEnchantments, requireOne);

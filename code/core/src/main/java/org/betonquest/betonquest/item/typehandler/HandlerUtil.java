@@ -125,6 +125,7 @@ public final class HandlerUtil {
     public static Argument<Existence> getIsKeyOrTrue(final String key, final Instruction instruction) throws QuestException {
         final FlagArgument<Existence> argument = instruction
                 .parse(resolved -> new BooleanParser().apply(resolved) ? Existence.REQUIRED : Existence.FORBIDDEN)
+                .cache(true)
                 .getFlag(key, Existence.REQUIRED);
         if (argument.getState() == FlagState.ABSENT) {
             return null;
