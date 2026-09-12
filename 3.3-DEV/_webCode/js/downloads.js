@@ -9,18 +9,111 @@ document$.subscribe(async () => {
   const parts = repoUrl.split("/");
   const baseUrl = parts.slice(0, -2).join("/") + "/";
 
-  window.onload = async function () {
+  let hideTimeout = null;
+  let fadeTimeout = null;
+  let isDownloading = false;
+
+  function setDownloadsDisabled(disabled, activeElement) {
+    const buttons = document.querySelectorAll(
+      ".download-latest-release-build, .download-latest-development-build, #download-all-release-build a, #download-all-development-build a"
+    );
+    buttons.forEach((button) => {
+      if (disabled) {
+        button.style.pointerEvents = "none";
+        button.style.opacity = button === activeElement ? "1" : "0.5";
+      } else {
+        button.style.pointerEvents = "auto";
+        button.style.opacity = "1";
+      }
+    });
+  }
+
+  function showDownloadProgress(filename) {
+    if (hideTimeout) clearTimeout(hideTimeout);
+    if (fadeTimeout) clearTimeout(fadeTimeout);
+
+    const banner = document.getElementById("download-admonition");
+    const title = document.getElementById("download-title");
+    const progressBar = document.getElementById("download-progress-bar");
+    const statusText = document.getElementById("download-status");
+
+    if (!banner) return null;
+
+    banner.className = "admonition info";
+    banner.style.display = "block";
+    banner.style.opacity = "1";
+    if (title) title.textContent = `Downloading: ${filename}`;
+    if (progressBar) {
+      progressBar.style.width = "0%";
+      progressBar.style.background = "var(--md-primary-fg-color, #4051b5)";
+    }
+    if (statusText) statusText.textContent = "Starting download...";
+
+    return {
+      onProgress: ({loaded, total, percent, loadedMb, totalMb}) => {
+        if (progressBar) {
+          progressBar.style.width = total ? `${percent}%` : "100%";
+        }
+        if (statusText) {
+          statusText.textContent = total ? `${percent}% (${loadedMb} MB / ${totalMb} MB)` : `${loadedMb} MB downloaded`;
+        }
+      },
+      onSuccess: () => {
+        if (title) title.textContent = `Download complete: ${filename}`;
+        if (progressBar) {
+          progressBar.style.width = "100%";
+          progressBar.style.background = "#4caf50";
+        }
+        if (statusText) statusText.textContent = "File has been saved.";
+        fadeTimeout = setTimeout(() => {
+          banner.style.opacity = "0";
+          hideTimeout = setTimeout(() => {
+            banner.style.display = "none";
+          }, 500);
+        }, 4000);
+      },
+      onError: (error) => {
+        if (title) title.textContent = `Download failed: ${filename}`;
+        if (progressBar) {
+          progressBar.style.background = "#f44336";
+        }
+        if (statusText) statusText.textContent = error.message || "An error occurred during download.";
+      }
+    };
+  }
+
+  async function triggerDownload(url, filename, statusElement) {
+    if (isDownloading) return;
+    isDownloading = true;
+    setDownloadsDisabled(true, statusElement);
+    const progressUi = showDownloadProgress(filename);
+    try {
+      await downloadWithRename(url, filename, statusElement, progressUi ? progressUi.onProgress : null);
+      if (progressUi) progressUi.onSuccess();
+    } catch (error) {
+      if (progressUi) progressUi.onError(error);
+    } finally {
+      isDownloading = false;
+      setDownloadsDisabled(false);
+    }
+  }
+
+  handleUrlDownload();
+  showBuilds();
+
+  async function handleUrlDownload() {
     let urlParams = new URLSearchParams(window.location.search);
     const path = urlParams.get("path");
-    if (path) {
-      const url = repoUrl + path;
-      const filename = urlParams.get("filename");
-      await downloadWithRename(url, filename);
-      window.location.href = window.location.href.split("?")[0];
-    }
-  };
+    if (!path) return;
 
-  await showBuilds();
+    // Clean URL query parameters immediately without page reload
+    window.history.replaceState({}, document.title, window.location.pathname);
+
+    const url = repoUrl + path;
+    const filename = urlParams.get("filename") || path.split("/").pop();
+
+    await triggerDownload(url, filename, null);
+  }
 
   async function showBuilds() {
     getBuilds("?snapshots=false").then(builds =>
@@ -35,8 +128,10 @@ document$.subscribe(async () => {
       const version = builds[0].version;
       latestBuild.textContent = version;
       const downloadUrl = builds[0].downloadUrl;
-      latestBuild.onclick = function () {
-        downloadWithRename(downloadUrl, "BetonQuest-" + version + ".jar");
+      latestBuild.onclick = function (event) {
+        if (event) event.preventDefault();
+        triggerDownload(downloadUrl, "BetonQuest-" + version + ".jar", latestBuild);
+        return false;
       };
       resetDisabled(latestBuild);
     } else {
@@ -50,39 +145,52 @@ document$.subscribe(async () => {
   }
 
   async function loadAllBuilds(builds, buildList) {
+    if (!buildList) return;
+    buildList.innerHTML = "";
     if (builds.length > 0) {
-      const ul = document.createElement("ul");
-      buildList.appendChild(ul);
+      const buildListContainer = document.createElement("ul");
+      buildList.appendChild(buildListContainer);
       for (const build of builds) {
-        const li = document.createElement("li");
-        li.style.cssText = "padding: 0";
-        const a = document.createElement("a");
+        const listItem = document.createElement("li");
+        listItem.style.cssText = "padding: 0";
+        const downloadLink = document.createElement("a");
         const version = build.version;
-        a.textContent = version;
-        a.href = "#";
-        a.onclick = function () {
-          downloadWithRename(build.downloadUrl, "BetonQuest-" + version + ".jar");
+        downloadLink.textContent = version;
+        downloadLink.href = "#";
+        downloadLink.onclick = function (event) {
+          if (event) event.preventDefault();
+          triggerDownload(build.downloadUrl, "BetonQuest-" + version + ".jar", downloadLink);
+          return false;
         };
-        a.style.cssText = "width: 100%; text-align: center;";
-        a.classList.add("md-button");
-        a.classList.add("md-button--secondary");
-        li.appendChild(a);
-        ul.appendChild(li);
+        downloadLink.style.cssText = "width: 100%; text-align: center;";
+        downloadLink.classList.add("md-button");
+        downloadLink.classList.add("md-button--secondary");
+        if (isDownloading) {
+          downloadLink.style.pointerEvents = "none";
+          downloadLink.style.opacity = "0.5";
+        }
+        listItem.appendChild(downloadLink);
+        buildListContainer.appendChild(listItem);
       }
     }
   }
 
   function resetDisabled(element) {
-    element.style.pointerEvents = "auto";
-    element.style.opacity = "1";
+    if (isDownloading && element.tagName !== "DETAILS") {
+      element.style.pointerEvents = "none";
+      element.style.opacity = "0.5";
+    } else {
+      element.style.pointerEvents = "auto";
+      element.style.opacity = "1";
+    }
   }
 
   async function getBuilds(filter, firstGroupOnly = false) {
     const builds = [];
     try {
-      let data = await fetch(baseUrl + `api/pommapper/id/BetonQuest` + filter)
+      let buildData = await fetch(baseUrl + `api/pommapper/id/BetonQuest` + filter)
         .then(response => response.json());
-      for (const group of data) {
+      for (const group of buildData) {
         for (const versionEntry of group["versions"]) {
           let pluginVersion = versionEntry["entries"]["pluginVersion"];
           let betonquestVersion = versionEntry["entries"]["betonquestVersion"];
@@ -99,17 +207,68 @@ document$.subscribe(async () => {
     return builds;
   }
 
-  function downloadWithRename(url, filename) {
-    return fetch(url).then(async response => {
-      if (response.ok) {
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(await response.blob());
-        link.download = filename ? filename : url.split("/").pop();
-        link.click();
-      } else {
-        console.error("Error while downloading file: " + response.status + " " + response.statusText + "");
+  async function downloadWithRename(url, filename, statusElement, onProgress) {
+    const originalText = statusElement ? statusElement.textContent : "";
+    if (statusElement) {
+      statusElement.style.pointerEvents = "none";
+      statusElement.textContent = "Downloading...";
+    }
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+
+      const contentLength = response.headers.get("Content-Length");
+      const total = contentLength ? parseInt(contentLength, 10) : 0;
+      let loaded = 0;
+
+      const reader = response.body.getReader();
+      const chunks = [];
+
+      while (true) {
+        const {done, value: chunk} = await reader.read();
+        if (done) break;
+        chunks.push(chunk);
+        loaded += chunk.length;
+
+        const percent = total ? Math.round((loaded / total) * 100) : 0;
+        const loadedMb = (loaded / (1024 * 1024)).toFixed(1);
+        const totalMb = total ? (total / (1024 * 1024)).toFixed(1) : null;
+
+        if (statusElement) {
+          if (total) {
+            statusElement.textContent = `Downloading... ${percent}%`;
+          } else {
+            statusElement.textContent = `Downloading... ${loadedMb} MB`;
+          }
+        }
+        if (onProgress) {
+          onProgress({loaded, total, percent, loadedMb, totalMb});
+        }
       }
-    });
+
+      const blob = new Blob(chunks);
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.href = URL.createObjectURL(blob);
+      downloadAnchor.download = filename || url.split("/").pop();
+      downloadAnchor.click();
+      URL.revokeObjectURL(downloadAnchor.href);
+      if (statusElement) {
+        statusElement.textContent = "Download complete!";
+      }
+    } catch (error) {
+      console.error("Download failed:", error);
+      if (statusElement) {
+        statusElement.textContent = "Download failed";
+      }
+      throw error;
+    } finally {
+      if (statusElement && (statusElement.tagName === "A" || statusElement.tagName === "BUTTON")) {
+        setTimeout(() => {
+          statusElement.textContent = originalText;
+          resetDisabled(statusElement);
+        }, 1500);
+      }
+    }
   }
 
 });
