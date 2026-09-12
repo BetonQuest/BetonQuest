@@ -38,7 +38,9 @@ public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<
      * @since 3.3.0
      */
     @Contract(value = "_ -> new", pure = true)
-    DecoratableChainRetriever<T> cache(boolean cache);
+    default DecoratableChainRetriever<T> cache(final boolean cache) {
+        return this;
+    }
 
     /**
      * Instead of reading a single value, parse the argument as a list of values.

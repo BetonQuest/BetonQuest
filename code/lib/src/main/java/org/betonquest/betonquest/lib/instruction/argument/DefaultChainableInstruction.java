@@ -107,9 +107,19 @@ public class DefaultChainableInstruction implements ChainableInstruction {
     }
 
     @Override
+    public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return getNext(argumentParser, false);
+    }
+
+    @Override
     public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser, final boolean cache) throws QuestException {
         return new DefaultArgument<>(placeholders, pack, instructionReaderStrategy.getNext(),
                 value -> argumentParser.apply(placeholders, packManager, pack, value), true, cache);
+    }
+
+    @Override
+    public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return getOptional(argumentKey, argumentParser, false);
     }
 
     @Override
@@ -123,6 +133,11 @@ public class DefaultChainableInstruction implements ChainableInstruction {
     }
 
     @Override
+    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T defaultValue) throws QuestException {
+        return getOptional(argumentKey, argumentParser, defaultValue, false);
+    }
+
+    @Override
     public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T defaultValue, final boolean cache) throws QuestException {
         final String argumentValue = instructionReaderStrategy.getOptional(argumentKey);
         if (argumentValue == null) {
@@ -130,6 +145,11 @@ public class DefaultChainableInstruction implements ChainableInstruction {
         }
         final ValueParser<T> valueParser = value -> argumentParser.apply(placeholders, packManager, pack, value);
         return new DefaultArgument<>(placeholders, pack, argumentValue, valueParser, true, cache);
+    }
+
+    @Override
+    public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
+        return getFlag(argumentKey, argumentParser, presenceDefault, false);
     }
 
     @Override
@@ -141,6 +161,11 @@ public class DefaultChainableInstruction implements ChainableInstruction {
             case DEFINED -> new DefaultFlagArgument<>(placeholders, pack, flag.getValue(),
                     value -> Optional.of(argumentParser.apply(placeholders, packManager, pack, value)), true);
         };
+    }
+
+    @Override
+    public <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter) throws QuestException {
+        return getNamed(argumentParser, keyFilter, false);
     }
 
     @Override
