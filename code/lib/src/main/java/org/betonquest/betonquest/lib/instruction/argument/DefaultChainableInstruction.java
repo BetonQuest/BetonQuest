@@ -108,48 +108,73 @@ public class DefaultChainableInstruction implements ChainableInstruction {
 
     @Override
     public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return getNext(argumentParser, false);
+    }
+
+    @Override
+    public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser, final boolean cache) throws QuestException {
         return new DefaultArgument<>(placeholders, pack, instructionReaderStrategy.getNext(),
-                value -> argumentParser.apply(placeholders, packManager, pack, value));
+                value -> argumentParser.apply(placeholders, packManager, pack, value), true, cache);
     }
 
     @Override
     public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return getOptional(argumentKey, argumentParser, false);
+    }
+
+    @Override
+    public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final boolean cache) throws QuestException {
         final String argumentValue = instructionReaderStrategy.getOptional(argumentKey);
         if (argumentValue == null) {
             return Optional.empty();
         }
         final ValueParser<T> valueParser = value -> argumentParser.apply(placeholders, packManager, pack, value);
-        return Optional.of(new DefaultArgument<>(placeholders, pack, argumentValue, valueParser));
+        return Optional.of(new DefaultArgument<>(placeholders, pack, argumentValue, valueParser, true, cache));
     }
 
     @Override
-    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
+    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T defaultValue) throws QuestException {
+        return getOptional(argumentKey, argumentParser, defaultValue, false);
+    }
+
+    @Override
+    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T defaultValue, final boolean cache) throws QuestException {
         final String argumentValue = instructionReaderStrategy.getOptional(argumentKey);
         if (argumentValue == null) {
             return new DefaultArgument<>(defaultValue);
         }
-        final ValueParser<T> valueParser = value -> argument.apply(placeholders, packManager, pack, value);
-        return new DefaultArgument<>(placeholders, pack, argumentValue, valueParser);
+        final ValueParser<T> valueParser = value -> argumentParser.apply(placeholders, packManager, pack, value);
+        return new DefaultArgument<>(placeholders, pack, argumentValue, valueParser, true, cache);
     }
 
     @Override
     public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
+        return getFlag(argumentKey, argumentParser, presenceDefault, false);
+    }
+
+    @Override
+    public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault, final boolean cache) throws QuestException {
         final Map.Entry<FlagState, String> flag = instructionReaderStrategy.getFlag(argumentKey);
         return switch (flag.getKey()) {
             case ABSENT -> new DefaultFlagArgument<>();
             case UNDEFINED -> new DefaultFlagArgument<>(presenceDefault, FlagState.UNDEFINED);
             case DEFINED -> new DefaultFlagArgument<>(placeholders, pack, flag.getValue(),
-                    value -> Optional.of(argumentParser.apply(placeholders, packManager, pack, value)));
+                    value -> Optional.of(argumentParser.apply(placeholders, packManager, pack, value)), true);
         };
     }
 
     @Override
     public <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter) throws QuestException {
+        return getNamed(argumentParser, keyFilter, false);
+    }
+
+    @Override
+    public <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter, final boolean cache) throws QuestException {
         final Map<String, String> map = instructionReaderStrategy.getNamed(keyFilter);
         final Map<String, Argument<T>> result = new HashMap<>();
         for (final Map.Entry<String, String> entry : map.entrySet()) {
             result.put(entry.getKey(), new DefaultArgument<>(placeholders, pack, entry.getValue(),
-                    value -> argumentParser.apply(placeholders, packManager, pack, value)));
+                    value -> argumentParser.apply(placeholders, packManager, pack, value), true, cache));
         }
         return result;
     }

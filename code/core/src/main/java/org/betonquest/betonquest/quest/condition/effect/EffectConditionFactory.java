@@ -22,7 +22,7 @@ public class EffectConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<PotionEffectType> type = instruction.parse(PotionEffectTypeParser.POTION_EFFECT_TYPE).get();
+        final Argument<PotionEffectType> type = instruction.parse(PotionEffectTypeParser.POTION_EFFECT_TYPE).cache(true).get();
         return new OnlineConditionAdapter(new EffectCondition(type));
     }
 }

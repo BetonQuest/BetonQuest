@@ -26,6 +26,7 @@ import java.util.Optional;
 /**
  * Default implementation of {@link SectionInstruction}.
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class DefaultSectionInstruction implements SectionInstruction {
 
     /**
@@ -149,30 +150,49 @@ public class DefaultSectionInstruction implements SectionInstruction {
     @Override
     public <T> Argument<T> get(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser,
                                final boolean pathMode, final boolean earlyValidation) throws QuestException {
+        return get(path, parser, pathMode, earlyValidation, false);
+    }
+
+    @Override
+    public <T> Argument<T> get(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser,
+                               final boolean pathMode, final boolean earlyValidation, final boolean cache) throws QuestException {
         final String argumentPath = buildPath(path);
         if (!section.contains(argumentPath)) {
             throw new QuestException("Path '%s' does not exist in section '%s' for package '%s'".formatted(argumentPath, section.getCurrentPath(), questPackage));
         }
         return new DefaultArgument<>(placeholders, questPackage, pathMode ? argumentPath : section.getString(argumentPath),
-                value -> parser.apply(placeholders, packageManager, questPackage, value), earlyValidation);
+                value -> parser.apply(placeholders, packageManager, questPackage, value), earlyValidation, cache);
     }
 
     @Override
-    public <T> Optional<Argument<T>> getOptional(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser, final boolean pathMode, final boolean earlyValidation) throws QuestException {
+    public <T> Optional<Argument<T>> getOptional(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser,
+                                                 final boolean pathMode, final boolean earlyValidation) throws QuestException {
+        return getOptional(path, parser, pathMode, earlyValidation, false);
+    }
+
+    @Override
+    public <T> Optional<Argument<T>> getOptional(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser,
+                                                 final boolean pathMode, final boolean earlyValidation, final boolean cache) throws QuestException {
         final String argumentPath = buildPath(path);
         if (!section.contains(argumentPath)) {
             return Optional.empty();
         }
-        return Optional.of(get(path, parser, pathMode, earlyValidation));
+        return Optional.of(get(path, parser, pathMode, earlyValidation, cache));
     }
 
     @Override
     public <T> Argument<T> getOptional(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser,
                                        final boolean pathMode, final boolean earlyValidation, final T defaultValue) throws QuestException {
+        return getOptional(path, parser, pathMode, earlyValidation, defaultValue, false);
+    }
+
+    @Override
+    public <T> Argument<T> getOptional(final ValueSource<List<String>> path, final InstructionArgumentParser<T> parser,
+                                       final boolean pathMode, final boolean earlyValidation, final T defaultValue, final boolean cache) throws QuestException {
         final String argumentPath = buildPath(path);
         if (!section.contains(argumentPath)) {
             return new DefaultArgument<>(defaultValue);
         }
-        return get(path, parser, pathMode, earlyValidation);
+        return get(path, parser, pathMode, earlyValidation, cache);
     }
 }

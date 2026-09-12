@@ -86,7 +86,7 @@ public class FolderActionFactory implements PlayerActionFactory, PlayerlessActio
         final Argument<Number> delay = instruction.number().get("delay").orElse(null);
         final Argument<Number> period = instruction.number().get("period").orElse(null);
         final Argument<Number> random = instruction.number().get("random").orElse(null);
-        final Argument<TimeUnit> timeUnit = instruction.parse(this::getTimeUnit).get("unit", TimeUnit.SECONDS);
+        final Argument<TimeUnit> timeUnit = instruction.parse(this::getTimeUnit).cache(true).get("unit", TimeUnit.SECONDS);
         final FlagArgument<Boolean> cancelOnLogout = instruction.bool().getFlag("cancelOnLogout", true);
         final Argument<List<ConditionIdentifier>> cancelConditions = instruction.identifier(ConditionIdentifier.class)
                 .list().get("cancelConditions", Collections.emptyList());

@@ -49,14 +49,14 @@ public class ParsedSectionText extends ParsedText {
         }
         if (section.isList(path)) {
             return Map.of(languageProvider.getDefaultLanguage(), new DefaultArgument<>(placeholders, pack,
-                    String.join("\n", section.getStringList(path)), stringParser));
+                    String.join("\n", section.getStringList(path)), stringParser, true, true));
         }
         if (section.isString(path)) {
             final String raw = section.getString(path);
             if (raw == null) {
                 throw new QuestException("No string value for '" + path + "'!");
             }
-            return Map.of(languageProvider.getDefaultLanguage(), new DefaultArgument<>(placeholders, pack, raw, stringParser));
+            return Map.of(languageProvider.getDefaultLanguage(), new DefaultArgument<>(placeholders, pack, raw, stringParser, true, true));
         }
         throw new QuestException("The '" + path + "' is missing!");
     }
@@ -73,14 +73,14 @@ public class ParsedSectionText extends ParsedText {
         for (final String key : subSection.getKeys(false)) {
             if (subSection.isList(key)) {
                 texts.put(key, new DefaultArgument<>(placeholders, pack,
-                        String.join("\n", subSection.getStringList(key)), stringParser));
+                        String.join("\n", subSection.getStringList(key)), stringParser, true, true));
                 continue;
             }
             final String raw = subSection.getString(key);
             if (raw == null) {
                 throw new QuestException("No string value for key '" + key + "'!");
             }
-            texts.put(key, new DefaultArgument<>(placeholders, pack, raw, stringParser));
+            texts.put(key, new DefaultArgument<>(placeholders, pack, raw, stringParser, true, true));
         }
         if (texts.isEmpty()) {
             throw new QuestException("No values defined!");

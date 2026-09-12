@@ -29,7 +29,7 @@ public interface NumberValue {
         return instruction.parse(resolved -> {
             final Map.Entry<Number, Integer> entry = HandlerUtil.getNumberValue(resolved, messagePart);
             return (NumberValue) new DefaultNumberValue(entry.getKey(), entry.getValue());
-        }).get(key).orElse(null);
+        }).cache(true).get(key).orElse(null);
     }
 
     /**

@@ -227,101 +227,126 @@ public class DefaultInstruction implements Instruction {
 
     @Override
     public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        return chainableInstruction.getNext(argumentParser);
+        return getNext(argumentParser, false);
+    }
+
+    @Override
+    public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser, final boolean cache) throws QuestException {
+        return chainableInstruction.getNext(argumentParser, cache);
     }
 
     @Override
     public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        return chainableInstruction.getOptional(argumentKey, argumentParser);
+        return getOptional(argumentKey, argumentParser, false);
+    }
+
+    @Override
+    public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final boolean cache) throws QuestException {
+        return chainableInstruction.getOptional(argumentKey, argumentParser, cache);
     }
 
     @Override
     public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
-        return chainableInstruction.getOptional(argumentKey, argument, defaultValue);
+        return getOptional(argumentKey, argument, defaultValue, false);
+    }
+
+    @Override
+    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue, final boolean cache) throws QuestException {
+        return chainableInstruction.getOptional(argumentKey, argument, defaultValue, cache);
     }
 
     @Override
     public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
-        return chainableInstruction.getFlag(argumentKey, argumentParser, presenceDefault);
+        return getFlag(argumentKey, argumentParser, presenceDefault, false);
+    }
+
+    @Override
+    public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault, final boolean cache) throws QuestException {
+        return chainableInstruction.getFlag(argumentKey, argumentParser, presenceDefault, cache);
     }
 
     @Override
     public <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter) throws QuestException {
-        return chainableInstruction.getNamed(argumentParser, keyFilter);
+        return getNamed(argumentParser, keyFilter, false);
+    }
+
+    @Override
+    public <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter, final boolean cache) throws QuestException {
+        return chainableInstruction.getNamed(argumentParser, keyFilter, cache);
     }
 
     @Override
     public <T> DecoratableChainRetriever<T> parse(final InstructionArgumentParser<T> argument) {
-        return new DefaultDecoratableChainRetriever<>(this, argument);
+        return new DefaultDecoratableChainRetriever<>(this, argument, false);
     }
 
     @Override
     public DecoratableChainRetriever<String> string() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.string());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.string(), true);
     }
 
     @Override
     public DecoratableChainRetriever<Boolean> bool() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.bool());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.bool(), true);
     }
 
     @Override
     public DecoratableChainRetriever<Vector> vector() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.vector());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.vector(), false);
     }
 
     @Override
     public DecoratableChainRetriever<World> world() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.world());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.world(), false);
     }
 
     @Override
     public DecoratableChainRetriever<Location> location() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.location());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.location(), false);
     }
 
     @Override
     public DecoratableChainRetriever<ItemWrapper> item() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.item());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.item(), true);
     }
 
     @Override
     public DecoratableChainRetriever<BlockSelector> blockSelector() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.blockSelector());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.blockSelector(), true);
     }
 
     @Override
     public DecoratableChainRetriever<String> packageIdentifier() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.packageIdentifier());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.packageIdentifier(), true);
     }
 
     @Override
     public DecoratableChainRetriever<NamespacedKey> namespacedKey() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.namespacedKey());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.namespacedKey(), true);
     }
 
     @Override
     public DecoratableChainRetriever<Component> component() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.component());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.component(), true);
     }
 
     @Override
     public DecoratableChainRetriever<UUID> uuid() {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.uuid());
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.uuid(), true);
     }
 
     @Override
     public NumberChainRetriever number() {
-        return new DefaultNumberChainRetriever(this, argumentParsers.number());
+        return new DefaultNumberChainRetriever(this, argumentParsers.number(), true);
     }
 
     @Override
     public <E extends Enum<E>> DecoratableChainRetriever<E> enumeration(final Class<E> enumType) {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.forEnum(enumType));
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.forEnum(enumType), true);
     }
 
     @Override
     public <I extends Identifier> DecoratableChainRetriever<I> identifier(final Class<I> identifierClass) {
-        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.forIdentifier(identifierClass));
+        return new DefaultDecoratableChainRetriever<>(this, argumentParsers.forIdentifier(identifierClass), true);
     }
 }

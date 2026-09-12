@@ -83,6 +83,8 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
      * <p>
      * If the raw value is {@link Existence#NONE_KEY} a {@code null} value with {@link Existence#FORBIDDEN}
      * will be returned instead.
+     * <p>
+     * {@link DecoratableChainRetriever#cache(boolean) Caches} by default.
      *
      * @param retriever the retriever for the value
      * @param <T>       the value type
@@ -92,7 +94,8 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
             final DecoratableChainRetriever<T> retriever) {
         return retriever
                 .map(value -> Pair.of(Existence.REQUIRED, value))
-                .prefilter(Existence.NONE_KEY, Pair.of(Existence.FORBIDDEN, null));
+                .prefilter(Existence.NONE_KEY, Pair.of(Existence.FORBIDDEN, null))
+                .cache(true);
     }
 
     /**
@@ -104,6 +107,8 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
      * will be returned instead.
      * <p>
      * If the key is not present, effectively {@link #whateverNullValue()} will be returned.
+     * <p>
+     * {@link DecoratableChainRetriever#cache(boolean) Caches} by default.
      *
      * @param key       the instruction key
      * @param retriever the retriever for the value
@@ -125,6 +130,8 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
      * will be returned instead.
      * <p>
      * If the key is not present {@code null} will be returned.
+     * <p>
+     * {@link DecoratableChainRetriever#cache(boolean) Caches} by default.
      *
      * @param key       the instruction key
      * @param retriever the retriever for the value
@@ -149,6 +156,8 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
      * <p>
      * If the raw value is {@link Existence#NONE_KEY} an empty list with {@link Existence#FORBIDDEN}
      * will be returned instead.
+     * <p>
+     * {@link DecoratableChainRetriever#cache(boolean) Caches} by default.
      *
      * @param key       the instruction key
      * @param retriever the retriever for the value list
@@ -163,6 +172,7 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
                 .list().notEmpty()
                 .map(list -> Pair.of(Existence.REQUIRED, list))
                 .prefilter(Existence.NONE_KEY, Pair.of(Existence.FORBIDDEN, List.of()))
+                .cache(true)
                 .get(key)
                 .map(argument -> (ExistenceArgument<List<T>>) argument::getValue)
                 .orElse(null);

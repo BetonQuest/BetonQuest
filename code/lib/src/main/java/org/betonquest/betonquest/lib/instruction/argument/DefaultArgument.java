@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
@@ -51,26 +52,36 @@ public class DefaultArgument<T> implements Argument<T> {
      * @param input           the string that may contain placeholders
      * @param valueParser     the valueParser to convert the resolved argument to the given type
      * @param earlyValidation whether to validate the input early to discover bugs and mistakes on creation
+     * @param cache           whether to store the result of the first successful apply and use that same object
+     *                        for each {@link #getValue(Profile)} - should only be used for unmodifiable objects
      * @throws QuestException if the placeholders could not be created or resolved to the given type
      */
     public DefaultArgument(final PlaceholderManager placeholders, @Nullable final QuestPackage pack, final String input,
-                           final ValueParser<T> valueParser, final boolean earlyValidation) throws QuestException {
+                           final ValueParser<T> valueParser, final boolean earlyValidation, final boolean cache) throws QuestException {
         final Map<String, Argument<String>> foundPlaceholders = getPlaceholders(placeholders, pack, input);
-        if (foundPlaceholders.isEmpty()) {
-            final String escapedInput = replaceEscapedPercent(input);
-            if (earlyValidation) {
-                valueParser.apply(escapedInput);
-            }
-            value = profile -> valueParser.apply(escapedInput);
-        } else {
+        if (!foundPlaceholders.isEmpty()) {
             value = profile -> valueParser.apply(replaceEscapedPercent(getString(input, foundPlaceholders, profile)));
+            return;
+        }
+        final String escapedInput = replaceEscapedPercent(input);
+        if (earlyValidation) {
+            final T applied = valueParser.apply(escapedInput);
+            if (cache) {
+                value = profile -> applied;
+                return;
+            }
+        }
+        if (cache) {
+            value = new CachingArgument<>(valueParser, escapedInput);
+        } else {
+            value = profile -> valueParser.apply(escapedInput);
         }
     }
 
     /**
      * Resolves a string that may contain placeholders to an {@link Argument} of the given type.
-     * Forwards to {@link #DefaultArgument(PlaceholderManager, QuestPackage, String, ValueParser, boolean)}
-     * with earlyValidation set to true by default.
+     * Forwards to {@link #DefaultArgument(PlaceholderManager, QuestPackage, String, ValueParser, boolean, boolean)}
+     * with earlyValidation set to true by default and cache to false.
      *
      * @param placeholders the {@link PlaceholderManager} to create and resolve placeholders
      * @param pack         the package of the instruction in which the argument is used
@@ -80,7 +91,7 @@ public class DefaultArgument<T> implements Argument<T> {
      */
     public DefaultArgument(final PlaceholderManager placeholders, @Nullable final QuestPackage pack, final String input,
                            final ValueParser<T> valueParser) throws QuestException {
-        this(placeholders, pack, input, valueParser, true);
+        this(placeholders, pack, input, valueParser, true, false);
     }
 
     private Map<String, Argument<String>> getPlaceholders(final PlaceholderManager placeholders, @Nullable final QuestPackage pack,
@@ -128,5 +139,46 @@ public class DefaultArgument<T> implements Argument<T> {
     @Override
     public T getValue(@Nullable final Profile profile) throws QuestException {
         return value.getValue(profile);
+    }
+
+    /**
+     * Argument that stores the first successful computed value and releases the input values after that.
+     *
+     * @param <T> the type of the argument
+     */
+    private static final class CachingArgument<T> implements Argument<T> {
+
+        /**
+         * Value parser to convert the resolved argument to the given type.
+         */
+        @Nullable
+        private ValueParser<T> valueParser;
+
+        /**
+         * Input string with all placeholders resolved.
+         */
+        @Nullable
+        private String resolved;
+
+        /**
+         * Cached first successful computed value.
+         */
+        @Nullable
+        private T value;
+
+        private CachingArgument(final ValueParser<T> valueParser, final String resolved) {
+            this.valueParser = valueParser;
+            this.resolved = resolved;
+        }
+
+        @Override
+        public T getValue(@Nullable final Profile profile) throws QuestException {
+            if (value == null) {
+                value = Objects.requireNonNull(valueParser).apply(resolved);
+                valueParser = null;
+                resolved = null;
+            }
+            return value;
+        }
     }
 }
