@@ -35,7 +35,7 @@ public class PointObjectiveFactory implements ObjectiveFactory {
         final Argument<String> category = instruction.packageIdentifier().get();
         final Argument<Number> targetAmount = instruction.number().get();
         final Argument<CountingMode> mode = instruction.enumeration(CountingMode.class).get("mode", CountingMode.TOTAL);
-        final Argument<Operation> operation = instruction.parse(Operation::fromSymbol).get("operation", Operation.GREATER_EQUAL);
+        final Argument<Operation> operation = instruction.parse(Operation::fromSymbol).cache(true).get("operation", Operation.GREATER_EQUAL);
         final PointObjective objective = new PointObjective(service, playerDataStorage, category, targetAmount, mode, operation);
         service.request(PlayerUpdatePointEvent.class).handler(objective::onPointUpdate)
                 .profile(PlayerUpdatePointEvent::getProfile).subscribe(false);

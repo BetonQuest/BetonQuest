@@ -56,6 +56,6 @@ public class ConversationActionFactory implements PlayerActionFactory {
                 }
             }
             return Pair.of(conversationID, optionName);
-        }).get();
+        }).cache(true).get();
     }
 }
