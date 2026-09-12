@@ -226,8 +226,18 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
+    public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return getNext(argumentParser, false);
+    }
+
+    @Override
     public <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser, final boolean cache) throws QuestException {
         return chainableInstruction.getNext(argumentParser, cache);
+    }
+
+    @Override
+    public <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
+        return getOptional(argumentKey, argumentParser, false);
     }
 
     @Override
@@ -236,13 +246,28 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
+    public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
+        return getOptional(argumentKey, argument, defaultValue, false);
+    }
+
+    @Override
     public <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue, final boolean cache) throws QuestException {
         return chainableInstruction.getOptional(argumentKey, argument, defaultValue, cache);
     }
 
     @Override
+    public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
+        return getFlag(argumentKey, argumentParser, presenceDefault, false);
+    }
+
+    @Override
     public <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault, final boolean cache) throws QuestException {
         return chainableInstruction.getFlag(argumentKey, argumentParser, presenceDefault, cache);
+    }
+
+    @Override
+    public <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter) throws QuestException {
+        return getNamed(argumentParser, keyFilter, false);
     }
 
     @Override
