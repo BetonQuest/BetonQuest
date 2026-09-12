@@ -29,9 +29,7 @@ public interface ChainableInstruction {
      */
     @Contract("_ -> new")
     @Deprecated(forRemoval = true, since = "3.3.0")
-    default <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        return getNext(argumentParser, false);
-    }
+    <T> Argument<T> getNext(InstructionArgumentParser<T> argumentParser) throws QuestException;
 
     /**
      * Find the next argument in the instruction without a key.
@@ -44,7 +42,9 @@ public interface ChainableInstruction {
      * @since 3.3.0
      */
     @Contract("_, _ -> new")
-    <T> Argument<T> getNext(InstructionArgumentParser<T> argumentParser, boolean cache) throws QuestException;
+    default <T> Argument<T> getNext(final InstructionArgumentParser<T> argumentParser, final boolean cache) throws QuestException {
+        return getNext(argumentParser);
+    }
 
     /**
      * Find the optional argument in the instruction by its key.
@@ -59,9 +59,7 @@ public interface ChainableInstruction {
      */
     @Contract("_, _ -> new")
     @Deprecated(forRemoval = true, since = "3.3.0")
-    default <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser) throws QuestException {
-        return getOptional(argumentKey, argumentParser, false);
-    }
+    <T> Optional<Argument<T>> getOptional(String argumentKey, InstructionArgumentParser<T> argumentParser) throws QuestException;
 
     /**
      * Find the optional argument in the instruction by its key.
@@ -75,7 +73,9 @@ public interface ChainableInstruction {
      * @since 3.3.0
      */
     @Contract("_, _, _ -> new")
-    <T> Optional<Argument<T>> getOptional(String argumentKey, InstructionArgumentParser<T> argumentParser, boolean cache) throws QuestException;
+    default <T> Optional<Argument<T>> getOptional(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final boolean cache) throws QuestException {
+        return getOptional(argumentKey, argumentParser);
+    }
 
     /**
      * Find the optional argument in the instruction by its key.
@@ -91,9 +91,7 @@ public interface ChainableInstruction {
      */
     @Contract("_, _, _ -> new")
     @Deprecated(forRemoval = true, since = "3.3.0")
-    default <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue) throws QuestException {
-        return getOptional(argumentKey, argument, defaultValue, false);
-    }
+    <T> Argument<T> getOptional(String argumentKey, InstructionArgumentParser<T> argument, T defaultValue) throws QuestException;
 
     /**
      * Find the optional argument in the instruction by its key.
@@ -108,7 +106,9 @@ public interface ChainableInstruction {
      * @since 3.0.0
      */
     @Contract("_, _, _, _ -> new")
-    <T> Argument<T> getOptional(String argumentKey, InstructionArgumentParser<T> argument, T defaultValue, boolean cache) throws QuestException;
+    default <T> Argument<T> getOptional(final String argumentKey, final InstructionArgumentParser<T> argument, final T defaultValue, final boolean cache) throws QuestException {
+        return getOptional(argumentKey, argument, defaultValue);
+    }
 
     /**
      * Find the optional flag argument in the instruction by its key.
@@ -140,9 +140,7 @@ public interface ChainableInstruction {
      */
     @Contract("_, _, _ -> new")
     @Deprecated(forRemoval = true, since = "3.3.0")
-    default <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault) throws QuestException {
-        return getFlag(argumentKey, argumentParser, presenceDefault, false);
-    }
+    <T> FlagArgument<T> getFlag(String argumentKey, InstructionArgumentParser<T> argumentParser, T presenceDefault) throws QuestException;
 
     /**
      * Find the optional flag argument in the instruction by its key.
@@ -173,7 +171,9 @@ public interface ChainableInstruction {
      * @since 3.0.0
      */
     @Contract("_, _, _, _ -> new")
-    <T> FlagArgument<T> getFlag(String argumentKey, InstructionArgumentParser<T> argumentParser, T presenceDefault, boolean cache) throws QuestException;
+    default <T> FlagArgument<T> getFlag(final String argumentKey, final InstructionArgumentParser<T> argumentParser, final T presenceDefault, final boolean cache) throws QuestException {
+        return getFlag(argumentKey, argumentParser, presenceDefault);
+    }
 
     /**
      * Get all named arguments in the instruction filtered by the given {@link Predicate} for their keys.
@@ -186,11 +186,9 @@ public interface ChainableInstruction {
      * @since 3.0.0
      * @deprecated use {@link #getNamed(InstructionArgumentParser, Predicate, boolean)}
      */
-    @Deprecated
     @Contract("_, _ -> new")
-    default <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter) throws QuestException {
-        return getNamed(argumentParser, keyFilter, false);
-    }
+    @Deprecated(forRemoval = true, since = "3.3.0")
+    <T> Map<String, Argument<T>> getNamed(InstructionArgumentParser<T> argumentParser, Predicate<String> keyFilter) throws QuestException;
 
     /**
      * Get all named arguments in the instruction filtered by the given {@link Predicate} for their keys.
@@ -204,5 +202,7 @@ public interface ChainableInstruction {
      * @since 3.0.0
      */
     @Contract("_, _, _ -> new")
-    <T> Map<String, Argument<T>> getNamed(InstructionArgumentParser<T> argumentParser, Predicate<String> keyFilter, boolean cache) throws QuestException;
+    default <T> Map<String, Argument<T>> getNamed(final InstructionArgumentParser<T> argumentParser, final Predicate<String> keyFilter, final boolean cache) throws QuestException {
+        return getNamed(argumentParser, keyFilter);
+    }
 }
