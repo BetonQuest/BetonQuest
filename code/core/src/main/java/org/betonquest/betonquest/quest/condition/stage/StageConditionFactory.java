@@ -31,7 +31,7 @@ public class StageConditionFactory implements PlayerConditionFactory {
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<ObjectiveIdentifier> objectiveID = instruction.identifier(ObjectiveIdentifier.class).get();
-        final Argument<Operation> operation = instruction.parse(Operation::fromSymbol).get();
+        final Argument<Operation> operation = instruction.parse(Operation::fromSymbol).cache(true).get();
         final Argument<String> targetStage = instruction.string().get();
         return new StageCondition(objectiveManager, objectiveID, targetStage, operation);
     }

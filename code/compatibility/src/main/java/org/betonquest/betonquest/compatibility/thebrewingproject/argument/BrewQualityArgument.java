@@ -27,7 +27,7 @@ public record BrewQualityArgument(Argument<BrewQuality> qualityArgument,
      * @throws QuestException if the argument could not be parsed
      */
     public static BrewQualityArgument parseInstructions(final Instruction instruction) throws QuestException {
-        final Argument<Operation> operationArgument = instruction.parse(Operation::fromSymbol).get();
+        final Argument<Operation> operationArgument = instruction.parse(Operation::fromSymbol).cache(true).get();
         final Argument<BrewQuality> qualityArgument = instruction.enumeration(BrewQuality.class).get();
         return new BrewQualityArgument(qualityArgument, operationArgument);
     }

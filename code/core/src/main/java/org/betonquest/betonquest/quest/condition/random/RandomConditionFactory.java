@@ -33,7 +33,7 @@ public class RandomConditionFactory implements PlayerConditionFactory, Playerles
     }
 
     private RandomCondition parse(final Instruction instruction) throws QuestException {
-        final Argument<RandomChance> randomChance = instruction.parse(RandomChanceParser.CHANCE).get();
+        final Argument<RandomChance> randomChance = instruction.parse(RandomChanceParser.CHANCE).cache(true).get();
         return new RandomCondition(ThreadLocalRandom::current, randomChance);
     }
 }

@@ -79,7 +79,7 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler.Standard {
             } catch (final QuestException e) {
                 throw new QuestException("Could not parse custom-model-data '" + resolvedString + "': " + e.getMessage(), e);
             }
-        }).get("custom-model-data");
+        }).cache(true).get("custom-model-data");
         final FlagArgument<Boolean> noData = instruction.bool().getFlag("no-custom-model-data", true);
         final ExistenceArgument<@Nullable NamespacedKey> model = ExistenceArgument.applyOrNull("item-model", instruction.namespacedKey());
         final FlagArgument<Boolean> noModel = instruction.bool().getFlag("no-item-model", true);

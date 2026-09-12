@@ -26,7 +26,7 @@ public class DeleteEffectActionFactory implements PlayerActionFactory {
     @Override
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final Argument<List<PotionEffectType>> effects = instruction.parse(PotionEffectTypeParser.POTION_EFFECT_TYPE)
-                .list().prefilter("any", Collections.emptyList()).get();
+                .list().prefilter("any", Collections.emptyList()).cache(true).get();
         return new OnlineActionAdapter(new DeleteEffectAction(effects));
     }
 }

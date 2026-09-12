@@ -22,7 +22,7 @@ public class HeightConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<Number> height = instruction.parse(this::parseHeight).get();
+        final Argument<Number> height = instruction.parse(this::parseHeight).cache(true).get();
         return new OnlineConditionAdapter(new HeightCondition(height));
     }
 

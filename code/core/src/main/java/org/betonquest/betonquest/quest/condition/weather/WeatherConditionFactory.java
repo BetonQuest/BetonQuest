@@ -28,14 +28,14 @@ public class WeatherConditionFactory implements PlayerConditionFactory, Playerle
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<Weather> weather = instruction.parse(Weather::parseWeather).get();
+        final Argument<Weather> weather = instruction.parse(Weather::parseWeather).cache(true).get();
         final Argument<World> world = instruction.world().get("world").orElse(DefaultArguments.PLAYER_WORLD);
         return new NullableConditionAdapter(new WeatherCondition(weather, world));
     }
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Argument<Weather> weather = instruction.parse(Weather::parseWeather).get();
+        final Argument<Weather> weather = instruction.parse(Weather::parseWeather).cache(true).get();
         final Optional<Argument<World>> optionalWorld = instruction.world().get("world");
         return optionalWorld.map(world -> (PlayerlessCondition) new NullableConditionAdapter(new WeatherCondition(weather, optionalWorld.orElse(null))))
                 .orElse(new ThrowExceptionPlayerlessCondition("Condition requires a 'world' argument."));

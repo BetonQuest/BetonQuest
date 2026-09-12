@@ -47,7 +47,7 @@ public class NPCKillObjectiveFactory implements ObjectiveFactory {
 
     @Override
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
-        final Argument<NpcIdentifier> npcID = instruction.parse(citizensArgument).get();
+        final Argument<NpcIdentifier> npcID = instruction.parse(citizensArgument).cache(true).get();
         final Argument<Number> targetAmount = instruction.number().atLeast(1).get("amount", 1);
         final NPCKillObjective objective = new NPCKillObjective(service, registry, targetAmount, npcID, instructionApi);
         service.request(MobKilledEvent.class).handler(objective::onNpcKill)

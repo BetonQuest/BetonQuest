@@ -32,8 +32,8 @@ public class ExplosionActionFactory implements PlayerActionFactory, PlayerlessAc
     }
 
     private NullableActionAdapter createExplosionAction(final Instruction instruction) throws QuestException {
-        final Argument<Boolean> setsFire = instruction.parse("1"::equals).get();
-        final Argument<Boolean> breaksBlocks = instruction.parse("1"::equals).get();
+        final Argument<Boolean> setsFire = instruction.parse("1"::equals).cache(true).get();
+        final Argument<Boolean> breaksBlocks = instruction.parse("1"::equals).cache(true).get();
         final Argument<Number> power = instruction.number().get();
         final Argument<Location> location = instruction.location().get();
         return new NullableActionAdapter(new ExplosionAction(location, power, setsFire, breaksBlocks));

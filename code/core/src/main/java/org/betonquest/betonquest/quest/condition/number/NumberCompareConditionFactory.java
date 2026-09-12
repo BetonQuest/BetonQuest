@@ -32,7 +32,7 @@ public class NumberCompareConditionFactory implements PlayerConditionFactory, Pl
 
     private NumberCompareCondition parse(final Instruction instruction) throws QuestException {
         final Argument<Number> first = instruction.number().get();
-        final Operation operation = instruction.parse(Operation::fromSymbol).get().getValue(null);
+        final Operation operation = instruction.parse(Operation::fromSymbol).cache(true).get().getValue(null);
         final Argument<Number> second = instruction.number().get();
         return new NumberCompareCondition(first, second, operation);
     }

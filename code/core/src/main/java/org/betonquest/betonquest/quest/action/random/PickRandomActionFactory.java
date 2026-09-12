@@ -62,7 +62,7 @@ public class PickRandomActionFactory implements PlayerActionFactory, PlayerlessA
             final ActionIdentifier actionID = instruction.chainForArgument(actionString).identifier(ActionIdentifier.class).get().getValue(null);
             final double weight = NumberParser.DEFAULT.apply(weightString).doubleValue();
             return new RandomAction(actionID, weight);
-        }).list().get();
+        }).list().cache(true).get();
         final Argument<Number> amount = instruction.number().get("amount").orElse(null);
         return new NullableActionAdapter(new PickRandomAction(actionManager, actions, amount));
     }
