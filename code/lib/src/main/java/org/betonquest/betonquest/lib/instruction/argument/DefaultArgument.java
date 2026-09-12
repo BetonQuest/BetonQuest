@@ -71,24 +71,10 @@ public class DefaultArgument<T> implements Argument<T> {
             }
         }
         if (cache) {
-            value = new Argument<>() {
-                /**
-                 * Cached first successful computed value.
-                 */
-                @Nullable
-                private T value;
-
-                @Override
-                public T getValue(@Nullable final Profile profile) throws QuestException {
-                    if (value == null) {
-                        value = valueParser.apply(escapedInput);
-                    }
-                    return value;
-                }
-            };
-            return;
+            value = new CachingArgument<>(valueParser, escapedInput);
+        } else {
+            value = profile -> valueParser.apply(escapedInput);
         }
-        value = profile -> valueParser.apply(escapedInput);
     }
 
     /**
@@ -152,5 +138,47 @@ public class DefaultArgument<T> implements Argument<T> {
     @Override
     public T getValue(@Nullable final Profile profile) throws QuestException {
         return value.getValue(profile);
+    }
+
+    /**
+     * Argument that stores the first successful computed value and releases the input values after that.
+     *
+     * @param <T> the type of the argument
+     */
+    private static class CachingArgument<T> implements Argument<T> {
+
+        /**
+         * Value parser to convert the resolved argument to the given type.
+         */
+        @Nullable
+        private ValueParser<T> valueParser;
+
+        /**
+         * Input string with all placeholders resolved.
+         */
+        @Nullable
+        private String resolved;
+
+        /**
+         * Cached first successful computed value.
+         */
+        @Nullable
+        private T value;
+
+        private CachingArgument(final ValueParser<T> valueParser, final String resolved) {
+            this.valueParser = valueParser;
+            this.resolved = resolved;
+        }
+
+        @Override
+        public T getValue(@Nullable final Profile profile) throws QuestException {
+            if (value == null) {
+                assert valueParser != null;
+                value = valueParser.apply(resolved);
+                valueParser = null;
+                resolved = null;
+            }
+            return value;
+        }
     }
 }
