@@ -56,6 +56,22 @@ public class DefaultFlagArgument<T> extends DefaultArgument<Optional<T>> impleme
         this.state = FlagState.DEFINED;
     }
 
+    /**
+     * Constructor creating a {@link FlagState#DEFINED} flag argument using an input and parser.
+     *
+     * @param placeholders the {@link PlaceholderManager} to create and resolve placeholders
+     * @param pack         the related package
+     * @param input        the raw argument value
+     * @param valueParser  the parser
+     * @param cache        whether to store the result of the first successful apply and use that same object
+     * @throws QuestException if an error occurs on creation
+     */
+    public DefaultFlagArgument(final PlaceholderManager placeholders, @Nullable final QuestPackage pack, final String input,
+                               final ValueParser<Optional<T>> valueParser, final boolean cache) throws QuestException {
+        super(placeholders, pack, input, valueParser, true, cache);
+        this.state = FlagState.DEFINED;
+    }
+
     @Override
     public FlagState getState() {
         return state;
