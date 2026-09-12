@@ -25,7 +25,7 @@ public interface ChainableInstruction {
      * @return the {@link Argument} wrapping the argument
      * @throws QuestException if an error occurs while parsing the argument
      * @since 3.0.0
-     * @deprecated use {@link #getNext(InstructionArgumentParser, boolean)}
+     * @deprecated for removal in {@code 4.0.0}, use {@link #getNext(InstructionArgumentParser, boolean)}
      */
     @Contract("_ -> new")
     @Deprecated(forRemoval = true, since = "3.3.0")
@@ -55,7 +55,7 @@ public interface ChainableInstruction {
      * @return an optional of the {@link Argument} wrapping the argument
      * @throws QuestException if an error occurs while parsing the argument
      * @since 3.0.0
-     * @deprecated use {@link #getOptional(String, InstructionArgumentParser, boolean)}
+     * @deprecated for removal in {@code 4.0.0}, use {@link #getOptional(String, InstructionArgumentParser, boolean)}
      */
     @Contract("_, _ -> new")
     @Deprecated(forRemoval = true, since = "3.3.0")
@@ -87,7 +87,7 @@ public interface ChainableInstruction {
      * @return the {@link Argument} wrapping the argument
      * @throws QuestException if an error occurs while parsing the argument
      * @since 3.0.0
-     * @deprecated use {@link #getOptional(String, InstructionArgumentParser, Object, boolean)}
+     * @deprecated for removal in {@code 4.0.0}, use {@link #getOptional(String, InstructionArgumentParser, Object, boolean)}
      */
     @Contract("_, _, _ -> new")
     @Deprecated(forRemoval = true, since = "3.3.0")
@@ -136,7 +136,7 @@ public interface ChainableInstruction {
      * @return an optional of the flag argument
      * @throws QuestException if an error occurs while parsing
      * @since 3.0.0
-     * @deprecated use {@link #getFlag(String, InstructionArgumentParser, Object, boolean)}
+     * @deprecated for removal in {@code 4.0.0}, use {@link #getFlag(String, InstructionArgumentParser, Object, boolean)}
      */
     @Contract("_, _, _ -> new")
     @Deprecated(forRemoval = true, since = "3.3.0")

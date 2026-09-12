@@ -20,7 +20,7 @@ import org.bukkit.util.Vector;
 import java.util.UUID;
 
 /**
- * The default implementation for {@link InstructionChainParser}. TODO mention default cache state in JDocs
+ * The default implementation for {@link InstructionChainParser}.
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class DefaultInstructionChainParser implements InstructionChainParser {
