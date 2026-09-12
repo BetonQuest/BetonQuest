@@ -75,48 +75,53 @@ public class DefaultSectionParser implements SectionParser {
 
     @Override
     public <T> DecoratableSectionRetriever<T> parse(final InstructionArgumentParser<T> parser) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parser, SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parser, SINGLE_VALUE_MODE, false);
     }
 
     @Override
     public <T> DecoratableSectionRetriever<T> section(final SubSectionArgumentParser<T> sectionParser) {
         final EncapsulatedSectionParser<T> encapsulated = new EncapsulatedSectionParser<>(instruction, sectionParser);
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, encapsulated, CONFIG_SECTION_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, encapsulated, CONFIG_SECTION_MODE, false);
     }
 
     @Override
     public NumberSectionRetriever number() {
-        return new DefaultNumberSectionRetriever(instruction, rootPath, parsers.number(), SINGLE_VALUE_MODE);
+        return new DefaultNumberSectionRetriever(instruction, rootPath, parsers.number(), SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public DecoratableSectionRetriever<String> string() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.string(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.string(), SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public DecoratableSectionRetriever<Boolean> bool() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.bool(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.bool(), SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public DecoratableSectionRetriever<ItemWrapper> item() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.item(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.item(), SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public DecoratableSectionRetriever<Vector> vector() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.vector(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.vector(), SINGLE_VALUE_MODE, false);
     }
 
     @Override
     public DecoratableSectionRetriever<Location> location() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.location(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.location(), SINGLE_VALUE_MODE, false);
+    }
+
+    @Override
+    public DecoratableSectionRetriever<World> world() {
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.world(), SINGLE_VALUE_MODE, false);
     }
 
     @Override
     public DecoratableSectionRetriever<NamespacedKey> namespacedKey() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.namespacedKey(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.namespacedKey(), SINGLE_VALUE_MODE, true);
     }
 
     @Override
@@ -126,36 +131,31 @@ public class DefaultSectionParser implements SectionParser {
 
     @Override
     public DecoratableSectionRetriever<Component> component() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.component(), SINGLE_VALUE_MODE);
-    }
-
-    @Override
-    public DecoratableSectionRetriever<World> world() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.world(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.component(), SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public DecoratableSectionRetriever<BlockSelector> blockSelector() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.blockSelector(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.blockSelector(), SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public DecoratableSectionRetriever<String> packageIdentifier() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.packageIdentifier(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.packageIdentifier(), SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public DecoratableSectionRetriever<UUID> uuid() {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.uuid(), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.uuid(), SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public <E extends Enum<E>> DecoratableSectionRetriever<E> enumeration(final Class<E> enumClass) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.forEnum(enumClass), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.forEnum(enumClass), SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public <I extends Identifier> DecoratableSectionRetriever<I> identifier(final Class<I> identifierClass) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.forIdentifier(identifierClass), SINGLE_VALUE_MODE);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parsers.forIdentifier(identifierClass), SINGLE_VALUE_MODE, true);
     }
 }

@@ -28,10 +28,26 @@ public class DefaultDecoratableSectionRetriever<T> extends DefaultSectionRetriev
      * @param rootPath    the root path to the section
      * @param parser      the argument parser
      * @param pathMode    if the parser is in path mode
+     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultDecoratableSectionRetriever(SectionChainInstruction, ValueSource, InstructionArgumentParser, boolean, boolean)}
      */
+    @Deprecated(forRemoval = true, since = "3.3.0")
     public DefaultDecoratableSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,
                                               final InstructionArgumentParser<T> parser, final boolean pathMode) {
-        super(instruction, rootPath, parser, pathMode);
+        this(instruction, rootPath, parser, pathMode, false);
+    }
+
+    /**
+     * Creates a new decoratable section retriever.
+     *
+     * @param instruction the instruction used to retrieve the section
+     * @param rootPath    the root path to the section
+     * @param parser      the argument parser
+     * @param pathMode    if the parser is in path mode
+     * @param cache       if the argument should be cached if it does not contain placeholders
+     */
+    public DefaultDecoratableSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,
+                                              final InstructionArgumentParser<T> parser, final boolean pathMode, final boolean cache) {
+        super(instruction, rootPath, parser, pathMode, true, cache);
     }
 
     private DecoratedArgumentParser<T> decoratable() {
@@ -40,36 +56,36 @@ public class DefaultDecoratableSectionRetriever<T> extends DefaultSectionRetriev
 
     @Override
     public ListSectionRetriever<T> list() {
-        return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable().list(), pathMode);
+        return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable().list(), pathMode, shouldCache);
     }
 
     @Override
     public <R> DecoratableSectionRetriever<R> collect(final Collector<T, ?, R> collector) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().collect(collector), pathMode);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().collect(collector), pathMode, shouldCache);
     }
 
     @Override
     public <U> DecoratableSectionRetriever<U> map(final QuestFunction<T, U> mapper) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().map(mapper), pathMode);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().map(mapper), pathMode, shouldCache);
     }
 
     @Override
     public DecoratableSectionRetriever<T> validate(final ValueValidator<T> validator) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().validate(validator), pathMode);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().validate(validator), pathMode, shouldCache);
     }
 
     @Override
     public DecoratableSectionRetriever<T> validate(final ValueValidator<T> validator, final String errorMessage) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().validate(validator, errorMessage), pathMode);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().validate(validator, errorMessage), pathMode, shouldCache);
     }
 
     @Override
     public DecoratableSectionRetriever<T> prefilter(final String expected, final T fixedValue) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().prefilter(expected, fixedValue), pathMode);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().prefilter(expected, fixedValue), pathMode, shouldCache);
     }
 
     @Override
     public DecoratableSectionRetriever<Optional<T>> prefilterOptional(final String expected, final T fixedValue) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().prefilterOptional(expected, fixedValue), pathMode);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().prefilterOptional(expected, fixedValue), pathMode, shouldCache);
     }
 }
