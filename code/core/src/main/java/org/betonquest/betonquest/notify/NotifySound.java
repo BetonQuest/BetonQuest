@@ -124,6 +124,9 @@ class NotifySound {
         soundPlayer = getSoundPlayer(sound, soundString, location, playerOffset, playerOffsetDistance, soundCategory, volume, pitch);
     }
 
+    /**
+     * Since we do modify the resolved location somewhere down the line we can't cache everything.
+     */
     private <T> Argument<T> getArgument(final String raw, final ValueParser<T> parser) throws QuestException {
         return new DefaultArgument<>(placeholders, pack, raw, parser);
     }

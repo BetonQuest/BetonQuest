@@ -221,7 +221,7 @@ public class PluginMessage implements Localizations {
             final String key = entry.getKey();
             final Map<String, Argument<String>> values = new HashMap<>();
             for (final Map.Entry<String, String> value : entry.getValue().entrySet()) {
-                values.put(value.getKey(), new DefaultArgument<>(placeholders, null, value.getValue(), stringParser));
+                values.put(value.getKey(), new DefaultArgument<>(placeholders, null, value.getValue(), stringParser, true, true));
             }
             loadedMessages.put(key, new ParsedText(textParser, values, playerDataStorage, languageProvider));
         }
