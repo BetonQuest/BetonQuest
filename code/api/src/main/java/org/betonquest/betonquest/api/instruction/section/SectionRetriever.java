@@ -73,5 +73,7 @@ public interface SectionRetriever<T> {
      * @return the new retriever with the given caching
      * @since 3.3.0
      */
-    SectionRetriever<T> cache(boolean cache);
+    default SectionRetriever<T> cache(final boolean cache) {
+        return this;
+    }
 }
