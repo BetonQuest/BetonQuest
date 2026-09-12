@@ -18,7 +18,8 @@ public class DefaultNumberChainRetriever extends DefaultDecoratableChainRetrieve
      *
      * @param instruction the instruction used to retrieve the argument
      * @param argument    the argument parser
-     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultNumberChainRetriever(ChainableInstruction, InstructionArgumentParser, boolean)}
+     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultNumberChainRetriever(ChainableInstruction,
+     * InstructionArgumentParser, boolean)}
      */
     @Deprecated(forRemoval = true, since = "3.3.0")
     public DefaultNumberChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<Number> argument) {
