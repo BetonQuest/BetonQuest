@@ -28,7 +28,8 @@ public class DefaultDecoratableSectionRetriever<T> extends DefaultSectionRetriev
      * @param rootPath    the root path to the section
      * @param parser      the argument parser
      * @param pathMode    if the parser is in path mode
-     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultDecoratableSectionRetriever(SectionChainInstruction, ValueSource, InstructionArgumentParser, boolean, boolean)}
+     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultDecoratableSectionRetriever(SectionChainInstruction,
+     * ValueSource, InstructionArgumentParser, boolean, boolean)}
      */
     @Deprecated(forRemoval = true, since = "3.3.0")
     public DefaultDecoratableSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,

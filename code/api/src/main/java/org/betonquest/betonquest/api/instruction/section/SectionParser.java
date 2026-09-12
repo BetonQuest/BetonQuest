@@ -53,7 +53,6 @@ public interface SectionParser {
     /**
      * Use the given parser to parse the argument.
      * <p>
-     * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
      * @param parser the parser to use
@@ -78,7 +77,6 @@ public interface SectionParser {
     /**
      * Parses the subsection into a value of type T.
      * <p>
-     * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
      * @param sectionParser the parser to use for the subsection
@@ -91,7 +89,6 @@ public interface SectionParser {
     /**
      * Use {@link ArgumentParsers#number()} to parse the argument.
      * <p>
-     * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link SectionRetriever} for the argument with the number parser
@@ -101,7 +98,6 @@ public interface SectionParser {
 
     /**
      * Use {@link ArgumentParsers#string()} to parse the argument.
-     * <p>
      * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
@@ -113,7 +109,6 @@ public interface SectionParser {
     /**
      * Use {@link ArgumentParsers#bool()} to parse the argument.
      * <p>
-     * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link SectionRetriever} for the argument with the bool parser
@@ -123,7 +118,6 @@ public interface SectionParser {
 
     /**
      * Use {@link ArgumentParsers#item()} to parse the argument.
-     * <p>
      * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
@@ -135,7 +129,6 @@ public interface SectionParser {
     /**
      * Use {@link ArgumentParsers#vector()} to parse the argument.
      * <p>
-     * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
      * @return a new {@link SectionRetriever} for the argument with the vector parser
@@ -145,7 +138,6 @@ public interface SectionParser {
 
     /**
      * Use {@link ArgumentParsers#location()} to parse the argument.
-     * <p>
      * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
      *
@@ -169,7 +161,6 @@ public interface SectionParser {
     /**
      * Use {@link ArgumentParsers#namespacedKey()} to parse the argument.
      * <p>
-     * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link SectionRetriever} for the argument with the namespaced key parser
@@ -179,7 +170,6 @@ public interface SectionParser {
 
     /**
      * Use {@link ArgumentParsers#translationSection()} to parse the argument.
-     * <p>
      * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
@@ -191,7 +181,6 @@ public interface SectionParser {
     /**
      * Use {@link ArgumentParsers#component()} to parse the argument.
      * <p>
-     * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link SectionRetriever} for the argument with the component parser
@@ -201,7 +190,6 @@ public interface SectionParser {
 
     /**
      * Use {@link ArgumentParsers#blockSelector()} to parse the argument.
-     * <p>
      * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
@@ -213,7 +201,6 @@ public interface SectionParser {
     /**
      * Use {@link ArgumentParsers#packageIdentifier()} to parse the argument.
      * <p>
-     * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link SectionRetriever} for the argument with the package identifier parser
@@ -224,7 +211,6 @@ public interface SectionParser {
     /**
      * Use {@link ArgumentParsers#uuid()} to parse the argument.
      * <p>
-     * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link SectionRetriever} for the argument with the uuid parser
@@ -234,7 +220,6 @@ public interface SectionParser {
 
     /**
      * Use {@link ArgumentParsers#forEnum(Class)} to parse the argument.
-     * <p>
      * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
@@ -247,7 +232,6 @@ public interface SectionParser {
 
     /**
      * Use {@link ArgumentParsers#forIdentifier(Class)} to parse the argument.
-     * <p>
      * <p>
      * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
