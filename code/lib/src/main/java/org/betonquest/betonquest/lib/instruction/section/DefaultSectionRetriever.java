@@ -55,10 +55,13 @@ public class DefaultSectionRetriever<T> implements SectionRetriever<T> {
      * @param rootPath    the root path to the section.
      * @param parser      the parser used to parse the section.
      * @param pathMode    if the parser is in path mode.
+     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultSectionRetriever(SectionChainInstruction,
+     * ValueSource, InstructionArgumentParser, boolean, boolean, boolean)}
      */
+    @Deprecated(forRemoval = true, since = "3.3.0")
     public DefaultSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,
                                    final InstructionArgumentParser<T> parser, final boolean pathMode) {
-        this(instruction, rootPath, parser, pathMode, true); // TODO discuss if deprecate
+        this(instruction, rootPath, parser, pathMode, true);
     }
 
     /**
@@ -69,10 +72,13 @@ public class DefaultSectionRetriever<T> implements SectionRetriever<T> {
      * @param parser          the parser used to parse the section.
      * @param pathMode        if the parser is in path mode.
      * @param earlyValidation if the argument parser should perform early validation.
+     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultSectionRetriever(SectionChainInstruction,
+     * ValueSource, InstructionArgumentParser, boolean, boolean, boolean)}
      */
+    @Deprecated(forRemoval = true, since = "3.3.0")
     public DefaultSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,
                                    final InstructionArgumentParser<T> parser, final boolean pathMode, final boolean earlyValidation) {
-        this(instruction, rootPath, parser, pathMode, earlyValidation, false); // TODO discuss if deprecate
+        this(instruction, rootPath, parser, pathMode, earlyValidation, false);
     }
 
     /**
