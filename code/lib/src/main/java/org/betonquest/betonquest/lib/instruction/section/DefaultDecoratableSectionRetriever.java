@@ -54,6 +54,10 @@ public class DefaultDecoratableSectionRetriever<T> extends DefaultSectionRetriev
         return new DecoratableArgumentParser<>(parser);
     }
 
+    private <A> DecoratableSectionRetriever<A> retriever(final InstructionArgumentParser<A> parser) {
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parser, pathMode, shouldCache);
+    }
+
     @Override
     public ListSectionRetriever<T> list() {
         return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable().list(), pathMode, shouldCache);
@@ -61,31 +65,31 @@ public class DefaultDecoratableSectionRetriever<T> extends DefaultSectionRetriev
 
     @Override
     public <R> DecoratableSectionRetriever<R> collect(final Collector<T, ?, R> collector) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().collect(collector), pathMode, shouldCache);
+        return retriever(decoratable().collect(collector));
     }
 
     @Override
     public <U> DecoratableSectionRetriever<U> map(final QuestFunction<T, U> mapper) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().map(mapper), pathMode, shouldCache);
+        return retriever(decoratable().map(mapper));
     }
 
     @Override
     public DecoratableSectionRetriever<T> validate(final ValueValidator<T> validator) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().validate(validator), pathMode, shouldCache);
+        return retriever(decoratable().validate(validator));
     }
 
     @Override
     public DecoratableSectionRetriever<T> validate(final ValueValidator<T> validator, final String errorMessage) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().validate(validator, errorMessage), pathMode, shouldCache);
+        return retriever(decoratable().validate(validator, errorMessage));
     }
 
     @Override
     public DecoratableSectionRetriever<T> prefilter(final String expected, final T fixedValue) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().prefilter(expected, fixedValue), pathMode, shouldCache);
+        return retriever(decoratable().prefilter(expected, fixedValue));
     }
 
     @Override
     public DecoratableSectionRetriever<Optional<T>> prefilterOptional(final String expected, final T fixedValue) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, decoratable().prefilterOptional(expected, fixedValue), pathMode, shouldCache);
+        return retriever(decoratable().prefilterOptional(expected, fixedValue));
     }
 }
