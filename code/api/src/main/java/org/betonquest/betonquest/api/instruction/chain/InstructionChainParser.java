@@ -26,6 +26,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} for the given {@link InstructionArgumentParser} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is disabled by default.
      *
      * @param argument the argument parser to use
      * @param <T>      the type of the argument
@@ -49,6 +52,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#string()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -57,6 +63,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#bool()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -65,6 +74,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#vector()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is disabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -73,6 +85,10 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#world()} as parser.
+     * <p>
+     * <b>World objects should never be stored persistent to prevent memory leaks when they are unloaded!</b>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is disabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -81,6 +97,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#location()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is disabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -89,6 +108,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#item()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -97,6 +119,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#blockSelector()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -105,6 +130,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#packageIdentifier()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -113,6 +141,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#namespacedKey()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -121,6 +152,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#component()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -129,6 +163,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#uuid()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link DecoratableChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -137,6 +174,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link NumberChainRetriever} with {@link ArgumentParsers#number()} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @return a new {@link NumberChainRetriever} carrying all previous settings
      * @since 3.0.0
@@ -145,6 +185,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#forEnum(Class)} as parser.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @param enumType the enum type to get a parser for
      * @param <E>      the enum type
@@ -155,6 +198,9 @@ public interface InstructionChainParser {
 
     /**
      * Returns {@link DecoratableChainRetriever} with {@link ArgumentParsers#forIdentifier(Class)} to parse the argument.
+     * <p>
+     * <p>
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @param identifierClass the identifier class to parse
      * @param <I>             the identifier type

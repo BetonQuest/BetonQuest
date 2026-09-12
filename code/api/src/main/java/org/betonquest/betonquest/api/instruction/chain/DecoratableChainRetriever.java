@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<T> {
 
     /**
-     * Override whether the input should be cached instead of recalculating every time for resolving
+     * Override whether the result should be cached instead of recalculating every time for resolving
      * if there are no placeholders in the argument's input.
      * <p>
      * Caching should only be used for immutable objects, since the really same object will be returned each time.
