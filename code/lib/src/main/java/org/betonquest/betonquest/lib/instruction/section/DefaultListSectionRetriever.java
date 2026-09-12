@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.lib.instruction.section;
 
 import org.betonquest.betonquest.api.instruction.ValueValidator;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.section.ListSectionRetriever;
 import org.betonquest.betonquest.api.instruction.section.SectionChainInstruction;
@@ -49,33 +50,37 @@ public class DefaultListSectionRetriever<T> extends DefaultDecoratableSectionRet
         return new DefaultListArgumentParser<>(parser);
     }
 
+    private ListSectionRetriever<T> retriever(final DecoratedArgumentParser<List<T>> decoratable) {
+        return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable, pathMode, shouldCache);
+    }
+
     @Override
     public ListSectionRetriever<T> prefilter(final String expected, final List<T> fixedValue) {
-        return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable().prefilter(expected, fixedValue), pathMode, shouldCache);
+        return retriever(decoratable().prefilter(expected, fixedValue));
     }
 
     @Override
     public ListSectionRetriever<T> validate(final ValueValidator<List<T>> validator) {
-        return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable().validate(validator), pathMode, shouldCache);
+        return retriever(decoratable().validate(validator));
     }
 
     @Override
     public ListSectionRetriever<T> validate(final ValueValidator<List<T>> validator, final String errorMessage) {
-        return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable().validate(validator, errorMessage), pathMode, shouldCache);
+        return retriever(decoratable().validate(validator, errorMessage));
     }
 
     @Override
     public ListSectionRetriever<T> notEmpty() {
-        return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable().notEmpty(), pathMode, shouldCache);
+        return retriever(decoratable().notEmpty());
     }
 
     @Override
     public ListSectionRetriever<T> distinct() {
-        return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable().distinct(), pathMode, shouldCache);
+        return retriever(decoratable().distinct());
     }
 
     @Override
     public <U> ListSectionRetriever<T> distinct(final Function<T, U> extractor) {
-        return new DefaultListSectionRetriever<>(instruction, rootPath, decoratable().distinct(extractor), pathMode, shouldCache);
+        return retriever(decoratable().distinct(extractor));
     }
 }

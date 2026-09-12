@@ -58,7 +58,7 @@ public class DefaultSectionRetriever<T> implements SectionRetriever<T> {
      */
     public DefaultSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,
                                    final InstructionArgumentParser<T> parser, final boolean pathMode) {
-        this(instruction, rootPath, parser, pathMode, true);
+        this(instruction, rootPath, parser, pathMode, true); // TODO discuss if deprecate
     }
 
     /**
@@ -72,7 +72,7 @@ public class DefaultSectionRetriever<T> implements SectionRetriever<T> {
      */
     public DefaultSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,
                                    final InstructionArgumentParser<T> parser, final boolean pathMode, final boolean earlyValidation) {
-        this(instruction, rootPath, parser, pathMode, earlyValidation, false);
+        this(instruction, rootPath, parser, pathMode, earlyValidation, false); // TODO discuss if deprecate
     }
 
     /**
