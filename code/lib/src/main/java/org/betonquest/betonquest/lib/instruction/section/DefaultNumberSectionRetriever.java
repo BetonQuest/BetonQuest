@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.lib.instruction.section;
 
 import org.betonquest.betonquest.api.instruction.ValueValidator;
+import org.betonquest.betonquest.api.instruction.argument.DecoratedArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.InstructionArgumentParser;
 import org.betonquest.betonquest.api.instruction.argument.NumberArgumentParser;
 import org.betonquest.betonquest.api.instruction.section.NumberSectionRetriever;
@@ -47,33 +48,37 @@ public class DefaultNumberSectionRetriever extends DefaultDecoratableSectionRetr
         return new DefaultNumberArgumentParser(parser);
     }
 
+    private NumberSectionRetriever retriever(final DecoratedArgumentParser<Number> decoratable) {
+        return new DefaultNumberSectionRetriever(instruction, rootPath, decoratable, pathMode, shouldCache);
+    }
+
     @Override
     public NumberSectionRetriever validate(final ValueValidator<Number> validator) {
-        return new DefaultNumberSectionRetriever(instruction, rootPath, decoratable().validate(validator), pathMode, shouldCache);
+        return retriever(decoratable().validate(validator));
     }
 
     @Override
     public NumberSectionRetriever validate(final ValueValidator<Number> validator, final String errorMessage) {
-        return new DefaultNumberSectionRetriever(instruction, rootPath, decoratable().validate(validator, errorMessage), pathMode, shouldCache);
+        return retriever(decoratable().validate(validator, errorMessage));
     }
 
     @Override
     public NumberSectionRetriever prefilter(final String expected, final Number fixedValue) {
-        return new DefaultNumberSectionRetriever(instruction, rootPath, decoratable().prefilter(expected, fixedValue), pathMode, shouldCache);
+        return retriever(decoratable().prefilter(expected, fixedValue));
     }
 
     @Override
     public NumberSectionRetriever atLeast(final int min) {
-        return new DefaultNumberSectionRetriever(instruction, rootPath, decoratable().atLeast(min), pathMode, shouldCache);
+        return retriever(decoratable().atLeast(min));
     }
 
     @Override
     public NumberSectionRetriever atMost(final int max) {
-        return new DefaultNumberSectionRetriever(instruction, rootPath, decoratable().atMost(max), pathMode, shouldCache);
+        return retriever(decoratable().atMost(max));
     }
 
     @Override
     public NumberSectionRetriever inRange(final int min, final int max) {
-        return new DefaultNumberSectionRetriever(instruction, rootPath, decoratable().inRange(min, max), pathMode, shouldCache);
+        return retriever(decoratable().inRange(min, max));
     }
 }
