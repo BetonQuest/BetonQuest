@@ -123,4 +123,15 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
         ended.set(true);
         packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
     }
+
+    @Override
+    public void transferTo(final Interceptor next) {
+        if (next instanceof final PacketEventsInterceptor other) {
+            other.messages.addAll(messages);
+            ended.set(true);
+            packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
+            return;
+        }
+        end();
+    }
 }

@@ -37,4 +37,9 @@ public class NonInterceptingInterceptor implements Interceptor {
     public void end() {
         // Empty
     }
+
+    @Override
+    public void transferTo(final Interceptor next) {
+        // Empty
+    }
 }
