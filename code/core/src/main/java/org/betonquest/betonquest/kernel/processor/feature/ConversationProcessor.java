@@ -28,6 +28,7 @@ import org.betonquest.betonquest.conversation.ConversationData;
 import org.betonquest.betonquest.conversation.ConversationIOFactory;
 import org.betonquest.betonquest.conversation.ConversationPublicData;
 import org.betonquest.betonquest.conversation.DefaultConversationData;
+import org.betonquest.betonquest.conversation.interceptor.ConversationInterceptorManager;
 import org.betonquest.betonquest.conversation.interceptor.InterceptorFactory;
 import org.betonquest.betonquest.database.Saver;
 import org.betonquest.betonquest.kernel.processor.PostLoadTask;
@@ -52,7 +53,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Stores Conversation Data and validates it.
  */
-@SuppressWarnings("PMD.CouplingBetweenObjects")
+@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
 public class ConversationProcessor extends SectionProcessor<ConversationIdentifier, DefaultConversationData> implements Conversations, PostLoadTask {
 
     /**
@@ -64,6 +65,11 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
      * The map of all active conversations.
      */
     private final Map<Profile, Conversation> activeConversations;
+
+    /**
+     * The interceptor manager for conversations.
+     */
+    private final ConversationInterceptorManager interceptorManager;
 
     /**
      * Registry for available ConversationIOs.
@@ -144,6 +150,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         super(log, placeholders, identifierFactory, "Conversation", "conversations");
         this.loggerFactory = loggerFactory;
         this.activeConversations = new ProfileKeyMap<>(profileProvider, new ConcurrentHashMap<>());
+        this.interceptorManager = new ConversationInterceptorManager(plugin, profileProvider);
         this.starter = new ConversationStarter(loggerFactory, loggerFactory.create(ConversationStarter.class),
                 activeConversations, plugin, localizations, actionManager, conditionManager, this, identifiers, saver);
         this.textCreator = textCreator;
@@ -185,7 +192,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         final Argument<ConversationIOFactory> conversationIO = instruction.chainForArgument(rawConvIO).string().list().map(convIORegistry::getFactory).get();
         final Argument<InterceptorFactory> interceptor = instruction.chainForArgument(rawInterceptor).string().list().map(interceptorRegistry::getFactory).get();
         final Argument<Number> interceptorDelay = instruction.chainForArgument(rawInterceptorDelay).number()
-                .validate(delay -> delay.doubleValue() > 0, "Expected a non-negative number for 'interceptor_delay', got '%s' instead.").get();
+                .validate(delay -> delay.doubleValue() >= 0, "Expected a non-negative number for 'interceptor_delay', got '%s' instead.").get();
 
         final ConversationPublicData publicData = new ConversationPublicData(identifier, quester, stop, blockTransfer, finalActions, conversationIO, interceptor, interceptorDelay, invincible);
         final DefaultConversationData conversationData = new DefaultConversationData(loggerFactory.create(DefaultConversationData.class), questPackageManager,
@@ -270,9 +277,16 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
 
     @Override
     public void cancel(final OnlineProfile profile) {
+        cancel(profile, false);
+    }
+
+    @Override
+    public void cancel(final OnlineProfile profile, final boolean skipDelay) {
         final Conversation conversation = getActiveConversation(profile);
         if (conversation != null) {
-            conversation.endConversation();
+            conversation.endConversation(skipDelay);
+        } else if (skipDelay) {
+            interceptorManager.cancelPendingInterceptor(profile);
         }
     }
 
@@ -284,10 +298,10 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
     @Override
     public void sendBypassMessage(final OnlineProfile profile, final Component message) {
         final Conversation activeConversation = getActiveConversation(profile);
-        if (activeConversation == null) {
-            profile.getPlayer().sendMessage(message);
-        } else {
+        if (activeConversation != null) {
             activeConversation.sendMessage(message);
+        } else if (!interceptorManager.sendBypassMessage(profile, message)) {
+            profile.getPlayer().sendMessage(message);
         }
     }
 
@@ -304,6 +318,15 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
             log.debug("Could not resolve quester name for profile '%s' in conversation '%s': %s".formatted(profile, activeConversation.getID(), e.getMessage()), e);
             return Optional.empty();
         }
+    }
+
+    /**
+     * Gets the interceptor manager.
+     *
+     * @return the interceptor manager
+     */
+    public ConversationInterceptorManager getInterceptorManager() {
+        return interceptorManager;
     }
 
     /**

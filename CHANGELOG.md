@@ -15,6 +15,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - offset parameter for menu slots to support pagination
 - `pdc` handler to `simple` item
 - `target` location to `particle` action
+- `skipDelay` flag to `cancelconversation` action
+- ability to start a new conversation within the interceptor delay window while preserving intercepted messages
 ### Changed
 - `lore` of `item` placeholder can now be used without number to get all lines
 - `chat` notify io now only sends messages during a conversation if `bypassInterceptor` is set to `true`

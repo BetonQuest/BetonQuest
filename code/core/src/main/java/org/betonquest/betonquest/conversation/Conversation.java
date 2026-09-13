@@ -138,6 +138,11 @@ public class Conversation {
     private final Interceptor interceptor;
 
     /**
+     * The conversation processor instance.
+     */
+    private final ConversationProcessor conversationProcessor;
+
+    /**
      * The action manager that manages the actions of this conversation.
      */
     private final ActionManager actionManager;
@@ -212,6 +217,7 @@ public class Conversation {
         this.startSender = new IngameNotificationSender(log, localizations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_start");
         this.endSender = new IngameNotificationSender(log, localizations, pack, conversationID.getFull(), NotificationLevel.INFO, "conversation_end");
 
+        this.conversationProcessor = conversationProcessor;
         this.data = conversationProcessor.getData(conversationID);
         this.inOut = data.getPublicData().convIO().getValue(onlineProfile).parse(this, onlineProfile);
         this.interceptor = data.getPublicData().interceptor().getValue(onlineProfile).create(onlineProfile);
@@ -335,12 +341,22 @@ public class Conversation {
      * active conversations.
      */
     public void endConversation() {
+        endConversation(false);
+    }
+
+    /**
+     * Ends conversation, firing final actions and removing it from the list of
+     * active conversations, with an option to skip the interceptor delay.
+     *
+     * @param skipDelay whether the interceptor delay should be skipped
+     */
+    public void endConversation(final boolean skipDelay) {
         if (state.isInactive()) {
             return;
         }
         if (plugin.getServer().isPrimaryThread()) {
             if (!lock.writeLock().tryLock()) {
-                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this::endConversation);
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> endConversation(skipDelay));
                 return;
             }
         } else {
@@ -360,29 +376,31 @@ public class Conversation {
                     log.warn(pack, "Error while firing final actions: " + e.getMessage(), e);
                 }
 
-                endConversationDelayed();
+                if (onlineProfile.getOnlineProfile().isPresent()) {
+                    endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
+                }
+
+                endCallable.run();
+                new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
+
+                handleInterceptorEnd(skipDelay);
             });
         } finally {
             lock.writeLock().unlock();
         }
     }
 
-    private void endConversationDelayed() {
+    private void handleInterceptorEnd(final boolean skipDelay) {
+        if (skipDelay) {
+            conversationProcessor.getInterceptorManager().endPendingInterceptor(onlineProfile, interceptor);
+            return;
+        }
         try {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    interceptor.end();
-                    if (onlineProfile.getOnlineProfile().isPresent()) {
-                        endSender.sendNotification(onlineProfile, new VariableReplacement("npc", data.getPublicData().getQuester(log, onlineProfile)));
-                    }
-
-                    endCallable.run();
-                    new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), Conversation.this).callEvent();
-                }
-            }.runTaskLaterAsynchronously(plugin, data.getPublicData().interceptorDelay().getValue(onlineProfile).longValue());
+            final long delay = data.getPublicData().interceptorDelay().getValue(onlineProfile).longValue();
+            conversationProcessor.getInterceptorManager().scheduleInterceptorEnd(onlineProfile, interceptor, delay);
         } catch (final QuestException e) {
             log.warn(pack, "Error while ending conversation: " + e.getMessage(), e);
+            conversationProcessor.getInterceptorManager().endPendingInterceptor(onlineProfile, interceptor);
         }
     }
 
@@ -470,13 +488,22 @@ public class Conversation {
             final PlayerConversationState state = new PlayerConversationState(identifier, nextNPCOption.name(), center);
             saver.add(new Record(UpdateType.UPDATE_CONVERSATION, state.toString(), onlineProfile.getProfileUUID().toString()));
 
-            interceptor.end();
+            conversationProcessor.getInterceptorManager().endPendingInterceptor(onlineProfile, interceptor);
 
             endCallable.run();
             new PlayerConversationEndEvent(onlineProfile, !plugin.getServer().isPrimaryThread(), this).callEvent();
         } finally {
             lock.readLock().unlock();
         }
+    }
+
+    /**
+     * Gets the interceptor used by this conversation.
+     *
+     * @return the interceptor
+     */
+    public Interceptor getInterceptor() {
+        return interceptor;
     }
 
     /**
@@ -623,6 +650,7 @@ public class Conversation {
                 conversation.state = ConversationState.ACTIVE;
 
                 conversation.inOut.begin();
+                conversation.conversationProcessor.getInterceptorManager().transferPendingInterceptor(onlineProfile, conversation.interceptor);
                 conversation.interceptor.begin();
 
                 conversation.printNPCText();

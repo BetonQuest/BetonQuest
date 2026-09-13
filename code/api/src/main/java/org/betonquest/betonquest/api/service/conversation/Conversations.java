@@ -72,8 +72,22 @@ public interface Conversations {
      *
      * @param profile the profile to cancel the conversation for
      * @since 3.0.0
+     * @deprecated for removal in {@code 4.0.0}, use {@link #cancel(OnlineProfile, boolean)} instead
      */
+    @Deprecated(forRemoval = true, since = "3.3.0")
     void cancel(OnlineProfile profile);
+
+    /**
+     * Cancels the active conversation for the given profile with an option to skip the interceptor delay.
+     * If the profile is not currently in a conversation, this method will do nothing.
+     *
+     * @param profile   the profile to cancel the conversation for
+     * @param skipDelay whether the interceptor delay should be skipped
+     * @since 3.3.0
+     */
+    default void cancel(final OnlineProfile profile, final boolean skipDelay) {
+        cancel(profile);
+    }
 
     /**
      * Gets the display name of the quester for the given profile in the active conversation.
