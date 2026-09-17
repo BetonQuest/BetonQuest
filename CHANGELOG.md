@@ -29,6 +29,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `extends` in `conversations` sometimes crashing with IllegalStateException
 - `section` placeholder did not include target path to subsections
 - async database handling by using default java executor service implementation instead of manual thread handling
+- PlayerHider could override each other resulting in unexpected behavior
 ### Security
 
 ## [3.2.0] - 2026-08-17
