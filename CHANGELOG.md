@@ -30,6 +30,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `section` placeholder did not include target path to subsections
 - async database handling by using default java executor service implementation instead of manual thread handling
 - PlayerHider could override each other resulting in unexpected behavior
+- NPCHider conditions where all joined instead of alternated if multiple hiders where configured
 ### Security
 
 ## [3.2.0] - 2026-08-17
