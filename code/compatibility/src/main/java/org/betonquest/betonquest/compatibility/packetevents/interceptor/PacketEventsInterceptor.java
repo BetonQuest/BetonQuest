@@ -114,14 +114,14 @@ public class PacketEventsInterceptor implements Interceptor, PacketListener {
     @Override
     public void end() {
         final User user = packetEventsAPI.getPlayerManager().getUser(onlineProfile.getPlayer());
+        packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
         if (user != null) {
             chatHistory.sendHistory(onlineProfile.getPlayer());
             while (!messages.isEmpty()) {
-                user.sendPacketSilently(messages.poll());
+                user.sendPacket(messages.poll());
             }
         }
         ended.set(true);
-        packetEventsAPI.getEventManager().unregisterListener(packetListenerCommon);
     }
 
     @Override
