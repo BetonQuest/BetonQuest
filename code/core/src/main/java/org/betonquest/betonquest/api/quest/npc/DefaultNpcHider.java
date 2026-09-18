@@ -21,8 +21,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,7 +66,7 @@ public class DefaultNpcHider {
     /**
      * Npc ids mapped to their hide conditions.
      */
-    private final Map<NpcIdentifier, Set<ConditionIdentifier>> npcs;
+    private final Map<NpcIdentifier, List<List<ConditionIdentifier>>> npcs;
 
     /**
      * Instruction API to resolve {@link SectionInstruction}s.
@@ -129,11 +129,13 @@ public class DefaultNpcHider {
         final NpcIdentifier npcId = npcIdentifierFactory.parseIdentifier(instruction.getPackage(), idString);
         final List<ConditionIdentifier> conditions = instruction.read().value(idString)
                 .identifier(ConditionIdentifier.class).list().get().getValue(null);
-        if (npcs.containsKey(npcId)) {
-            npcs.get(npcId).addAll(conditions);
-        } else {
-            npcs.put(npcId, new HashSet<>(conditions));
-        }
+        npcs.compute(npcId, (key, value) -> {
+            if (value == null) {
+                value = new ArrayList<>();
+            }
+            value.add(conditions);
+            return value;
+        });
     }
 
     /**
@@ -169,11 +171,9 @@ public class DefaultNpcHider {
      * @return if the npc is stored and the hide conditions are met
      */
     public boolean isHidden(final NpcIdentifier npcId, final OnlineProfile profile) {
-        final Set<ConditionIdentifier> conditions = npcs.get(npcId);
-        if (conditions == null || conditions.isEmpty()) {
-            return false;
-        }
-        return conditionManager.testAll(profile, conditions);
+        final List<List<ConditionIdentifier>> conditionsList = npcs.get(npcId);
+        return conditionsList != null && conditionsList.stream()
+                .anyMatch(conditions -> conditionManager.testAll(profile, conditions));
     }
 
     /**
@@ -204,8 +204,8 @@ public class DefaultNpcHider {
      * @param npcId         the id of the Npc
      */
     public void applyVisibility(final OnlineProfile onlineProfile, final NpcIdentifier npcId) {
-        final Set<ConditionIdentifier> conditions = npcs.get(npcId);
-        if (conditions == null) {
+        final List<List<ConditionIdentifier>> conditionsList = npcs.get(npcId);
+        if (conditionsList == null) {
             return;
         }
         final Set<Npc<?>> npcs;
@@ -219,7 +219,8 @@ public class DefaultNpcHider {
         if (spawned.isEmpty()) {
             return;
         }
-        final boolean shouldHide = conditions.isEmpty() || conditionManager.testAll(onlineProfile, conditions);
+        final boolean shouldHide = conditionsList.stream()
+                .anyMatch(conditions -> conditionManager.testAll(onlineProfile, conditions));
         for (final Npc<?> npc : spawned) {
             if (shouldHide) {
                 npc.hide(onlineProfile);
