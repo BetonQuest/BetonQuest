@@ -49,6 +49,7 @@ import org.betonquest.betonquest.quest.action.give.GiveActionFactory;
 import org.betonquest.betonquest.quest.action.heal.HealActionFactory;
 import org.betonquest.betonquest.quest.action.hunger.HungerActionFactory;
 import org.betonquest.betonquest.quest.action.item.ItemDurabilityActionFactory;
+import org.betonquest.betonquest.quest.action.item.ItemOverrideActionFactory;
 import org.betonquest.betonquest.quest.action.journal.GiveJournalActionFactory;
 import org.betonquest.betonquest.quest.action.journal.JournalActionFactory;
 import org.betonquest.betonquest.quest.action.kill.KillActionFactory;
@@ -188,6 +189,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("objective", new ObjectiveActionFactory(plugin, loggerFactory, profileProvider, saver,
                 objectiveManager, playerDataStorage));
         actionTypes.register("opsudo", new OpSudoActionFactory(server));
+        actionTypes.register("itemOverride", new ItemOverrideActionFactory());
         actionTypes.register("party", new PartyActionFactory(profileProvider, actionManager, conditionManager));
         actionTypes.registerCombined("pickrandom", new PickRandomActionFactory(actionManager));
         actionTypes.register("point", new PointActionFactory(loggerFactory, playerDataStorage,
