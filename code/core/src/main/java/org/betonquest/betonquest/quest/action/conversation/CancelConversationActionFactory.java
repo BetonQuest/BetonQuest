@@ -1,5 +1,7 @@
 package org.betonquest.betonquest.quest.action.conversation;
 
+import org.betonquest.betonquest.api.QuestException;
+import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.quest.action.OnlineActionAdapter;
 import org.betonquest.betonquest.api.quest.action.PlayerAction;
@@ -26,7 +28,8 @@ public class CancelConversationActionFactory implements PlayerActionFactory {
     }
 
     @Override
-    public PlayerAction parsePlayer(final Instruction instruction) {
-        return new OnlineActionAdapter(new CancelConversationAction(conversations));
+    public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
+        final FlagArgument<Boolean> skipDelay = instruction.bool().getFlag("skipDelay", true);
+        return new OnlineActionAdapter(new CancelConversationAction(conversations, skipDelay));
     }
 }
