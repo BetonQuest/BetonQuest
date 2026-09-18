@@ -85,6 +85,68 @@
       }
     },
     {
+      "id": "3.5",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 3.5.0",
+          "features": [
+            "to be determined..."
+          ]
+        },
+        "north-east": {
+          "title": "tbd",
+          "features": [
+          ]
+        },
+        "east": {
+          "title": "tbd",
+          "features": [
+          ]
+        },
+        "south-east": {
+          "title": "tbd",
+          "features": [
+          ]
+        }
+      }
+    },
+    {
+      "id": "3.4",
+      "style": "default",
+      "tiles": {
+        "center": {
+          "title": "Version 3.4.0",
+          "features": [
+            "- Element Polishing: actions, objectives, and conditions",
+            "- And new elements!"
+          ]
+        },
+        "north-west": {
+          "title": "Objectives!",
+          "features": [
+            "- Polish all existing objectives",
+            "- New: lectern"
+          ]
+        },
+        "west": {
+          "title": "Conditions!",
+          "features": [
+            "- Polish all existing conditions",
+            ""
+          ]
+        },
+        "south-west": {
+          "title": "Actions!",
+          "features": [
+            "- Polish all existing actions",
+            "- New: particle",
+            "- New: projectile"
+          ]
+        }
+      }
+    },
+    {
       "id": "3.3",
       "style": "default",
       "tiles": {

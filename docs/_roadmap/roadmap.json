@@ -63,6 +63,50 @@
       }
     },
     {
+      "id": "3.5",
+      "tiles": {
+        "center": "grass",
+        "east": "path",
+        "west": "grass",
+        "north-east": "path",
+        "north-west": "grass",
+        "south-east": "path",
+        "south-west": "grass"
+      },
+      "decorations": {
+        "center": {
+          "asset": "stonecutter",
+          "offset": {
+            "x": 0,
+            "y": -110
+          },
+          "clip": false
+        }
+      }
+    },
+    {
+      "id": "3.4",
+      "tiles": {
+        "center": "grass",
+        "east": "grass",
+        "west": "path",
+        "north-east": "grass",
+        "north-west": "path",
+        "south-east": "grass",
+        "south-west": "path"
+      },
+      "decorations": {
+        "center": {
+          "asset": "grindstone",
+          "offset": {
+            "x": 0,
+            "y": -110
+          },
+          "clip": false
+        }
+      }
+    },
+    {
       "id": "3.3",
       "tiles": {
         "center": "grass",
