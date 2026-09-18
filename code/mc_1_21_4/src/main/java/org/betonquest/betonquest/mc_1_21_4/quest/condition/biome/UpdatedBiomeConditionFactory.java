@@ -29,7 +29,7 @@ public class UpdatedBiomeConditionFactory implements PlayerConditionFactory {
 
     @Override
     public PlayerCondition parsePlayer(final Instruction instruction) throws QuestException {
-        final Argument<Biome> biome = instruction.parse(BIOME_PARSER).get();
+        final Argument<Biome> biome = instruction.parse(BIOME_PARSER).cache(true).get();
         return new OnlineConditionAdapter(new BiomeCondition(biome));
     }
 }

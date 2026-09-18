@@ -59,4 +59,21 @@ public interface SectionRetriever<T> {
      * @since 3.0.0
      */
     SectionRetriever<T> withoutEarlyValidation();
+
+    /**
+     * Override whether the result should be cached instead of recalculating every time for resolving
+     * if there are no placeholders in the argument's input.
+     * <p>
+     * Caching should only be used for immutable objects, since the really same object will be returned each time.
+     * <p>
+     * No cache should be used for all mutable objects,
+     * so no accidental modifications of the underlying objects are made.
+     *
+     * @param cache if the argument should be cached if it does not contain placeholders
+     * @return the new retriever with the given caching
+     * @since 3.3.0
+     */
+    default SectionRetriever<T> cache(final boolean cache) {
+        return this;
+    }
 }

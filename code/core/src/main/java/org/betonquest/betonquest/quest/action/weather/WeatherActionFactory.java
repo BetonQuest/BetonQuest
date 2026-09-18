@@ -49,7 +49,7 @@ public class WeatherActionFactory implements PlayerActionFactory, PlayerlessActi
     }
 
     private NullableActionAdapter parseWeatherAction(final Instruction instruction) throws QuestException {
-        final Argument<Weather> weather = instruction.parse(Weather::parseWeather).get();
+        final Argument<Weather> weather = instruction.parse(Weather::parseWeather).cache(true).get();
         final Argument<World> world = instruction.world().get("world").orElse(DefaultArguments.PLAYER_WORLD);
         final Argument<Number> duration = instruction.number().get("duration", 0);
         return new NullableActionAdapter(new WeatherAction(weather, world, duration));

@@ -56,7 +56,7 @@ public class CitizensStopActionFactory implements PlayerlessActionFactory, Playe
     }
 
     private NullableActionAdapter createCitizensStopAction(final Instruction instruction) throws QuestException {
-        final Argument<NpcIdentifier> npcId = instruction.parse(citizensArgument).get();
+        final Argument<NpcIdentifier> npcId = instruction.parse(citizensArgument).cache(true).get();
         return new NullableActionAdapter(new CitizensStopAction(npcManager, npcId, citizensMoveController));
     }
 }

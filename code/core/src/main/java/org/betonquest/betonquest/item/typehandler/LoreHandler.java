@@ -81,7 +81,7 @@ public class LoreHandler implements LoreMetaHandler {
                     lorelei.add(instruction.chainForArgument(line).component().map(Component::compact).get().getValue(null));
                 }
                 return Pair.of(Existence.REQUIRED, lorelei);
-            }).get()::getValue;
+            }).cache(true).get()::getValue;
         }
         final Argument<Boolean> exact = instruction.bool().map(bool -> !bool).get("lore-containing", true);
         final Attribute questAttribute = questHandler.parse(instruction);

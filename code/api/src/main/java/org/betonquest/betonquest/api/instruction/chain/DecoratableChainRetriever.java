@@ -25,6 +25,24 @@ import java.util.stream.Collectors;
 public interface DecoratableChainRetriever<T> extends InstructionChainRetriever<T> {
 
     /**
+     * Override whether the result should be cached instead of recalculating every time for resolving
+     * if there are no placeholders in the argument's input.
+     * <p>
+     * Caching should only be used for immutable objects, since the really same object will be returned each time.
+     * <p>
+     * No cache should be used for all mutable objects,
+     * so no accidental modifications of the underlying objects are made.
+     *
+     * @param cache if the argument should be cached if it does not contain placeholders
+     * @return the new retriever with the given caching
+     * @since 3.3.0
+     */
+    @Contract(value = "_ -> new", pure = true)
+    default DecoratableChainRetriever<T> cache(final boolean cache) {
+        return this;
+    }
+
+    /**
      * Instead of reading a single value, parse the argument as a list of values.
      * Default implementation forwards to {@link #collect(Collector)} using {@link Collectors#toList()}.
      *
