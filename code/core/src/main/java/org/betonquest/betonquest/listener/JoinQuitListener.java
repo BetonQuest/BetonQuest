@@ -100,7 +100,7 @@ public class JoinQuitListener implements Listener {
      *
      * @param event the async event to listen
      */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void playerPreLogin(final AsyncPlayerPreLoginEvent event) {
         log.debug(ASYNC_JOIN_EVENT, "Player '%s' with uuid '%s' has login result '%s'".formatted(event.getName(), event.getUniqueId(), event.getLoginResult()));
         if (event.getLoginResult() != Result.ALLOWED) {
