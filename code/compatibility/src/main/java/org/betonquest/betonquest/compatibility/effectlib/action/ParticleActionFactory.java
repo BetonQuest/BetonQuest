@@ -43,8 +43,9 @@ public class ParticleActionFactory implements PlayerActionFactory {
         }
         final String effectClass = instruction.chainForArgument(rawEffectClass).string().get().getValue(null);
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);
+        final Argument<Location> targetLoc = instruction.location().get("target").orElse(null);
         final FlagArgument<Boolean> privateParticle = instruction.bool().getFlag("private", true);
-        final ParticleAction particleAction = new ParticleAction(manager, effectClass, parameters, loc, privateParticle);
+        final ParticleAction particleAction = new ParticleAction(manager, effectClass, parameters, loc, targetLoc, privateParticle);
         return new OnlineActionAdapter(particleAction);
     }
 }
