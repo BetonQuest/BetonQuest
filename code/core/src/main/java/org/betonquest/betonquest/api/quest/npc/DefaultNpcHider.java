@@ -129,13 +129,7 @@ public class DefaultNpcHider {
         final NpcIdentifier npcId = npcIdentifierFactory.parseIdentifier(instruction.getPackage(), idString);
         final List<ConditionIdentifier> conditions = instruction.read().value(idString)
                 .identifier(ConditionIdentifier.class).list().get().getValue(null);
-        npcs.compute(npcId, (key, value) -> {
-            if (value == null) {
-                value = new ArrayList<>();
-            }
-            value.add(conditions);
-            return value;
-        });
+        npcs.computeIfAbsent(npcId, key -> new ArrayList<>()).add(conditions);
     }
 
     /**
@@ -171,9 +165,9 @@ public class DefaultNpcHider {
      * @return if the npc is stored and the hide conditions are met
      */
     public boolean isHidden(final NpcIdentifier npcId, final OnlineProfile profile) {
-        final List<List<ConditionIdentifier>> conditionsList = npcs.get(npcId);
-        return conditionsList != null && conditionsList.stream()
-                .anyMatch(conditions -> conditionManager.testAll(profile, conditions));
+        final List<List<ConditionIdentifier>> conditions = npcs.get(npcId);
+        return conditions != null && conditions.stream()
+                .anyMatch(conditionsList -> conditionManager.testAll(profile, conditionsList));
     }
 
     /**
@@ -204,8 +198,8 @@ public class DefaultNpcHider {
      * @param npcId         the id of the Npc
      */
     public void applyVisibility(final OnlineProfile onlineProfile, final NpcIdentifier npcId) {
-        final List<List<ConditionIdentifier>> conditionsList = npcs.get(npcId);
-        if (conditionsList == null) {
+        final List<List<ConditionIdentifier>> conditions = npcs.get(npcId);
+        if (conditions == null) {
             return;
         }
         final Set<Npc<?>> npcs;
@@ -219,8 +213,8 @@ public class DefaultNpcHider {
         if (spawned.isEmpty()) {
             return;
         }
-        final boolean shouldHide = conditionsList.stream()
-                .anyMatch(conditions -> conditionManager.testAll(onlineProfile, conditions));
+        final boolean shouldHide = conditions.stream()
+                .anyMatch(conditionsList -> conditionManager.testAll(onlineProfile, conditionsList));
         for (final Npc<?> npc : spawned) {
             if (shouldHide) {
                 npc.hide(onlineProfile);
