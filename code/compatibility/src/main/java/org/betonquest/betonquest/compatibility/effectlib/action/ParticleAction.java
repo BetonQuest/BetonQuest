@@ -72,12 +72,12 @@ public class ParticleAction implements OnlineAction {
     @Override
     public void execute(final OnlineProfile profile) throws QuestException {
         final Player player = profile.getPlayer();
-        final Location location = (loc == null) ? player.getLocation() : loc.getValue(profile);
+        final Location location = loc == null ? null : loc.getValue(profile);
         final Location targetLocation = targetLoc == null ? null : targetLoc.getValue(profile);
         final Player targetPlayer = privateParticle.getValue(profile).orElse(false) ? player : null;
         final Object effect = manager.start(effectClass,
                 parameters,
-                new DynamicLocation(location, null),
+                new DynamicLocation(location, location == null ? player : null),
                 new DynamicLocation(targetLocation, null),
                 (ConfigurationSection) null,
                 targetPlayer);

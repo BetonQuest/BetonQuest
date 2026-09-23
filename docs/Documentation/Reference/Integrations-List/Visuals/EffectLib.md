@@ -57,6 +57,8 @@ __Description__: Load an effect defined in `effects` section and display it on p
 | target <br>[[Location]](../../Definition-Encyclopedia.md#unified-location-format) | Optional <br>[Null]    | Target location for the effect.                               |
 | private <br>[Boolean]                                                             | Flag <br>[false, true] | Display the effect only for the player it is ran for.         |
 
+When you want to fixate the effect's location to the player's start position you have to use `loc:%location%`.
+
 ```YAML title="Example"
 effects:
   beton:

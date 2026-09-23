@@ -21,6 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `non-positive` (<= 0) update intervals deactivate automatic updating
 - `block selector` no longer uses `matchMaterial` which strips regex characters and resolved to unwanted values
 - `simple` item now supports placeholders and got largely reworked
+- `particle` action now uses the player as dynamic location instead of getting their static location when no `loc` is given
 ### Deprecated
 ### Removed
 - `mysql.reconnect_interval` config option since it is no longer used
