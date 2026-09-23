@@ -47,12 +47,17 @@ effectlib: #(1)!
 ### `Particle`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `particle <effect> [loc] [private]`  
+__Syntax__: `particle <effect> [loc] [target] {private}`  
 __Description__: Load an effect defined in `effects` section and display it on player's location.
 
-The only argument is the name of the effect. You can optionally add `loc:` argument
-followed by a location written like `100;200;300;world;180;-90` to put it on that location.
-If you add `private` argument the effect will only be displayed to the player for which you ran the action.
+| Parameter                                                                         | Type                   | Explanation                                                   |
+|-----------------------------------------------------------------------------------|------------------------|---------------------------------------------------------------|
+| effect <br>[Effect]                                                               | Required               | The effect to use.                                            |
+| loc <br>[[Location]](../../Definition-Encyclopedia.md#unified-location-format)    | Optional <br>[Null]    | Source location, if not the player's location should be used. |
+| target <br>[[Location]](../../Definition-Encyclopedia.md#unified-location-format) | Optional <br>[Null]    | Target location for the effect.                               |
+| private <br>[Boolean]                                                             | Flag <br>[false, true] | Display the effect only for the player it is ran for.         |
+
+When you want to fixate the effect's location to the player's start position you have to use `loc:%location%`.
 
 ```YAML title="Example"
 effects:
@@ -64,6 +69,9 @@ effects:
     circles: 20
     grow: 3
     radius: 30
+  pointer:
+    class: LineEffect
 actions:
   playEffect: "particle beton loc:100;200;300;world;180;-90 private"
+  showPointer: "particle pointer target:100;200;300;world"
 ```

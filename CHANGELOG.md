@@ -14,12 +14,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `trade` objective to track trades
 - offset parameter for menu slots to support pagination
 - `pdc` handler to `simple` item
+- `target` location to `particle` action
 ### Changed
 - `lore` of `item` placeholder can now be used without number to get all lines
 - `chat` notify io now only sends messages during a conversation if `bypassInterceptor` is set to `true`
 - `non-positive` (<= 0) update intervals deactivate automatic updating
 - `block selector` no longer uses `matchMaterial` which strips regex characters and resolved to unwanted values
 - `simple` item now supports placeholders and got largely reworked
+- `particle` action now uses the player as dynamic location instead of getting their static location when no `loc` is given
 ### Deprecated
 ### Removed
 - `mysql.reconnect_interval` config option since it is no longer used
