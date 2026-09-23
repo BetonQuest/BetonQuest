@@ -74,14 +74,14 @@ public class LoreHandler implements LoreMetaHandler {
         if (rawLoreLines.isEmpty()) {
             lore = ExistenceArgument.whateverEmptyList();
         } else {
-            lore = instruction.chainForArgument(rawLoreLines).parse(data -> {
+            lore = ExistenceArgument.apply(instruction.chainForArgument(rawLoreLines).parse(data -> {
                 final String[] split = data.split(";");
                 final List<Component> lorelei = new ArrayList<>(split.length);
                 for (final String line : split) {
                     lorelei.add(instruction.chainForArgument(line).component().map(Component::compact).get().getValue(null));
                 }
-                return Pair.of(Existence.REQUIRED, lorelei);
-            }).get()::getValue;
+                return lorelei;
+            })).get()::getValue;
         }
         final Argument<Boolean> exact = instruction.bool().map(bool -> !bool).get("lore-containing", true);
         final Attribute questAttribute = questHandler.parse(instruction);
@@ -101,9 +101,10 @@ public class LoreHandler implements LoreMetaHandler {
         @Override
         public ResolvedLoreAttribute resolve(@Nullable final Profile profile) throws QuestException {
             final Pair<Existence, List<Component>> pair = this.lore.getValue(profile);
+            final List<Component> lore = pair.getRight();
             final boolean exact = this.exact.getValue(profile);
             final QuestHandler.QuestResolved questResolved = (QuestHandler.QuestResolved) questAttribute.resolve(profile);
-            return new Resolved(pair.getLeft(), pair.getRight(), exact, questResolved);
+            return new Resolved(pair.getLeft(), lore == null ? List.of() : lore, exact, questResolved);
         }
     }
 
