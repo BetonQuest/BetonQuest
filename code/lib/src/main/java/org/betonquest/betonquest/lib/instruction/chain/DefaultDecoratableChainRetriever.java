@@ -26,7 +26,8 @@ public class DefaultDecoratableChainRetriever<T> extends DefaultInstructionChain
      *
      * @param instruction the instruction used to retrieve the argument
      * @param argument    the argument parser
-     * @deprecated use {@link #DefaultDecoratableChainRetriever(ChainableInstruction, InstructionArgumentParser, boolean)}
+     * @deprecated for removal in {@code 4.0.0},
+     * use {@link #DefaultDecoratableChainRetriever(ChainableInstruction, InstructionArgumentParser, boolean)}
      */
     @Deprecated(forRemoval = true, since = "3.3.0")
     public DefaultDecoratableChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<T> argument) {

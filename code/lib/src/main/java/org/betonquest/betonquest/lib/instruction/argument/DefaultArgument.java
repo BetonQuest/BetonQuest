@@ -81,6 +81,25 @@ public class DefaultArgument<T> implements Argument<T> {
     /**
      * Resolves a string that may contain placeholders to an {@link Argument} of the given type.
      * Forwards to {@link #DefaultArgument(PlaceholderManager, QuestPackage, String, ValueParser, boolean, boolean)}
+     * with cache to false.
+     *
+     * @param placeholders    the {@link PlaceholderManager} to create and resolve placeholders
+     * @param pack            the package of the instruction in which the argument is used
+     * @param input           the string that may contain placeholders
+     * @param valueParser     the valueParser to convert the resolved argument to the given type
+     * @param earlyValidation whether to validate the input early to discover bugs and mistakes on creation
+     * @throws QuestException if the placeholders could not be created or resolved to the given type
+     * @deprecated for removal in {@code 4.0.0}
+     */
+    @Deprecated(forRemoval = true, since = "3.3.0")
+    public DefaultArgument(final PlaceholderManager placeholders, @Nullable final QuestPackage pack, final String input,
+                           final ValueParser<T> valueParser, final boolean earlyValidation) throws QuestException {
+        this(placeholders, pack, input, valueParser, earlyValidation, false);
+    }
+
+    /**
+     * Resolves a string that may contain placeholders to an {@link Argument} of the given type.
+     * Forwards to {@link #DefaultArgument(PlaceholderManager, QuestPackage, String, ValueParser, boolean, boolean)}
      * with earlyValidation set to true by default and cache to false.
      *
      * @param placeholders the {@link PlaceholderManager} to create and resolve placeholders
