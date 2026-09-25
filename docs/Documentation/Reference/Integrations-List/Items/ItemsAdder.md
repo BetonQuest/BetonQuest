@@ -1,6 +1,6 @@
 # [ItemsAdder](https://www.spigotmc.org/resources/73355/)
 
-@snippet:versions:minimum@ _4.0.10_
+@snippet:versions:minimum@ _4.0.17_
 
 ## Items
 
