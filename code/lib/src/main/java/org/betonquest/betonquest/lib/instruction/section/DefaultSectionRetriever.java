@@ -43,6 +43,11 @@ public class DefaultSectionRetriever<T> implements SectionRetriever<T> {
     protected final boolean earlyValidation;
 
     /**
+     * If the argument result should be cached if it does not contain placeholders.
+     */
+    protected final boolean shouldCache;
+
+    /**
      * Creates a new DefaultSectionRetriever.
      * Forwards to the other constructor with earlyValidation set to true.
      *
@@ -50,7 +55,10 @@ public class DefaultSectionRetriever<T> implements SectionRetriever<T> {
      * @param rootPath    the root path to the section.
      * @param parser      the parser used to parse the section.
      * @param pathMode    if the parser is in path mode.
+     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultSectionRetriever(SectionChainInstruction,
+     * ValueSource, InstructionArgumentParser, boolean, boolean, boolean)}
      */
+    @Deprecated(forRemoval = true, since = "3.3.0")
     public DefaultSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,
                                    final InstructionArgumentParser<T> parser, final boolean pathMode) {
         this(instruction, rootPath, parser, pathMode, true);
@@ -64,33 +72,58 @@ public class DefaultSectionRetriever<T> implements SectionRetriever<T> {
      * @param parser          the parser used to parse the section.
      * @param pathMode        if the parser is in path mode.
      * @param earlyValidation if the argument parser should perform early validation.
+     * @deprecated for removal in {@code 4.0.0}, use {@link #DefaultSectionRetriever(SectionChainInstruction,
+     * ValueSource, InstructionArgumentParser, boolean, boolean, boolean)}
      */
+    @Deprecated(forRemoval = true, since = "3.3.0")
     public DefaultSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,
                                    final InstructionArgumentParser<T> parser, final boolean pathMode, final boolean earlyValidation) {
+        this(instruction, rootPath, parser, pathMode, earlyValidation, false);
+    }
+
+    /**
+     * Creates a new DefaultSectionRetriever.
+     *
+     * @param instruction     the instruction used to retrieve the section.
+     * @param rootPath        the root path to the section.
+     * @param parser          the parser used to parse the section.
+     * @param pathMode        if the parser is in path mode.
+     * @param earlyValidation if the argument parser should perform early validation.
+     * @param cache           if the argument should be cached if it does not contain placeholders
+     */
+    public DefaultSectionRetriever(final SectionChainInstruction instruction, final ValueSource<List<String>> rootPath,
+                                   final InstructionArgumentParser<T> parser, final boolean pathMode, final boolean earlyValidation,
+                                   final boolean cache) {
         this.earlyValidation = earlyValidation;
         this.instruction = instruction;
         this.rootPath = rootPath;
         this.pathMode = pathMode;
         this.parser = parser;
+        this.shouldCache = cache;
     }
 
     @Override
     public Argument<T> get() throws QuestException {
-        return instruction.get(rootPath, parser, pathMode, earlyValidation);
+        return instruction.get(rootPath, parser, pathMode, earlyValidation, shouldCache);
     }
 
     @Override
     public Argument<T> getOptional(final T defaultValue) throws QuestException {
-        return instruction.getOptional(rootPath, parser, pathMode, earlyValidation, defaultValue);
+        return instruction.getOptional(rootPath, parser, pathMode, earlyValidation, defaultValue, shouldCache);
     }
 
     @Override
     public Optional<Argument<T>> getOptional() throws QuestException {
-        return instruction.getOptional(rootPath, parser, pathMode, earlyValidation);
+        return instruction.getOptional(rootPath, parser, pathMode, earlyValidation, shouldCache);
     }
 
     @Override
     public SectionRetriever<T> withoutEarlyValidation() {
-        return new DefaultSectionRetriever<>(instruction, rootPath, parser, pathMode, false);
+        return new DefaultSectionRetriever<>(instruction, rootPath, parser, pathMode, false, shouldCache);
+    }
+
+    @Override
+    public SectionRetriever<T> cache(final boolean cache) {
+        return new DefaultSectionRetriever<>(instruction, rootPath, parser, pathMode, earlyValidation, cache);
     }
 }

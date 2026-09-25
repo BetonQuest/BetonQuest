@@ -63,7 +63,7 @@ public interface InstructionChainRetriever<T> {
      * @return an argument for the optional flag
      * @throws QuestException if the argument could not be resolved
      * @see org.betonquest.betonquest.api.instruction.FlagState
-     * @see ChainableInstruction#getFlag(String, InstructionArgumentParser, Object)
+     * @see ChainableInstruction#getFlag(String, InstructionArgumentParser, Object, boolean)
      * @since 3.0.0
      */
     @Contract("!null, !null -> new")
@@ -74,7 +74,7 @@ public interface InstructionChainRetriever<T> {
      *
      * @return a map of named arguments
      * @throws QuestException an argument could not be resolved
-     * @see ChainableInstruction#getNamed(InstructionArgumentParser, Predicate)
+     * @see ChainableInstruction#getNamed(InstructionArgumentParser, Predicate, boolean)
      * @since 3.0.0
      */
     @Contract("-> new")
@@ -88,7 +88,7 @@ public interface InstructionChainRetriever<T> {
      * @param keyFilter a filter for the keys of the arguments
      * @return a map of named arguments
      * @throws QuestException an argument could not be resolved
-     * @see ChainableInstruction#getNamed(InstructionArgumentParser, Predicate)
+     * @see ChainableInstruction#getNamed(InstructionArgumentParser, Predicate, boolean)
      * @since 3.0.0
      */
     @Contract("!null -> new")
