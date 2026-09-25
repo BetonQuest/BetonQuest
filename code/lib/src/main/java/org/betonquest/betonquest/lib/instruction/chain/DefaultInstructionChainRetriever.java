@@ -38,12 +38,25 @@ public class DefaultInstructionChainRetriever<T> implements InstructionChainRetr
      *
      * @param instruction the instruction used to retrieve the argument
      * @param argument    the argument parser
+     * @deprecated for removal in {@code 4.0.0},
+     * use {@link #DefaultInstructionChainRetriever(ChainableInstruction, InstructionArgumentParser, boolean)}
+     */
+    @Deprecated(forRemoval = true, since = "3.3.0")
+    public DefaultInstructionChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<T> argument) {
+        this(instruction, argument, false);
+    }
+
+    /**
+     * Creates a new instruction chain retriever.
+     *
+     * @param instruction the instruction used to retrieve the argument
+     * @param argument    the argument parser
      * @param cache       if the argument should be cached if it does not contain placeholders
      */
     public DefaultInstructionChainRetriever(final ChainableInstruction instruction, final InstructionArgumentParser<T> argument, final boolean cache) {
         this.instruction = instruction;
         this.argument = argument;
-        this.cache = cache; // TODO non api breaking constructor
+        this.cache = cache;
     }
 
     @Override
