@@ -8,8 +8,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### API
 #### Added
+- `Conversations::cancel(OnlineProfile, boolean)` method to cancel conversations with an option to skip the interceptor delay
 #### Changed
 #### Deprecated
+- `Conversations::cancel(OnlineProfile)` in favor of `Conversations::cancel(OnlineProfile, boolean)`
 #### Removed
 ### Library
 #### Added

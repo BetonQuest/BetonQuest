@@ -48,12 +48,17 @@ actions:
 ## `CancelConversation`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `cancelconversation`  
+__Syntax__: `cancelconversation {skipDelay}`  
 __Description__: Cancel the conversation that is currently active for the player.
+
+| Parameter              | Type                  | Explanation                                                                                                                            |
+|------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| skipDelay<br>[Boolean] | Flag<br>[false, true] | If the interceptor delay should be skipped and the conversation interceptor ended immediately. This also ends any delayed interceptor. |
 
 ```YAML title="Example"
 actions:
   cancel: "cancelconversation"
+  cancelInstant: "cancelconversation skipDelay"
 ```
 
 ## `Chat`
