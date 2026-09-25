@@ -101,16 +101,16 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
 
         @Override
         public void populate(final ItemMeta meta) {
+            final Map<Enchantment, Integer> map = get();
+            if (map.isEmpty()) {
+                return;
+            }
             if (meta instanceof final EnchantmentStorageMeta enchantMeta) {
-                final Map<Enchantment, Integer> map = get();
-                for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
-                    enchantMeta.addStoredEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
-                }
+                enchantMeta.getStoredEnchants().keySet().forEach(enchantMeta::removeStoredEnchant);
+                map.forEach((enchantment, level) -> enchantMeta.addStoredEnchant(enchantment, level, true));
             } else {
-                final Map<Enchantment, Integer> map = get();
-                for (final Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
-                    meta.addEnchant(enchantmentEntry.getKey(), enchantmentEntry.getValue(), true);
-                }
+                meta.getEnchants().keySet().forEach(meta::removeEnchant);
+                map.forEach((enchantment, level) -> meta.addEnchant(enchantment, level, true));
             }
         }
 
