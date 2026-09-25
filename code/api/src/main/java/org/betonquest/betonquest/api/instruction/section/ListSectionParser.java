@@ -51,7 +51,7 @@ public interface ListSectionParser {
     /**
      * Parses the element list into a list of values of type T using the given parser.
      * <p>
-     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @param parser the parser to use
      * @param <T>    the type of the argument
@@ -75,7 +75,7 @@ public interface ListSectionParser {
     /**
      * Parses the subsection into a value of type T.
      * <p>
-     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @param parser the parser to use
      * @param <T>    the type of the parsed value
@@ -87,7 +87,7 @@ public interface ListSectionParser {
     /**
      * Use the given parser to parse a number of named subsections into a list of values of T.
      * <p>
-     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @param sectionParser the parser to use for each of the subsections
      * @param <T>           the type of the parsed values
@@ -99,7 +99,7 @@ public interface ListSectionParser {
     /**
      * Use the given parser to parse a number of named key-value sections into a list of values of T.
      * <p>
-     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is disabled by default.
+     * The {@link DecoratableSectionRetriever#cache(boolean) caching} is enabled by default.
      *
      * @param sectionParser the parser to use for each of the sections
      * @param <T>           the type of the parsed values

@@ -27,7 +27,7 @@ public interface InstructionChainParser {
     /**
      * Returns {@link DecoratableChainRetriever} for the given {@link InstructionArgumentParser} as parser.
      * <p>
-     * The {@link DecoratableChainRetriever#cache(boolean) caching} is disabled by default.
+     * The {@link DecoratableChainRetriever#cache(boolean) caching} is enabled by default.
      *
      * @param argument the argument parser to use
      * @param <T>      the type of the argument
