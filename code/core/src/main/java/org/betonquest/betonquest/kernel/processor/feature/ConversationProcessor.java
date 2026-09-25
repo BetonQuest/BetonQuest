@@ -53,7 +53,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Stores Conversation Data and validates it.
  */
-@SuppressWarnings({"PMD.CouplingBetweenObjects", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class ConversationProcessor extends SectionProcessor<ConversationIdentifier, DefaultConversationData> implements Conversations, PostLoadTask {
 
     /**
@@ -273,11 +273,6 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
     @Nullable
     public Conversation getActiveConversation(final Profile profile) {
         return activeConversations.get(profile);
-    }
-
-    @Override
-    public void cancel(final OnlineProfile profile) {
-        cancel(profile, false);
     }
 
     @Override
