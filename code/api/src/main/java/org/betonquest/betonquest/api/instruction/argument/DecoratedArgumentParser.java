@@ -53,7 +53,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @return the new mapped {@link DecoratedArgumentParser} with potentially changed type
      * @since 3.0.0
      */
-    @Contract(value = "_ -> new", pure = true)
+    @Contract(value = "!null -> new", pure = true)
     <U> DecoratedArgumentParser<U> map(QuestFunction<T, U> mapper);
 
     /**
@@ -64,7 +64,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @return the new validated {@link DecoratedArgumentParser}
      * @since 3.0.0
      */
-    @Contract(value = "_ -> new", pure = true)
+    @Contract(value = "!null -> new", pure = true)
     DecoratedArgumentParser<T> validate(ValueValidator<T> validator);
 
     /**
@@ -77,7 +77,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @return the new validated {@link DecoratedArgumentParser}
      * @since 3.0.0
      */
-    @Contract(value = "_, _ -> new", pure = true)
+    @Contract(value = "!null, !null -> new", pure = true)
     DecoratedArgumentParser<T> validate(ValueValidator<T> validator, String errorMessage);
 
     /**
@@ -125,7 +125,7 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @see #prefilterOptional(String, Object)
      * @since 3.0.0
      */
-    @Contract(value = "_, _ -> new", pure = true)
+    @Contract(value = "!null, !null -> new", pure = true)
     DecoratedArgumentParser<T> prefilter(String expected, T fixedValue);
 
     /**
@@ -143,6 +143,6 @@ public interface DecoratedArgumentParser<T> extends InstructionArgumentParser<T>
      * @see #prefilter(String, Object)
      * @since 3.0.0
      */
-    @Contract(value = "_, _ -> new", pure = true)
+    @Contract(value = "!null, _ -> new", pure = true)
     DecoratedArgumentParser<Optional<T>> prefilterOptional(String expected, @Nullable T fixedValue);
 }
