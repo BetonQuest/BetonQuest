@@ -11548,10 +11548,27 @@ Running this action is equal to the player canceling a quest using the backpack.
 </code></pre></div>
 <h2 id="cancelconversation"><code>CancelConversation</code><a class="headerlink" href="#cancelconversation" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
-<strong>Syntax</strong>: <code>cancelconversation</code><br>
+<strong>Syntax</strong>: <code>cancelconversation {skipDelay}</code><br>
 <strong>Description</strong>: Cancel the conversation that is currently active for the player.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>skipDelay<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>If the interceptor delay should be skipped and the conversation interceptor ended immediately. This also ends any delayed interceptor.</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">cancel</span><span class="p">:</span><span class="w"> </span><span class="s">"cancelconversation"</span>
+<span class="w">  </span><span class="nt">cancelInstant</span><span class="p">:</span><span class="w"> </span><span class="s">"cancelconversation</span><span class="nv"> </span><span class="s">skipDelay"</span>
 </code></pre></div>
 <h2 id="chat"><code>Chat</code><a class="headerlink" href="#chat" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
