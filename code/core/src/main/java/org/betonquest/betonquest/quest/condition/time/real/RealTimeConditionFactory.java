@@ -20,7 +20,7 @@ public class RealTimeConditionFactory implements PlayerlessConditionFactory {
 
     @Override
     public PlayerlessCondition parsePlayerless(final Instruction instruction) throws QuestException {
-        final Argument<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).cache(true).get();
+        final Argument<TimeFrame> timeFrame = instruction.parse(TimeFrame::parse).get();
         return new RealTimeCondition(timeFrame);
     }
 }

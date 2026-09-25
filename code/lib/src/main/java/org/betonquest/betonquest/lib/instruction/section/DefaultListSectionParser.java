@@ -76,25 +76,25 @@ public class DefaultListSectionParser implements ListSectionParser {
 
     @Override
     public <T> ListSectionRetriever<T> parse(final InstructionArgumentParser<T> parser) {
-        return listSection(parser, false);
+        return listSection(parser, true);
     }
 
     @Override
     public <T> ListSectionRetriever<T> section(final SubSectionArgumentParser<T> sectionParser) {
         final EncapsulatedListSubSectionParser<T> subSectionParser = new EncapsulatedListSubSectionParser<>(instruction, sectionParser);
-        return new DefaultListSectionRetriever<>(instruction, rootPath, subSectionParser, CONFIG_SECTION_MODE, false);
+        return new DefaultListSectionRetriever<>(instruction, rootPath, subSectionParser, CONFIG_SECTION_MODE, true);
     }
 
     @Override
     public <T> ListSectionRetriever<T> namedSections(final NamedSubSectionArgumentParser<T> sectionParser) {
         final EncapsulatedNamedSubSectionParser<T> namedSectionParser = new EncapsulatedNamedSubSectionParser<>(instruction, sectionParser);
-        return new DefaultListSectionRetriever<>(instruction, rootPath, namedSectionParser, CONFIG_SECTION_MODE, false);
+        return new DefaultListSectionRetriever<>(instruction, rootPath, namedSectionParser, CONFIG_SECTION_MODE, true);
     }
 
     @Override
     public <T> ListSectionRetriever<Map.Entry<String, T>> namedValues(final InstructionArgumentParser<T> parser) {
         final EncapsulatedNamedFlatSectionParser<T> namedSectionParser = new EncapsulatedNamedFlatSectionParser<>(instruction, parser);
-        return new DefaultListSectionRetriever<>(instruction, rootPath, namedSectionParser, CONFIG_SECTION_MODE, false);
+        return new DefaultListSectionRetriever<>(instruction, rootPath, namedSectionParser, CONFIG_SECTION_MODE, true);
     }
 
     @Override

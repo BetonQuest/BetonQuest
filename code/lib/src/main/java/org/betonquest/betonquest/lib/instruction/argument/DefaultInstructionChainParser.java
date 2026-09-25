@@ -48,7 +48,7 @@ public class DefaultInstructionChainParser implements InstructionChainParser {
 
     @Override
     public <T> DecoratableChainRetriever<T> parse(final InstructionArgumentParser<T> argument) {
-        return new DefaultDecoratableChainRetriever<>(instruction, argument, false);
+        return new DefaultDecoratableChainRetriever<>(instruction, argument, true);
     }
 
     @Override

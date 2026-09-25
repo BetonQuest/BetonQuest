@@ -75,13 +75,13 @@ public class DefaultSectionParser implements SectionParser {
 
     @Override
     public <T> DecoratableSectionRetriever<T> parse(final InstructionArgumentParser<T> parser) {
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parser, SINGLE_VALUE_MODE, false);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, parser, SINGLE_VALUE_MODE, true);
     }
 
     @Override
     public <T> DecoratableSectionRetriever<T> section(final SubSectionArgumentParser<T> sectionParser) {
         final EncapsulatedSectionParser<T> encapsulated = new EncapsulatedSectionParser<>(instruction, sectionParser);
-        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, encapsulated, CONFIG_SECTION_MODE, false);
+        return new DefaultDecoratableSectionRetriever<>(instruction, rootPath, encapsulated, CONFIG_SECTION_MODE, true);
     }
 
     @Override
