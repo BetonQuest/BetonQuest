@@ -20,6 +20,7 @@ import org.betonquest.betonquest.listener.QuestItemConvertListener;
 import org.betonquest.betonquest.web.updater.Updater;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.List;
 import java.util.Set;
@@ -40,7 +41,7 @@ public class ListenersComponent extends AbstractCoreComponent {
     public Set<Class<?>> requires() {
         return Set.of(Plugin.class, PluginManager.class,
                 BetonQuestLoggerFactory.class, ProfileProvider.class, FileConfigAccessor.class,
-                PlayerDataStorage.class, Localizations.class,
+                PlayerDataStorage.class, Localizations.class, BukkitScheduler.class,
                 ItemIdentifierFactory.class, ObjectiveProcessor.class, ItemManager.class, ConversationProcessor.class, Updater.class);
     }
 
@@ -51,6 +52,7 @@ public class ListenersComponent extends AbstractCoreComponent {
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
         final ProfileProvider profileProvider = getDependency(ProfileProvider.class);
         final FileConfigAccessor config = getDependency(FileConfigAccessor.class);
+        final BukkitScheduler scheduler = getDependency(BukkitScheduler.class);
         final PlayerDataStorage playerDataStorage = getDependency(PlayerDataStorage.class);
         final Localizations localizations = getDependency(Localizations.class);
         final ItemIdentifierFactory itemIdentifierFactory = getDependency(ItemIdentifierFactory.class);
@@ -66,8 +68,8 @@ public class ListenersComponent extends AbstractCoreComponent {
                 new QuestItemHandler(config, playerDataStorage, profileProvider, conversations),
                 new QuestItemConvertListener(loggerFactory.create(QuestItemConvertListener.class),
                         () -> config.getBoolean("item.quest.update_legacy_on_join"), localizations, profileProvider),
-                new JoinQuitListener(loggerFactory.create(JoinQuitListener.class), config, objectiveProcessor, playerDataStorage,
-                        conversations, profileProvider, updater)
+                new JoinQuitListener(loggerFactory.create(JoinQuitListener.class), config, scheduler, plugin,
+                        objectiveProcessor, playerDataStorage, conversations, profileProvider, updater)
         ).forEach(listener -> pluginManager.registerEvents(listener, plugin));
     }
 }

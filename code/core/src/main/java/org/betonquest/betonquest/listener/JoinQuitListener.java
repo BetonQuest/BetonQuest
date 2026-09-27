@@ -26,6 +26,8 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Listener which handles data loading/saving when players are joining/quitting.
@@ -46,6 +48,16 @@ public class JoinQuitListener implements Listener {
      * The plugin configuration file.
      */
     private final ConfigAccessor config;
+
+    /**
+     * Bukkit scheduler.
+     */
+    private final BukkitScheduler scheduler;
+
+    /**
+     * The plugin instance.
+     */
+    private final Plugin plugin;
 
     /**
      * Quest Type API.
@@ -77,17 +89,21 @@ public class JoinQuitListener implements Listener {
      *
      * @param log               the logger for debug messages
      * @param config            the plugin configuration file
+     * @param scheduler         the Bukkit scheduler
+     * @param plugin            the plugin instance
      * @param questTypeApi      the object to get player Objectives
      * @param playerDataStorage the storage for un-/loading player data
      * @param conversations     the Conversation API
      * @param profileProvider   the profile provider instance
      * @param updater           the updater to notify players
      */
-    public JoinQuitListener(final BetonQuestLogger log, final ConfigAccessor config,
-                            final ObjectiveProcessor questTypeApi, final PlayerDataStorage playerDataStorage,
+    public JoinQuitListener(final BetonQuestLogger log, final ConfigAccessor config, final BukkitScheduler scheduler,
+                            final Plugin plugin, final ObjectiveProcessor questTypeApi, final PlayerDataStorage playerDataStorage,
                             final Conversations conversations, final ProfileProvider profileProvider, final Updater updater) {
         this.log = log;
         this.config = config;
+        this.scheduler = scheduler;
+        this.plugin = plugin;
         this.questTypeApi = questTypeApi;
         this.playerDataStorage = playerDataStorage;
         this.conversations = conversations;
@@ -167,6 +183,8 @@ public class JoinQuitListener implements Listener {
         for (final Objective objective : questTypeApi.getForProfile(onlineProfile)) {
             questTypeApi.pause(onlineProfile, objective.getObjectiveID());
         }
-        playerDataStorage.remove(onlineProfile);
+        scheduler.scheduleSyncDelayedTask(plugin, () -> {
+            playerDataStorage.remove(onlineProfile);
+        });
     }
 }
