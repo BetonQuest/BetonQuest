@@ -61,7 +61,7 @@ public class PasteSchematicActionFactory implements PlayerActionFactory, Playerl
                 return alternativeSchematic;
             }
             throw new QuestException("Schematic " + value + " does not exist (" + folder.toPath().resolve(value + ".schematic") + ")");
-        }).get();
+        }).cache(false).get();
 
         final FlagArgument<Boolean> noAir = instruction.bool().getFlag("noair", true);
         return new PasteSchematicAction(loc, rotation, noAir, file);

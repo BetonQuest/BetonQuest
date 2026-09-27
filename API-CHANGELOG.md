@@ -9,15 +9,24 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### API
 #### Added
 - `Conversations::cancel(OnlineProfile, boolean)` method to cancel conversations with an option to skip the interceptor delay
+- in `DecoratableChainRetriever` and `SectionRetriever`
+    - `cache` method to cache result of chain if value does not contain placeholders
+- in `ChainableInstruction` and `SectionChainInstruction`
+    - to all `get` methods a `cache` argument to allow setting if values should be cached if they do not contain placeholders
 #### Changed
 #### Deprecated
 - `Conversations::cancel(OnlineProfile)` in favor of `Conversations::cancel(OnlineProfile, boolean)`
+- `QuestItem::generate` which requires a profile, relevant data should already be passed by its creation
+- in `ChainableInstruction` and `SectionChainInstruction`
+    - all `get` methods without a `cache` argument
 #### Removed
 ### Library
 #### Added
+- `cache` argument to all constructors in `instruction`'s `chain`, `retriever` and `section` packages
 #### Changed
 - constructor of `FallbackConfigurationSection` from `public` to `protected`
 #### Deprecated
+- all constructors in `instruction`'s `chain`, `retriever` and `section` packages that do not have a `cache` argument
 #### Removed
 
 ## [3.2.0] - 2026-08-17
