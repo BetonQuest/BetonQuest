@@ -60,21 +60,13 @@ public class StageCondition implements PlayerCondition {
         if (stage.getService().getData().get(profile) == null) {
             return -1.0;
         }
-        try {
-            return (double) stage.getStageIndex(stage.getStage(profile));
-        } catch (final QuestException e) {
-            throw new IllegalStateException(profile + " has an invalid stage", e);
-        }
+        return (double) stage.getStageIndex(stage.getStage(profile));
     }
 
     private Double getSecond(final Profile profile) throws QuestException {
         final StageObjective stage = getStageObjective(objectiveID.getValue(profile));
         final String targetState = targetStage.getValue(profile);
-        try {
-            return (double) stage.getStageIndex(targetState);
-        } catch (final QuestException e) {
-            throw new IllegalStateException("The stage " + targetState + "' does not exist", e);
-        }
+        return (double) stage.getStageIndex(targetState);
     }
 
     private StageObjective getStageObjective(final ObjectiveIdentifier objectiveID) throws QuestException {
