@@ -159,7 +159,7 @@ public class JoinQuitListener implements Listener {
      *
      * @param event the quit event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
         log.debug("Player '%s' with uuid '%s' quit; pausing objectives and removing from PlayerDataStorage...".formatted(player.getName(), player.getUniqueId()));
