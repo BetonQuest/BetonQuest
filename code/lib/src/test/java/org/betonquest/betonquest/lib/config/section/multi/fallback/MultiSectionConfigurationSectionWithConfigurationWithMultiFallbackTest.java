@@ -1,7 +1,7 @@
 package org.betonquest.betonquest.lib.config.section.multi.fallback;
 
-import org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfigurationSectionWithConfigurationTest;
 import org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfigurationTest;
+import org.betonquest.betonquest.lib.config.util.ConfigurationSectionBaseTest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Tag;
 
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Tag;
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
-public class MultiSectionConfigurationSectionWithConfigurationWithMultiFallbackTest extends MultiSectionConfigurationSectionWithConfigurationTest {
+public class MultiSectionConfigurationSectionWithConfigurationWithMultiFallbackTest extends ConfigurationSectionBaseTest {
 
     public MultiSectionConfigurationSectionWithConfigurationWithMultiFallbackTest() {
         super(new MultiFallbackConfiguration(MultiSectionConfigurationTest.getDefaultConfig(), null));

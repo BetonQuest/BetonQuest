@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Base abstract test class for {@link FallbackConfigurationSection}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
+@SuppressWarnings("PMD.UnitTestAssertionsShouldIncludeMessage")
 public abstract class AbstractFallbackConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
     /**

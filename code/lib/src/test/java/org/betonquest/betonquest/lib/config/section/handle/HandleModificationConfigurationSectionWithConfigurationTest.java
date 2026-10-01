@@ -4,7 +4,8 @@ import org.betonquest.betonquest.lib.config.section.handle.util.HandleModificati
 import org.junit.jupiter.api.Tag;
 
 /**
- * This is a test for the {@link HandleModificationConfigurationSection} as a {@link org.bukkit.configuration.ConfigurationSection}.
+ * This is a test for the {@link HandleModificationConfigurationSection} as a
+ * {@link org.bukkit.configuration.ConfigurationSection}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")

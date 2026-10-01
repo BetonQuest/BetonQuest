@@ -911,7 +911,7 @@ public abstract class ConfigurationSectionBaseTest extends AbstractConfigBaseTes
     @Test
     @Override
     public void testGetLocation() {
-        final Location location = new Location(world, 1, 2, 3, 4, 5);
+        final Location location = new Location(WORLD, 1, 2, 3, 4, 5);
         assertEquals(location, config.getLocation("location"));
     }
 
@@ -924,7 +924,7 @@ public abstract class ConfigurationSectionBaseTest extends AbstractConfigBaseTes
     @Test
     @Override
     public void testGetLocationWithDefault() {
-        final Location location = new Location(world, 1, 2, 3, 4, 5);
+        final Location location = new Location(WORLD, 1, 2, 3, 4, 5);
         final Location locationDefault = new Location(worldInvalid, 1, 2, 3, 4, 5);
         assertEquals(location, config.getLocation("location", locationDefault));
     }

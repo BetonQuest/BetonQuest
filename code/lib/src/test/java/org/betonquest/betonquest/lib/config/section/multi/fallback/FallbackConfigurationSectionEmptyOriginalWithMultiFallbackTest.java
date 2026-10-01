@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FallbackConfigurationSectionEmptyOriginalWithMultiFallbackTest extends AbstractFallbackConfigurationSectionEmptyOriginalTest {
 
     public FallbackConfigurationSectionEmptyOriginalWithMultiFallbackTest() {
-        super(createConfig(getDefaultConfig(setupFallback())), getDefaultConfig(setupFallback()));
+        super(createConfig(getDefaultConfig()), getDefaultConfig());
     }
 
     private static ConfigurationSection createConfig(final Configuration fallback) {

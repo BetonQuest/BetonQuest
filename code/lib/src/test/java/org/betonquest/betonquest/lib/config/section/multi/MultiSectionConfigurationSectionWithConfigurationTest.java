@@ -8,14 +8,10 @@ import org.junit.jupiter.api.Tag;
  * This is a test for {@link MultiSectionConfiguration} as a {@link ConfigurationSection}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
+@SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class MultiSectionConfigurationSectionWithConfigurationTest extends ConfigurationSectionBaseTest {
 
     public MultiSectionConfigurationSectionWithConfigurationTest() {
-        this(MultiSectionConfigurationTest.getDefaultConfig());
-    }
-
-    public MultiSectionConfigurationSectionWithConfigurationTest(final ConfigurationSection config) {
-        super(config);
+        super(MultiSectionConfigurationTest.getDefaultConfig());
     }
 }

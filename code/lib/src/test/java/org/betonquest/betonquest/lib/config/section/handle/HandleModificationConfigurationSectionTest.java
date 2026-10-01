@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Tag;
  * This is a test for the {@link HandleModificationConfigurationSection}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestShouldIncludeAssert", "PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
+@SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class HandleModificationConfigurationSectionTest extends AbstractHandleModificationConfigurationSectionTest {
 
     public HandleModificationConfigurationSectionTest() {

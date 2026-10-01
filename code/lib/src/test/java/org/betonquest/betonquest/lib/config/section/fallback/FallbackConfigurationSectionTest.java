@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Tag;
  * Tests the {@link FallbackConfigurationSection} class.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
+@SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class FallbackConfigurationSectionTest extends AbstractFallbackConfigurationSectionTest {
 
     public FallbackConfigurationSectionTest() {
