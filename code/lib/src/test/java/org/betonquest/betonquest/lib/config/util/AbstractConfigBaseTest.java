@@ -21,12 +21,13 @@ import static org.mockito.Mockito.*;
  *
  * @param <T> a {@link ConfigurationSection} or a class implementing {@link ConfigurationSection}
  */
+@SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
 
     /**
      * The mocked {@link World} instance for testing.
      */
-    protected static final World world = mock(World.class, "ValidWorld");
+    protected static final World WORLD = mock(World.class, "ValidWorld");
 
     /**
      * The mocked invalid {@link World} instance for testing.
@@ -81,7 +82,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
                 .setupVector()
                 .setupColor()
                 .setupSection()
-                .setupLocation(world)
+                .setupLocation(WORLD)
                 .setupItem()
                 .setupOfflinePlayer(UUID.fromString("eba17d33-959d-42a7-a4d9-e9aebef5969e"))
                 .build();
@@ -119,7 +120,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
                 .setupIntegerList()
                 .setupCharacterList()
                 .setupVector()
-                .setupLocation(world)
+                .setupLocation(WORLD)
                 .setupBoolean()
                 .setupList()
                 .setupBooleanList()
@@ -160,7 +161,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
                 .setupIntegerList()
                 .setupCharacterList()
                 .setupVector()
-                .setupLocation(world)
+                .setupLocation(WORLD)
                 .build();
     }
 

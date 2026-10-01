@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Tag;
  * This is a test for the {@link UnmodifiableConfigurationSection}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
+@SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class UnmodifiableConfigurationSectionTest extends AbstractUnmodifiableConfigurationSectionTest {
 
     public UnmodifiableConfigurationSectionTest() {

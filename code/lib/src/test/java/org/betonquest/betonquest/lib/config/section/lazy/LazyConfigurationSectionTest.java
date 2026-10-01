@@ -18,7 +18,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
     private final MemoryConfiguration root;
 
-    public LazyConfigurationSectionTest() {
+    /* default */ LazyConfigurationSectionTest() {
         super(createLazySection(new MemoryConfiguration()));
         this.root = (MemoryConfiguration) config.getRoot();
     }
@@ -26,7 +26,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
     private static ConfigurationSection createLazySection(final MemoryConfiguration root) {
         final LazyConfigurationSection lazy = new LazyConfigurationSection(root, "lazy");
         root.set("lazy", lazy);
-        final Configuration defaultConfig = ConfigurationSectionBaseTest.getDefaultConfig();
+        final Configuration defaultConfig = getDefaultConfig();
         defaultConfig.getValues(true).forEach((key, value) -> {
             if (!(value instanceof ConfigurationSection)) {
                 lazy.set(key, value);

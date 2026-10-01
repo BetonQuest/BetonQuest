@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.lib.config.section.multi.fallback;
 
-import org.betonquest.betonquest.lib.config.section.fallback.FallbackConfigurationNonFallbackTest;
 import org.betonquest.betonquest.lib.config.section.multi.InvalidSubConfigurationException;
 import org.betonquest.betonquest.lib.config.section.multi.KeyConflictException;
 import org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfiguration;
+import org.betonquest.betonquest.lib.config.util.ConfigurationBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.Tag;
 
@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for the {@link MultiFallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
-class FallbackConfigurationNonFallbackWithMultiFallbackTest extends FallbackConfigurationNonFallbackTest {
+class FallbackConfigurationNonFallbackWithMultiFallbackTest extends ConfigurationBaseTest {
 
-    public FallbackConfigurationNonFallbackWithMultiFallbackTest() {
+    /* default */ FallbackConfigurationNonFallbackWithMultiFallbackTest() {
         super(createConfig());
     }
 

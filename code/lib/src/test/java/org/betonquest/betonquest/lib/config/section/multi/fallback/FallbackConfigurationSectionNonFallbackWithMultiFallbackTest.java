@@ -1,9 +1,9 @@
 package org.betonquest.betonquest.lib.config.section.multi.fallback;
 
-import org.betonquest.betonquest.lib.config.section.fallback.FallbackConfigurationSectionNonFallbackTest;
 import org.betonquest.betonquest.lib.config.section.multi.InvalidSubConfigurationException;
 import org.betonquest.betonquest.lib.config.section.multi.KeyConflictException;
 import org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfiguration;
+import org.betonquest.betonquest.lib.config.util.ConfigurationSectionBaseTest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Tag;
 
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
-public class FallbackConfigurationSectionNonFallbackWithMultiFallbackTest extends FallbackConfigurationSectionNonFallbackTest {
+public class FallbackConfigurationSectionNonFallbackWithMultiFallbackTest extends ConfigurationSectionBaseTest {
 
     public FallbackConfigurationSectionNonFallbackWithMultiFallbackTest() {
         super(createConfig());

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * This is a test for the {@link MultiFallbackConfiguration}.
  */
 @Tag("ConfigurationSection")
-@SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
+@SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class FallbackConfigurationWithMultiFallbackTest extends AbstractFallbackConfigurationTest {
 
     public FallbackConfigurationWithMultiFallbackTest() {

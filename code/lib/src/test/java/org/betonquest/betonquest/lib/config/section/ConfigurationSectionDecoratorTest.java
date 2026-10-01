@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Tag;
 @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class ConfigurationSectionDecoratorTest extends ConfigurationSectionBaseTest {
 
-    public ConfigurationSectionDecoratorTest() {
-        super(new ConfigurationSectionDecorator(ConfigurationSectionBaseTest.getDefaultConfig()));
+    /* default */ ConfigurationSectionDecoratorTest() {
+        super(new ConfigurationSectionDecorator(getDefaultConfig()));
     }
 }

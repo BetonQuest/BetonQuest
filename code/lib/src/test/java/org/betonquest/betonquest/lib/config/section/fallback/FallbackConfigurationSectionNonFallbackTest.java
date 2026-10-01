@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.lib.config.section.fallback;
 
 import org.betonquest.betonquest.lib.config.util.ConfigurationSectionBaseTest;
-import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Tag;
 
 /**
@@ -12,10 +11,6 @@ import org.junit.jupiter.api.Tag;
 public class FallbackConfigurationSectionNonFallbackTest extends ConfigurationSectionBaseTest {
 
     public FallbackConfigurationSectionNonFallbackTest() {
-        this(new FallbackConfiguration(getDefaultConfig(), null));
-    }
-
-    public FallbackConfigurationSectionNonFallbackTest(final ConfigurationSection config) {
-        super(config);
+        super(new FallbackConfiguration(getDefaultConfig(), null));
     }
 }
