@@ -1,14 +1,17 @@
 package org.betonquest.betonquest.lib.config.section.multi.fallback;
 
-import org.betonquest.betonquest.lib.config.section.fallback.FallbackConfigurationNestedTest;
+import org.betonquest.betonquest.lib.config.section.fallback.AbstractFallbackConfigurationTest;
+import org.betonquest.betonquest.lib.config.section.multi.InvalidSubConfigurationException;
+import org.betonquest.betonquest.lib.config.section.multi.KeyConflictException;
 import org.betonquest.betonquest.lib.config.section.multi.MultiSectionConfiguration;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.junit.jupiter.api.Tag;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,14 +20,16 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.UnitTestAssertionsShouldIncludeMessage")
-class FallbackConfigurationNestedWithMultiFallbackTest extends FallbackConfigurationNestedTest {
+class FallbackConfigurationNestedWithMultiFallbackTest extends AbstractFallbackConfigurationTest {
 
-    @Override
-    public Configuration getConfig() throws InvalidConfigurationException {
+    public FallbackConfigurationNestedWithMultiFallbackTest() {
+        super(createNestedConfig(setupFallback()), setupFallback());
+    }
+
+    private static Configuration createNestedConfig(final Configuration fallback) {
         final Configuration original = setupOriginal();
-        fallback = setupFallback();
 
-        final Configuration defaults = super.getDefaultConfig().getDefaults();
+        final Configuration defaults = getDefaultConfig(fallback).getDefaults();
         assertNotNull(defaults);
         original.setDefaults(defaults);
 
@@ -37,6 +42,15 @@ class FallbackConfigurationNestedWithMultiFallbackTest extends FallbackConfigura
         assertNotNull(originalSection);
         assertNotNull(fallbackSection);
 
-        return new MultiFallbackConfiguration(new MultiSectionConfiguration(List.of(originalSection)), fallbackSection);
+        final Map<ConfigurationSection, String> configs = new HashMap<>();
+        configs.put(originalSection, "config.yml");
+        try {
+            return new MultiFallbackConfiguration(new MultiSectionConfiguration(List.of(originalSection)), fallbackSection);
+        } catch (final KeyConflictException e) {
+            fail(e.resolvedMessage(configs), e);
+        } catch (final InvalidSubConfigurationException e) {
+            fail(e);
+        }
+        return null;
     }
 }

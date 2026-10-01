@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.inventory.ItemStack;
@@ -38,11 +37,10 @@ import static org.mockito.Mockito.*;
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.GodClass", "PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate",
         "PMD.CyclomaticComplexity", "PMD.ExcessivePublicCount"})
-public class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionInterfaceTest {
+public abstract class ConfigurationSectionBaseTest extends AbstractConfigBaseTest<ConfigurationSection> implements ConfigurationSectionInterfaceTest {
 
-    @Override
-    public ConfigurationSection getConfig() throws InvalidConfigurationException {
-        return getDefaultConfig();
+    public ConfigurationSectionBaseTest(final ConfigurationSection config) {
+        super(config);
     }
 
     @Test
