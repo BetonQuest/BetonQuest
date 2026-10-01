@@ -2,7 +2,6 @@ package org.betonquest.betonquest.lib.config.section.fallback;
 
 import org.betonquest.betonquest.lib.config.util.ConfigurationSectionBaseTest;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.junit.jupiter.api.Tag;
 
 /**
@@ -12,8 +11,11 @@ import org.junit.jupiter.api.Tag;
 @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class FallbackConfigurationSectionNonFallbackTest extends ConfigurationSectionBaseTest {
 
-    @Override
-    public ConfigurationSection getConfig() throws InvalidConfigurationException {
-        return new FallbackConfiguration(getDefaultConfig(), null);
+    public FallbackConfigurationSectionNonFallbackTest() {
+        this(new FallbackConfiguration(getDefaultConfig(), null));
+    }
+
+    public FallbackConfigurationSectionNonFallbackTest(final ConfigurationSection config) {
+        super(config);
     }
 }

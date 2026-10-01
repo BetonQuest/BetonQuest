@@ -4,7 +4,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +26,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
     /**
      * The mocked {@link World} instance for testing.
      */
-    protected final World world = mock(World.class, "ValidWorld");
+    protected static final World world = mock(World.class, "ValidWorld");
 
     /**
      * The mocked invalid {@link World} instance for testing.
@@ -41,30 +40,19 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
 
     /**
      * Empty constructor.
-     */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
-    public AbstractConfigBaseTest() {
-        try {
-            config = getConfig();
-        } catch (final InvalidConfigurationException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    /**
-     * Get the {@link T} that should be tested.
      *
-     * @return The {@link T} to be tested
-     * @throws InvalidConfigurationException if the {@link Configuration} is invalid
+     * @param config The {@link T} to be tested
      */
-    public abstract T getConfig() throws InvalidConfigurationException;
+    public AbstractConfigBaseTest(final T config) {
+        this.config = config;
+    }
 
     /**
      * Get the default {@link Configuration} for test.
      *
      * @return The {@link Configuration}
      */
-    public final Configuration getDefaultConfig() {
+    public static Configuration getDefaultConfig() {
         final Configuration config = setupConfig();
         final Configuration defaultSection = new MemoryConfiguration();
         defaultSection.set("default.key", "value");
@@ -72,7 +60,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
         return config;
     }
 
-    private Configuration setupConfig() {
+    private static Configuration setupConfig() {
         return new ConfigurationBuilderFixture()
                 .setupChildSection()
                 .setupGet()
@@ -104,7 +92,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      *
      * @return The original configuration.
      */
-    protected Configuration setupOriginal() {
+    protected static Configuration setupOriginal() {
         return new ConfigurationBuilderFixture()
                 .setupChildSection()
                 .setupString()
@@ -123,7 +111,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      *
      * @return The fallback configuration.
      */
-    protected Configuration setupFallback() {
+    protected static Configuration setupFallback() {
         return new ConfigurationBuilderFixture()
                 .setupGet()
                 .setupInteger()
@@ -146,7 +134,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      *
      * @return The part of the multi configuration.
      */
-    protected ConfigurationSection setupMultiConfig1() {
+    protected static ConfigurationSection setupMultiConfig1() {
         return new ConfigurationBuilderFixture()
                 .setupChildSection()
                 .setupString()
@@ -164,7 +152,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      *
      * @return The part of the multi configuration.
      */
-    protected ConfigurationSection setupMultiConfig2() {
+    protected static ConfigurationSection setupMultiConfig2() {
         return new ConfigurationBuilderFixture()
                 .setupGet()
                 .setupInteger()
@@ -181,7 +169,7 @@ public abstract class AbstractConfigBaseTest<T extends ConfigurationSection> {
      *
      * @return The part of the multi configuration.
      */
-    protected ConfigurationSection setupMultiConfig3() {
+    protected static ConfigurationSection setupMultiConfig3() {
         return new ConfigurationBuilderFixture()
                 .setupExistingSet()
                 .setupBoolean()

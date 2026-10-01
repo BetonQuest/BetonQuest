@@ -16,14 +16,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.JUnitJupiterTestShouldBePackagePrivate", "PMD.UnitTestAssertionsShouldIncludeMessage"})
 class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
-    private MemoryConfiguration root;
+    private final MemoryConfiguration root;
 
-    @Override
-    public ConfigurationSection getConfig() {
-        root = new MemoryConfiguration();
+    public LazyConfigurationSectionTest() {
+        super(createLazySection(new MemoryConfiguration()));
+        this.root = (MemoryConfiguration) config.getRoot();
+    }
+
+    private static ConfigurationSection createLazySection(final MemoryConfiguration root) {
         final LazyConfigurationSection lazy = new LazyConfigurationSection(root, "lazy");
         root.set("lazy", lazy);
-        final Configuration defaultConfig = super.getDefaultConfig();
+        final Configuration defaultConfig = ConfigurationSectionBaseTest.getDefaultConfig();
         defaultConfig.getValues(true).forEach((key, value) -> {
             if (!(value instanceof ConfigurationSection)) {
                 lazy.set(key, value);

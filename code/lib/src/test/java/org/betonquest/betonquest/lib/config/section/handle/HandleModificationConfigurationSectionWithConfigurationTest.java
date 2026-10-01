@@ -1,19 +1,16 @@
 package org.betonquest.betonquest.lib.config.section.handle;
 
 import org.betonquest.betonquest.lib.config.section.handle.util.HandleModificationToConfigurationFixture;
-import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Tag;
 
 /**
- * This is a test for the {@link HandleModificationConfigurationSection} as a {@link ConfigurationSection}.
+ * This is a test for the {@link HandleModificationConfigurationSection} as a {@link org.bukkit.configuration.ConfigurationSection}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
-public class HandleModificationConfigurationSectionWithConfigurationTest extends HandleModificationConfigurationSectionTest {
+public class HandleModificationConfigurationSectionWithConfigurationTest extends AbstractHandleModificationConfigurationSectionTest {
 
-    @Override
-    public ConfigurationSection getConfig() {
-        setter = new HandleModificationToConfigurationFixture();
-        return new HandleModificationConfiguration(super.getDefaultConfig(), setter);
+    public HandleModificationConfigurationSectionWithConfigurationTest() {
+        super(new HandleModificationConfiguration(getDefaultConfig(), new HandleModificationToConfigurationFixture()));
     }
 }
