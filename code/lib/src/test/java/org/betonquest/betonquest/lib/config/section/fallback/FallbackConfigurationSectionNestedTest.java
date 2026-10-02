@@ -1,8 +1,8 @@
 package org.betonquest.betonquest.lib.config.section.fallback;
 
+import org.betonquest.betonquest.lib.config.util.ConfigurationSectionBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.junit.jupiter.api.Tag;
 
@@ -13,14 +13,16 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
-public class FallbackConfigurationSectionNestedTest extends FallbackConfigurationSectionTest {
+public class FallbackConfigurationSectionNestedTest extends AbstractFallbackConfigurationSectionTest {
 
-    @Override
-    public ConfigurationSection getConfig() throws InvalidConfigurationException {
+    public FallbackConfigurationSectionNestedTest() {
+        super(createNestedSection(setupFallback()), setupFallback());
+    }
+
+    private static ConfigurationSection createNestedSection(final Configuration fallback) {
         final Configuration original = setupOriginal();
-        fallback = setupFallback();
 
-        final Configuration defaults = super.getDefaultConfig().getDefaults();
+        final Configuration defaults = ConfigurationSectionBaseTest.getDefaultConfig().getDefaults();
         assertNotNull(defaults);
         original.setDefaults(defaults);
 

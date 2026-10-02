@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.lib.config.section;
 
 import org.betonquest.betonquest.lib.config.util.ConfigurationSectionBaseTest;
-import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Tag;
 
 /**
@@ -11,8 +10,7 @@ import org.junit.jupiter.api.Tag;
 @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
 public class ConfigurationSectionDecoratorTest extends ConfigurationSectionBaseTest {
 
-    @Override
-    public ConfigurationSection getConfig() {
-        return new ConfigurationSectionDecorator(super.getDefaultConfig());
+    public ConfigurationSectionDecoratorTest() {
+        super(new ConfigurationSectionDecorator(getDefaultConfig()));
     }
 }

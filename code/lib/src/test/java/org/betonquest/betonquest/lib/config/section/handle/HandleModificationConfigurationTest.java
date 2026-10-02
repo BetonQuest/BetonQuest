@@ -19,12 +19,11 @@ public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
     /**
      * The instance of the setter.
      */
-    private HandleModificationToConfigurationFixture setter;
+    private final HandleModificationToConfigurationFixture setter;
 
-    @Override
-    public Configuration getConfig() {
-        setter = new HandleModificationToConfigurationFixture();
-        return new HandleModificationConfiguration(super.getDefaultConfig(), setter);
+    public HandleModificationConfigurationTest() {
+        super(new HandleModificationConfiguration(getDefaultConfig(), new HandleModificationToConfigurationFixture()));
+        this.setter = (HandleModificationToConfigurationFixture) ((HandleModificationConfigurationSection) config).handler;
     }
 
     /**
