@@ -95,7 +95,10 @@ public class ColorHandler implements ItemMetaHandler<LeatherArmorMeta> {
 
         @Override
         public void populate(final LeatherArmorMeta armorMeta) {
-            armorMeta.setColor(color.getRight());
+            final Color color = this.color.getRight();
+            if (color != null) {
+                armorMeta.setColor(color);
+            }
         }
 
         /**

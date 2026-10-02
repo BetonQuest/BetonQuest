@@ -111,6 +111,9 @@ public class UpdatedPotionHandler extends PotionHandler {
             final ResolvedPotion resolved = (ResolvedPotion) attribute.resolve(profile);
 
             final PotionType superPotionType = resolved.typePair().getRight();
+            if (superPotionType == null) {
+                return new UpdateResolvedWithoutType(resolved);
+            }
             final String baseType = superPotionType.getKey().asMinimalString();
             final PotionType potionType;
             if (resolved.extended().orElse(false)) {
@@ -183,6 +186,31 @@ public class UpdatedPotionHandler extends PotionHandler {
                 }
                 default -> false;
             };
+        }
+    }
+
+    /**
+     * The resolved attribute where no base potion type is required.
+     *
+     * @param resolved the parent parsed attribute
+     */
+    private record UpdateResolvedWithoutType(ResolvedPotion resolved) implements ResolvedAttribute<PotionMeta> {
+
+        @Override
+        public Class<PotionMeta> metaClass() {
+            return PotionMeta.class;
+        }
+
+        @Override
+        public void populate(final PotionMeta potionMeta) {
+            for (final PotionEffect effect : resolved.getCustom()) {
+                potionMeta.addCustomEffect(effect, true);
+            }
+        }
+
+        @Override
+        public boolean check(final PotionMeta potionMeta) {
+            return resolved.checkCustom(potionMeta.getCustomEffects());
         }
     }
 }

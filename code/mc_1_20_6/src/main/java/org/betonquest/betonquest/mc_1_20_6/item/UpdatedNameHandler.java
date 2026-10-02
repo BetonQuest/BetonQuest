@@ -85,7 +85,10 @@ public class UpdatedNameHandler extends NameHandler {
         @Override
         public void populate(final ItemMeta meta) {
             displayName.populate(meta);
-            meta.itemName(itemName.getRight());
+            final Component itemName = this.itemName.getRight();
+            if (itemName != null) {
+                meta.itemName(itemName);
+            }
         }
 
         @Override

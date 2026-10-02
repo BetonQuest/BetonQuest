@@ -65,7 +65,10 @@ public class NameHandler implements NameMetaHandler {
 
         @Override
         public void populate(final ItemMeta meta) {
-            meta.displayName(get());
+            final Component customName = name.getRight();
+            if (customName != null) {
+                meta.displayName(customName);
+            }
         }
 
         @Override

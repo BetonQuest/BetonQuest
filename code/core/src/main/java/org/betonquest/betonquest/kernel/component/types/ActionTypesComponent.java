@@ -49,6 +49,7 @@ import org.betonquest.betonquest.quest.action.give.GiveActionFactory;
 import org.betonquest.betonquest.quest.action.heal.HealActionFactory;
 import org.betonquest.betonquest.quest.action.hunger.HungerActionFactory;
 import org.betonquest.betonquest.quest.action.item.ItemDurabilityActionFactory;
+import org.betonquest.betonquest.quest.action.item.ItemOverrideActionFactory;
 import org.betonquest.betonquest.quest.action.journal.GiveJournalActionFactory;
 import org.betonquest.betonquest.quest.action.journal.JournalActionFactory;
 import org.betonquest.betonquest.quest.action.kill.KillActionFactory;
@@ -175,6 +176,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("hunger", new HungerActionFactory());
         actionTypes.registerCombined("if", new IfElseActionFactory(actionManager, conditionManager));
         actionTypes.register("itemdurability", new ItemDurabilityActionFactory());
+        actionTypes.register("itemOverride", new ItemOverrideActionFactory());
         actionTypes.registerCombined("journal", new JournalActionFactory(loggerFactory, localizations, playerDataStorage,
                 InstantSource.system(), saver, profileProvider));
         actionTypes.register("kill", new KillActionFactory());

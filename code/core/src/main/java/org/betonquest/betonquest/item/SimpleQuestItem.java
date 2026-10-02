@@ -24,8 +24,8 @@ import java.util.Locale;
  * @param handlers the resolved attributes defining the QuestItem, excluding explicit given one (name and lore)
  */
 public record SimpleQuestItem(BlockSelector selector, NameMetaHandler.ResolvedNameAttribute name,
-                       LoreMetaHandler.ResolvedLoreAttribute lore,
-                       List<ResolvedAttribute<?>> handlers) implements QuestItem {
+                              LoreMetaHandler.ResolvedLoreAttribute lore,
+                              List<ResolvedAttribute<?>> handlers) implements QuestItem {
 
     @Override
     public boolean matches(@Nullable final ItemStack item) {
@@ -70,6 +70,17 @@ public record SimpleQuestItem(BlockSelector selector, NameMetaHandler.ResolvedNa
 
         item.setItemMeta(meta);
         return item;
+    }
+
+    /**
+     * Overrides an existing meta instead of creating a completely new item.
+     *
+     * @param itemMeta the meta to override
+     */
+    public void override(final ItemMeta itemMeta) {
+        for (final ResolvedAttribute<?> attribute : this.handlers) {
+            attribute.rawPopulate(itemMeta);
+        }
     }
 
     @Override
