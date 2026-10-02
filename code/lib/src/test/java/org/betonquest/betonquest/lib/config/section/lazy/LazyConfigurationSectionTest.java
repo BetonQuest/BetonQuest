@@ -18,7 +18,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
     private final MemoryConfiguration root;
 
-    /* default */ LazyConfigurationSectionTest() {
+    public LazyConfigurationSectionTest() {
         super(createLazySection(new MemoryConfiguration()));
         this.root = (MemoryConfiguration) config.getRoot();
     }

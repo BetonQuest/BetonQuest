@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("ConfigurationSection")
 class FallbackConfigurationNonFallbackWithMultiFallbackTest extends ConfigurationBaseTest {
 
-    /* default */ FallbackConfigurationNonFallbackWithMultiFallbackTest() {
+    public FallbackConfigurationNonFallbackWithMultiFallbackTest() {
         super(createConfig());
     }
 
