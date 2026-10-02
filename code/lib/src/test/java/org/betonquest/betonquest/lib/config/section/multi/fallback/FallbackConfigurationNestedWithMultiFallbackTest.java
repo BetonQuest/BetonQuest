@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings("PMD.UnitTestAssertionsShouldIncludeMessage")
 class FallbackConfigurationNestedWithMultiFallbackTest extends AbstractFallbackConfigurationTest {
 
-    /* default */ FallbackConfigurationNestedWithMultiFallbackTest() {
+    public FallbackConfigurationNestedWithMultiFallbackTest() {
         super(createNestedConfig(setupFallback()), setupFallback());
     }
 
