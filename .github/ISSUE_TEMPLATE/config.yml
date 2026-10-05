@@ -6,3 +6,9 @@ contact_links:
   - name: BetonQuest Support
     about: Quick, chat-based support for any usage questions on discord.
     url: https://discord.gg/rK6mfHq
+  # SECURITY.md asks that a vulnerability never be a public issue. Private
+  # vulnerability reporting is enabled, so the private route belongs in the
+  # issue chooser next to the other contact links.
+  - name: Report a security vulnerability
+    url: https://github.com/BetonQuest/BetonQuest/security/advisories/new
+    about: Do not open a public issue. Report it privately here. See SECURITY.md.
