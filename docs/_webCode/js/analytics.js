@@ -1,7 +1,7 @@
-import { init } from "https://esm.sh/@faststats/web@0.11";
-import { errorTracking } from "https://esm.sh/@faststats/web@0.11/error";
-import { sessionReplay } from "https://esm.sh/@faststats/web@0.11/replay";
-import { webVitals } from "https://esm.sh/@faststats/web@0.11/web-vitals";
+import { init } from "https://esm.sh/@faststats/web@0.13";
+import { errorTracking } from "https://esm.sh/@faststats/web@0.13/error";
+import { sessionReplay } from "https://esm.sh/@faststats/web@0.13/replay";
+import { webVitals } from "https://esm.sh/@faststats/web@0.13/web-vitals";
 
 function getConsentMode() {
   const consent = globalThis.__md_get("__consent");
