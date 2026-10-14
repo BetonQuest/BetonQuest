@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.lib.config.section.unmodifiable;
 
 import org.betonquest.betonquest.lib.config.util.ConfigurationBaseTest;
-import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -30,9 +29,8 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
      */
     private Map<String, Object> valuesDefault;
 
-    @Override
-    public Configuration getConfig() {
-        return new UnmodifiableConfiguration(super.getDefaultConfig());
+    public UnmodifiableConfigurationTest() {
+        super(new UnmodifiableConfiguration(getDefaultConfig()));
     }
 
     /**
