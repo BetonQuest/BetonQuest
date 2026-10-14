@@ -36,6 +36,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - PlayerHider could override each other resulting in unexpected behavior
 - NPCHider conditions were all joined instead of alternated if multiple hiders where configured
 - potential memory leak when a player quits the server and the data of the player is requested again in the same tick 
+- `brew` objective checks old item for valid brew instead newly brewed one
 ### Security
 
 ## [3.2.0] - 2026-08-17

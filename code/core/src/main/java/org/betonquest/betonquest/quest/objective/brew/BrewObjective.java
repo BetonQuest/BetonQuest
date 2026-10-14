@@ -123,7 +123,7 @@ public class BrewObjective extends CountingObjective {
         int progress = 0;
         for (int index = 0; index < Math.min(results.size(), 3); index++) {
             if (!Objects.equals(results.get(index), currentContents[index])
-                    && potion.matches(currentContents[index])) {
+                    && potion.matches(results.get(index))) {
                 progress++;
             }
         }
