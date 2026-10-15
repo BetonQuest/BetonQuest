@@ -43,7 +43,8 @@ public class BrewObjectiveFactory implements ObjectiveFactory {
     public Objective parseInstruction(final Instruction instruction, final ObjectiveService service) throws QuestException {
         final Argument<ItemWrapper> potion = instruction.item().get();
         final Argument<Number> targetAmount = instruction.number().atLeast(0).get();
-        final BrewObjective objective = new BrewObjective(service, targetAmount, plugin, profileProvider, potion);
+        final Argument<ItemWrapper> ingredient = instruction.item().get("ingredient").orElse(null);
+        final BrewObjective objective = new BrewObjective(service, targetAmount, plugin, profileProvider, potion, ingredient);
         service.request(InventoryClickEvent.class).priority(EventPriority.LOWEST).onlineHandler(objective::onIngredientPut)
                 .entity(InventoryClickEvent::getWhoClicked).subscribe(false);
         service.request(BrewEvent.class).priority(EventPriority.MONITOR)

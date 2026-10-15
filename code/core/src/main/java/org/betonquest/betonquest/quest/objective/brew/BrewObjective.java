@@ -19,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,12 @@ public class BrewObjective extends CountingObjective {
     private final Argument<ItemWrapper> potion;
 
     /**
+     * The required brewing ingredient.
+     */
+    @Nullable
+    private final Argument<ItemWrapper> ingredient;
+
+    /**
      * A cache of brewing stands and their owners.
      */
     private final Map<Location, Profile> locations;
@@ -54,13 +61,16 @@ public class BrewObjective extends CountingObjective {
      * @param plugin          the plugin instance
      * @param profileProvider the profile provider to get the profile of the player
      * @param potion          the potion item to brew
+     * @param ingredient      the brewing ingredient, if one is required
      * @throws QuestException if there is an error in the instruction
      */
     public BrewObjective(final ObjectiveService service, final Argument<Number> targetAmount, final Plugin plugin,
-                         final ProfileProvider profileProvider, final Argument<ItemWrapper> potion) throws QuestException {
+                         final ProfileProvider profileProvider, final Argument<ItemWrapper> potion,
+                         @Nullable final Argument<ItemWrapper> ingredient) throws QuestException {
         super(service, targetAmount, "objective.potions_to_brew");
         this.plugin = plugin;
         this.potion = potion;
+        this.ingredient = ingredient;
         this.locations = new ProfileValueMap<>(profileProvider);
     }
 
@@ -116,6 +126,15 @@ public class BrewObjective extends CountingObjective {
         if (profile == null || !getService().containsProfile(profile) || !getService().checkConditions(profile)) {
             return;
         }
+
+        if (ingredient != null && !ingredient.getValue(profile).matches(event.getContents().getIngredient(), profile)) {
+            return;
+        }
+
+        onBrew(event, profile);
+    }
+
+    private void onBrew(final BrewEvent event, final Profile profile) throws QuestException {
         final QuestItem potion = this.potion.getValue(profile).getItem(profile);
         final List<ItemStack> results = event.getResults();
         final ItemStack[] currentContents = event.getContents().getStorageContents();

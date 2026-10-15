@@ -116,23 +116,33 @@ objectives:
 ## `Brew`
 
 __Context__: @snippet:objective-meta:online@  
-__Syntax__: `brew <item> [amount]`  
+__Syntax__: `brew <item> <amount> [ingredient]`  
 __Description__: The player has to brew the specified items.
 
-The first argument is a potion ID from the _items_ section. Second argument is amount of potions.
+| Parameter             | Type                | Explanation                                                               |
+|-----------------------|---------------------|---------------------------------------------------------------------------|
+| item <br>[Item]       | Required            | Potion that needs to be brewed.                                           |
+| amount <br>[Number]   | Required            | Number of potions that needs to be brewed.                                |
+| ingredient <br>[Item] | Optional <br>[NONE] | If given, the brewing must process with the specified item as ingredient. |
+
 You can optionally add `notify` argument to make the objective display progress to players,
 optionally with the notification interval after a colon.
 
-Progress will be counted for the player who last added or changed an item before the brew process completed. Only newly
-created potions are counted.
-
-This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of potions already brewed,
-`left` is the amount of potions still needed to brew and `total` is the amount of potions initially required.
+Progress will be counted for the player who last added or changed an item before the brew process completed.
 
 ```YAML title="Example"
 objectives:
   weird: "brew weird_concoction 4 actions:add_tag"
+  makeThrowing: "brew potion 1 ingredient:gun_powder"
 ```
+
+<h5> Placeholder Properties </h5>
+
+| Name     | Example Output | Explanation                                                                               |
+|----------|----------------|-------------------------------------------------------------------------------------------|
+| _amount_ | 6              | Shows the amount of items already brewed.                                                 |
+| _left_   | 4              | Shows the amount of items that still need to be brewed for the objective to be completed. |
+| _total_  | 10             | Shows the initial amount of items that needed to be brewed.                               |
 
 ## `ChestPut`
 
