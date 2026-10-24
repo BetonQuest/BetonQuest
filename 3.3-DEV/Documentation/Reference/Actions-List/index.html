@@ -4690,6 +4690,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#itemoverride">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>ItemOverride</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#journal">
     <span class="md-ellipsis">
 
@@ -10638,6 +10661,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#itemoverride">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>ItemOverride</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#journal">
     <span class="md-ellipsis">
 
@@ -12174,6 +12220,39 @@ To prevent this behaviour use the <code>ignoreUnbreakable</code> argument.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">add1ToHand</span><span class="p">:</span><span class="w"> </span><span class="s">"itemdurability</span><span class="nv"> </span><span class="s">HAND</span><span class="nv"> </span><span class="s">ADD</span><span class="nv"> </span><span class="s">1"</span>
 <span class="w">  </span><span class="nt">damageChest</span><span class="p">:</span><span class="w"> </span><span class="s">"itemdurability</span><span class="nv"> </span><span class="s">CHEST</span><span class="nv"> </span><span class="s">SUBTRACT</span><span class="nv"> </span><span class="s">%randomnumber.whole.15~30%</span><span class="nv"> </span><span class="s">ignoreUnbreakable</span><span class="nv"> </span><span class="s">ignoreEvents"</span>
+</code></pre></div>
+<h2 id="itemoverride"><code>ItemOverride</code><a class="headerlink" href="#itemoverride" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
+<strong>Syntax</strong>: <code>itemoverride &lt;slot&gt; &lt;itemId&gt;</code><br>
+<strong>Description</strong>: Overrides the values defining the item.</p>
+<p>Only <code>simple</code> items are valid identifiers for this action.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>slot <br>[<abbr title="hand, off_hand, feet, legs, chest, head">PlayerEquipmentSlot</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The slot of the item to change.</td>
+</tr>
+<tr>
+<td>itemId <br>[Identifier]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The identifier of the definition to apply.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">setNameToHand</span><span class="p">:</span><span class="w"> </span><span class="s">"itemoverride</span><span class="nv"> </span><span class="s">HAND</span><span class="nv"> </span><span class="s">named"</span>
+<span class="w">  </span><span class="nt">updateStatistic</span><span class="p">:</span><span class="w"> </span><span class="s">"itemoverride</span><span class="nv"> </span><span class="s">OFF_HAND</span><span class="nv"> </span><span class="s">statistic"</span>
+<span class="nt">items</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">named</span><span class="p">:</span><span class="w"> </span><span class="s">"simple</span><span class="nv"> </span><span class="s">name:Test"</span>
+<span class="w">  </span><span class="nt">statistic</span><span class="p">:</span><span class="w"> </span><span class="s">'simple</span><span class="nv"> </span><span class="s">"lore:Used</span><span class="nv"> </span><span class="s">%point.uses.amount%</span><span class="nv"> </span><span class="s">times!"'</span>
 </code></pre></div>
 <h2 id="journal"><code>Journal</code><a class="headerlink" href="#journal" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This action can be executed on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span> <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
