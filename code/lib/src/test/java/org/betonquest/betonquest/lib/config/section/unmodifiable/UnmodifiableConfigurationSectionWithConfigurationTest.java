@@ -1,17 +1,15 @@
 package org.betonquest.betonquest.lib.config.section.unmodifiable;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.junit.jupiter.api.Tag;
 
 /**
- * This is a test for {@link UnmodifiableConfiguration} as a {@link ConfigurationSection}.
+ * This is a test for {@link UnmodifiableConfiguration} as a {@link org.bukkit.configuration.ConfigurationSection}.
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
-public class UnmodifiableConfigurationSectionWithConfigurationTest extends UnmodifiableConfigurationSectionTest {
+public class UnmodifiableConfigurationSectionWithConfigurationTest extends AbstractUnmodifiableConfigurationSectionTest {
 
-    @Override
-    public ConfigurationSection getConfig() {
-        return new UnmodifiableConfiguration(getDefaultConfig());
+    public UnmodifiableConfigurationSectionWithConfigurationTest() {
+        super(new UnmodifiableConfiguration(getDefaultConfig()));
     }
 }

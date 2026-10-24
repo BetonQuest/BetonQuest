@@ -1,6 +1,7 @@
 package org.betonquest.betonquest.lib.config.section.multi;
 
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
+import org.betonquest.betonquest.lib.config.util.ConfigurationBaseTest;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -18,7 +19,11 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @Tag("ConfigurationSection")
 @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
-public class MultiSectionConfigurationSplitTest extends MultiSectionConfigurationTest {
+public class MultiSectionConfigurationSplitTest extends ConfigurationBaseTest {
+
+    public MultiSectionConfigurationSplitTest() {
+        super(getDefaultConfig());
+    }
 
     /**
      * Get the default configuration values as {@link Configuration}.
@@ -31,8 +36,7 @@ public class MultiSectionConfigurationSplitTest extends MultiSectionConfiguratio
         return defaultSection;
     }
 
-    @Override
-    public Configuration getConfig() {
+    public static MultiConfiguration getDefaultConfig() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
         configs.put(setupMultiConfig1(), "config1.yml");
         configs.put(setupMultiConfig2(), "config1.yml");

@@ -20,9 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.UnitTestAssertionsShouldIncludeMessage", "PMD.JUnitJupiterTestShouldBePackagePrivate"})
 public class MultiSectionConfigurationTest extends ConfigurationBaseTest {
 
-    @Override
-    public Configuration getConfig() {
-        final Configuration defaultConfig = super.getDefaultConfig();
+    public MultiSectionConfigurationTest() {
+        super(getDefaultConfig());
+    }
+
+    public static MultiConfiguration getDefaultConfig() {
+        final Configuration defaultConfig = ConfigurationBaseTest.getDefaultConfig();
         final Map<ConfigurationSection, String> configs = new HashMap<>();
         configs.put(defaultConfig, "config.yml");
         try {
