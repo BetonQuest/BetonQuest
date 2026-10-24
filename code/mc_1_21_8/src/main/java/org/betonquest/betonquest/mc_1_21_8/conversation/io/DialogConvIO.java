@@ -77,6 +77,11 @@ public class DialogConvIO implements ConversationIO {
     private Component npcName = EMPTY;
 
     /**
+     * Whether the dialog currently shown to the player offers answers and stays open until one is picked.
+     */
+    private boolean awaitingAnswer;
+
+    /**
      * Creates a new DialogConvIO instance.
      *
      * @param conv                 the conversation this IO is part of
@@ -123,6 +128,7 @@ public class DialogConvIO implements ConversationIO {
             return;
         }
 
+        awaitingAnswer = !options.isEmpty();
         onlineProfile.getPlayer().showDialog(
                 Dialog.create(builder -> {
                             if (settings.onlyButtons()) {
@@ -158,6 +164,8 @@ public class DialogConvIO implements ConversationIO {
 
         return DialogBase.builder(title)
                 .canCloseWithEscape(settings.closeButtonEnabled() && settings.closeWithEscape() && !conv.isMovementBlock())
+                .pause(false)
+                .afterAction(options.isEmpty() ? DialogBase.DialogAfterAction.CLOSE : DialogBase.DialogAfterAction.NONE)
                 .body(bodies)
                 .build();
     }
@@ -287,6 +295,10 @@ public class DialogConvIO implements ConversationIO {
 
     @Override
     public void end(final Runnable callback) {
+        if (awaitingAnswer) {
+            awaitingAnswer = false;
+            onlineProfile.getPlayer().closeDialog();
+        }
         callback.run();
     }
 }

@@ -40,6 +40,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - NPCHider conditions were all joined instead of alternated if multiple hiders where configured
 - potential memory leak when a player quits the server and the data of the player is requested again in the same tick 
 - `brew` objective checks old item for valid brew instead newly brewed one
+- `dialog` conversation IO closed and reopened the screen on every answer, briefly freeing the camera and recentering the cursor
 ### Security
 
 ## [3.2.0] - 2026-08-17
