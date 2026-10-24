@@ -11,8 +11,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * An interceptor which uses the {@link AsyncPlayerChatEvent}.
@@ -27,7 +27,7 @@ public class SimpleInterceptor implements Interceptor, Listener {
     /**
      * Intercepted messages.
      */
-    private final List<String> messages = new ArrayList<>();
+    private final Queue<String> messages;
 
     /**
      * Create a new Simple Interceptor.
@@ -36,6 +36,7 @@ public class SimpleInterceptor implements Interceptor, Listener {
      */
     public SimpleInterceptor(final OnlineProfile onlineProfile) {
         this.player = onlineProfile.getPlayer();
+        messages = new ConcurrentLinkedQueue<>();
     }
 
     @Override
@@ -61,9 +62,19 @@ public class SimpleInterceptor implements Interceptor, Listener {
     @Override
     public void end() {
         HandlerList.unregisterAll(this);
-        for (final String message : messages) {
-            player.sendMessage(message);
+        while (!messages.isEmpty()) {
+            player.sendMessage(messages.poll());
         }
+    }
+
+    @Override
+    public void transferTo(final Interceptor next) {
+        if (next instanceof final SimpleInterceptor other) {
+            other.messages.addAll(messages);
+            HandlerList.unregisterAll(this);
+            return;
+        }
+        end();
     }
 
     /**

@@ -68,6 +68,8 @@ public Objective parseInstruction(final Instruction instruction) throws QuestExc
 In the argument parsing step the method of converting a string into a java type is decided.
 The instruction chain may be accessed conveniently, starting directly from any `Instruction` instance.
 
+All chains, except `vector`, `location` and `world`, have the [caching](#Caching) enabled by default.
+
 | Call                                 | Description                                                                                                                                                                                            |
 |:-------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  | `.number()`                          | Default parser for `java.lang.Number` covering both integer and floating point values                                                                                                                  |
@@ -125,6 +127,11 @@ To have valid calls the `Number` parser is used as an example, but naturally any
 ### Advanced Argument Parsing
 Parsers via the chain offer more functionality than just parsing a string into a specific type.
 By chaining different kinds of operations, the outcome can be modified in certain ways.
+
+#### Caching
+Instruction chains have a default caching state which can be changed with the `cache(boolean)` method.
+This is especially important if modifiable types are created through the chain and are potentially changed.
+As alternative the returned values are required to be copied or cloned before working with them.
 
 #### Validations
 You can validate an argument using the `validate(ValueValidator<T>)` or `validate(ValueValidator<T>, String)` method.

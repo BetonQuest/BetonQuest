@@ -17,6 +17,7 @@ import org.betonquest.betonquest.item.typehandler.FlagHandler;
 import org.betonquest.betonquest.item.typehandler.HeadHandler;
 import org.betonquest.betonquest.item.typehandler.LoreHandler;
 import org.betonquest.betonquest.item.typehandler.NameHandler;
+import org.betonquest.betonquest.item.typehandler.PersistentDataContainerHandler;
 import org.betonquest.betonquest.item.typehandler.PotionHandler;
 import org.betonquest.betonquest.item.typehandler.QuestHandler;
 import org.betonquest.betonquest.item.typehandler.UnbreakableHandler;
@@ -69,6 +70,7 @@ public class SimpleQuestItemHandlerRegistry {
                 new CustomModelDataHandler(),
                 new UnbreakableHandler(),
                 new FlagHandler(),
+                new PersistentDataContainerHandler(),
                 new EnchantmentsHandler(),
                 new PotionHandler(),
                 new BannerHandler(),

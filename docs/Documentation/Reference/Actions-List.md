@@ -48,12 +48,17 @@ actions:
 ## `CancelConversation`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `cancelconversation`  
+__Syntax__: `cancelconversation {skipDelay}`  
 __Description__: Cancel the conversation that is currently active for the player.
+
+| Parameter              | Type                  | Explanation                                                                                                                            |
+|------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| skipDelay<br>[Boolean] | Flag<br>[false, true] | If the interceptor delay should be skipped and the conversation interceptor ended immediately. This also ends any delayed interceptor. |
 
 ```YAML title="Example"
 actions:
   cancel: "cancelconversation"
+  cancelInstant: "cancelconversation skipDelay"
 ```
 
 ## `Chat`
@@ -620,6 +625,28 @@ Available slot types: `HAND`, `OFF_HAND`, `HEAD`, `CHEST`, `LEGS`, `FEET`.
 actions:
   add1ToHand: "itemdurability HAND ADD 1"
   damageChest: "itemdurability CHEST SUBTRACT %randomnumber.whole.15~30% ignoreUnbreakable ignoreEvents"
+```
+
+## `ItemOverride`
+
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `itemoverride <slot> <itemId>`  
+__Description__: Overrides the values defining the item.
+
+Only `simple` items are valid identifiers for this action.
+
+| Parameter                      | Type     | Explanation                                |
+|--------------------------------|----------|--------------------------------------------|
+| slot <br>[PlayerEquipmentSlot] | Required | The slot of the item to change.            |
+| itemId <br>[Identifier]        | Required | The identifier of the definition to apply. |
+
+```YAML title="Example"
+actions:
+  setNameToHand: "itemoverride HAND named"
+  updateStatistic: "itemoverride OFF_HAND statistic"
+items:
+  named: "simple name:Test"
+  statistic: 'simple "lore:Used %point.uses.amount% times!"'
 ```
 
 ## `Journal`

@@ -31,13 +31,14 @@ public class LookingAtConditionFactory implements PlayerConditionFactory {
         return new OnlineConditionAdapter(createCondition(loc, selector, exactMatch));
     }
 
-    private LookingAtCondition createCondition(@Nullable final Argument<Location> loc, @Nullable final Argument<BlockSelector> selector, final FlagArgument<Boolean> exactMatch) {
+    private LookingAtCondition createCondition(@Nullable final Argument<Location> loc, @Nullable final Argument<BlockSelector> selector,
+                                               final FlagArgument<Boolean> exactMatch) throws QuestException {
         if (loc != null) {
             return new LookingAtCondition(loc);
         }
         if (selector != null) {
             return new LookingAtCondition(selector, exactMatch);
         }
-        throw new IllegalArgumentException("You must define either 'loc:' or 'type:' optional");
+        throw new QuestException("You must define either 'loc:' or 'type:' optional");
     }
 }

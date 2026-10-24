@@ -56,7 +56,7 @@ public class UpdatedTotemNotifyIO extends NotifyIO {
                         throw new QuestException("The item-model '%s' could not be parsed!".formatted(input));
                     }
                     return key;
-                }) : null;
+                }, true, true) : null;
         customModelData = getNumberData("custommodeldata", 0);
     }
 

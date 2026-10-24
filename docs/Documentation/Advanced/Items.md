@@ -106,6 +106,18 @@ colons: (2)
     - HIDE_POTION_EFFECTS: Hides potion effects, book and firework info, map tool tips, banner patters, and enchantments
     - HIDE_DYE: Hides the dye labels on colored leather armor
 
+* `pdc` - List of PersistentDataContainer values, which are used to store data in items.  
+  The base format is `key;type;value`.(4) (5)  
+  To use nested entries (`TAG_CONTAINER` type) you need to prefix the `key` with a "path" of `keys`, separated by `>`.(6)  
+  Supported value types:
+    - BYTE
+    - SHORT
+    - INTEGER
+    - LONG
+    - FLOAT
+    - DOUBLE
+    - STRING
+
 </div>
 
 1. For example `none-knockback` means that the item must not have any knockback enchantment.
@@ -113,7 +125,10 @@ colons: (2)
 3. You can also add `+`/`-` characters to the 
 enchantment level to make the check require levels greater/less (and equal) than specified. If you don't care about 
 the level, replace the number with `?`.
-
+4. Base Example: `"pdc:custom_namespace:1;String;Text with spaces."`, with `custom_namespace:1` as key, `String` as type
+and `Text with spaces.` as value. To allow spaces we need to quote the argument.
+5. List Example: `"pdc:custom_namespace:1;BYTE;7,custom_namespace:2;Double;3.14"`
+6. Nested Example: `"pdc:custom_namespace:1>c_n:2>c_n:value;BYTE;7"`
 
 
 

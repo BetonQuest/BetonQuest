@@ -13,12 +13,20 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `discordsrv` integration added with a condition and an objective for account linking
 - `trade` objective to track trades
 - offset parameter for menu slots to support pagination
+- `pdc` handler to `simple` item
+- `target` location to `particle` action
+- `skipDelay` flag to `cancelconversation` action
+- ability to start a new conversation within the interceptor delay window while preserving intercepted messages
+- `ingredient` check for `brew` objective
+- `itemOverride` action to update a specific item
 ### Changed
 - `lore` of `item` placeholder can now be used without number to get all lines
 - `chat` notify io now only sends messages during a conversation if `bypassInterceptor` is set to `true`
 - `non-positive` (<= 0) update intervals deactivate automatic updating
 - `block selector` no longer uses `matchMaterial` which strips regex characters and resolved to unwanted values
 - `simple` item now supports placeholders and got largely reworked
+- `particle` action now uses the player as dynamic location instead of getting their static location when no `loc` is given
+- `section` placeholder now allows to address subsections
 ### Deprecated
 ### Removed
 - `mysql.reconnect_interval` config option since it is no longer used
@@ -28,6 +36,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `extends` in `conversations` sometimes crashing with IllegalStateException
 - `section` placeholder did not include target path to subsections
 - async database handling by using default java executor service implementation instead of manual thread handling
+- PlayerHider could override each other resulting in unexpected behavior
+- NPCHider conditions were all joined instead of alternated if multiple hiders where configured
+- potential memory leak when a player quits the server and the data of the player is requested again in the same tick 
+- `brew` objective checks old item for valid brew instead newly brewed one
 - `dialog` conversation IO closed and reopened the screen on every answer, briefly freeing the camera and recentering the cursor
 ### Security
 

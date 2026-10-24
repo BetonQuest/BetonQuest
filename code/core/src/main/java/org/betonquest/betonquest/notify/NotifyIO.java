@@ -105,6 +105,6 @@ public abstract class NotifyIO {
         if (dataString == null) {
             return new DefaultArgument<>(defaultData);
         }
-        return new DefaultArgument<>(placeholders, pack, dataString, NumberParser.DEFAULT);
+        return new DefaultArgument<>(placeholders, pack, dataString, NumberParser.DEFAULT, true, true);
     }
 }

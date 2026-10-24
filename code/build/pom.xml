@@ -91,6 +91,16 @@
       <id>betonquest-papermc-repo</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
     </repository>
+
+    <!-- Transitive compile dependencies -->
+    <repository>
+      <id>betonquest-minebench-repo</id>
+      <url>https://repo.minebench.de/</url>
+    </repository>
+    <repository>
+      <id>faststats-releases</id>
+      <url>https://repo.faststats.dev/releases</url>
+    </repository>
   </repositories>
 
   <build>

@@ -6,6 +6,7 @@ import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.Number;
 import org.betonquest.betonquest.item.handler.NumberValue;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.inventory.meta.Damageable;
@@ -80,7 +81,9 @@ public class DurabilityHandler implements ItemMetaHandler<Damageable> {
 
         @Override
         public void populate(final Damageable damageableMeta) {
-            damageableMeta.setDamage(durability.value());
+            if (durability.mode() != Number.WHATEVER) {
+                damageableMeta.setDamage(durability.value());
+            }
         }
 
         @Override

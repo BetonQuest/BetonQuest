@@ -52,19 +52,6 @@ public interface ExistenceArgument<T> extends Argument<Pair<Existence, @Nullable
     }
 
     /**
-     * An argument with an explicit value.
-     * <p>
-     * It is {@link Existence#WHATEVER} with the given value.
-     *
-     * @param value the value to use
-     * @param <T>   the value type
-     * @return the default argument with value
-     */
-    static <T> ExistenceArgument<T> whateverValue(final T value) {
-        return profile -> Pair.of(Existence.WHATEVER, value);
-    }
-
-    /**
      * An argument without explicit values.
      * <p>
      * It is {@link Existence#WHATEVER} with {@link List#of()} as value.

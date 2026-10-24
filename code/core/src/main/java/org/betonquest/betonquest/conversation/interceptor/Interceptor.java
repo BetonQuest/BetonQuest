@@ -24,4 +24,14 @@ public interface Interceptor {
      * Ends the work of this interceptor.
      */
     void end();
+
+    /**
+     * Transfers intercepted messages and listener state to the next interceptor without flushing messages to the player,
+     * if the next interceptor is compatible. Otherwise, cleans up and flushes messages.
+     *
+     * @param next the interceptor of the next conversation
+     */
+    default void transferTo(final Interceptor next) {
+        end();
+    }
 }

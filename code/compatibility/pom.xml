@@ -61,7 +61,7 @@
     <nexo.version>1.17.0</nexo.version>
     <craft-engine-core.version>26.5</craft-engine-core.version>
     <craft-engine-bukkit.version>26.5</craft-engine-bukkit.version>
-    <api-itemsadder.version>4.0.10</api-itemsadder.version>
+    <itemsadder-api.version>4.0.17</itemsadder-api.version>
     <thebrewingproject-bukkit.version>3.3.0</thebrewingproject-bukkit.version>
     <discordsrv.version>1.30.0</discordsrv.version>
   </properties>
@@ -327,15 +327,6 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- from matteodev repository -->
-    <dependency>
-      <groupId>dev.lone</groupId>
-      <artifactId>api-itemsadder</artifactId>
-      <version>${api-itemsadder.version}</version>
-      <scope>provided</scope>
-      <optional>true</optional>
-    </dependency>
-
     <!-- from scarsz repository -->
     <dependency>
       <groupId>com.discordsrv</groupId>
@@ -430,6 +421,13 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>beer.devs</groupId>
+      <artifactId>itemsadder-api</artifactId>
+      <version>${itemsadder-api.version}</version>
+      <scope>provided</scope>
+      <optional>true</optional>
+    </dependency>
 
     <!-- only dependencies from maven central that are no MC Plugins -->
     <dependency>
@@ -509,10 +507,6 @@
     <repository>
       <id>betonquest-momirealms-repo</id>
       <url>https://repo.momirealms.net/releases/</url>
-    </repository>
-    <repository>
-      <id>betonquest-matteodev-repo</id>
-      <url>https://maven.devs.beer/</url>
     </repository>
     <repository>
       <id>betonquest-breweryteam-repo</id>

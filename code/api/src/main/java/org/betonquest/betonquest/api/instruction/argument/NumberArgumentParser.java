@@ -19,7 +19,7 @@ public interface NumberArgumentParser extends DecoratedArgumentParser<Number> {
      * @return a new {@link NumberArgumentParser}
      * @since 3.0.0
      */
-    @Contract(value = "_ -> new", pure = true)
+    @Contract(value = "!null -> new", pure = true)
     NumberArgumentParser atLeast(Number inclusiveMin);
 
     /**
@@ -31,7 +31,7 @@ public interface NumberArgumentParser extends DecoratedArgumentParser<Number> {
      * @return a new {@link NumberArgumentParser}
      * @since 3.0.0
      */
-    @Contract(value = "_ -> new", pure = true)
+    @Contract(value = "!null -> new", pure = true)
     NumberArgumentParser atMost(Number inclusiveMax);
 
     /**
@@ -44,6 +44,6 @@ public interface NumberArgumentParser extends DecoratedArgumentParser<Number> {
      * @return a new {@link NumberArgumentParser}
      * @since 3.0.0
      */
-    @Contract(value = "_, _ -> new", pure = true)
+    @Contract(value = "!null, !null -> new", pure = true)
     NumberArgumentParser inRange(Number inclusiveMin, Number exclusiveMax);
 }

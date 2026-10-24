@@ -32,7 +32,7 @@ public class PlayerHider {
      * The map's key is an array containing the source {@link Profile}'s conditions
      * and the map's value is an array containing the target {@link Profile}'s conditions.
      */
-    private final Map<Collection<ConditionIdentifier>, Collection<ConditionIdentifier>> hiders;
+    private final List<Map.Entry<Collection<ConditionIdentifier>, Collection<ConditionIdentifier>>> hiders;
 
     /**
      * Plugin instance to show/hide players.
@@ -74,7 +74,7 @@ public class PlayerHider {
         this.log = log;
         this.conditionManager = conditionManager;
         this.profileProvider = profileProvider;
-        hiders = new HashMap<>();
+        hiders = new ArrayList<>();
     }
 
     /**
@@ -94,8 +94,8 @@ public class PlayerHider {
                 for (final String key : hiderSection.getKeys(false)) {
                     final String rawConditionsSource = hiderSection.getString(key + ".source_player");
                     final String rawConditionsTarget = hiderSection.getString(key + ".target_player");
-                    hiders.put(getConditions(instructions, pack, key, rawConditionsSource),
-                            getConditions(instructions, pack, key, rawConditionsTarget));
+                    hiders.add(Map.entry(getConditions(instructions, pack, key, rawConditionsSource),
+                            getConditions(instructions, pack, key, rawConditionsTarget)));
                 }
             }
         } catch (final QuestException e) {
@@ -184,7 +184,7 @@ public class PlayerHider {
     private Map<OnlineProfile, List<OnlineProfile>> getProfilesToHide(final Collection<? extends OnlineProfile> targets,
                                                                       final Collection<? extends OnlineProfile> sources) {
         final Map<OnlineProfile, List<OnlineProfile>> profilesToHide = new HashMap<>();
-        for (final Map.Entry<Collection<ConditionIdentifier>, Collection<ConditionIdentifier>> hider : hiders.entrySet()) {
+        for (final Map.Entry<Collection<ConditionIdentifier>, Collection<ConditionIdentifier>> hider : hiders) {
             final List<OnlineProfile> targetProfiles = new ArrayList<>();
             for (final OnlineProfile target : targets) {
                 if (conditionManager.testAll(target, hider.getValue())) {

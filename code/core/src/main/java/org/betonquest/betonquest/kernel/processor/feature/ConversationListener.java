@@ -125,13 +125,13 @@ public class ConversationListener implements Listener {
     public void onQuit(final PlayerQuitEvent event) {
         final OnlineProfile profile = profileProvider.getProfile(event.getPlayer());
         final Conversation active = conversationProcessor.getActiveConversation(profile);
-        if (active == null) {
-            return;
+        if (active != null) {
+            if (active.isMovementBlock()) {
+                active.suspend();
+            } else {
+                active.endConversation(true);
+            }
         }
-        if (active.isMovementBlock()) {
-            active.suspend();
-        } else {
-            active.endConversation();
-        }
+        conversationProcessor.getInterceptorManager().cancelPendingInterceptor(profile);
     }
 }

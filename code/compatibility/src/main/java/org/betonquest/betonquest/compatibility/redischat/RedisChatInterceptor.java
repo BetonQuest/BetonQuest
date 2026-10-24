@@ -48,4 +48,11 @@ public class RedisChatInterceptor implements Interceptor {
     public void end() {
         api.unpauseChat(player);
     }
+
+    @Override
+    public void transferTo(final Interceptor next) {
+        if (!(next instanceof RedisChatInterceptor)) {
+            end();
+        }
+    }
 }

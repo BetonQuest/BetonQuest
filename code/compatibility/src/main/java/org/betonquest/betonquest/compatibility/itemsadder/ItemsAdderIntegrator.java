@@ -18,7 +18,7 @@ public class ItemsAdderIntegrator extends IntegrationTemplate {
     /**
      * The minimum required version of ItemsAdder.
      */
-    public static final String REQUIRED_VERSION = "4.0.10";
+    public static final String REQUIRED_VERSION = "4.0.17";
 
     /**
      * The prefix of implementations.

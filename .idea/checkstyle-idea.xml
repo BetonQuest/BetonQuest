@@ -10,8 +10,8 @@
     </option>
     <option name="locations">
       <list>
-        <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
-        <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">(bundled)</ConfigurationLocation>
+        <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">bundled-sun-checks</ConfigurationLocation>
+        <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">bundled-google-checks</ConfigurationLocation>
         <ConfigurationLocation id="0d156e82-b809-4bda-ba4f-06b0b6dc2eb4" type="HTTP_URL" scope="All" description="BetonQuest Style">https://raw.githubusercontent.com/BetonQuest/MavenSetup/refs/heads/main/configs/checkstyle.xml</ConfigurationLocation>
       </list>
     </option>

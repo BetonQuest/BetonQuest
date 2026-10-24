@@ -323,7 +323,7 @@ __Description__: Represents a section as a list of all its elements as identifie
 | Parameter               | Type                  | Explanation                                                                                                                    |
 |-------------------------|-----------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | type<br>[Section]       | Required              | The parent section to target, e.g. `actions`, `conditions` etc.                                                                |
-| id<br>[String]          | Required              | The identifier key of the targeted section.                                                                                    |
+| id<br>[String]          | Required              | The identifier key of the targeted section. Nested sections must be put in `{}`.                                               |
 | select<br>[SectionMode] | Optional<br>[first]   | Decides how subsections will be selected to list them. `last` starts with the last element and `random` selects them randomly. |
 | limit<br>[Number]       | Optional<br>[NoLimit] | How many elements should be selected at max. Don't use it if you want to have all elements.                                    |
 | shuffle<br>[Boolean]    | Flag<br>[false, true] | If the resulting list of elements should be shuffled. This won't be necessary if `select:random` is set.                       |
@@ -336,6 +336,7 @@ __Description__: Represents a section as a list of all its elements as identifie
 %section.actions.mySection%
 %section.actions.mySection.shuffle%
 %section.objectives.mySection.select:random.limit:3%
+%section.conditions.{my.deeply.nested.section}.select:random.limit:3%
 ```
 
 ??? example "Additional Explanation"
