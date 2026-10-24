@@ -9750,7 +9750,7 @@ Note that the first value is returned when it is higher than the second.</p>
 <tr>
 <td>id<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
 <td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
-<td>The identifier key of the targeted section.</td>
+<td>The identifier key of the targeted section. Nested sections must be put in <code>{}</code>.</td>
 </tr>
 <tr>
 <td>select<br>[<abbr title="first, last, random">SectionMode</abbr>]</td>
@@ -9777,6 +9777,7 @@ Note that the first value is returned when it is higher than the second.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">section</span><span class="nc">.actions.mySection</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">section</span><span class="nc">.actions.mySection.shuffle</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">section</span><span class="nc">.objectives.mySection.select</span><span class="nd">:random</span><span class="nc">.limit</span><span class="nd">:3</span><span class="err">%</span>
+<span class="err">%</span><span class="nt">section</span><span class="nc">.conditions.</span><span class="p">{</span><span class="nt">my</span><span class="nc">.deeply.nested.section</span><span class="p">}</span><span class="nc">.select</span><span class="nd">:random</span><span class="nc">.limit</span><span class="nd">:3</span><span class="err">%</span>
 </code></pre></div>
 <details class="example">
 <summary>Additional Explanation</summary>
