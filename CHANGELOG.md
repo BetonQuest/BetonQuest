@@ -24,6 +24,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `block selector` no longer uses `matchMaterial` which strips regex characters and resolved to unwanted values
 - `simple` item now supports placeholders and got largely reworked
 - `particle` action now uses the player as dynamic location instead of getting their static location when no `loc` is given
+- `section` placeholder now allows to address subsections
 ### Deprecated
 ### Removed
 - `mysql.reconnect_interval` config option since it is no longer used
