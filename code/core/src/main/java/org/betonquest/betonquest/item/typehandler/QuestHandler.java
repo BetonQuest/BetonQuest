@@ -119,6 +119,8 @@ public class QuestHandler implements ItemMetaHandler.Standard {
             if (existence == Existence.REQUIRED) {
                 meta.getPersistentDataContainer().set(QUEST_ITEM_KEY, PersistentDataType.BYTE, (byte) 1);
                 loreConsumer.accept(meta);
+            } else if (existence == Existence.FORBIDDEN) {
+                meta.getPersistentDataContainer().remove(QUEST_ITEM_KEY);
             }
         }
 
