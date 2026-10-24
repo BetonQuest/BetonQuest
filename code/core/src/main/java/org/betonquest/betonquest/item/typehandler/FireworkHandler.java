@@ -9,6 +9,7 @@ import org.betonquest.betonquest.item.handler.Attribute;
 import org.betonquest.betonquest.item.handler.Existence;
 import org.betonquest.betonquest.item.handler.ExistenceArgument;
 import org.betonquest.betonquest.item.handler.ItemMetaHandler;
+import org.betonquest.betonquest.item.handler.Number;
 import org.betonquest.betonquest.item.handler.NumberValue;
 import org.betonquest.betonquest.item.handler.ResolvedAttribute;
 import org.bukkit.Color;
@@ -172,8 +173,13 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
 
         @Override
         public void populate(final FireworkMeta fireworkMeta) {
-            fireworkMeta.addEffects(resolvedEffects);
-            if (power != null) {
+            if (existence != Existence.WHATEVER) {
+                fireworkMeta.clearEffects();
+                if (!resolvedEffects.isEmpty()) {
+                    fireworkMeta.addEffects(resolvedEffects);
+                }
+            }
+            if (power != null && power.mode() != Number.WHATEVER) {
                 fireworkMeta.setPower(power.value());
             }
         }
@@ -184,7 +190,9 @@ public class FireworkHandler implements ItemMetaHandler<FireworkMeta> {
          * @param fireworkMeta the meta to populate
          */
         private void populate(final FireworkEffectMeta fireworkMeta) {
-            fireworkMeta.setEffect(resolvedEffects.isEmpty() ? null : resolvedEffects.get(0));
+            if (existence != Existence.WHATEVER) {
+                fireworkMeta.setEffect(resolvedEffects.isEmpty() ? null : resolvedEffects.get(0));
+            }
         }
 
         @Override
