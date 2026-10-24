@@ -10588,18 +10588,69 @@ objective will be completable only for breedable ones.</p>
 </code></pre></div>
 <h2 id="brew"><code>Brew</code><a class="headerlink" href="#brew" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
-<strong>Syntax</strong>: <code>brew &lt;item&gt; [amount]</code><br>
+<strong>Syntax</strong>: <code>brew &lt;item&gt; &lt;amount&gt; [ingredient]</code><br>
 <strong>Description</strong>: The player has to brew the specified items.</p>
-<p>The first argument is a potion ID from the <em>items</em> section. Second argument is amount of potions.
-You can optionally add <code>notify</code> argument to make the objective display progress to players,
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>item <br>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>Potion that needs to be brewed.</td>
+</tr>
+<tr>
+<td>amount <br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td><abbr title="Any number representation that may also have decimal places.">Number</abbr> of potions that needs to be brewed.</td>
+</tr>
+<tr>
+<td>ingredient <br>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[NONE]</td>
+<td>If given, the brewing must process with the specified item as ingredient.</td>
+</tr>
+</tbody>
+</table>
+<p>You can optionally add <code>notify</code> argument to make the objective display progress to players,
 optionally with the notification interval after a colon.</p>
-<p>Progress will be counted for the player who last added or changed an item before the brew process completed. Only newly
-created potions are counted.</p>
-<p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of potions already brewed,
-<code>left</code> is the amount of potions still needed to brew and <code>total</code> is the amount of potions initially required.</p>
+<p>Progress will be counted for the player who last added or changed an item before the brew process completed.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">weird</span><span class="p">:</span><span class="w"> </span><span class="s">"brew</span><span class="nv"> </span><span class="s">weird_concoction</span><span class="nv"> </span><span class="s">4</span><span class="nv"> </span><span class="s">actions:add_tag"</span>
+<span class="w">  </span><span class="nt">makeThrowing</span><span class="p">:</span><span class="w"> </span><span class="s">"brew</span><span class="nv"> </span><span class="s">potion</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">ingredient:gun_powder"</span>
 </code></pre></div>
+<h5> Placeholder Properties </h5>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Example Output</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>amount</em></td>
+<td>6</td>
+<td>Shows the amount of items already brewed.</td>
+</tr>
+<tr>
+<td><em>left</em></td>
+<td>4</td>
+<td>Shows the amount of items that still need to be brewed for the objective to be completed.</td>
+</tr>
+<tr>
+<td><em>total</em></td>
+<td>10</td>
+<td>Shows the initial amount of items that needed to be brewed.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="chestput"><code>ChestPut</code><a class="headerlink" href="#chestput" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>chestput &lt;location&gt; &lt;items&gt; [items-stay] [multipleaccess]</code><br>
