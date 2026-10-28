@@ -145,8 +145,12 @@ public class UpdatedPotionHandler extends PotionHandler {
         @Override
         public void populate(final PotionMeta potionMeta) {
             potionMeta.setBasePotionType(basePotionType);
-            for (final PotionEffect effect : resolved.getCustom()) {
-                potionMeta.addCustomEffect(effect, true);
+            final List<PotionEffect> custom = resolved.getCustom();
+            if (custom != null) {
+                potionMeta.clearCustomEffects();
+                for (final PotionEffect effect : custom) {
+                    potionMeta.addCustomEffect(effect, true);
+                }
             }
         }
 
@@ -203,8 +207,12 @@ public class UpdatedPotionHandler extends PotionHandler {
 
         @Override
         public void populate(final PotionMeta potionMeta) {
-            for (final PotionEffect effect : resolved.getCustom()) {
-                potionMeta.addCustomEffect(effect, true);
+            final List<PotionEffect> custom = resolved.getCustom();
+            if (custom != null) {
+                potionMeta.clearCustomEffects();
+                for (final PotionEffect effect : custom) {
+                    potionMeta.addCustomEffect(effect, true);
+                }
             }
         }
 
