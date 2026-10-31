@@ -16,9 +16,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction.PACKET_WRAPPER_FUNCTION_MAP;
 
@@ -39,8 +41,14 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
 
     /**
      * A map storing the chat history for each player by their UUID.
+     * All accesses to this map and its queues are guarded by {@link #historyLock}.
      */
     private final Map<UUID, Queue<PacketWrapper<?>>> history;
+
+    /**
+     * Protects chat histories shared by packet threads and the Bukkit thread.
+     */
+    private final ReentrantLock historyLock = new ReentrantLock();
 
     /**
      * Constructs a ChatHistory instance.
@@ -55,6 +63,12 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
         this.history = new HashMap<>();
     }
 
+    /**
+     * Gets or creates a player's history. The caller must hold {@link #historyLock}.
+     *
+     * @param uuid the player's UUID
+     * @return the player's mutable history
+     */
     private Queue<PacketWrapper<?>> getHistory(final UUID uuid) {
         return history.computeIfAbsent(uuid, k -> EvictingQueue.create(cacheSize));
     }
@@ -65,10 +79,16 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
         if (user == null) {
             return;
         }
-        final Queue<PacketWrapper<?>> history = getHistory(player.getUniqueId());
-        final TextComponent message = Component.text(Component.newline().content().repeat(cacheSize - history.size()));
+        final List<PacketWrapper<?>> snapshot;
+        historyLock.lock();
+        try {
+            snapshot = List.copyOf(getHistory(player.getUniqueId()));
+        } finally {
+            historyLock.unlock();
+        }
+        final TextComponent message = Component.text(Component.newline().content().repeat(cacheSize - snapshot.size()));
         user.sendPacketSilently(PacketEventsIntegrator.MESSAGE_FUNCTION.apply(message));
-        history.forEach(user::sendPacketSilently);
+        snapshot.forEach(user::sendPacketSilently);
     }
 
     @Override
@@ -86,7 +106,14 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     private <T extends PacketWrapper<?>> void handlePacketWrapperFunction(
             final PacketWrapperFunction<T> packetWrapperFunction, final PacketSendEvent event) {
         final T packetWrapper = packetWrapperFunction.getPacketWrapper(event);
-        getHistory(((Player) event.getPlayer()).getUniqueId()).add(packetWrapperFunction.transform(packetWrapper));
+        final UUID uuid = ((Player) event.getPlayer()).getUniqueId();
+        final PacketWrapper<?> transformedPacket = packetWrapperFunction.transform(packetWrapper);
+        historyLock.lock();
+        try {
+            getHistory(uuid).add(transformedPacket);
+        } finally {
+            historyLock.unlock();
+        }
     }
 
     /**
@@ -96,6 +123,11 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
      */
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        history.remove(event.getPlayer().getUniqueId());
+        historyLock.lock();
+        try {
+            history.remove(event.getPlayer().getUniqueId());
+        } finally {
+            historyLock.unlock();
+        }
     }
 }
