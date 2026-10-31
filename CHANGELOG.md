@@ -31,6 +31,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Removed
 - `mysql.reconnect_interval` config option since it is no longer used
 ### Fixed
+- PacketEvents chat history could throw concurrency exceptions while capturing or restoring messages
 - JobsReborn integration missed some null checks resulting in not working actions and conditions
 - concurrency issue when loading player data on join causing multiple profiles to get created with a database exception
 - `extends` in `conversations` sometimes crashing with IllegalStateException
