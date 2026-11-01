@@ -7,6 +7,7 @@ import org.betonquest.betonquest.api.quest.action.NullableAction;
 import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class PickRandomAction implements NullableAction {
 
     @Override
     public void execute(@Nullable final Profile profile) throws QuestException {
-        final List<RandomAction> resolvedActions = actions.getValue(profile);
+        final List<RandomAction> resolvedActions = new ArrayList<>(actions.getValue(profile));
         double total = resolvedActions.stream().mapToDouble(RandomAction::weight).sum();
 
         int pick = this.amount == null ? 1 : this.amount.getValue(profile).intValue();
