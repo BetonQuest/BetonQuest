@@ -16,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A conversation input/output that displays messages using the tellraw command with a delay between messages.
@@ -46,7 +47,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     /**
      * Whether the player can reply to the conversation, disabled while the NPC is talking, enabled when options are displayed.
      */
-    private boolean canReply;
+    private final AtomicBoolean canReply;
 
     /**
      * Creates a new SlowTellrawConvIO instance.
@@ -69,7 +70,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
         this.plugin = plugin;
         this.componentLineWrapper = componentLineWrapper;
         this.messageDelay = messageDelay;
-        this.canReply = false;
+        this.canReply = new AtomicBoolean();
     }
 
     /**
@@ -78,7 +79,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     @Override
     public void onReply(final AsyncPlayerChatEvent event) {
-        if (!canReply) {
+        if (!canReply.get()) {
             return;
         }
         super.onReply(event);
@@ -94,7 +95,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
             }
             throw new IllegalStateException("NPC text must be set before displaying options.");
         }
-        canReply = false;
+        canReply.set(false);
 
         linesToPrint.addAll(new ArrayList<>(componentLineWrapper.splitWidth(colors.getText()
                 .append(colors.getNpc().append(npcName)).append(Component.text(": ")).append(npcText))));
@@ -104,7 +105,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
             public void run() {
                 if (linesToPrint.isEmpty()) {
                     displayText();
-                    canReply = true;
+                    canReply.set(true);
                     this.cancel();
                     return;
                 }
@@ -115,13 +116,13 @@ public class SlowTellrawConvIO extends TellrawConvIO {
 
     @Override
     public void end(final Runnable callback) {
-        if (canReply) {
+        if (canReply.get()) {
             super.end(callback);
         } else {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (canReply) {
+                    if (canReply.get()) {
                         SlowTellrawConvIO.super.end(callback);
                         this.cancel();
                     }
