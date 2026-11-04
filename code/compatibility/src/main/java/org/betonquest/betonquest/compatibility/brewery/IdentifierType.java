@@ -36,6 +36,7 @@ public enum IdentifierType {
             throw new QuestException("The recipe with the id " + name + " does not exist");
         }
 
+        @SuppressWarnings("PMD.NonThreadSafeSingleton")
         private BRecipe getByDirectId(final String name) throws NoSuchMethodException, InvocationTargetException,
                 IllegalAccessException, QuestException {
             if (getIdMethod == null) {

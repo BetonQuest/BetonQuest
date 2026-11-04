@@ -28,10 +28,10 @@ class GitHubReleaseSourceTest {
         final String apiUrlReleases = "https://github.com/BetonQuest/BetonQuest" + GitHubReleaseSource.RELEASES_URL;
 
         final ContentSource contentSource = url -> {
-            if (url.toString().equals(apiUrlReleases + GitHubReleaseSource.PAGE + 1)) {
+            if ((apiUrlReleases + GitHubReleaseSource.PAGE + 1).equals(url.toString())) {
                 return Files.readString(filePath);
             }
-            if (url.toString().equals(apiUrlReleases + GitHubReleaseSource.PAGE + 2)) {
+            if ((apiUrlReleases + GitHubReleaseSource.PAGE + 2).equals(url.toString())) {
                 return "[]";
             }
             throw new IOException("Unexpected URL: " + url);

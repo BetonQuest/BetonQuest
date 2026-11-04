@@ -171,6 +171,7 @@ public class Updater implements FastStatsMetricsProvider {
         });
     }
 
+    @SuppressWarnings("PMD.InternalApiUsage")
     private boolean searchUpdate() {
         final Pair<Version, String> newLatest = updateSourceHandler.searchUpdate(config, latest.getKey());
         if (newLatest.getValue() == null) {

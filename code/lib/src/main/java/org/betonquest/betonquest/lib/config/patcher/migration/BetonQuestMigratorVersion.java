@@ -37,6 +37,7 @@ public record BetonQuestMigratorVersion(Version wrappedVersion) {
      *
      * @param versionString the raw version string
      */
+    @SuppressWarnings("PMD.InternalApiUsage")
     public BetonQuestMigratorVersion(final String versionString) {
         this(VersionParser.parse(QUEST_PACKAGE_VERSION_TYPE, versionString));
     }
