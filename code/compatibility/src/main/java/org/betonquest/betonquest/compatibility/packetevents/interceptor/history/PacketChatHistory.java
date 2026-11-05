@@ -5,7 +5,6 @@ import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
-import com.google.common.collect.EvictingQueue;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.betonquest.betonquest.compatibility.packetevents.PacketEventsIntegrator;
@@ -15,12 +14,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction.PACKET_WRAPPER_FUNCTION_MAP;
 
@@ -41,14 +39,9 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
 
     /**
      * A map storing the chat history for each player by their UUID.
-     * All accesses to this map and its queues are guarded by {@link #historyLock}.
+     * Both the map and its queues are concurrent, as they are shared by packet threads and the Bukkit thread.
      */
     private final Map<UUID, Queue<PacketWrapper<?>>> history;
-
-    /**
-     * Protects chat histories shared by packet threads and the Bukkit thread.
-     */
-    private final ReentrantLock historyLock = new ReentrantLock();
 
     /**
      * Constructs a ChatHistory instance.
@@ -60,17 +53,11 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     public PacketChatHistory(final PacketEventsAPI<?> packetEventsAPI, final int cacheSize) {
         this.packetEventsAPI = packetEventsAPI;
         this.cacheSize = cacheSize;
-        this.history = new HashMap<>();
+        this.history = new ConcurrentHashMap<>();
     }
 
-    /**
-     * Gets or creates a player's history. The caller must hold {@link #historyLock}.
-     *
-     * @param uuid the player's UUID
-     * @return the player's mutable history
-     */
     private Queue<PacketWrapper<?>> getHistory(final UUID uuid) {
-        return history.computeIfAbsent(uuid, k -> EvictingQueue.create(cacheSize));
+        return history.computeIfAbsent(uuid, k -> new ConcurrentLinkedQueue<>());
     }
 
     @Override
@@ -79,16 +66,13 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
         if (user == null) {
             return;
         }
-        final List<PacketWrapper<?>> snapshot;
-        historyLock.lock();
-        try {
-            snapshot = List.copyOf(getHistory(player.getUniqueId()));
-        } finally {
-            historyLock.unlock();
+        final Queue<PacketWrapper<?>> history = getHistory(player.getUniqueId());
+        final int newLines = cacheSize - history.size();
+        if (newLines > 0) {
+            final TextComponent message = Component.text(Component.newline().content().repeat(newLines));
+            user.sendPacketSilently(PacketEventsIntegrator.MESSAGE_FUNCTION.apply(message));
         }
-        final TextComponent message = Component.text(Component.newline().content().repeat(cacheSize - snapshot.size()));
-        user.sendPacketSilently(PacketEventsIntegrator.MESSAGE_FUNCTION.apply(message));
-        snapshot.forEach(user::sendPacketSilently);
+        history.forEach(user::sendPacketSilently);
     }
 
     @Override
@@ -106,13 +90,10 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     private <T extends PacketWrapper<?>> void handlePacketWrapperFunction(
             final PacketWrapperFunction<T> packetWrapperFunction, final PacketSendEvent event) {
         final T packetWrapper = packetWrapperFunction.getPacketWrapper(event);
-        final UUID uuid = ((Player) event.getPlayer()).getUniqueId();
-        final PacketWrapper<?> transformedPacket = packetWrapperFunction.transform(packetWrapper);
-        historyLock.lock();
-        try {
-            getHistory(uuid).add(transformedPacket);
-        } finally {
-            historyLock.unlock();
+        final Queue<PacketWrapper<?>> history = getHistory(((Player) event.getPlayer()).getUniqueId());
+        history.add(packetWrapperFunction.transform(packetWrapper));
+        while (history.size() > cacheSize) {
+            history.poll();
         }
     }
 
@@ -123,11 +104,6 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
      */
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        historyLock.lock();
-        try {
-            history.remove(event.getPlayer().getUniqueId());
-        } finally {
-            historyLock.unlock();
-        }
+        history.remove(event.getPlayer().getUniqueId());
     }
 }

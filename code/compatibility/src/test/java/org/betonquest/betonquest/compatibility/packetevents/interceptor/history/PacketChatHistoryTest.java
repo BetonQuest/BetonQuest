@@ -68,7 +68,6 @@ class PacketChatHistoryTest {
             final PacketWrapper<?> third = packets.constructed().get(5);
             history.sendHistory(player);
             final InOrder order = inOrder(user);
-            order.verify(user).sendPacketSilently(packets.constructed().get(6));
             order.verify(user).sendPacketSilently(second);
             order.verify(user).sendPacketSilently(third);
             order.verifyNoMoreInteractions();
@@ -76,18 +75,18 @@ class PacketChatHistoryTest {
             history.onPlayerQuit(new PlayerQuitEvent(player, ""));
             clearInvocations(user);
             history.sendHistory(player);
-            verify(user).sendPacketSilently(packets.constructed().get(7));
+            verify(user).sendPacketSilently(packets.constructed().get(6));
             verifyNoMoreInteractions(user);
         }
     }
 
     @Test
-    void replaysStableSnapshotWhenPacketsArriveDuringSending() {
+    void includesPacketsArrivingDuringReplay() {
         final PacketEventsAPI<?> api = mock(PacketEventsAPI.class, RETURNS_DEEP_STUBS);
         final Player player = player();
         final User user = mock(User.class);
         when(api.getPlayerManager().getUser(player)).thenReturn(user);
-        final PacketChatHistory history = new PacketChatHistory(api, 2);
+        final PacketChatHistory history = new PacketChatHistory(api, 3);
         final PacketSendEvent event = event(player);
         try (MockedConstruction<WrapperPlayServerSystemChatMessage> packets =
                      mockConstruction(WrapperPlayServerSystemChatMessage.class)) {
@@ -95,17 +94,18 @@ class PacketChatHistoryTest {
             history.onPacketSend(event);
             final List<PacketWrapper<?>> sent = new ArrayList<>();
             doAnswer(invocation -> {
-                final boolean paddingPacket = sent.isEmpty();
+                final boolean firstHistoryPacket = sent.size() == 1;
                 sent.add(invocation.getArgument(0));
-                // Simulate another packet arriving while the padding packet is being sent.
-                if (paddingPacket) {
+                // Simulate another packet arriving while the first history packet (after the padding) is being sent.
+                if (firstHistoryPacket) {
                     history.onPacketSend(event);
                 }
                 return null;
             }).when(user).sendPacketSilently(any(PacketWrapper.class));
             history.sendHistory(player);
             assertEquals(List.of(packets.constructed().get(4), packets.constructed().get(1),
-                    packets.constructed().get(3)), sent, "Replay must not iterate a live evicting queue");
+                    packets.constructed().get(3), packets.constructed().get(6)), sent,
+                    "Replay should include packets that arrive while it is running");
         }
     }
 
