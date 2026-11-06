@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction.PACKET_WRAPPER_FUNCTION_MAP;
 
@@ -39,7 +38,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
 
     /**
      * A map storing the chat history for each player by their UUID.
-     * Both the map and its queues are concurrent, as they are shared by packet threads and the Bukkit thread.
+     * Both the map and its queues are thread-safe, as they are shared by packet threads and the Bukkit thread.
      */
     private final Map<UUID, Queue<PacketWrapper<?>>> history;
 
@@ -57,7 +56,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     }
 
     private Queue<PacketWrapper<?>> getHistory(final UUID uuid) {
-        return history.computeIfAbsent(uuid, k -> new ConcurrentLinkedQueue<>());
+        return history.computeIfAbsent(uuid, k -> new ConcurrentEvictingQueue<>(cacheSize));
     }
 
     @Override
@@ -90,11 +89,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     private <T extends PacketWrapper<?>> void handlePacketWrapperFunction(
             final PacketWrapperFunction<T> packetWrapperFunction, final PacketSendEvent event) {
         final T packetWrapper = packetWrapperFunction.getPacketWrapper(event);
-        final Queue<PacketWrapper<?>> history = getHistory(((Player) event.getPlayer()).getUniqueId());
-        history.add(packetWrapperFunction.transform(packetWrapper));
-        while (history.size() > cacheSize) {
-            history.poll();
-        }
+        getHistory(((Player) event.getPlayer()).getUniqueId()).add(packetWrapperFunction.transform(packetWrapper));
     }
 
     /**
