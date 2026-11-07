@@ -182,10 +182,21 @@ document$.subscribe(async () => {
 
 });
 
+function drawCopyrightNotice(ctx) {
+  let imgSource = "images from: minecraft.wiki";
+  ctx.fillStyle = "#4051b5";
+  ctx.font = "20px Consolas";
+  let textMeasurement = ctx.measureText(imgSource);
+  let textHeight = textMeasurement.actualBoundingBoxAscent + textMeasurement.actualBoundingBoxDescent;
+  let textWidth = textMeasurement.width;
+  ctx.fillText(imgSource, WIDTH - textWidth - 2, HEIGHT - textHeight - 2);
+}
+
 function drawRoadmap(ctx) {
   ALL_CLUSTER.forEach(cluster => {
     cluster.draw(ctx);
   });
+  drawCopyrightNotice(ctx);
 }
 
 async function clearInfoArea(ctx) {
