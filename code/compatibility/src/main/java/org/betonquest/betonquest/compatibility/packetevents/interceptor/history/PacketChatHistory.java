@@ -5,7 +5,6 @@ import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
-import com.google.common.collect.EvictingQueue;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.betonquest.betonquest.compatibility.packetevents.PacketEventsIntegrator;
@@ -15,10 +14,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.betonquest.betonquest.compatibility.packetevents.interceptor.packet.PacketWrapperFunction.PACKET_WRAPPER_FUNCTION_MAP;
 
@@ -39,6 +38,7 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
 
     /**
      * A map storing the chat history for each player by their UUID.
+     * Both the map and its queues are thread-safe, as they are shared by packet threads and the Bukkit thread.
      */
     private final Map<UUID, Queue<PacketWrapper<?>>> history;
 
@@ -52,11 +52,11 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
     public PacketChatHistory(final PacketEventsAPI<?> packetEventsAPI, final int cacheSize) {
         this.packetEventsAPI = packetEventsAPI;
         this.cacheSize = cacheSize;
-        this.history = new HashMap<>();
+        this.history = new ConcurrentHashMap<>();
     }
 
     private Queue<PacketWrapper<?>> getHistory(final UUID uuid) {
-        return history.computeIfAbsent(uuid, k -> EvictingQueue.create(cacheSize));
+        return history.computeIfAbsent(uuid, k -> new ConcurrentEvictingQueue<>(cacheSize));
     }
 
     @Override
@@ -66,8 +66,11 @@ public class PacketChatHistory implements PacketListener, Listener, ChatHistory 
             return;
         }
         final Queue<PacketWrapper<?>> history = getHistory(player.getUniqueId());
-        final TextComponent message = Component.text(Component.newline().content().repeat(cacheSize - history.size()));
-        user.sendPacketSilently(PacketEventsIntegrator.MESSAGE_FUNCTION.apply(message));
+        final int newLines = cacheSize - history.size();
+        if (newLines > 0) {
+            final TextComponent message = Component.text(Component.newline().content().repeat(newLines));
+            user.sendPacketSilently(PacketEventsIntegrator.MESSAGE_FUNCTION.apply(message));
+        }
         history.forEach(user::sendPacketSilently);
     }
 
