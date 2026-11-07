@@ -18,7 +18,6 @@
   <properties>
     <revision>3.3.0</revision>
     <changelist>-SNAPSHOT</changelist>
-    <pit.report.skip>true</pit.report.skip>
 
     <!-- module versions -->
     <betonquest.core.version>3.3.0${changelist}</betonquest.core.version>
