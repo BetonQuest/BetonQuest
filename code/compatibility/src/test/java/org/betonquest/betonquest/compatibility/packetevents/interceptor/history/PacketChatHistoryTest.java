@@ -72,7 +72,9 @@ class PacketChatHistoryTest {
             order.verify(user).sendPacketSilently(third);
             order.verifyNoMoreInteractions();
 
-            history.onPlayerQuit(new PlayerQuitEvent(player, ""));
+            final PlayerQuitEvent quitEvent = mock(PlayerQuitEvent.class);
+            when(quitEvent.getPlayer()).thenReturn(player);
+            history.onPlayerQuit(quitEvent);
             clearInvocations(user);
             history.sendHistory(player);
             verify(user).sendPacketSilently(packets.constructed().get(6));
@@ -96,7 +98,6 @@ class PacketChatHistoryTest {
             doAnswer(invocation -> {
                 final boolean firstHistoryPacket = sent.size() == 1;
                 sent.add(invocation.getArgument(0));
-                // Simulate another packet arriving while the first history packet (after the padding) is being sent.
                 if (firstHistoryPacket) {
                     history.onPacketSend(event);
                 }
@@ -104,13 +105,12 @@ class PacketChatHistoryTest {
             }).when(user).sendPacketSilently(any(PacketWrapper.class));
             history.sendHistory(player);
             assertEquals(List.of(packets.constructed().get(4), packets.constructed().get(1),
-                    packets.constructed().get(3), packets.constructed().get(6)), sent,
+                            packets.constructed().get(3), packets.constructed().get(6)), sent,
                     "Replay should include packets that arrive while it is running");
         }
     }
 
     @Test
-    // Real threads are required for this regression; Java 17 executors are shut down in finally.
     @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
     void capturesReplaysAndRemovesHistoriesFromConcurrentThreads() throws Exception {
         final PacketEventsAPI<?> api = mock(PacketEventsAPI.class, RETURNS_DEEP_STUBS);
@@ -131,7 +131,9 @@ class PacketChatHistoryTest {
                         for (int iteration = 0; iteration < 500; iteration++) {
                             history.onPacketSend(event);
                             history.sendHistory(player);
-                            history.onPlayerQuit(new PlayerQuitEvent(player, ""));
+                            final PlayerQuitEvent quitEvent = mock(PlayerQuitEvent.class);
+                            when(quitEvent.getPlayer()).thenReturn(player);
+                            history.onPlayerQuit(quitEvent);
                         }
                     }
                     return null;

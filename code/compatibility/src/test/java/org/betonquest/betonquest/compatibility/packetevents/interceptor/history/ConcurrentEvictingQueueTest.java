@@ -54,7 +54,6 @@ class ConcurrentEvictingQueueTest {
     }
 
     @Test
-    // Real threads are required for this regression; Java 17 executors are shut down in finally.
     @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
     void staysWithinLimitUnderConcurrentAddsAndIteration() throws Exception {
         final int limit = 10;
