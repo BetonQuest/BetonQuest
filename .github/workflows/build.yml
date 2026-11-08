@@ -46,8 +46,8 @@ jobs:
           for module in "${modules[@]}"; do
             version=$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")
             tag="v${version}-${module}"
-            if [ -n "$(git rev-parse -q --verify "refs/tags/$tag")" >/dev/null ] && [ "$(git rev-list -n1 "$tag")" != "$(git rev-parse HEAD)" ]; then
-              if [ ! git diff --quiet "$tag" HEAD -- "code/$module" ]; then
+            if [ -n "$(git rev-parse -q --verify "refs/tags/$tag")" ] && [ "$(git rev-list -n1 "$tag")" != "$(git rev-parse HEAD)" ]; then
+              if [ -n "$(git diff --name-only "$tag" HEAD -- "code/$module")" ]; then
                 echo "Module '"$module"' has code changes compared to tag '$tag', but the version was not bumped!"
                 exit 1
               fi
@@ -68,7 +68,7 @@ jobs:
           for module in "${modules[@]}"; do
             version=$(./mvnw --raw-streams help:evaluate -Dexpression=revision -q -DforceStdout --projects ":$module")
             tag="v${version}-${module}"
-            if [ -n "$(git rev-parse -q --verify "refs/tags/$tag")" >/dev/null ] && [ "$(git rev-list -n1 "$tag")" != "$(git rev-parse HEAD)" ]; then
+            if [ -n "$(git rev-parse -q --verify "refs/tags/$tag")" ] && [ "$(git rev-list -n1 "$tag")" != "$(git rev-parse HEAD)" ]; then
               echo "Module '"$module"' for tag '$tag' will be skipped for deployment (tag already exists)."
               skip_modules+=("!:$module")
             else
@@ -160,8 +160,6 @@ jobs:
           DATE="$(date +%Y-%m-%d)"
           sed -i "s~\${maven\.build\.timestamp}~$DATE~g" ./API-CHANGELOG.md
           echo "$(cat ./API-CHANGELOG.md)" >> './docs/API/CHANGELOG.md'
-        env:
-          VERSION: ${{ inputs.VERSION }}
       - name: Reset api changelog
         if: ${{ !needs.prepare.outputs.API_CHANGE }}
         shell: bash --noprofile --norc -euo pipefail {0}
@@ -177,8 +175,6 @@ jobs:
               !skip
             ' ./API-CHANGELOG.md > ./API-CHANGELOG.tmp
           echo "$(cat ./API-CHANGELOG.tmp)" >> './docs/API/CHANGELOG.md'
-        env:
-          VERSION: ${{ inputs.VERSION }}
       - name: Build with mkdocs
         shell: bash --noprofile --norc -euo pipefail {0}
         run: |
@@ -449,7 +445,7 @@ jobs:
         env:
           PREPARE: ${{ needs.prepare.result }}
           BUILD_CODE: ${{ needs.build-code.result }}
-          BUILD_DOCS: §{{ needs.build-docs.result }}
+          BUILD_DOCS: ${{ needs.build-docs.result }}
           DEPLOY_CODE: ${{ needs.deploy-code.result }}
           DEPLOY_DOCS: ${{ needs.deploy-docs.result }}
           CREATE_RELEASE: ${{ needs.create-release.result }}
