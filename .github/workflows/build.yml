@@ -243,7 +243,9 @@ jobs:
 
   deploy-docs:
     name: Deploy Docs
-    concurrency: gh-pages-deploy
+    concurrency:
+      group: gh-pages-deploy
+      queue: max
     if: "needs.prepare.outputs.VERSION_TYPE == 'release' || needs.prepare.outputs.VERSION_TYPE == 'development'"
     needs: [ prepare, build-code, build-docs ]
     runs-on: ubuntu-latest
