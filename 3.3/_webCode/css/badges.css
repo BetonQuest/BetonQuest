@@ -1,0 +1,26 @@
+.bq-badge {
+  font-size: .85em;
+}
+
+.bq-badge--right {
+  float: right;
+  margin-left: .35em;
+}
+
+.bq-badge__icon {
+  border-bottom-left-radius: .1rem;
+  border-top-left-radius: .1rem;
+  background: var(--md-accent-fg-color--transparent);
+  padding: .2rem;
+}
+
+.bq-badge__icon:last-child {
+  border-radius: .1rem;
+}
+
+.bq-badge__text {
+  border-top-right-radius: .1rem;
+  border-bottom-right-radius: .1rem;
+  box-shadow: 0 0 0 1px inset var(--md-accent-fg-color--transparent);
+  padding: .2rem .3rem;
+}
