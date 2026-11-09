@@ -79,7 +79,7 @@ The following list is included in the PullRequest template, do not click any of 
     Read [maintaining the changelog](Maintaining-the-Changelog.md) for more information.
     
 ??? success "... update the documentation?"
-    You need to adjust the documentation everytime you changed, added or removed any feature. Remember: Things that 
+    You need to adjust the documentation every time you changed, added or removed any feature. Remember: Things that 
     aren't documented don't exist to the user. There can also be other reasons why you should update the documentation,
     like writing a new tutorial or adjusting a bad example.
 

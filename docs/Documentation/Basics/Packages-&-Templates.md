@@ -106,7 +106,7 @@ the package name and the path from the "_QuestPackages_" folder to the package.
         Let's run the `startDailyQuest` action of the `dailyQuestOne` package from a third package:
         
         1. Combine the action name with the package name :arrow_right: `{==dailyQuestOne>==}startDailyQuest`
-        2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
+        2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package separated by dashes (`-`).
         :arrow_right: `{==dailyQuests-==}dailyQuestOne>startDailyQuest`
         
         An example usage could look like this:
@@ -120,12 +120,12 @@ the package name and the path from the "_QuestPackages_" folder to the package.
         Let's run the `startDailyQuest` action of the `dailyQuestOne` package from a third package:
         
         1. Combine the action name with the package name :arrow_right: `{==dailyQuestOne>==}startDailyQuest`
-        2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package seperated by dashes (`-`).
-        :arrow_right: `{==repetable-dailyQuests-==}dailyQuestOne>startDailyQuest`
+        2. Add the path from the `QuestPackages` folder to the `dailyQuestOne` package separated by dashes (`-`).
+        :arrow_right: `{==repeatable-dailyQuests-==}dailyQuestOne>startDailyQuest`
         
         An example usage could look like this:
         ````YAML
-        zombieObjective: "mobkill ZOMBIE 5 actions:{==repetable-dailyQuests-dailyQuestOne>startDailyQuest==}"
+        zombieObjective: "mobkill ZOMBIE 5 actions:{==repeatable-dailyQuests-dailyQuestOne>startDailyQuest==}"
         ````
     
 #### Relative paths
@@ -145,7 +145,7 @@ to match the current location, relative paths will still work.
         Let's run the `startQuestTwo` action of the `weeklyQuestTwo` package from the `weeklyQuestOne` package.
         
         1. Combine the action name with the package name :arrow_right: `{==weeklyQuestTwo>==}startQuestTwo`
-        2. Add the path from the current _package.yml_ to the folder the package of interested lies in. This is done using
+        2. Add the path from the current _package.yml_ to the folder the package of interest lies in. This is done using
         underscores ("go one folder up"). A dash must be added after each underscore (`-`).
         :arrow_right: `{==_-==}weeklyQuestTwo>startQuestTwo`
         
@@ -161,7 +161,7 @@ to match the current location, relative paths will still work.
         
         1. Combine the action name with the package name :arrow_right: `{==subQuest>==}startQuest`
         2. Add the path from the current _package.yml_ to the folder the package of interest lies in. Package names 
-        must be seperated by dashes (`-`). The path must also be started with a dash to signal "from the current package
+        must be separated by dashes (`-`). The path must also be started with a dash to signal "from the current package
         downwards". :arrow_right: `{==-weeklyQuestTwo-==}subQuest>startQuest`
         
         An example usage could look like this:
@@ -172,7 +172,7 @@ to match the current location, relative paths will still work.
 #### Nested Package paths
 
 In some places, like the [`eval` placeholder](../Reference/Placeholders-List.md#eval), you may need
-to write package paths inside nested placeholders. In order to do so you need to escape the grater
+to write package paths inside nested placeholders. In order to do so you need to escape the greater
 than (`>`) of the inner paths with a level of backslash (`\`).
 
 Note that in some cases you may need to escape the backslash too (`\\`) for a single level of

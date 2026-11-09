@@ -199,7 +199,7 @@ Further can such a value be set for a key with `set <key> <value>` or an existin
 You can purge specific player with the '`/bq purge Beton`' command, where Beton is the name of the player.
 To purge the entire database at once simply change the prefix in "_config.yml_" or delete "_database.db_" file.
 
-### Rename a quest-primitive without loosing data: `rename`
+### Rename a quest-primitive without losing data: `rename`
 Rename command ('`/bq rename`') allows you to rename every tag, point, globalpoint, objective or journal entry in the database.
 In case of an objective it will also rename the objective in _objectives_ section in the configuration file, so it continues to work correctly.
 

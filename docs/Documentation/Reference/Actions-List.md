@@ -440,8 +440,8 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `folder <actions> [delay] [period] [unit] [random] [cancelOnLogout] [cancelConditions]`  
 __Description__: Run multiple actions in sequence.
 
-This action wraps multiple actions inside itself. Once triggered, it simply executes it's actions.
-This is usefully to easily refer to a bunch of actions at once, e.g. in a conversation.
+This action wraps multiple actions inside itself. Once triggered, it simply executes its actions.
+This is useful to easily refer to a bunch of actions at once, e.g. in a conversation.
 
 Actions marked with the offline icon @snippet:action-meta:offline@ will be fired even if the player is not online.
 Beware though, all conditions are false when the player is offline (even inverted ones),
@@ -451,8 +451,8 @@ You can use the `cancelOnLogout` argument to stop the folder executing any remai
 
 | Parameter          | Syntax                       | Default Value          | Explanation                                                                           |
 |--------------------|------------------------------|------------------------|---------------------------------------------------------------------------------------|
-| _actions to run_   | actionName1,action2          | :octicons-x-circle-16: | One or multiple actions to run. Contains action names seperated by commas.            |
-| _delay_            | Keyword                      | without delay          | The delay before the folder starts executing it's actions.                            |
+| _actions to run_   | actionName1,action2          | :octicons-x-circle-16: | One or multiple actions to run. Contains action names separated by commas.            |
+| _delay_            | Keyword                      | without delay          | The delay before the folder starts executing its actions.                             |
 | _period_           | period:number                | without delay          | The time between each action of the folder.                                           |
 | _time unit_        | unit:unit                    | Seconds                | The unit of time to use for delay and period. Either `ticks`, `minutes` or `seconds`. |
 | _random_           | random:number                | Disabled               | Enables "random mode". Will randomly pick the defined amount of actions .             |
@@ -748,7 +748,7 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `notify <message> [category] [io] [any io specific settings]`  
 __Description__: Send the notification to the player using the specified notifyIO.
 
-Every notify IO has it's own specific settings. You must understand these too if you want to use the Notify system to it's full extend.
+Every notify IO has its own specific settings. You must understand these too if you want to use the Notify system to its full extent.
 Advanced users may also use [Notify Categories](../Advanced/Notification-IO's-&-Categories.md#categories) to make their lives easier.
 
 Also a language can be defined with a language key from the language folder in the format `{Lang-Key}`.
@@ -1205,7 +1205,7 @@ The player can drop items before selecting the option and pickup them after the 
 Validate it on the NPC’s reaction or consider the `fail` actions in addition.
 However, item movement can be prevented with the `conversation.block_item_transfer` option in the "_config.yml_".
 
-You can also specify `notify` keyword to display a simple message to the player about loosing items.
+You can also specify `notify` keyword to display a simple message to the player about losing items.
 
 ```YAML title="Example"
 actions:

@@ -113,7 +113,7 @@ Make these changes to your conversation, reload and test! The NPC should now giv
 You can also run actions using commands.
 
 !!! warning ""
-    It is very important to save all files everytime you test something!
+    It is very important to save all files every time you test something!
     Type `/bq reload` on your server after saving.     
  
 The easiest way to do this is by running a command:

@@ -56,7 +56,7 @@ The following graph compares the two quest structures, but please keep in mind t
            flowchart TD
               A[Quest Starts] --> B[Gather Information about the Dragon]
               B--> C[Ignore wounded NPC]
-              B--> D[Help wounded NPC to\n recieve secret information]
+              B--> D[Help wounded NPC to\n receive secret information]
               
               C--> E[Harder Dragon Fight]
               D--> X[Easier Dragon Fight]

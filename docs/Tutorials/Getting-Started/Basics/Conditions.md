@@ -71,7 +71,7 @@ continue with the next step!
 You can check conditions if they are true or false in-game.
 
 !!! warning ""
-    It is very important to save all files everytime you test something!
+    It is very important to save all files every time you test something!
     Type `/bq reload` on your server after saving.
 
 Running a command is the simplest way to accomplish this:

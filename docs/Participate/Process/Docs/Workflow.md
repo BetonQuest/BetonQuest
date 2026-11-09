@@ -4,7 +4,7 @@ icon: material/pen
 # Changing Docs
 
 Make sure to [set up the project](../../Setup-Project.md) before doing this step.
-You should always [create a new branch](../Create-a-new-Branch.md) everytime you write new documentation,
+You should always [create a new branch](../Create-a-new-Branch.md) every time you write new documentation,
 fix something or make other changes.
 
 ## Live Preview
