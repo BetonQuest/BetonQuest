@@ -7,7 +7,7 @@ body:
       label: "Confirm the following"
       description: |
         Please make sure you use the latest version.
-        Also ensure that our problem hasn't already been reported.
+        Also ensure that your problem hasn't already been reported.
       options:
         - label: "I use the latest release or dev-build. I also checked that this problem hasn't already been fixed in a newer [dev-build](https://betonquest.org/RELEASE/Downloads/)."
           required: true
@@ -65,4 +65,4 @@ body:
         You can add any additional information here, that does not fit in the other boxes.
         You can also drag and drop a BetonQuest debug log or a `latest.log` file here.
       placeholder: |
-        If you want to uplaod something, you need to click in this box first!
+        If you want to upload something, you need to click in this box first!
