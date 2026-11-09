@@ -32,7 +32,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/BetonQuest/BetonQuest
     - icon: brands/mail
-      link: mailto://contact@betonquest.org
+      link: mailto:contact@betonquest.org
 
 extra_css:
   - '_webCode/css/coloredIcons.css'
