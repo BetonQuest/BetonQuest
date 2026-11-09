@@ -6,6 +6,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+
+## [3.3.0] - 2026-11-08
+### Added
 - `drop` objective to track players dropping items
 - `statistic` placeholder to get statistic values from the player
 - `redstonepower` condition to require a block at a specific location to be powered to a certain level
