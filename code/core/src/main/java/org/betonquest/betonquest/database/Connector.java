@@ -62,12 +62,12 @@ public class Connector {
             } catch (final SQLException e) {
                 log.debug("SQL query type '%s' failed during result processing: %s".formatted(type, e.getMessage()), e);
                 throw new IllegalStateException(
-                        "There was a exception with SQL processing query type '%s' with the following arguments '%s'. %s; Caused by: %s"
+                        "There was an exception with SQL processing query type '%s' with the following arguments '%s'. %s; Caused by: %s"
                                 .formatted(type, args, errorMessage, e.getMessage()), e);
             }
         } catch (final SQLException e) {
             throw new IllegalStateException(
-                    "There was a exception with SQL executing query type '%s' with arguments '%s': %s"
+                    "There was an exception with SQL executing query type '%s' with arguments '%s': %s"
                             .formatted(type, args, e.getMessage()), e);
         }
     }

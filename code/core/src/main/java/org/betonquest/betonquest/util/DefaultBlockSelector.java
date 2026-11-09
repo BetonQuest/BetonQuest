@@ -126,7 +126,7 @@ public class DefaultBlockSelector implements BlockSelector {
         try {
             state.setBlockData(getBlockData());
         } catch (final IllegalArgumentException exception) {
-            throw new QuestException("Could not place block '" + this + "'! Probably the block has a invalid block-state: " + exception.getMessage(), exception);
+            throw new QuestException("Could not place block '" + this + "'! Probably the block has an invalid block-state: " + exception.getMessage(), exception);
         }
 
         state.update(true, applyPhysics);
