@@ -79,12 +79,16 @@ promptSetupRemote() {
 }
 
 promptSetupBranch() {
+  BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  if [[ "$BRANCH" == "main" || "$BRANCH" =~ ^main_v.+$ ]]; then
+    BRANCH="VersionBump-$version"
+  fi
   local version="$1"
   prompt \
     "Enter the name of the remote branch you want to create the setup in" \
     "Remote branch" \
     SETUP_REMOTE_BRANCH \
-    "VersionBump-$version" \
+    "$BRANCH" \
     ""
 }
 
