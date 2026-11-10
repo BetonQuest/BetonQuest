@@ -96,18 +96,15 @@
         },
         "north-east": {
           "title": "to be determined...",
-          "features": [
-          ]
+          "features": []
         },
         "east": {
           "title": "to be determined...",
-          "features": [
-          ]
+          "features": []
         },
         "south-east": {
           "title": "to be determined...",
-          "features": [
-          ]
+          "features": []
         }
       }
     },
@@ -156,7 +153,8 @@
             "- Full support for placeholders in items",
             "- Menu Pagination",
             "- Instruction Caching"
-          ]
+          ],
+          "link": "Documentation/CHANGELOG/#330-2026-11-08"
         },
         "north-east": {
           "title": "Menu Pagination",
