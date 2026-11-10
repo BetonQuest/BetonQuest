@@ -17,7 +17,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 #### Deprecated
 #### Removed
 
-## [3.4.0] - 2026-11-08
+## [3.3.0] - 2026-11-08
 ### API
 #### Added
 - `Conversations::cancel(OnlineProfile, boolean)` method to cancel conversations with an option to skip the interceptor delay
