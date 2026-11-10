@@ -22,6 +22,7 @@ import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.playerhider.PlayerHider;
+import org.betonquest.betonquest.quest.action.boostelytra.BoostElytraActionFactory;
 import org.betonquest.betonquest.quest.action.burn.BurnActionFactory;
 import org.betonquest.betonquest.quest.action.cancel.CancelActionFactory;
 import org.betonquest.betonquest.quest.action.chat.ChatActionFactory;
@@ -144,6 +145,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         final DefaultNpcHider npcHider = getDependency(DefaultNpcHider.class);
         final PlayerHider playerHider = getDependency(PlayerHider.class);
 
+        actionTypes.register("boostelytra", new BoostElytraActionFactory());
         actionTypes.register("burn", new BurnActionFactory());
         actionTypes.register("cancel", new CancelActionFactory(cancelerProcessor));
         actionTypes.register("cancelconversation", new CancelConversationActionFactory(conversations));
