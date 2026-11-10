@@ -2,6 +2,8 @@
   <code_scheme name="Project" version="173">
     <option name="DO_NOT_FORMAT">
       <list>
+        <fileSet type="globPattern" pattern="SECURITY.md" />
+        <fileSet type="globPattern" pattern="README.md" />
         <fileSet type="globPattern" pattern="CHANGELOG.md" />
         <fileSet type="globPattern" pattern="*-CHANGELOG.md" />
         <fileSet type="globPattern" pattern="*_CHANGELOG.md" />
