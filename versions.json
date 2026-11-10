@@ -3,16 +3,16 @@
     "version": "3.4-DEV",
     "title": "3.4-DEV",
     "aliases": [
-      "3.4",
-      "DEV"
+      "DEV",
+      "3.4"
     ]
   },
   {
     "version": "3.3",
     "title": "3.3",
     "aliases": [
-      "RELEASE",
-      "3.3-DEV"
+      "3.3-DEV",
+      "RELEASE"
     ]
   },
   {
