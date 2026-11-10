@@ -305,11 +305,16 @@ finalizeAndPublish() {
   echo '    Pushing committed changes...'
   git push "$SETUP_REMOTE_REPOSITORY" "HEAD:$SETUP_REMOTE_BRANCH" 2>&1 > /dev/null | sed 's/^/        /'
 
-  echo '    Creating Pull Request...'
-  setupPublishCreatePullRequest
+  BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  if [[ "$BRANCH" == "main" || "$BRANCH" =~ ^main_v.+$ ]]; then
 
-  echo '    Resetting current branch...'
-  git reset --hard "$PREVIOUS_HEAD" 2>&1 > /dev/null | sed 's/^/        /'
+    echo '    Creating Pull Request...'
+    setupPublishCreatePullRequest
+
+    echo '    Resetting current branch...'
+    git reset --hard "$PREVIOUS_HEAD" 2>&1 > /dev/null | sed 's/^/        /'
+
+  fi
 
   echo '    DONE'
 }
