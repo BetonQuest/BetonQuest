@@ -11988,8 +11988,8 @@ which can be used with any action.</p>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>folder &lt;actions&gt; [delay] [period] [unit] [random] [cancelOnLogout] [cancelConditions]</code><br>
 <strong>Description</strong>: Run multiple actions in sequence.</p>
-<p>This action wraps multiple actions inside itself. Once triggered, it simply executes it's actions.
-This is usefully to easily refer to a bunch of actions at once, e.g. in a conversation.</p>
+<p>This action wraps multiple actions inside itself. Once triggered, it simply executes its actions.
+This is useful to easily refer to a bunch of actions at once, e.g. in a conversation.</p>
 <p>Actions marked with the offline icon <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This action can be executed on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span> will be fired even if the player is not online.
 Beware though, all conditions are false when the player is offline (even inverted ones),
 so those actions should not be blocked by any conditions!<br>
@@ -12008,13 +12008,13 @@ You can use the <code>cancelOnLogout</code> argument to stop the folder executin
 <td><em>actions to run</em></td>
 <td>actionName1,action2</td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td>One or multiple actions to run. Contains action names seperated by commas.</td>
+<td>One or multiple actions to run. Contains action names separated by commas.</td>
 </tr>
 <tr>
 <td><em>delay</em></td>
 <td>Keyword</td>
 <td>without delay</td>
-<td>The delay before the folder starts executing it's actions.</td>
+<td>The delay before the folder starts executing its actions.</td>
 </tr>
 <tr>
 <td><em>period</em></td>
@@ -12335,7 +12335,7 @@ an effect and therefor does no damage.</p>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>notify &lt;message&gt; [category] [io] [any io specific settings]</code><br>
 <strong>Description</strong>: Send the notification to the player using the specified notifyIO.</p>
-<p>Every notify IO has it's own specific settings. You must understand these too if you want to use the Notify system to it's full extend.
+<p>Every notify IO has its own specific settings. You must understand these too if you want to use the Notify system to its full extent.
 Advanced users may also use <a href="../../Advanced/Notification-IO%27s-%26-Categories/#categories">Notify Categories</a> to make their lives easier.</p>
 <p>Also a language can be defined with a language key from the language folder in the format <code>{Lang-Key}</code>.
 Any text after the language key until the next language key belongs to the specified language.
@@ -12876,7 +12876,7 @@ in fact all items are taken.</p>
 The player can drop items before selecting the option and pickup them after the action fires.
 Validate it on the NPC’s reaction or consider the <code>fail</code> actions in addition.
 However, item movement can be prevented with the <code>conversation.block_item_transfer</code> option in the "<em>config.yml</em>".</p>
-<p>You can also specify <code>notify</code> keyword to display a simple message to the player about loosing items.</p>
+<p>You can also specify <code>notify</code> keyword to display a simple message to the player about losing items.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">emeraldsAndSword</span><span class="p">:</span><span class="w"> </span><span class="s">"take</span><span class="nv"> </span><span class="s">emerald:120,sword"</span>
 <span class="w">  </span><span class="nt">nuggets</span><span class="p">:</span><span class="w"> </span><span class="s">"take</span><span class="nv"> </span><span class="s">nugget:6</span><span class="nv"> </span><span class="s">notify"</span>
@@ -13270,10 +13270,7 @@ Durations less than 1 is equal to no duration.</p>
     
     
     
-      
-      
-    
-    <a href="mailto://contact@betonquest.org" target="_blank" rel="noopener" title="contact@betonquest.org" class="md-social__link">
+    <a href="mailto:contact@betonquest.org" target="_blank" rel="noopener" title="" class="md-social__link">
       <!--! Font Awesome Free 6.2.0 by @fontawesome https://fontawesome.com License - https://fontawesome.com/license/free
  (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.
  Changes: Colors modified -->

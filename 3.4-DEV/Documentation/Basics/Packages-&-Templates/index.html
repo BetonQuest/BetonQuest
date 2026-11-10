@@ -9226,7 +9226,7 @@ is located in the <code>QuestPackages</code> folder.
 Let's run the <code>startDailyQuest</code> action of the <code>dailyQuestOne</code> package from a third package:</p>
 <ol>
 <li>Combine the action name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:"> <code><mark class="critic">dailyQuestOne&gt;</mark>startDailyQuest</code></li>
-<li>Add the path from the <code>QuestPackages</code> folder to the <code>dailyQuestOne</code> package seperated by dashes (<code>-</code>).
+<li>Add the path from the <code>QuestPackages</code> folder to the <code>dailyQuestOne</code> package separated by dashes (<code>-</code>).
 <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:"> <code><mark class="critic">dailyQuests-</mark>dailyQuestOne&gt;startDailyQuest</code></li>
 </ol>
 <p>An example usage could look like this:
@@ -9239,11 +9239,11 @@ is contained inside a folder called <code>repeatable</code> which is located in 
 Let's run the <code>startDailyQuest</code> action of the <code>dailyQuestOne</code> package from a third package:</p>
 <ol>
 <li>Combine the action name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:"> <code><mark class="critic">dailyQuestOne&gt;</mark>startDailyQuest</code></li>
-<li>Add the path from the <code>QuestPackages</code> folder to the <code>dailyQuestOne</code> package seperated by dashes (<code>-</code>).
-<img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:"> <code><mark class="critic">repetable-dailyQuests-</mark>dailyQuestOne&gt;startDailyQuest</code></li>
+<li>Add the path from the <code>QuestPackages</code> folder to the <code>dailyQuestOne</code> package separated by dashes (<code>-</code>).
+<img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:"> <code><mark class="critic">repeatable-dailyQuests-</mark>dailyQuestOne&gt;startDailyQuest</code></li>
 </ol>
 <p>An example usage could look like this:
-</p><div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">"mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:<mark class="critic">repetable-dailyQuests-dailyQuestOne&gt;startDailyQuest</mark>"</span>
+</p><div class="highlight"><pre><span></span><code><span class="nt">zombieObjective</span><span class="p">:</span><span class="w"> </span><span class="s">"mobkill</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:<mark class="critic">repeatable-dailyQuests-dailyQuestOne&gt;startDailyQuest</mark>"</span>
 </code></pre></div><p></p>
 </div>
 </div>
@@ -9265,7 +9265,7 @@ to match the current location, relative paths will still work.</p>
 Let's run the <code>startQuestTwo</code> action of the <code>weeklyQuestTwo</code> package from the <code>weeklyQuestOne</code> package.</p>
 <ol>
 <li>Combine the action name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:"> <code><mark class="critic">weeklyQuestTwo&gt;</mark>startQuestTwo</code></li>
-<li>Add the path from the current <em>package.yml</em> to the folder the package of interested lies in. This is done using
+<li>Add the path from the current <em>package.yml</em> to the folder the package of interest lies in. This is done using
 underscores ("go one folder up"). A dash must be added after each underscore (<code>-</code>).
 <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:"> <code><mark class="critic">_-</mark>weeklyQuestTwo&gt;startQuestTwo</code></li>
 </ol>
@@ -9280,7 +9280,7 @@ Let's run the <code>startQuest</code> action of the <code>subQuest</code> packag
 <ol>
 <li>Combine the action name with the package name <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:"> <code><mark class="critic">subQuest&gt;</mark>startQuest</code></li>
 <li>Add the path from the current <em>package.yml</em> to the folder the package of interest lies in. Package names 
-must be seperated by dashes (<code>-</code>). The path must also be started with a dash to signal "from the current package
+must be separated by dashes (<code>-</code>). The path must also be started with a dash to signal "from the current package
 downwards". <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/27a1.svg" title=":arrow_right:"> <code><mark class="critic">-weeklyQuestTwo-</mark>subQuest&gt;startQuest</code></li>
 </ol>
 <p>An example usage could look like this:
@@ -9292,7 +9292,7 @@ downwards". <img alt="➡" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdec
 </details>
 <h4 id="nested-package-paths">Nested Package paths<a class="headerlink" href="#nested-package-paths" title="Permanent link">🔗</a></h4>
 <p>In some places, like the <a href="../../Reference/Placeholders-List/#eval"><code>eval</code> placeholder</a>, you may need
-to write package paths inside nested placeholders. In order to do so you need to escape the grater
+to write package paths inside nested placeholders. In order to do so you need to escape the greater
 than (<code>&gt;</code>) of the inner paths with a level of backslash (<code>\</code>).</p>
 <p>Note that in some cases you may need to escape the backslash too (<code>\\</code>) for a single level of
 escaping. For example, when you are in a double-quoted YAML string (<code>" "</code>).</p>
@@ -9561,10 +9561,7 @@ in the current template will be used instead of the ones from the template that 
     
     
     
-      
-      
-    
-    <a href="mailto://contact@betonquest.org" target="_blank" rel="noopener" title="contact@betonquest.org" class="md-social__link">
+    <a href="mailto:contact@betonquest.org" target="_blank" rel="noopener" title="" class="md-social__link">
       <!--! Font Awesome Free 6.2.0 by @fontawesome https://fontawesome.com License - https://fontawesome.com/license/free
  (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.
  Changes: Colors modified -->
