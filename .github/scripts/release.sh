@@ -15,7 +15,7 @@ printHelp() {
   echo
   echo '    Release'
   echo '        Create all required version tags for their current pom.xml versions.'
-  echo '        The created tags are than pushed to a selected remote repository.'
+  echo '        The created tags are then pushed to a selected remote repository.'
   echo '    Setup'
   echo '        Request a new version. This version is then set in the pom.xml.'
   echo '        The CHANGELOG.md file will be updated and the timestamp of the previous release is added.'
@@ -274,7 +274,7 @@ setupRoadmap() {
 bumpCommit() {
   echo 'Bump'
 
-  echo "    Updating pom.xml files for mudules $BUMP_MODULES..."
+  echo "    Updating pom.xml files for modules $BUMP_MODULES..."
   FORMATTED_BUMP_MODULES=":${BUMP_MODULES//,/,:}"
   ./mvnw -B versions:set-property -DgenerateBackupPoms=false -Dproperty=revision -DnewVersion="$NEW_VERSION" --projects "$FORMATTED_BUMP_MODULES" 2>&1 > /dev/null | sed 's/^/        /'
 
@@ -305,11 +305,16 @@ finalizeAndPublish() {
   echo '    Pushing committed changes...'
   git push "$SETUP_REMOTE_REPOSITORY" "HEAD:$SETUP_REMOTE_BRANCH" 2>&1 > /dev/null | sed 's/^/        /'
 
-  echo '    Creating Pull Request...'
-  setupPublishCreatePullRequest
+  BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  if [[ "$BRANCH" == "main" || "$BRANCH" =~ ^main_v.+$ ]]; then
 
-  echo '    Resetting current branch...'
-  git reset --hard "$PREVIOUS_HEAD" 2>&1 > /dev/null | sed 's/^/        /'
+    echo '    Creating Pull Request...'
+    setupPublishCreatePullRequest
+
+    echo '    Resetting current branch...'
+    git reset --hard "$PREVIOUS_HEAD" 2>&1 > /dev/null | sed 's/^/        /'
+
+  fi
 
   echo '    DONE'
 }

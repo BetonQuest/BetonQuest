@@ -11,4 +11,4 @@ The following versions are supported with security updates.
 
 ## Reporting a Vulnerability
 
-Please use the [GitHub Security Advisories](https://github.com/BetonQuest/BetonQuest/security/advisories/new) feature to privately report vulnerabilies.
+Please use the [GitHub Security Advisories](https://github.com/BetonQuest/BetonQuest/security/advisories/new) feature to privately report vulnerabilities.

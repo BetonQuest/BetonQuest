@@ -31,7 +31,7 @@ public class JournalEntryIdentifierFactory extends DefaultIdentifierFactory<Jour
         final MultiConfiguration config = identifier.getPackage().getConfig();
         final String path = DefaultJournalEntryIdentifier.JOURNAL_SECTION + config.options().pathSeparator() + identifier.get();
         if (!config.isString(path) && !config.isConfigurationSection(path)) {
-            throw new QuestException("JournalEntry '%s' does not define a instruction in section '%s'!"
+            throw new QuestException("JournalEntry '%s' does not define an instruction in section '%s'!"
                     .formatted(identifier.getFull(), DefaultJournalEntryIdentifier.JOURNAL_SECTION));
         }
         return identifier;

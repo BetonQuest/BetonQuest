@@ -41,7 +41,7 @@ public class MoneyAction implements PlayerAction {
     private final IngameNotificationSender givenSender;
 
     /**
-     * Notification wrapper if the player should get a message when loosing money.
+     * Notification wrapper if the player should get a message when losing money.
      */
     @Nullable
     private final IngameNotificationSender takenSender;
@@ -53,7 +53,7 @@ public class MoneyAction implements PlayerAction {
      * @param amount      the amount to modify the balance
      * @param multi       if the current balance should be multiplied with the amount
      * @param givenSender the notification wrapper if the player should get a message when getting money
-     * @param takenSender the notification wrapper if the player should get a message when loosing money
+     * @param takenSender the notification wrapper if the player should get a message when losing money
      */
     public MoneyAction(final Economy economy, final Argument<Number> amount, final FlagArgument<Boolean> multi,
                        @Nullable final IngameNotificationSender givenSender, @Nullable final IngameNotificationSender takenSender) {

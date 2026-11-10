@@ -45,10 +45,10 @@ Also this method is overloaded and has a variant to use custom patches.
 
 The `ConfigAccessor` extends `ConfigurationSection` and therefore provides all known Bukkit methods
 to access and modify the configuration.
-You can reload, save and delete the configuration by calling it's corresponding `reload()`, `save()` and `delete()`
+You can reload, save and delete the configuration by calling its corresponding `reload()`, `save()` and `delete()`
 methods.
 
-Make sure to add a `configVersion` key with an empty string as it's value when adding a new config resource file,
+Make sure to add a `configVersion` key with an empty string as its value when adding a new config resource file,
 that should get patched.
 
 ``` YAML title="Example config.yml"

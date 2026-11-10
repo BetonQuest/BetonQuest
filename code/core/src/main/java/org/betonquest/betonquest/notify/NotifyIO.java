@@ -21,7 +21,7 @@ public abstract class NotifyIO {
     /**
      * Message to use when a data value does not exist.
      */
-    protected static final String CATCH_MESSAGE_TYPE = "%s with the name '%s' does not exists!";
+    protected static final String CATCH_MESSAGE_TYPE = "%s with the name '%s' does not exist!";
 
     /**
      * The {@link PlaceholderManager} to create and resolve placeholders.

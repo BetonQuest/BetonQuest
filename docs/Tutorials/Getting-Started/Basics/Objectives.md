@@ -103,7 +103,7 @@ Now, `cod` is a defined item that can be utilized throughout the entire quest.
 ## 4. Testing your first objective ingame
 
 !!! warning ""
-    It is very important to save all files everytime you test something!
+    It is very important to save all files every time you test something!
     Type `/bq reload` on your server after saving.
 
 
@@ -198,14 +198,14 @@ conversations:
         pointers: maybeLater
 ```
 
-1. The player have the choice to say yes or no.
+1. The player has the choice to say yes or no.
 2. This is the action to start your actual objective task to fish 3 fresh cod.
 
 Now link the conversation to a new NPC that is placed wherever the city tour ends. You should already know how to link
 the dialog to the npc in "_package.yml_". If not, [check the previous tutorials](Conversations.md#1-linking-a-conversation-to-a-npc)!
 
 !!! warning ""
-    It is very important to save all files everytime you test something!
+    It is very important to save all files every time you test something!
     Type `/bq reload` on your server after saving.
 
 

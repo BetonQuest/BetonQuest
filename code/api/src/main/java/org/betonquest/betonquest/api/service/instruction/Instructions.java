@@ -15,10 +15,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Contract;
 
 /**
- * The BetonQuest instructions service is responsible for the creating and resolution of instructions and arguments.
+ * The BetonQuest instructions service is responsible for the creation and resolution of instructions and arguments.
  * <br> <br>
  * {@link Instruction}s and {@link SectionInstruction}s allow to create {@link Argument}s by bootstrapping
- * different partioning, parsing, and validation steps together decorating a reusable function.
+ * different partitioning, parsing, and validation steps together decorating a reusable function.
  * The resulting {@link Argument} also resolves any placeholders for varying {@link Profile}s
  * provided to {@link Argument#getValue(Profile)}.
  * <br> <br>
@@ -95,7 +95,7 @@ public interface Instructions {
 
     /**
      * Creates a new {@link Instruction} for the given {@link QuestPackage} and instruction string.
-     * Use {@link #create(Identifier, String)} to create an instruction for with an identifier instead.
+     * Use {@link #create(Identifier, String)} to create an instruction with an identifier instead.
      * <br> <br>
      * The tokenizer used to parse the instruction string is the same as the one used for action, conditions, etc.
      * <br> <br>

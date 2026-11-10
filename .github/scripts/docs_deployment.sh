@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script was created by using the this source: https://github.com/DiscordHooks/github-actions-discord-webhook
+# This script was created by using this source: https://github.com/DiscordHooks/github-actions-discord-webhook
 set -euo pipefail
 IFS=$'\n\t'
 

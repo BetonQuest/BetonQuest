@@ -1,4 +1,5 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
@@ -45,9 +46,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `section` placeholder did not include target path to subsections
 - async database handling by using default java executor service implementation instead of manual thread handling
 - PlayerHider could override each other resulting in unexpected behavior
-- NPCHider conditions were all joined instead of alternated if multiple hiders where configured
-- potential memory leak when a player quits the server and the data of the player is requested again in the same tick 
-- `brew` objective checks old item for valid brew instead newly brewed one
+- NPCHider conditions were all joined instead of alternated if multiple hiders were configured
+- potential memory leak when a player quits the server and the data of the player is requested again in the same tick
+- `brew` objective checks old item for valid brew instead of newly brewed one
 - `dialog` conversation IO closed and reopened the screen on every answer, briefly freeing the camera and recentering the cursor
 - PacketEvents chat history could throw concurrency exceptions while capturing or restoring messages
 ### Security

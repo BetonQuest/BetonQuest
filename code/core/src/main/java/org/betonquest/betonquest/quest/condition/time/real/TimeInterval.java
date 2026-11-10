@@ -65,7 +65,7 @@ public class TimeInterval {
      * @param string the string to parse
      * @param type   the type for validating range
      * @return list of parsed and validated time intervals
-     * @throws QuestException when the input is miss-formated or exceeds type range
+     * @throws QuestException when the input is misformatted or exceeds type range
      */
     public static List<TimeInterval> parseFromString(final String string, final PartialDate type) throws QuestException {
         if (!string.matches("\\d+(-\\d+)?(,\\d+(-\\d+)?)*")) {

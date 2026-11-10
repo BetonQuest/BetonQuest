@@ -101,7 +101,7 @@ __Description__: Whether the job is at the maximum slots
 
 __Context__: @snippet:condition-meta:online-offline@  
 __Syntax__: `nujobs_joblevel <jobname> <min> <max>`  
-__Description__: Wether the player has this job, and at a level equal to or between the min/max
+__Description__: Whether the player has this job, and at a level equal to or between the min/max
 
 ```YAML title="Example"
 conditions:

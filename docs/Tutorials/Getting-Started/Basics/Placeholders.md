@@ -251,7 +251,7 @@ The conversation checks the options in `first` from left to right. If the player
 ## 6. Testing placeholders in-game
 
 !!! warning ""
-    It is very important to save all files everytime you test something!
+    It is very important to save all files every time you test something!
     Type `/bq reload` on your server after saving.
 
 Talk to the blacksmith and accept the fishing quest. You should see a message that contains your name and the amount
