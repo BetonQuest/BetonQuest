@@ -1,3 +1,8 @@
+3.4.0.1:
+  - type: VALUE_RENAME
+    key: point_set
+    oldValueRegex: "@\\[legacy\\]&2Your points \\{category\\} are set to \\{amount\\}"
+    newValue: "@[legacy]&2I tuoi punti {category} sono impostati su {amount}"
 3.2.0.2:
   - type: VALUE_REPLACE
     key: objective.blocks_to_break
