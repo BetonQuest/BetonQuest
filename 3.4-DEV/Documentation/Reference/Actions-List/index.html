@@ -3977,6 +3977,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#boostelytra">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>BoostElytra</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#burn">
     <span class="md-ellipsis">
 
@@ -9948,6 +9971,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#boostelytra">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>BoostElytra</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#burn">
     <span class="md-ellipsis">
 
@@ -11531,6 +11577,39 @@
 
 
 <h1 id="actions-list">Actions <abbr title="A list is a sequence of values separated by commas.">List</abbr><a class="headerlink" href="#actions-list" title="Permanent link">🔗</a></h1>
+<h2 id="boostelytra"><code>BoostElytra</code><a class="headerlink" href="#boostelytra" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
+<strong>Syntax</strong>: <code>boostelytra [item] [power]</code><br>
+<strong>Description</strong>: Boosts the player's elytra using the specified item or power.</p>
+<p>This action has no effect if the player is currently not flying with an elytra.
+The power overrides the item's power if both are specified.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>item<br>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[firework_rocket]</td>
+<td>The optional item to use as a booster. Has to be a <code>firework_rocket</code>.</td>
+</tr>
+<tr>
+<td>power<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[1]</td>
+<td>An optional power override. Has to be in the inclusive range 0-127.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">simpleBoost</span><span class="p">:</span><span class="w"> </span><span class="s">"boostelytra"</span>
+<span class="w">  </span><span class="nt">justPower</span><span class="p">:</span><span class="w"> </span><span class="s">"boostelytra</span><span class="nv"> </span><span class="s">power:2"</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">justItem</span><span class="p">:</span><span class="w"> </span><span class="s">"boostelytra</span><span class="nv"> </span><span class="s">item:my_rocket"</span>
+<span class="w">  </span><span class="nt">powerOverride</span><span class="p">:</span><span class="w"> </span><span class="s">"boostelytra</span><span class="nv"> </span><span class="s">item:my_rocket</span><span class="nv"> </span><span class="s">power:5"</span>
+</code></pre></div>
 <h2 id="burn"><code>Burn</code><a class="headerlink" href="#burn" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>burn &lt;duration&gt; [unit]</code><br>
