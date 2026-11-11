@@ -447,4 +447,49 @@ You can optionally add the name of the plugin as an argument to display version 
 %version.Citizens%
 ```
 
+## `World`
+
+__Context__: @snippet:placeholder-meta:online-offline-independent@  
+__Syntax__: `world.<property>.[name].[uuid]`  
+__Description__: Represents the specified property of a world.
+
+If you don't specify a world by `name` or `uuid`, the placeholder will use the world of the player.
+In a player-independent context, you must specify either a `name` or a `uuid` or an error will occur.
+You may also never specify both at the same time. A player world will be overwritten by a world specified by `name` or `uuid`.
+
+| Parameter         | Type                | Explanation                                      |
+|-------------------|---------------------|--------------------------------------------------|
+| property          | Required            | The property to read from the world.             |
+| name <br>[String] | Optional <br>[None] | The name of the world to read the property from. |
+| uuid <br>[String] | Optional <br>[None] | The UUID of the world to read the property from. |
+
+??? example "Available Properties"
+    
+    The following properties can be used with the `world` placeholder:
+    
+    | Property           | Type    | Explanation                                             |
+    |--------------------|---------|---------------------------------------------------------|
+    | `name`             | String  | The name of the world.                                  |
+    | `uuid`             | String  | The unique identifier (UUID) of the world.              |
+    | `environment`      | String  | The environment type (NORMAL, NETHER, THE_END, CUSTOM). |
+    | `seed`             | Number  | The world seed.                                         |
+    | `difficulty`       | String  | The current difficulty level.                           |
+    | `time`             | Number  | The relative time on the world.                         |
+    | `fulltime`         | Number  | The full time on the world.                             |
+    | `gametime`         | Number  | The game time on the world.                             |
+    | `playercount`      | Number  | The number of players currently in this world.          |
+    | `entitycount`      | Number  | The total number of entities in this world.             |
+    | `tileentitycount`  | Number  | The number of tile entities in this world.              |
+    | `chunkcount`       | Number  | The total number of chunks in this world.               |
+    | `loadedchunkcount` | Number  | The number of chunks that are currently loaded.         |
+    | `pvp`              | Boolean | Whether PVP is enabled in this world.                   |
+    | `storming`         | Boolean | Whether it is currently storming.                       |
+    | `thundering`       | Boolean | Whether it is currently thundering.                     |
+    | `weatherduration`  | Number  | The duration of the current weather.                    |
+
+```scss title="Examples"
+%world.name%
+%world.playercount.name:world_the_end%
+```
+
 --8<-- "instruction-datatypes.md"

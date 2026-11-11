@@ -34,6 +34,7 @@ import org.betonquest.betonquest.quest.placeholder.tag.GlobalTagPlaceholderFacto
 import org.betonquest.betonquest.quest.placeholder.tag.TagPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.translate.TranslatePlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.version.VersionPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.world.WorldPlaceholderFactory;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
@@ -94,5 +95,6 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, localizations));
         placeholderTypes.registerCombined("translate", new TranslatePlaceholderFactory(instructions));
         placeholderTypes.register("version", new VersionPlaceholderFactory(plugin));
+        placeholderTypes.registerCombined("world", new WorldPlaceholderFactory());
     }
 }
