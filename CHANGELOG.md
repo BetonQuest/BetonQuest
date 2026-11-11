@@ -7,6 +7,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
+- `world` placeholder to get properties from a specific world
 ### Changed
 ### Deprecated
 ### Removed
