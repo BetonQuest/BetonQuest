@@ -7,6 +7,28 @@ search:
 ---
 # Actions List
 
+## `BoostElytra`
+
+__Context__: @snippet:action-meta:online@  
+__Syntax__: `boostelytra [item] [power]`  
+__Description__: Boosts the player's elytra using the specified item or power.
+
+This action has no effect if the player is currently not flying with an elytra.
+The power overrides the item's power if both are specified.
+
+| Parameter         | Type                          | Explanation                                                           |
+|-------------------|-------------------------------|-----------------------------------------------------------------------|
+| item<br>[Item]    | Optional<br>[firework_rocket] | The optional item to use as a booster. Has to be a `firework_rocket`. |
+| power<br>[Number] | Optional<br>[1]               | An optional power override. Has to be in the inclusive range 0-127.   |
+
+```YAML title="Example"
+actions:
+  simpleBoost: "boostelytra"
+  justPower: "boostelytra power:2" 
+  justItem: "boostelytra item:my_rocket"
+  powerOverride: "boostelytra item:my_rocket power:5"
+```
+
 ## `Burn`
 
 __Context__: @snippet:action-meta:online@  

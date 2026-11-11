@@ -8,6 +8,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### Added
 - `world` placeholder to get properties from a specific world
+- `boostelytra` action to boost the player's fly speed while gliding
 ### Changed
 ### Deprecated
 ### Removed
