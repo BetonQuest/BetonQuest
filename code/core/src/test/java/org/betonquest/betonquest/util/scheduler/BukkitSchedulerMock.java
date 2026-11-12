@@ -359,32 +359,32 @@ public class BukkitSchedulerMock implements BukkitScheduler, Closeable {
     }
 
     @Override
-    public void runTask(final Plugin plugin, final Consumer<BukkitTask> task) {
+    public void runTask(final Plugin plugin, final Consumer<? super BukkitTask> task) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskAsynchronously(final Plugin plugin, final Consumer<BukkitTask> task) {
+    public void runTaskAsynchronously(final Plugin plugin, final Consumer<? super BukkitTask> task) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskLater(final Plugin plugin, final Consumer<BukkitTask> task, final long delay) {
+    public void runTaskLater(final Plugin plugin, final Consumer<? super BukkitTask> task, final long delay) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskLaterAsynchronously(final Plugin plugin, final Consumer<BukkitTask> task, final long delay) {
+    public void runTaskLaterAsynchronously(final Plugin plugin, final Consumer<? super BukkitTask> task, final long delay) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskTimer(final Plugin plugin, final Consumer<BukkitTask> task, final long delay, final long period) {
+    public void runTaskTimer(final Plugin plugin, final Consumer<? super BukkitTask> task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 
     @Override
-    public void runTaskTimerAsynchronously(final Plugin plugin, final Consumer<BukkitTask> task, final long delay, final long period) {
+    public void runTaskTimerAsynchronously(final Plugin plugin, final Consumer<? super BukkitTask> task, final long delay, final long period) {
         throw new UnsupportedOperationException(MESSAGE_UNUSED);
     }
 

@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Tests for {@link ActionScheduling.ScheduleType}.
+ * Tests for {@link ScheduleType}.
  */
 @ExtendWith({MockitoExtension.class, BetonQuestLoggerExtension.class})
 class ScheduleTypeTest {
