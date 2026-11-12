@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.action.journal;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageCache;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.InstructionMock;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -69,7 +70,8 @@ final class JournalActionFactoryIT {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        final QuestPackageImpl test = new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(loggerFactory, logger), "test", packageConfigFile, Collections.emptyList());
+        final QuestPackageImpl test = new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(loggerFactory, logger),
+                "test", packageConfigFile, Collections.emptyList(), mock(QuestPackageCache.class));
         test.applyQuestTemplates(Map.of());
         test.getConfig().set("journal.quest_started", "?");
         return test;

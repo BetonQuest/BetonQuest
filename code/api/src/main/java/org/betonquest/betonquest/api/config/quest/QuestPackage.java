@@ -81,4 +81,12 @@ public interface QuestPackage extends LogSource {
      * @since 3.0.0
      */
     ConfigAccessor getOrCreateConfigAccessor(String relativePath) throws InvalidConfigurationException, FileNotFoundException;
+
+    /**
+     * Gets the cache for this {@link QuestPackage}.
+     *
+     * @return the cache for this quest package
+     * @since 3.4.0
+     */
+    QuestPackageCache getCache();
 }

@@ -1,29 +1,37 @@
 package org.betonquest.betonquest.schedule;
 
-import org.betonquest.betonquest.api.config.FileConfigAccessor;
+import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageCache;
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
- * Test that the LastExecutionCache is properly loading and saving to cache file.
+ * Test that the LastExecutionCache is properly loading and saving to package cache file.
  */
 @ExtendWith(MockitoExtension.class)
 class LastExecutionCacheTest {
@@ -41,17 +49,11 @@ class LastExecutionCacheTest {
      */
     private LastExecutionCache lastExecutionCache;
 
-    /**
-     * Config Accessor used by the cache to access the file.
-     */
     @Mock
-    private FileConfigAccessor cacheAccessor;
+    private QuestPackage questPackage;
 
-    /**
-     * Config provided by the {@link #cacheAccessor} to write & read from the cache.
-     */
     @Mock
-    private YamlConfiguration cacheContent;
+    private QuestPackageCache packageCache;
 
     /**
      * ID of the schedule to load and save from.
@@ -61,95 +63,81 @@ class LastExecutionCacheTest {
 
     @BeforeEach
     void setUp() {
-        try (MockedStatic<Files> files = mockStatic(Files.class)) {
-            lenient().when(cacheAccessor.getConfig()).thenReturn(cacheContent);
-            files.when(() -> Files.exists(any(Path.class))).thenReturn(true);
-            lastExecutionCache = new LastExecutionCache(logger, cacheAccessor);
-        }
+        lastExecutionCache = new LastExecutionCache(logger);
+        lenient().when(scheduleID.getPackage()).thenReturn(questPackage);
+        lenient().when(questPackage.getCache()).thenReturn(packageCache);
+        lenient().when(questPackage.getQuestPath()).thenReturn("test-package");
     }
 
     @Test
     void save_io_exception() throws IOException {
-        when(scheduleID.getFull()).thenReturn("test-package.testCacheIOException");
-        when(cacheAccessor.save()).thenThrow(new IOException("ioexception"));
+        when(scheduleID.get()).thenReturn("testCacheIOException");
+        when(packageCache.save()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.cacheExecutionTime(Instant.parse("1970-01-01T00:00:00Z"), scheduleID);
-        verify(logger, times(1)).error(eq("Could not save schedule cache: ioexception"), any(IOException.class));
-    }
-
-    @Test
-    void reload_io_exception() throws IOException {
-        doThrow(new IOException("ioexception")).when(cacheAccessor).reload();
-        lastExecutionCache.reload();
-        verify(logger, times(1)).error(eq("Could not reload schedule cache: ioexception"), any(IOException.class));
+        verify(logger, times(1)).error(eq("Could not save schedule cache for package 'test-package': ioexception"), any(IOException.class));
     }
 
     @Test
     void raw_execution_time() {
         final String expected = "2022-06-17T08:45:49.000000000Z";
-        when(scheduleID.getFull()).thenReturn("test-package.testRawExecutionTime");
-        when(cacheContent.getString("test-package.testRawExecutionTime")).thenReturn(expected);
+        when(scheduleID.get()).thenReturn("testRawExecutionTime");
+        when(packageCache.getString("schedules.testRawExecutionTime")).thenReturn(expected);
         assertEquals(Optional.of(expected), lastExecutionCache.getRawLastExecutionTime(scheduleID), "Cache should return cached time");
     }
 
     @Test
     void execution_time() {
         final String expected = "1997-02-02T02:02:02.020202020Z";
-        when(scheduleID.getFull()).thenReturn("test-package.testExecutionTime");
-        when(cacheContent.getString("test-package.testExecutionTime")).thenReturn(expected);
+        when(scheduleID.get()).thenReturn("testExecutionTime");
+        when(packageCache.getString("schedules.testExecutionTime")).thenReturn(expected);
         assertEquals(Optional.of(Instant.parse(expected)), lastExecutionCache.getLastExecutionTime(scheduleID), "Cache should return cached time");
     }
 
     @Test
     void raw_not_cached() {
-        when(scheduleID.getFull()).thenReturn("test-package.testRawNotCached");
-        when(cacheContent.getString("test-package.testRawNotCached")).thenReturn(null);
+        when(scheduleID.get()).thenReturn("testRawNotCached");
+        when(packageCache.getString("schedules.testRawNotCached")).thenReturn(null);
         assertEquals(Optional.empty(), lastExecutionCache.getRawLastExecutionTime(scheduleID), "Cache should return empty optional");
     }
 
     @Test
     void not_cached() {
-        when(scheduleID.getFull()).thenReturn("test-package.testNotCached");
-        when(cacheContent.getString("test-package.testNotCached")).thenReturn(null);
+        when(scheduleID.get()).thenReturn("testNotCached");
+        when(packageCache.getString("schedules.testNotCached")).thenReturn(null);
         assertEquals(Optional.empty(), lastExecutionCache.getLastExecutionTime(scheduleID), "Cache should return empty optional");
     }
 
     @Test
     void is_contained() {
         final String expected = "2000-01-01T00:00:00Z";
-        when(scheduleID.getFull()).thenReturn("test-package.testIsContained");
-        when(cacheContent.getString("test-package.testIsContained")).thenReturn(expected);
+        when(scheduleID.get()).thenReturn("testIsContained");
+        when(packageCache.getString("schedules.testIsContained")).thenReturn(expected);
         assertTrue(lastExecutionCache.isCached(scheduleID), "isCached() should return true");
     }
 
     @Test
     void is_not_contained() {
-        when(scheduleID.getFull()).thenReturn("test-package.testIsNotContained");
-        when(cacheContent.getString("test-package.testIsNotContained")).thenReturn(null);
+        when(scheduleID.get()).thenReturn("testIsNotContained");
+        when(packageCache.getString("schedules.testIsNotContained")).thenReturn(null);
         assertFalse(lastExecutionCache.isCached(scheduleID), "isCached() should return false");
     }
 
     @Test
     void cache_raw() throws IOException {
         final String expected = "2014-10-16T14:28:00Z";
-        when(scheduleID.getFull()).thenReturn("test-package.testCacheRaw");
+        when(scheduleID.get()).thenReturn("testCacheRaw");
         lastExecutionCache.cacheRawExecutionTime(scheduleID, expected);
-        verify(cacheContent).set("test-package.testCacheRaw", expected);
-        verify(cacheAccessor).save();
+        verify(packageCache).set("schedules.testCacheRaw", expected);
+        verify(packageCache).save();
     }
 
     @Test
     void cache_instant() throws IOException {
         final Instant toCache = Instant.parse("1970-01-01T00:00:00Z");
-        when(scheduleID.getFull()).thenReturn("test-package.testCacheInstant");
+        when(scheduleID.get()).thenReturn("testCacheInstant");
         lastExecutionCache.cacheExecutionTime(toCache, scheduleID);
-        verify(cacheContent).set("test-package.testCacheInstant", toCache.toString());
-        verify(cacheAccessor).save();
-    }
-
-    @Test
-    void reload() throws IOException {
-        lastExecutionCache.reload();
-        verify(cacheAccessor).reload();
+        verify(packageCache).set("schedules.testCacheInstant", toCache.toString());
+        verify(packageCache).save();
     }
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
@@ -159,18 +147,20 @@ class LastExecutionCacheTest {
         final ScheduleIdentifier newSchedule = mock(ScheduleIdentifier.class);
         final ScheduleIdentifier cachedSchedule = mock(ScheduleIdentifier.class);
         final String expected = "2000-01-01T00:00:00Z";
-        when(newSchedule.getFull()).thenReturn("test-package.testCacheStartup-newSchedule");
-        when(cachedSchedule.getFull()).thenReturn("test-package.testCacheStartup-cachedSchedule");
-        when(cacheContent.getString("test-package.testCacheStartup-newSchedule")).thenReturn(null);
-        when(cacheContent.getString("test-package.testCacheStartup-cachedSchedule")).thenReturn(expected);
+        when(newSchedule.getPackage()).thenReturn(questPackage);
+        when(newSchedule.get()).thenReturn("testCacheStartup-newSchedule");
+        when(cachedSchedule.getPackage()).thenReturn(questPackage);
+        when(cachedSchedule.get()).thenReturn("testCacheStartup-cachedSchedule");
+        when(packageCache.getString("schedules.testCacheStartup-newSchedule")).thenReturn(null);
+        when(packageCache.getString("schedules.testCacheStartup-cachedSchedule")).thenReturn(expected);
         lastExecutionCache.cacheStartupTime(now, List.of(newSchedule, cachedSchedule));
         final Instant end = this.now;
         final ArgumentMatcher<String> isCurrentTime = value -> {
             final Instant cachedTime = Instant.parse(value);
             return !cachedTime.isBefore(now) && !cachedTime.isAfter(end);
         };
-        verify(cacheContent).set(eq("test-package.testCacheStartup-newSchedule"), argThat(isCurrentTime));
-        verify(cacheContent, never()).set(eq("test-package.testCacheStartup-cachedSchedule"), anyString());
-        verify(cacheAccessor).save();
+        verify(packageCache).set(eq("schedules.testCacheStartup-newSchedule"), argThat(isCurrentTime));
+        verify(packageCache, never()).set(eq("schedules.testCacheStartup-cachedSchedule"), anyString());
+        verify(packageCache).save();
     }
 }

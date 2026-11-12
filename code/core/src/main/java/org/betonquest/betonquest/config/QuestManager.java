@@ -3,6 +3,7 @@ package org.betonquest.betonquest.config;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageCache;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -10,12 +11,14 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.migrator.QuestMigrator;
 import org.betonquest.betonquest.lib.config.patcher.migration.VersionMissmatchException;
 import org.betonquest.betonquest.lib.config.quest.Quest;
+import org.betonquest.betonquest.lib.config.quest.QuestPackageCacheImpl;
 import org.betonquest.betonquest.lib.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.lib.config.quest.QuestTemplate;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +44,11 @@ public class QuestManager implements QuestPackageManager {
      * Name of the folder to place {@link QuestPackage}s in.
      */
     public static final String QUEST_PACKAGES_FOLDER = "QuestPackages";
+
+    /**
+     * Name of the folder to place {@link QuestPackage} cache files in.
+     */
+    public static final String QUEST_CACHE_FOLDER = ".cache/packages";
 
     /**
      * The type name of the file that indicates a file for a quest in a quest folder.
@@ -104,6 +112,24 @@ public class QuestManager implements QuestPackageManager {
         loadPackages();
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private void createCacheFile(final String questPath, final File cacheFile) throws InvalidConfigurationException {
+        if (cacheFile.exists()) {
+            return;
+        }
+        final File parent = cacheFile.getParentFile();
+        if (parent != null && !parent.exists() && !parent.mkdirs()) {
+            throw new InvalidConfigurationException("Could not create cache directory for package '" + questPath + "'!");
+        }
+        try {
+            if (!cacheFile.createNewFile()) {
+                throw new InvalidConfigurationException("Could not create cache file for package '" + questPath + "'!");
+            }
+        } catch (final IOException e) {
+            throw new InvalidConfigurationException("Could not create cache file for package '" + questPath + "': " + e.getMessage(), e);
+        }
+    }
+
     /**
      * Reloads all {@link QuestPackage}s.
      * This will clear all previously loaded packages.
@@ -133,7 +159,8 @@ public class QuestManager implements QuestPackageManager {
                 templates.put(quest.getQuestPath(), quest);
             });
             searchForPackages(packagesDir, packagesDir, FILE_NAME_INDICATOR, FILE_TYPE_INDICATOR, (questPath, questFile, files) -> {
-                final QuestPackageImpl quest = new QuestPackageImpl(loggerFactory.create(QuestPackageImpl.class), configAccessorFactory, questPath, questFile, files);
+                final QuestPackageCache cache = loadPackageCache(questPath);
+                final QuestPackageImpl quest = new QuestPackageImpl(loggerFactory.create(QuestPackageImpl.class), configAccessorFactory, questPath, questFile, files, cache);
                 try {
                     questMigrator.migrate(quest);
                 } catch (final VersionMissmatchException e) {
@@ -157,6 +184,13 @@ public class QuestManager implements QuestPackageManager {
     @Override
     public Map<String, QuestPackage> getPackages() {
         return packages;
+    }
+
+    private QuestPackageCache loadPackageCache(final String questPath) throws InvalidConfigurationException, FileNotFoundException {
+        final File cacheDir = new File(root, QUEST_CACHE_FOLDER);
+        final File cacheFile = new File(cacheDir, questPath + FILE_TYPE_INDICATOR);
+        createCacheFile(questPath, cacheFile);
+        return new QuestPackageCacheImpl(configAccessorFactory.create(cacheFile));
     }
 
     private boolean createFolderIfAbsent(final File file) {

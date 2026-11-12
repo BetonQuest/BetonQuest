@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.schedule;
 
-import org.betonquest.betonquest.api.config.FileConfigAccessor;
+import org.betonquest.betonquest.api.config.quest.QuestPackageCache;
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
@@ -18,36 +18,22 @@ import java.util.Optional;
 public class LastExecutionCache {
 
     /**
+     * Path prefix in the package cache configuration where schedules are stored.
+     */
+    private static final String SCHEDULES_PREFIX = "schedules.";
+
+    /**
      * Custom {@link BetonQuestLogger} instance for this class.
      */
     private final BetonQuestLogger log;
 
     /**
-     * Config accessor for the cache.
-     */
-    private final FileConfigAccessor cache;
-
-    /**
-     * Create a new execution cache instance for a given schedule.
+     * Create a new execution cache instance.
      *
-     * @param log   the logger that will be used for logging
-     * @param cache the config accessor for the cache
+     * @param log the logger that will be used for logging
      */
-    public LastExecutionCache(final BetonQuestLogger log, final FileConfigAccessor cache) {
+    public LastExecutionCache(final BetonQuestLogger log) {
         this.log = log;
-        this.cache = cache;
-    }
-
-    /**
-     * reload execution cache in case it was modified externally.
-     */
-    public void reload() {
-        try {
-            cache.reload();
-            log.debug("Successfully reloaded schedule cache.");
-        } catch (final IOException e) {
-            log.error("Could not reload schedule cache: " + e.getMessage(), e);
-        }
     }
 
     /**
@@ -57,11 +43,12 @@ public class LastExecutionCache {
      * @param rawTime  raw string to cache
      */
     public void cacheRawExecutionTime(final ScheduleIdentifier schedule, final String rawTime) {
-        cache.getConfig().set(schedule.getFull(), rawTime);
+        final QuestPackageCache cache = schedule.getPackage().getCache();
+        cache.set(SCHEDULES_PREFIX + schedule.get(), rawTime);
         try {
             cache.save();
         } catch (final IOException e) {
-            log.error("Could not save schedule cache: " + e.getMessage(), e);
+            log.error("Could not save schedule cache for package '" + schedule.getPackage().getQuestPath() + "': " + e.getMessage(), e);
         }
     }
 
@@ -83,7 +70,7 @@ public class LastExecutionCache {
      * @return optional containing the cached string, empty if nothing was cached
      */
     public Optional<String> getRawLastExecutionTime(final ScheduleIdentifier schedule) {
-        return Optional.ofNullable(cache.getConfig().getString(schedule.getFull()));
+        return Optional.ofNullable(schedule.getPackage().getCache().getString(SCHEDULES_PREFIX + schedule.get()));
     }
 
     /**

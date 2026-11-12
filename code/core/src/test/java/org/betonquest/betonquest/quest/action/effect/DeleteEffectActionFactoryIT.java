@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.action.effect;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageCache;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.InstructionMock;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -19,8 +20,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Integration tests for {@link DeleteEffectActionFactory}.
@@ -41,7 +42,7 @@ class DeleteEffectActionFactoryIT {
             throw new IOException("Failed to create test package main configuration file.");
         }
         return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(loggerFactory, logger), "test",
-                packageConfigFile, Collections.emptyList());
+                packageConfigFile, Collections.emptyList(), mock(QuestPackageCache.class));
     }
 
     @Test

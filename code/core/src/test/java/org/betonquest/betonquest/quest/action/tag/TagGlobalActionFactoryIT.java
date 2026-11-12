@@ -2,6 +2,7 @@ package org.betonquest.betonquest.quest.action.tag;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageCache;
 import org.betonquest.betonquest.api.instruction.Instruction;
 import org.betonquest.betonquest.api.instruction.InstructionMock;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -23,6 +24,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Integration test for {@link TagGlobalActionFactory}.
@@ -46,7 +48,8 @@ class TagGlobalActionFactoryIT {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(loggerFactory, logger), "test", packageConfigFile, Collections.emptyList());
+        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(loggerFactory, logger), "test",
+                packageConfigFile, Collections.emptyList(), mock(QuestPackageCache.class));
     }
 
     @Test
