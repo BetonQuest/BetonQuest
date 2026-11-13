@@ -11,12 +11,14 @@ import org.betonquest.betonquest.conversation.menu.MenuConvIOFactory;
 import org.betonquest.betonquest.conversation.menu.input.ConversationAction;
 import org.betonquest.betonquest.conversation.menu.input.ConversationSession;
 import org.betonquest.betonquest.item.SimpleQuestItemHandlerRegistry;
+import org.betonquest.betonquest.kernel.processor.feature.ParticleProcessor;
 import org.betonquest.betonquest.kernel.registry.feature.ConversationIORegistry;
 import org.betonquest.betonquest.kernel.registry.feature.NotifyIORegistry;
 import org.betonquest.betonquest.mc_1_21_4.conversation.InputEventSession;
 import org.betonquest.betonquest.mc_1_21_4.item.UpdatedCustomModelDataHandler;
 import org.betonquest.betonquest.mc_1_21_4.listener.BundleListener;
 import org.betonquest.betonquest.mc_1_21_4.notify.io.UpdatedTotemNotifyIOFactory;
+import org.betonquest.betonquest.mc_1_21_4.particle.datafunction.TrailProvider;
 import org.betonquest.betonquest.mc_1_21_4.quest.condition.biome.UpdatedBiomeConditionFactory;
 import org.bukkit.entity.Player;
 
@@ -57,6 +59,9 @@ public class BundledMC_1_21_4 implements Integration {
                 api.fonts(), componentLoader.get(ConversationColors.class)));
 
         api.conditions().registry().register("biome", new UpdatedBiomeConditionFactory());
+
+        final ParticleProcessor particleProcessor = componentLoader.get(ParticleProcessor.class);
+        particleProcessor.addDataFunctionProvider(new TrailProvider());
 
         componentLoader.get(NotifyIORegistry.class).register("totem", new UpdatedTotemNotifyIOFactory(api.placeholders().manager()));
         api.bukkit().registerEvents(new BundleListener());

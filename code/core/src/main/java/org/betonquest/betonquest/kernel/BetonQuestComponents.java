@@ -37,6 +37,7 @@ import org.betonquest.betonquest.kernel.component.NotificationCategoriesComponen
 import org.betonquest.betonquest.kernel.component.NotificationsComponent;
 import org.betonquest.betonquest.kernel.component.NpcsComponent;
 import org.betonquest.betonquest.kernel.component.ObjectivesComponent;
+import org.betonquest.betonquest.kernel.component.ParticlesComponent;
 import org.betonquest.betonquest.kernel.component.PersistenceComponent;
 import org.betonquest.betonquest.kernel.component.PlaceholdersComponent;
 import org.betonquest.betonquest.kernel.component.PlayerDataStorageComponent;
@@ -122,6 +123,7 @@ public final class BetonQuestComponents {
                 new NpcsComponent(),
                 new CancelersComponent(),
                 new JournalsComponent(),
+                new ParticlesComponent(),
                 new SchedulesComponent(),
                 new NotificationsComponent(),
                 new NotificationCategoriesComponent(),

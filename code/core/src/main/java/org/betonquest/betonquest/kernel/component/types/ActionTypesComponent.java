@@ -14,6 +14,7 @@ import org.betonquest.betonquest.api.service.conversation.Conversations;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
+import org.betonquest.betonquest.api.service.particle.Particles;
 import org.betonquest.betonquest.api.text.TextParser;
 import org.betonquest.betonquest.data.PlayerDataStorage;
 import org.betonquest.betonquest.database.GlobalData;
@@ -66,6 +67,7 @@ import org.betonquest.betonquest.quest.action.npc.NpcTeleportActionFactory;
 import org.betonquest.betonquest.quest.action.npc.UpdateVisibilityNowActionFactory;
 import org.betonquest.betonquest.quest.action.objective.ObjectiveActionFactory;
 import org.betonquest.betonquest.quest.action.particle.ParticleActionFactory;
+import org.betonquest.betonquest.quest.action.particle.SpawnParticlesActionFactory;
 import org.betonquest.betonquest.quest.action.party.PartyActionFactory;
 import org.betonquest.betonquest.quest.action.point.DeleteGlobalPointActionFactory;
 import org.betonquest.betonquest.quest.action.point.DeletePointActionFactory;
@@ -117,7 +119,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
                 Localizations.class, LanguageProvider.class, Saver.class, TextParser.class, Instructions.class,
                 Persistence.class, ActionTypeRegistry.class, Conversations.class, ActionManager.class,
                 ConditionManager.class, ObjectiveManager.class, NpcManager.class, CompassManager.class,
-                CancelerProcessor.class, DefaultNpcHider.class, PlayerHider.class);
+                CancelerProcessor.class, DefaultNpcHider.class, PlayerHider.class, Particles.class);
     }
 
     @Override
@@ -146,6 +148,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         final CancelerProcessor cancelerProcessor = getDependency(CancelerProcessor.class);
         final DefaultNpcHider npcHider = getDependency(DefaultNpcHider.class);
         final PlayerHider playerHider = getDependency(PlayerHider.class);
+        final Particles particles = getDependency(Particles.class);
 
         actionTypes.register("boostelytra", new BoostElytraActionFactory());
         actionTypes.register("burn", new BurnActionFactory());
@@ -208,6 +211,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.register("score", new ScoreboardObjectiveActionFactory());
         actionTypes.register("scoretag", new ScoreboardTagActionFactory());
         actionTypes.registerCombined("spawn", new SpawnMobActionFactory());
+        actionTypes.registerCombined("spawnparticles", new SpawnParticlesActionFactory(particles));
         actionTypes.register("stage", new StageActionFactory(objectiveManager));
         actionTypes.register("sudo", new SudoActionFactory(server));
         actionTypes.registerCombined("tag", new TagPlayerActionFactory(persistence, saver, profileProvider));

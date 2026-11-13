@@ -12,6 +12,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `particle` action to spawn particles at a specific location without the need for an integration
 - `lectern` objective to track lectern interactions (opening and specific page)
 - `projectile` action to spawn projectiles at a specific location with velocity
+- `particles` section to allow defining custom particle effects and animations
+- `spawnparticles` action to spawn particles at a specific location
 ### Changed
 - `particle` action of EffectLib integration is now called `el_particle`
 ### Deprecated
