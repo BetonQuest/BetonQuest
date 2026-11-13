@@ -11,6 +11,7 @@ import org.betonquest.betonquest.api.service.action.ActionManager;
 import org.betonquest.betonquest.api.service.compass.CompassManager;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
+import org.betonquest.betonquest.api.service.function.Functions;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
@@ -22,6 +23,7 @@ import org.betonquest.betonquest.kernel.processor.feature.CancelerProcessor;
 import org.betonquest.betonquest.kernel.registry.quest.ActionTypeRegistry;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.playerhider.PlayerHider;
+import org.betonquest.betonquest.quest.action.animateparticle.AnimateParticleActionFactory;
 import org.betonquest.betonquest.quest.action.boostelytra.BoostElytraActionFactory;
 import org.betonquest.betonquest.quest.action.burn.BurnActionFactory;
 import org.betonquest.betonquest.quest.action.cancel.CancelActionFactory;
@@ -115,7 +117,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
                 Localizations.class, LanguageProvider.class, Saver.class, TextParser.class, Instructions.class,
                 Persistence.class, ActionTypeRegistry.class, Conversations.class, ActionManager.class,
                 ConditionManager.class, ObjectiveManager.class, NpcManager.class, CompassManager.class,
-                CancelerProcessor.class, DefaultNpcHider.class, PlayerHider.class);
+                CancelerProcessor.class, DefaultNpcHider.class, PlayerHider.class, Functions.class);
     }
 
     @Override
@@ -144,7 +146,9 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         final CancelerProcessor cancelerProcessor = getDependency(CancelerProcessor.class);
         final DefaultNpcHider npcHider = getDependency(DefaultNpcHider.class);
         final PlayerHider playerHider = getDependency(PlayerHider.class);
+        final Functions functions = getDependency(Functions.class);
 
+        actionTypes.registerCombined("animateparticle", new AnimateParticleActionFactory(plugin, scheduler, functions));
         actionTypes.register("boostelytra", new BoostElytraActionFactory());
         actionTypes.register("burn", new BurnActionFactory());
         actionTypes.register("cancel", new CancelActionFactory(cancelerProcessor));
