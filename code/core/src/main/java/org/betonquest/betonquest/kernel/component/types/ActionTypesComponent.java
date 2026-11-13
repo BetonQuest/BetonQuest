@@ -65,6 +65,7 @@ import org.betonquest.betonquest.quest.action.notify.NotifyAllActionFactory;
 import org.betonquest.betonquest.quest.action.npc.NpcTeleportActionFactory;
 import org.betonquest.betonquest.quest.action.npc.UpdateVisibilityNowActionFactory;
 import org.betonquest.betonquest.quest.action.objective.ObjectiveActionFactory;
+import org.betonquest.betonquest.quest.action.particle.ParticleActionFactory;
 import org.betonquest.betonquest.quest.action.party.PartyActionFactory;
 import org.betonquest.betonquest.quest.action.point.DeleteGlobalPointActionFactory;
 import org.betonquest.betonquest.quest.action.point.DeletePointActionFactory;
@@ -192,6 +193,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("objective", new ObjectiveActionFactory(plugin, loggerFactory, profileProvider, saver,
                 objectiveManager, playerDataStorage));
         actionTypes.register("opsudo", new OpSudoActionFactory(server));
+        actionTypes.registerCombined("particle", new ParticleActionFactory());
         actionTypes.register("party", new PartyActionFactory(profileProvider, actionManager, conditionManager));
         actionTypes.registerCombined("pickrandom", new PickRandomActionFactory(actionManager));
         actionTypes.register("point", new PointActionFactory(loggerFactory, playerDataStorage,
