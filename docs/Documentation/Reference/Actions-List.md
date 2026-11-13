@@ -7,6 +7,39 @@ search:
 ---
 # Actions List
 
+## `AnimateParticle`
+
+__Context__: @snippet:action-meta:online-independent@  
+__Syntax__: `animateparticle <particle> <location> <start> <end> <count> [x:function] [y:function] [z:function] [range:number]`  
+__Description__: Animates particles along a path defined by math functions.
+
+The action calculates a series of delta values between the `start` and `end` matching the specified `count`. 
+For each delta, the provided math functions for `x`, `y`, and `z` are evaluated. The resulting coordinates are then relative to the specified `location`.
+Functions defined as `linear` will be evaluated with the current delta value as output, mathematically expressed: `f(x)=x`.
+
+| Parameter              | Type             | Explanation                                                             |
+|------------------------|------------------|-------------------------------------------------------------------------|
+| particle<br>[Particle] | Required         | The type of particle to display.                                        |
+| location<br>[Location] | Required         | The origin location for the animation.                                  |
+| start<br>[Number]      | Required         | The start value for the animation delta.                                |
+| end<br>[Number]        | Required         | The end value for the animation delta.                                  |
+| count<br>[Number]      | Required         | The number of particles to spawn along the path.                        |
+| x<br>[MathFunction]    | Optional<br>[0]  | The function used to calculate the X coordinate relative to the origin. |
+| y<br>[MathFunction]    | Optional<br>[0]  | The function used to calculate the Y coordinate relative to the origin. |
+| z<br>[MathFunction]    | Optional<br>[0]  | The function used to calculate the Z coordinate relative to the origin. |
+| range<br>[Number]      | Optional<br>[32] | The visibility range of the particles in blocks.                        |
+| extra<br>[Number]      | Optional<br>[0]  | The extra data for the particle - often used for the speed.             |
+
+```YAML title="Example"
+actions:
+  # A simple line of 10 flame particles from (0,0,0) to (5,0,0) relative to the location
+  simpleLine: "animateparticle flame 100;200;300;world 0 5 10 x:linear"
+  # A circle in the X-Z plane
+  circle: "animateparticle end_rod 100;200;300;world 0 6.28 20 x:cos z:sin"
+  # A spiral going upwards
+  spiral: "animateparticle soul_fire_flame 100;200;300;world 0 10 50 x:cos y:linear z:sin range:64"
+```
+
 ## `BoostElytra`
 
 __Context__: @snippet:action-meta:online@  
