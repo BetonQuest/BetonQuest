@@ -1,7 +1,6 @@
 package org.betonquest.betonquest.kernel.component;
 
 import org.betonquest.betonquest.api.dependency.DependencyProvider;
-import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.schedule.LastExecutionCache;
 
@@ -21,7 +20,7 @@ public class ExecutionCacheComponent extends AbstractCoreComponent {
 
     @Override
     public Set<Class<?>> requires() {
-        return Set.of(BetonQuestLoggerFactory.class);
+        return Set.of();
     }
 
     @Override
@@ -31,8 +30,7 @@ public class ExecutionCacheComponent extends AbstractCoreComponent {
 
     @Override
     protected void load(final DependencyProvider dependencyProvider) {
-        final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
-        final LastExecutionCache lastExecutionCache = new LastExecutionCache(loggerFactory.create(LastExecutionCache.class, "Cache"));
+        final LastExecutionCache lastExecutionCache = new LastExecutionCache();
 
         dependencyProvider.take(LastExecutionCache.class, lastExecutionCache);
     }

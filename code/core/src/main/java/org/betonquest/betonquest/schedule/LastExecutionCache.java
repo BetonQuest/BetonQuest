@@ -2,9 +2,7 @@ package org.betonquest.betonquest.schedule;
 
 import org.betonquest.betonquest.api.config.quest.QuestPackageCache;
 import org.betonquest.betonquest.api.identifier.ScheduleIdentifier;
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -20,20 +18,12 @@ public class LastExecutionCache {
     /**
      * Path prefix in the package cache configuration where schedules are stored.
      */
-    private static final String SCHEDULES_PREFIX = "schedules.";
-
-    /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
+    private static final String SCHEDULES_KEY = "schedules";
 
     /**
      * Create a new execution cache instance.
-     *
-     * @param log the logger that will be used for logging
      */
-    public LastExecutionCache(final BetonQuestLogger log) {
-        this.log = log;
+    public LastExecutionCache() {
     }
 
     /**
@@ -44,12 +34,7 @@ public class LastExecutionCache {
      */
     public void cacheRawExecutionTime(final ScheduleIdentifier schedule, final String rawTime) {
         final QuestPackageCache cache = schedule.getPackage().getCache();
-        cache.set(SCHEDULES_PREFIX + schedule.get(), rawTime);
-        try {
-            cache.save();
-        } catch (final IOException e) {
-            log.error("Could not save schedule cache for package '" + schedule.getPackage().getQuestPath() + "': " + e.getMessage(), e);
-        }
+        cache.write(SCHEDULES_KEY, section -> section.set(schedule.get(), rawTime));
     }
 
     /**
@@ -70,7 +55,7 @@ public class LastExecutionCache {
      * @return optional containing the cached string, empty if nothing was cached
      */
     public Optional<String> getRawLastExecutionTime(final ScheduleIdentifier schedule) {
-        return Optional.ofNullable(schedule.getPackage().getCache().getString(SCHEDULES_PREFIX + schedule.get()));
+        return schedule.getPackage().getCache().read(SCHEDULES_KEY).map(section -> section.getString(schedule.get()));
     }
 
     /**
