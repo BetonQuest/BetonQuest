@@ -29,19 +29,19 @@ class LogfileFormatterTest {
     }
 
     @Test
-    void testDebugFormatting() {
+    void debug_formatting() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, "Message1", plugin);
         assertLogMessage(record, "INFO]: [BetonQuest] Message1\n");
     }
 
     @Test
-    void testChatFormattingLogRecord() {
+    void chat_formatting_log_record() {
         final LogRecord record = new LogRecord(Level.INFO, "Message1");
         assertLogMessage(record, "INFO]: [?] Message1\n");
     }
 
     @Test
-    void testDebugFormattingPlugin() {
+    void debug_formatting_plugin() {
         final Plugin plugin = mock(Plugin.class);
         when(plugin.getName()).thenReturn("CustomPlugin");
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, "Message2", plugin);
@@ -49,7 +49,7 @@ class LogfileFormatterTest {
     }
 
     @Test
-    void testDebugFormattingPackage() {
+    void debug_formatting_package() {
         final LogSource pack = mock(LogSource.class);
         when(pack.getSourcePath()).thenReturn("TestPackage");
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, "Message3", plugin, pack);
@@ -57,7 +57,7 @@ class LogfileFormatterTest {
     }
 
     @Test
-    void testDebugFormattingException() {
+    void debug_formatting_exception() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, "Message4", plugin);
         record.setThrown(new NullPointerException("Exception Message"));
         final String message = getFormattedMessage(record);

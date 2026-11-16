@@ -45,7 +45,7 @@ class TransformerIT extends TransformersFixture {
     class Type {
 
         @Test
-        void flawless_String_to_Boolean() {
+        void flawless_string_to_boolean() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -57,7 +57,7 @@ class TransformerIT extends TransformersFixture {
         }
 
         @Test
-        void flawless_String_to_Int() {
+        void flawless_string_to_int() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -69,7 +69,7 @@ class TransformerIT extends TransformersFixture {
         }
 
         @Test
-        void flawless_String_to_Float() {
+        void flawless_string_to_float() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -81,7 +81,7 @@ class TransformerIT extends TransformersFixture {
         }
 
         @Test
-        void flawless_String_to_Double() {
+        void flawless_string_to_double() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM
@@ -93,7 +93,7 @@ class TransformerIT extends TransformersFixture {
         }
 
         @Test
-        void flawless_Boolean_to_String() {
+        void flawless_boolean_to_string() {
             patch = """
                       2.0.0.1:
                         - type: TYPE_TRANSFORM

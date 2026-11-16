@@ -1,27 +1,28 @@
 package org.betonquest.betonquest.lib.config.util;
 
-@SuppressWarnings({"unused", "PMD.CommentRequired", "PMD.UnitTestShouldUseTestAnnotation", "PMD.TooManyMethods", "MissingJavadocMethod", "MissingJavadocType"})
+@SuppressWarnings({"unused", "PMD.CommentRequired", "PMD.MethodNamingConventions", "MissingJavadocMethod",
+        "MissingJavadocType"})
 public interface ConfigurationInterfaceTest {
 
-    void testAddDefaultOnRootSection();
+    void add_default_on_root_section();
 
-    void testAddDefaultOnRootSectionOnExistingConfigPath();
+    void add_default_on_root_section_on_existing_config_path();
 
-    void testAddDefaultsAsMap();
+    void add_defaults_as_map();
 
-    void testAddDefaultsAsMapOnExistingConfigPath();
+    void add_defaults_as_map_on_existing_config_path();
 
-    void testAddDefaultsAsConfiguration();
+    void add_defaults_as_configuration();
 
-    void testAddDefaultsAsConfigurationOnExistingConfigPath();
+    void add_defaults_as_configuration_on_existing_config_path();
 
-    void testGetDefaults();
+    void get_defaults();
 
-    void testSetDefaults();
+    void set_defaults();
 
-    void testSetDefaultsOnExistingConfigPath();
+    void set_defaults_on_existing_config_path();
 
-    void testOptions();
+    void options();
 
-    void testOptionsPathSeparator();
+    void options_path_separator();
 }

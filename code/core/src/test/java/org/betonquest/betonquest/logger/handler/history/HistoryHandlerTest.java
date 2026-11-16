@@ -33,7 +33,7 @@ class HistoryHandlerTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testStartLoggingPrintsHistoryInCorrectOrder() throws IOException {
+    void start_logging_prints_history_in_correct_order() throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final Handler validator = mock(Handler.class);
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, new ResettableHandler(() -> validator));
@@ -53,7 +53,7 @@ class HistoryHandlerTest {
     }
 
     @Test
-    void testLoggingAfterStart() throws IOException {
+    void logging_after_start() throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final Handler validator = mock(Handler.class);
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, new ResettableHandler(() -> validator));
@@ -71,7 +71,7 @@ class HistoryHandlerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartLoggingPublishesHistory(@Mock final ResettableHandler internalHandler) throws IOException {
+    void start_logging_publishes_history(@Mock final ResettableHandler internalHandler) throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, internalHandler);
         final LogRecord logRecord = new LogRecord(Level.INFO, "record");
@@ -89,7 +89,7 @@ class HistoryHandlerTest {
     }
 
     @Test
-    void testNoHistoryMarkersWhenStartingWithEmptyHistory(@Mock final ResettableHandler internalHandler) throws IOException {
+    void no_history_markers_when_starting_with_empty_history(@Mock final ResettableHandler internalHandler) throws IOException {
         final LogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, internalHandler);
         historyHandler.startLogging();
@@ -98,7 +98,7 @@ class HistoryHandlerTest {
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
-    void testCreatingHistoryLoggerDoesNotChangeConfig(final boolean initialDebuggingState,
+    void creating_history_logger_does_not_change_config(final boolean initialDebuggingState,
                                                       @Mock final LogRecordQueue logQueue,
                                                       @Mock final ResettableHandler internalHandler) {
         new HistoryHandler(initialDebuggingState, loggingUpdater, logQueue, internalHandler);
@@ -106,7 +106,7 @@ class HistoryHandlerTest {
     }
 
     @Test
-    void testStartLoggingUpdatesConfig(@Mock final LogRecordQueue logQueue,
+    void start_logging_updates_config(@Mock final LogRecordQueue logQueue,
                                        @Mock final ResettableHandler internalHandler) throws IOException {
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, internalHandler);
         historyHandler.startLogging();
@@ -115,7 +115,7 @@ class HistoryHandlerTest {
     }
 
     @Test
-    void testStopLoggingUpdatesConfig(@Mock final LogRecordQueue logQueue,
+    void stop_logging_updates_config(@Mock final LogRecordQueue logQueue,
                                       @Mock final ResettableHandler internalHandler) throws IOException {
         final HistoryHandler historyHandler = new HistoryHandler(true, loggingUpdater, logQueue, internalHandler);
         historyHandler.stopLogging();
@@ -124,7 +124,7 @@ class HistoryHandlerTest {
     }
 
     @Test
-    void testDoubleStartingDoesNotUpdateConfig(@Mock final LogRecordQueue logQueue,
+    void double_starting_does_not_update_config(@Mock final LogRecordQueue logQueue,
                                                @Mock final ResettableHandler internalHandler) throws IOException {
         final HistoryHandler historyHandler = new HistoryHandler(true, loggingUpdater, logQueue, internalHandler);
         historyHandler.startLogging();
@@ -132,7 +132,7 @@ class HistoryHandlerTest {
     }
 
     @Test
-    void testDoubleStoppingDoesNotUpdateConfig(@Mock final LogRecordQueue logQueue,
+    void double_stopping_does_not_update_config(@Mock final LogRecordQueue logQueue,
                                                @Mock final ResettableHandler internalHandler) throws IOException {
         final HistoryHandler historyHandler = new HistoryHandler(false, loggingUpdater, logQueue, internalHandler);
         historyHandler.stopLogging();

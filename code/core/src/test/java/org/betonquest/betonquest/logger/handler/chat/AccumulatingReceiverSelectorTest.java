@@ -15,7 +15,7 @@ class AccumulatingReceiverSelectorTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testAccumulatingReceiverSelector() {
+    void accumulating_receiver_selector() {
         final UUID uuid = UUID.randomUUID();
 
         final AccumulatingReceiverSelector receiverSelector = new AccumulatingReceiverSelector();

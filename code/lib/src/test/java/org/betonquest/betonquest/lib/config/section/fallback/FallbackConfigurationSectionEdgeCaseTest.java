@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FallbackConfigurationSectionEdgeCaseTest {
 
     @Test
-    void testInvalidConstructor() {
+    void invalid_constructor() {
         final Configuration original = new MemoryConfiguration();
         assertThrows(IllegalStateException.class, () -> new FallbackConfigurationSection(original, null));
     }

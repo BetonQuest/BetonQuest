@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class TagActionTest {
 
     @Test
-    void testTagActionUsesAlwaysActualTagData(
+    void tag_action_uses_always_actual_tag_data(
             @Mock final TagHolder firstData,
             @Mock final TagHolder secondData,
             @Mock final TagChanger tagChanger,

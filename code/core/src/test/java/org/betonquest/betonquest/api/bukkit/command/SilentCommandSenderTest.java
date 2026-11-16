@@ -58,7 +58,7 @@ class SilentCommandSenderTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void sendMessage() {
+    void send_message() {
         silentSender.sendMessage("test1");
         verify(sender, never()).sendMessage(anyString());
         verify(logger, times(1)).debug("Silently sending message to console: test1");
@@ -67,7 +67,7 @@ class SilentCommandSenderTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void sendMessage_multiple() {
+    void send_message_multiple() {
         silentSender.sendMessage("test2", "test3");
         verify(sender, never()).sendMessage(anyString(), anyString());
         verify(logger, times(1)).debug("Silently sending messages to console: test2, test3");
@@ -76,7 +76,7 @@ class SilentCommandSenderTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void sendMessage_Sender_null() {
+    void send_message_sender_null() {
         silentSender.sendMessage(null, "test4");
         verify(sender, never()).sendMessage(any(UUID.class), anyString());
         verify(logger, times(1)).debug("Silently sending message to console: test4");
@@ -85,7 +85,7 @@ class SilentCommandSenderTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void sendMessage_UUID_null() {
+    void send_message_uuid_null() {
         silentSender.sendMessage((UUID) null, "test5", "test6");
         verify(sender, never()).sendMessage(any(UUID.class), anyString(), anyString());
         verify(logger, times(1)).debug("Silently sending messages to console: test5, test6");
@@ -93,14 +93,14 @@ class SilentCommandSenderTest {
     }
 
     @Test
-    void getServer() {
+    void get_server() {
         when(sender.getServer()).thenReturn(mock(org.bukkit.Server.class));
         silentSender.getServer();
         verify(sender, times(1)).getServer();
     }
 
     @Test
-    void getName() {
+    void get_name() {
         when(sender.getName()).thenReturn("test");
         silentSender.getName();
         verify(sender, times(1)).getName();
@@ -121,81 +121,81 @@ class SilentCommandSenderTest {
     }
 
     @Test
-    void isPermissionSet() {
+    void is_permission_set() {
         silentSender.isPermissionSet("test");
         verify(sender, times(1)).isPermissionSet(anyString());
     }
 
     @Test
-    void isPermissionSet_Permission_class() {
+    void is_permission_set_permission_class() {
         silentSender.isPermissionSet(mock(org.bukkit.permissions.Permission.class));
         verify(sender, times(1)).isPermissionSet(any(org.bukkit.permissions.Permission.class));
     }
 
     @Test
-    void hasPermission() {
+    void has_permission() {
         silentSender.hasPermission("test");
         verify(sender, times(1)).hasPermission(anyString());
     }
 
     @Test
-    void hasPermission_Permission_class() {
+    void has_permission_permission_class() {
         silentSender.hasPermission(mock(org.bukkit.permissions.Permission.class));
         verify(sender, times(1)).hasPermission(any(org.bukkit.permissions.Permission.class));
     }
 
     @Test
-    void addAttachment() {
+    void add_attachment() {
         when(sender.addAttachment(any(org.bukkit.plugin.Plugin.class))).thenReturn(mock(org.bukkit.permissions.PermissionAttachment.class));
         silentSender.addAttachment(mock(org.bukkit.plugin.Plugin.class));
         verify(sender, times(1)).addAttachment(any(org.bukkit.plugin.Plugin.class));
     }
 
     @Test
-    void addAttachment_name_and_value() {
+    void add_attachment_name_and_value() {
         when(sender.addAttachment(any(org.bukkit.plugin.Plugin.class), anyString(), anyBoolean())).thenReturn(mock(org.bukkit.permissions.PermissionAttachment.class));
         silentSender.addAttachment(mock(org.bukkit.plugin.Plugin.class), "test", true);
         verify(sender, times(1)).addAttachment(any(org.bukkit.plugin.Plugin.class), anyString(), anyBoolean());
     }
 
     @Test
-    void addAttachment_name_value_and_ticks() {
+    void add_attachment_name_value_and_ticks() {
         silentSender.addAttachment(mock(org.bukkit.plugin.Plugin.class), "test", true, 1);
         verify(sender, times(1)).addAttachment(any(org.bukkit.plugin.Plugin.class), anyString(), anyBoolean(), anyInt());
     }
 
     @Test
-    void addAttachment_ticks() {
+    void add_attachment_ticks() {
         silentSender.addAttachment(mock(org.bukkit.plugin.Plugin.class), 1);
         verify(sender, times(1)).addAttachment(any(org.bukkit.plugin.Plugin.class), anyInt());
     }
 
     @Test
-    void removeAttachment() {
+    void remove_attachment() {
         silentSender.removeAttachment(mock(org.bukkit.permissions.PermissionAttachment.class));
         verify(sender, times(1)).removeAttachment(any(org.bukkit.permissions.PermissionAttachment.class));
     }
 
     @Test
-    void recalculatePermissions() {
+    void recalculate_permissions() {
         silentSender.recalculatePermissions();
         verify(sender, times(1)).recalculatePermissions();
     }
 
     @Test
-    void getEffectivePermissions() {
+    void get_effective_permissions() {
         silentSender.getEffectivePermissions();
         verify(sender, times(1)).getEffectivePermissions();
     }
 
     @Test
-    void isOp() {
+    void is_op() {
         silentSender.isOp();
         verify(sender, times(1)).isOp();
     }
 
     @Test
-    void setOp() {
+    void set_op() {
         silentSender.setOp(true);
         verify(sender, times(1)).setOp(anyBoolean());
     }

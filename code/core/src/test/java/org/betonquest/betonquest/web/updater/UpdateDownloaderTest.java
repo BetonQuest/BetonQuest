@@ -42,7 +42,7 @@ class UpdateDownloaderTest {
     }
 
     @Test
-    void testDownloadFile(@TempDir final File tempDir) throws IOException, QuestException {
+    void download_file(@TempDir final File tempDir) throws IOException, QuestException {
         final File file = new File(tempDir, "BetonQuest-1.2.3.jar");
         final URL url = mock(URL.class);
         final DownloadSource downloadSource = mock(DownloadSource.class);
@@ -53,7 +53,7 @@ class UpdateDownloaderTest {
     }
 
     @Test
-    void testDownloadFileAlreadyExists(@TempDir final File tempDir) throws IOException {
+    void download_file_already_exists(@TempDir final File tempDir) throws IOException {
         final File file = new File(tempDir, "BetonQuest-1.2.3.jar");
         final DownloadSource downloadSource = mock(DownloadSource.class);
         final UpdateDownloader downloader = new UpdateDownloader(downloadSource, tempDir, PLUGIN_DESCRIPTION_FILE);
@@ -64,7 +64,7 @@ class UpdateDownloaderTest {
     }
 
     @Test
-    void testExceptionOnDownload(@TempDir final File tempDir) throws IOException {
+    void exception_on_download(@TempDir final File tempDir) throws IOException {
         final File file = new File(tempDir, "BetonQuest-1.2.3.jar");
         final URL url = mock(URL.class);
         final DownloadSource downloadSource = mock(DownloadSource.class);
@@ -76,7 +76,7 @@ class UpdateDownloaderTest {
     }
 
     @Test
-    void testExceptionOnFolderCreation(@TempDir final File tempDir) {
+    void exception_on_folder_creation(@TempDir final File tempDir) {
         final File updateFolder = spy(new File(tempDir, "updater"));
         final DownloadSource downloadSource = mock(DownloadSource.class);
         final UpdateDownloader downloader = new UpdateDownloader(downloadSource, updateFolder, PLUGIN_DESCRIPTION_FILE);
@@ -91,7 +91,7 @@ class UpdateDownloaderTest {
     // TODO version switch:
     //  Remove suppression PMD.CloseResource when only Java 21 is supported
     @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
-    void testConcurrentDownloads(@TempDir final File tempDir) throws IOException, InterruptedException {
+    void concurrent_downloads(@TempDir final File tempDir) throws IOException, InterruptedException {
         final ExecutorService service = Executors.newFixedThreadPool(1);
 
         final URL url = mock(URL.class);

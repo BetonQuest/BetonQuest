@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DoNothingPlayerlessActionTest {
 
     @Test
-    void testExecuteDoesNothing() {
+    void execute_does_nothing() {
         final PlayerlessAction action = new ThrowExceptionPlayerlessAction("Test exception");
         assertThrows(QuestException.class, action::execute, "Action should thrown an exception.");
     }

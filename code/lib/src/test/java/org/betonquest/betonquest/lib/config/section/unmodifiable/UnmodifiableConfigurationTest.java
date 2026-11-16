@@ -59,49 +59,49 @@ public class UnmodifiableConfigurationTest extends ConfigurationBaseTest {
 
     @Test
     @Override
-    public void testAddDefaultOnRootSection() {
-        assertThrowsUnmodifiableException(super::testAddDefaultOnRootSection);
+    public void add_default_on_root_section() {
+        assertThrowsUnmodifiableException(super::add_default_on_root_section);
     }
 
     @Test
     @Override
-    public void testAddDefaultOnRootSectionOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultOnRootSectionOnExistingConfigPath);
+    public void add_default_on_root_section_on_existing_config_path() {
+        assertThrowsUnmodifiableException(super::add_default_on_root_section_on_existing_config_path);
     }
 
     @Test
     @Override
-    public void testAddDefaultsAsConfiguration() {
-        assertThrowsUnmodifiableException(super::testAddDefaultsAsConfiguration);
+    public void add_defaults_as_configuration() {
+        assertThrowsUnmodifiableException(super::add_defaults_as_configuration);
     }
 
     @Test
     @Override
-    public void testAddDefaultsAsConfigurationOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultsAsConfigurationOnExistingConfigPath);
+    public void add_defaults_as_configuration_on_existing_config_path() {
+        assertThrowsUnmodifiableException(super::add_defaults_as_configuration_on_existing_config_path);
     }
 
     @Test
     @Override
-    public void testAddDefaultsAsMap() {
-        assertThrowsUnmodifiableException(super::testAddDefaultsAsMap);
+    public void add_defaults_as_map() {
+        assertThrowsUnmodifiableException(super::add_defaults_as_map);
     }
 
     @Test
     @Override
-    public void testAddDefaultsAsMapOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultsAsMapOnExistingConfigPath);
+    public void add_defaults_as_map_on_existing_config_path() {
+        assertThrowsUnmodifiableException(super::add_defaults_as_map_on_existing_config_path);
     }
 
     @Test
     @Override
-    public void testSetDefaults() {
-        assertThrowsUnmodifiableException(super::testSetDefaults);
+    public void set_defaults() {
+        assertThrowsUnmodifiableException(super::set_defaults);
     }
 
     @Test
     @Override
-    public void testSetDefaultsOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testSetDefaultsOnExistingConfigPath);
+    public void set_defaults_on_existing_config_path() {
+        assertThrowsUnmodifiableException(super::set_defaults_on_existing_config_path);
     }
 }

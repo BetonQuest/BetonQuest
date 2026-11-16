@@ -41,13 +41,13 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     @Test
     @Override
     @SuppressWarnings("PMD.JUnitJupiterTestShouldBePackagePrivate")
-    public void testScheduleValidLoad() throws QuestException {
+    public void schedule_valid_load() throws QuestException {
         final RealtimeDailySchedule schedule = createSchedule();
         assertEquals(LocalTime.of(22, 0), schedule.getTimeToRun(), "Returned time should be correct");
     }
 
     @Test
-    void testScheduleInvalidLoad() {
+    void schedule_invalid_load() {
         when(section.getString("time")).thenReturn("0 22 * * * *");
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid time format");
         final String expected = "Unable to parse time '0 22 * * * *': ";
@@ -55,7 +55,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testScheduleNextExecutionIn1H() throws QuestException {
+    void schedule_next_execution_in_1_h() throws QuestException {
         final LocalDateTime targetTime = LocalDateTime.now().plusHours(1).withSecond(0).withNano(0);
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
         final RealtimeDailySchedule schedule = createSchedule();
@@ -66,7 +66,7 @@ class RealtimeDailyScheduleTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testScheduleNextExecutionIn23H() throws QuestException {
+    void schedule_next_execution_in_23_h() throws QuestException {
         final LocalDateTime targetTime = LocalDateTime.now().plusHours(23).withSecond(0).withNano(0);
         when(section.getString("time")).thenReturn(targetTime.format(TIME_FORMAT));
         final RealtimeDailySchedule schedule = createSchedule();

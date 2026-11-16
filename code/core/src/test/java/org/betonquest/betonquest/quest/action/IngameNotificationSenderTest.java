@@ -29,7 +29,7 @@ import static org.mockito.Mockito.*;
 class IngameNotificationSenderTest {
 
     @Test
-    void testSendNotifyIsCalled(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) throws QuestException {
+    void send_notify_is_called(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) throws QuestException {
         final Profile profile = getMockedProfile();
         final Localizations localizations = getPluginMessage();
 
@@ -48,7 +48,7 @@ class IngameNotificationSenderTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testSendNotifyHandlesError(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) throws QuestException {
+    void send_notify_handles_error(final BetonQuestLogger logger, @Mock final QuestPackage questPackage) throws QuestException {
         final Profile profile = getMockedProfile();
         final Localizations localizations = getPluginMessage();
 

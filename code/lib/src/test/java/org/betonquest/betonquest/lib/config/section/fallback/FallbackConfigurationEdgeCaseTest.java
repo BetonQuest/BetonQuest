@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FallbackConfigurationEdgeCaseTest {
 
     @Test
-    void testDefaultInstance() {
+    void default_instance() {
         final Configuration original = new MemoryConfiguration();
         final FallbackConfiguration config = new FallbackConfiguration(original, null);
         assertNull(config.getDefaults());

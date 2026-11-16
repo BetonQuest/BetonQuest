@@ -41,7 +41,7 @@ class DefaultVersionTest {
      * Test if the {@link DefaultVersion}'s have the correct string version.
      */
     @Test
-    void testVersionString() {
+    void version_string() {
         assertVersionString(V_1_0_0, "1.0.0");
         assertVersionString(V_1_0_0_DEV_1, "1.0.0-DEV-1");
         assertVersionString(V_1_1_0_DEV_146, "1.1.0-DEV-146");
@@ -53,7 +53,7 @@ class DefaultVersionTest {
      * Test if the {@link DefaultVersion}'s have the correct qualifier.
      */
     @Test
-    void testVersionQualifier() {
+    void version_qualifier() {
         assertVersionQualifier(V_1_0_0, "type", "RELEASE");
         assertVersionQualifier(V_1_0_0_DEV_1, "type", "DEV");
         assertVersionQualifier(V_1_1_0_DEV_146, "type", "DEV");
@@ -65,7 +65,7 @@ class DefaultVersionTest {
      * Test if the {@link DefaultVersion}'s have the correct build number.
      */
     @Test
-    void testVersionBuildNumber() {
+    void version_build_number() {
         assertVersionQualifier(V_1_0_0, "build", "0");
         assertVersionQualifier(V_1_0_0_DEV_1, "build", "1");
         assertVersionQualifier(V_1_1_0_DEV_146, "build", "146");

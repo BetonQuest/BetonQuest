@@ -37,38 +37,38 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     }
 
     @Test
-    void isConversing() {
+    void is_conversing() {
         silentSender.isConversing();
         verify(sender, times(1)).isConversing();
     }
 
     @Test
-    void acceptConversationInput() {
+    void accept_conversation_input() {
         silentSender.acceptConversationInput("test");
         verify(sender, times(1)).acceptConversationInput("test");
     }
 
     @Test
-    void beginConversation() {
+    void begin_conversation() {
         silentSender.beginConversation(mock(Conversation.class));
         verify(sender, times(1)).beginConversation(any(Conversation.class));
     }
 
     @Test
-    void abandonConversation() {
+    void abandon_conversation() {
         silentSender.abandonConversation(mock(Conversation.class));
         verify(sender, times(1)).abandonConversation(any(Conversation.class));
     }
 
     @Test
-    void abandonConversation_ConversationAbandonedEvent() {
+    void abandon_conversation_conversation_abandoned_event() {
         silentSender.abandonConversation(mock(Conversation.class), mock(ConversationAbandonedEvent.class));
         verify(sender, times(1)).abandonConversation(any(Conversation.class), any(ConversationAbandonedEvent.class));
     }
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void sendRawMessage() {
+    void send_raw_message() {
         silentSender.sendRawMessage("test1");
         verify(sender, never()).sendRawMessage("test1");
         verify(logger, times(1)).debug("Silently sending message to console: test1");
@@ -77,7 +77,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void sendRawMessage_sender() {
+    void send_raw_message_sender() {
         silentSender.sendRawMessage(null, "test3");
         verify(sender, never()).sendRawMessage(any(UUID.class), anyString());
         verify(logger, times(1)).debug("Silently sending message to console: test3");

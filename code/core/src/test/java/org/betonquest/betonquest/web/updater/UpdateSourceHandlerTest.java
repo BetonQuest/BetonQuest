@@ -141,7 +141,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void release_throws_UnknownHostException() throws IOException {
+    void release_throws_unknown_host_exception() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(BetonQuestUpdateStrategy.MINOR, false);
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -163,7 +163,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void release_throws_IOException() throws IOException {
+    void release_throws_io_exception() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(BetonQuestUpdateStrategy.MAJOR, false);
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -185,7 +185,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void one_of_two_releases_throws_IOException() throws IOException {
+    void one_of_two_releases_throws_io_exception() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(BetonQuestUpdateStrategy.MAJOR, false);
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = getUpdateSourceRelease(version);
@@ -208,7 +208,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void development_throws_UnknownHostException() throws IOException {
+    void development_throws_unknown_host_exception() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(BetonQuestUpdateStrategy.PATCH, true);
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -230,7 +230,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void development_throws_IOException() throws IOException {
+    void development_throws_io_exception() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(BetonQuestUpdateStrategy.MINOR, true);
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();
@@ -252,7 +252,7 @@ class UpdateSourceHandlerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void one_of_two_developments_throws_IOException() throws IOException {
+    void one_of_two_developments_throws_io_exception() throws IOException {
         final UpdaterConfig config = getUpdaterConfig(BetonQuestUpdateStrategy.MINOR, true);
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final List<ReleaseUpdateSource> releaseHandlerList = new ArrayList<>();

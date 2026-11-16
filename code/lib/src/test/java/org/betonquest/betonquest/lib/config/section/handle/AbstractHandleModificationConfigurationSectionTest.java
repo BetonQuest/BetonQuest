@@ -44,92 +44,92 @@ public abstract class AbstractHandleModificationConfigurationSectionTest extends
 
     @Test
     @Override
-    public void testSet() {
-        super.testSet();
+    public void set() {
+        super.set();
         config.set("testSet", null);
     }
 
     @Test
     @Override
-    public void testSetOnExistingConfigPath() {
-        super.testSetOnExistingConfigPath();
+    public void set_on_existing_config_path() {
+        super.set_on_existing_config_path();
         config.set("existingSet", null);
     }
 
     @Test
     @Override
-    public void testSetSectionOverwritingExisting() {
-        super.testSetSectionOverwritingExisting();
+    public void set_section_overwriting_existing() {
+        super.set_section_overwriting_existing();
         config.set("childSection", null);
     }
 
     @Test
     @Override
-    public void testAddDefault() {
-        super.testAddDefault();
+    public void add_default() {
+        super.add_default();
         config.addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testAddDefaultOnExistingConfigPath() {
-        super.testAddDefaultOnExistingConfigPath();
+    public void add_default_on_existing_config_path() {
+        super.add_default_on_existing_config_path();
         config.addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testCreateSectionOnExistingConfigPath() {
-        super.testCreateSectionOnExistingConfigPath();
+    public void create_section_on_existing_config_path() {
+        super.create_section_on_existing_config_path();
         config.set("createdSectionExist", null);
     }
 
     @Test
     @Override
-    public void testCreateSection() {
-        super.testCreateSection();
+    public void create_section() {
+        super.create_section();
         config.set("createdSection", null);
     }
 
     @Test
     @Override
-    public void testCreateSectionWithValues() {
-        super.testCreateSectionWithValues();
+    public void create_section_with_values() {
+        super.create_section_with_values();
         config.set("createdSectionWithValues", null);
     }
 
     @Test
     @Override
-    public void testCreateSectionWithValuesOnExistingConfigPath() {
-        super.testCreateSectionWithValuesOnExistingConfigPath();
+    public void create_section_with_values_on_existing_config_path() {
+        super.create_section_with_values_on_existing_config_path();
         config.set("createdSectionWithValuesExist", null);
     }
 
     @Test
     @Override
-    public void testSetComments() {
-        super.testSetComments();
+    public void set_comments() {
+        super.set_comments();
         config.setComments("existingSet", null);
     }
 
     @Test
     @Override
-    public void testSetCommentsOnInvalid() {
-        super.testSetCommentsOnInvalid();
+    public void set_comments_on_invalid() {
+        super.set_comments_on_invalid();
         config.setComments("existingSet_invalid", null);
     }
 
     @Test
     @Override
-    public void testSetInlineComments() {
-        super.testSetInlineComments();
+    public void set_inline_comments() {
+        super.set_inline_comments();
         config.setInlineComments("existingSet", null);
     }
 
     @Test
     @Override
-    public void testSetInlineCommentsOnInvalid() {
-        super.testSetInlineCommentsOnInvalid();
+    public void set_inline_comments_on_invalid() {
+        super.set_inline_comments_on_invalid();
         config.setInlineComments("existingSet_invalid", null);
     }
 }

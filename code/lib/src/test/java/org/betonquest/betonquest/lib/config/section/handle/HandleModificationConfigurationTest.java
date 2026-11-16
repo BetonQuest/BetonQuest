@@ -43,57 +43,57 @@ public class HandleModificationConfigurationTest extends ConfigurationBaseTest {
 
     @Test
     @Override
-    public void testAddDefaultOnRootSection() {
-        super.testAddDefaultOnRootSection();
+    public void add_default_on_root_section() {
+        super.add_default_on_root_section();
         setter.getSection().addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testAddDefaultOnRootSectionOnExistingConfigPath() {
-        super.testAddDefaultOnRootSectionOnExistingConfigPath();
+    public void add_default_on_root_section_on_existing_config_path() {
+        super.add_default_on_root_section_on_existing_config_path();
         setter.getSection().addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testAddDefaultsAsConfiguration() {
-        super.testAddDefaultsAsConfiguration();
+    public void add_defaults_as_configuration() {
+        super.add_defaults_as_configuration();
         setter.getSection().addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testAddDefaultsAsConfigurationOnExistingConfigPath() {
-        super.testAddDefaultsAsConfigurationOnExistingConfigPath();
+    public void add_defaults_as_configuration_on_existing_config_path() {
+        super.add_defaults_as_configuration_on_existing_config_path();
         setter.getSection().addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testAddDefaultsAsMap() {
-        super.testAddDefaultsAsMap();
+    public void add_defaults_as_map() {
+        super.add_defaults_as_map();
         setter.getSection().addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testAddDefaultsAsMapOnExistingConfigPath() {
-        super.testAddDefaultsAsMapOnExistingConfigPath();
+    public void add_defaults_as_map_on_existing_config_path() {
+        super.add_defaults_as_map_on_existing_config_path();
         setter.getSection().addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testSetDefaults() {
-        super.testSetDefaults();
+    public void set_defaults() {
+        super.set_defaults();
         setter.getSection().addDefault("default", null);
     }
 
     @Test
     @Override
-    public void testSetDefaultsOnExistingConfigPath() {
-        super.testSetDefaultsOnExistingConfigPath();
+    public void set_defaults_on_existing_config_path() {
+        super.set_defaults_on_existing_config_path();
         setter.getSection().addDefault("default", null);
     }
 }

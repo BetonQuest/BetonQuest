@@ -159,7 +159,7 @@ class DefaultCoreComponentLoaderTest {
 
         @ParameterizedTest
         @MethodSource("dependencies")
-        void test_working_dependencies(final int loadedObjectsCount, final Collection<ComponentMock> components) {
+        void working_dependencies(final int loadedObjectsCount, final Collection<ComponentMock> components) {
             components.forEach(loader::register);
             loader.load();
             assertEquals(loadedObjectsCount, loader.getAll(Object.class).size(), String.format("Should contain exactly %d components", loadedObjectsCount));
@@ -168,7 +168,7 @@ class DefaultCoreComponentLoaderTest {
 
         @ParameterizedTest
         @MethodSource("failDependencies")
-        void test_failing_dependencies(final Collection<ComponentMock> components) {
+        void failing_dependencies(final Collection<ComponentMock> components) {
             components.forEach(loader::register);
             assertThrows(IllegalStateException.class, loader::load, "Should throw an exception because a component should fail to load");
             assertFalse(components.stream().allMatch(CoreComponent::isLoaded), "Not all components should be loaded");

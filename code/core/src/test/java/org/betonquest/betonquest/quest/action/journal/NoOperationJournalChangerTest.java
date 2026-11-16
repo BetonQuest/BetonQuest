@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 class NoOperationJournalChangerTest {
 
     @Test
-    void testChangeJournalDoesNothing(@Mock final Journal journal) {
+    void change_journal_does_nothing(@Mock final Journal journal) {
         final NoOperationJournalChanger changer = new NoOperationJournalChanger();
         changer.changeJournal(journal, mock(Profile.class));
         verifyNoInteractions(journal);

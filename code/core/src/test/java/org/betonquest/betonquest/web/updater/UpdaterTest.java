@@ -31,7 +31,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateAvailable() {
+    void update_available() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
@@ -55,7 +55,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testNoUpdateAvailable() {
+    void no_update_available() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
@@ -77,7 +77,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUpdate() {
+    void update() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
@@ -120,7 +120,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateAutomatic() {
+    void update_automatic() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
@@ -159,7 +159,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateAvailableSearchAgain() {
+    void update_available_search_again() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
@@ -191,7 +191,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateWithInvalidUrl() {
+    void update_with_invalid_url() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);
@@ -220,7 +220,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateSearchAgain() {
+    void update_search_again() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
@@ -255,7 +255,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateWithoutAvailable() {
+    void update_without_available() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
@@ -286,7 +286,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateAlreadyDownloaded() {
+    void update_already_downloaded() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final UpdateDownloader downloader = mock(UpdateDownloader.class);
@@ -318,7 +318,7 @@ class UpdaterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testUpdateWithDisabled() {
+    void update_with_disabled() {
         final Version version = BetonQuestVersion.parse("2.0.0-DEV-3");
         final UpdateSourceHandler handler = mock(UpdateSourceHandler.class);
         final BetonQuest plugin = mock(BetonQuest.class);

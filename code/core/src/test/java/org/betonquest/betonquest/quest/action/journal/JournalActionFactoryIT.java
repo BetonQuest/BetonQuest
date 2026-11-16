@@ -82,7 +82,7 @@ final class JournalActionFactoryIT {
     }
 
     @Test
-    void constructJournalUpdateAction(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void construct_journal_update_action(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final ActionAdapterFactory journalFactory = createJournalActionFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -91,7 +91,7 @@ final class JournalActionFactoryIT {
     }
 
     @Test
-    void constructJournalAddAction(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void construct_journal_add_action(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final ActionAdapterFactory journalFactory = createJournalActionFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -100,7 +100,7 @@ final class JournalActionFactoryIT {
     }
 
     @Test
-    void constructJournalAddActionWithoutPageReference(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void construct_journal_add_action_without_page_reference(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final ActionAdapterFactory journalFactory = createJournalActionFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -109,7 +109,7 @@ final class JournalActionFactoryIT {
     }
 
     @Test
-    void constructJournalDeleteAction(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void construct_journal_delete_action(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final ActionAdapterFactory journalFactory = createJournalActionFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -118,7 +118,7 @@ final class JournalActionFactoryIT {
     }
 
     @Test
-    void constructJournalDeleteActionWithoutPageReference(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void construct_journal_delete_action_without_page_reference(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final ActionAdapterFactory journalFactory = createJournalActionFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -127,7 +127,7 @@ final class JournalActionFactoryIT {
     }
 
     @Test
-    void constructInvalidJournalAction(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void construct_invalid_journal_action(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final ActionAdapterFactory journalFactory = createJournalActionFactory(logger);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 

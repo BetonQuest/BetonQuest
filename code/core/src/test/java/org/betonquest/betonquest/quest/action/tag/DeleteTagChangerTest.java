@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class DeleteTagChangerTest {
 
     @Test
-    void testDeleteTagChangerRemoveNoTags(@Mock final TagHolder tagData) throws QuestException {
+    void delete_tag_changer_remove_no_tags(@Mock final TagHolder tagData) throws QuestException {
         final DeleteTagChanger changer = new DeleteTagChanger(new DefaultArgument<>(Collections.emptyList()));
 
         changer.changeTags(tagData, null);
@@ -29,7 +29,7 @@ class DeleteTagChangerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testDeleteTagChangerRemoveMultipleTags(@Mock final TagHolder tagData) throws QuestException {
+    void delete_tag_changer_remove_multiple_tags(@Mock final TagHolder tagData) throws QuestException {
         final DeleteTagChanger changer = new DeleteTagChanger(new DefaultArgument<>(List.of("tag-1", "tag-2", "tag-3")));
 
         changer.changeTags(tagData, null);

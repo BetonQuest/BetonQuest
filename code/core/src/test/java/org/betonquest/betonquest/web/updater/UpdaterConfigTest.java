@@ -183,7 +183,7 @@ final class UpdaterConfigTest {
 
     @ParameterizedTest
     @MethodSource("combinations")
-    void testUpdaterConfig(final Input input, final Expected expected) {
+    void updater_config(final Input input, final Expected expected) {
         final UpdaterConfig updaterConfig = getMockedConfig(mock(BetonQuestLogger.class), input, input.version);
         updaterConfig.reloadFromConfig();
         assertSettings(expected, updaterConfig);

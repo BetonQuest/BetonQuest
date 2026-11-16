@@ -20,20 +20,20 @@ import static org.mockito.Mockito.*;
 class SequentialPlayerlessActionTest {
 
     @Test
-    void testCanExecuteWithZeroActions() {
+    void can_execute_with_zero_actions() {
         final PlayerlessAction action = new SequentialPlayerlessAction(List.of());
         assertDoesNotThrow(action::execute, "SequentialPlayerlessAction should not fail with no actions to execute.");
     }
 
     @Test
-    void testExecutesOneAction(@Mock final PlayerlessAction internal) throws QuestException {
+    void executes_one_action(@Mock final PlayerlessAction internal) throws QuestException {
         final PlayerlessAction action = new SequentialPlayerlessAction(List.of(internal));
         action.execute();
         verify(internal).execute();
     }
 
     @Test
-    void testExecutesMultipleActions(@Mock final PlayerlessAction first, @Mock final PlayerlessAction second) throws QuestException {
+    void executes_multiple_actions(@Mock final PlayerlessAction first, @Mock final PlayerlessAction second) throws QuestException {
         final PlayerlessAction action = new SequentialPlayerlessAction(List.of(first, second));
 
         action.execute();
@@ -44,7 +44,7 @@ class SequentialPlayerlessActionTest {
     }
 
     @Test
-    void testFailuresArePassedOn(@Mock final PlayerlessAction internal) throws QuestException {
+    void failures_are_passed_on(@Mock final PlayerlessAction internal) throws QuestException {
         final QuestException exception = new QuestException("test exception");
         doThrow(exception).when(internal).execute();
         final PlayerlessAction action = new SequentialPlayerlessAction(List.of(internal));

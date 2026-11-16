@@ -50,7 +50,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testGetName() {
+    public void get_name() {
         assertEquals("lazy", config.getName());
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
@@ -60,7 +60,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testGetCurrentPath() {
+    public void get_current_path() {
         assertEquals("lazy", config.getCurrentPath());
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
         assertNotNull(nestedChild);
@@ -70,7 +70,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testGetParent() {
+    public void get_parent() {
         assertEquals(root, config.getParent());
 
         final ConfigurationSection nestedChild = config.getConfigurationSection("childSection.nestedChildSection");
@@ -85,7 +85,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testGetRoot() {
+    public void get_root() {
         final ConfigurationSection root = config.getRoot();
         assertNotNull(root);
         assertEquals(this.root.getValues(true).toString(), root.getValues(true).toString());
@@ -99,7 +99,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
     @Test
     @Override
-    public void testGetValuesDeepFalse() {
+    public void get_values_deep_false() {
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         final Pattern pattern = Pattern.compile(Pattern.quote("{nestedChildSection=") + "\\w+"
@@ -112,7 +112,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
     @Test
     @Override
-    public void testGetValuesDeepTrue() {
+    public void get_values_deep_true() {
         final ConfigurationSection section = config.getConfigurationSection("childSection");
         assertNotNull(section);
         final Pattern pattern = Pattern.compile(Pattern.quote("{nestedChildSection=") + "\\w+"
@@ -125,7 +125,7 @@ class LazyConfigurationSectionTest extends ConfigurationSectionBaseTest {
 
     @Test
     @Override
-    public void testToString() {
+    public void to_string() {
         final Pattern pattern = Pattern.compile("\\w+"
                 + Pattern.quote("[path='lazy', root='") + "\\w+"
                 + Pattern.quote("']"));

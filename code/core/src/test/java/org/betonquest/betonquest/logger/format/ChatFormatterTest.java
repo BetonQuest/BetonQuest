@@ -47,7 +47,7 @@ class ChatFormatterTest {
     }
 
     @Test
-    void testChatFormatting() {
+    void chat_formatting() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin);
         final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
         final String expected2 = "{\"text\":\"§7[§8BQ§7]§r " + FORMATTED_MESSAGE;
@@ -62,7 +62,7 @@ class ChatFormatterTest {
     }
 
     @Test
-    void testChatFormattingLogRecord() {
+    void chat_formatting_log_record() {
         final LogRecord record = new LogRecord(Level.INFO, MESSAGE);
         final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
         final String expected2 = "{\"text\":\"§7[§8?§7]§r " + FORMATTED_MESSAGE;
@@ -80,7 +80,7 @@ class ChatFormatterTest {
     }
 
     @Test
-    void testChatFormattingPlugin() {
+    void chat_formatting_plugin() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, pluginExtension);
         final String expected1 = "{\"text\":\"" + FORMATTED_MESSAGE;
         final String expected2 = "{\"text\":\"§7[§8Extension§7]§r " + FORMATTED_MESSAGE;
@@ -98,7 +98,7 @@ class ChatFormatterTest {
     }
 
     @Test
-    void testChatFormattingPackage() {
+    void chat_formatting_package() {
         final LogSource pack = mock(LogSource.class);
         when(pack.getSourcePath()).thenReturn("TestPackage");
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin, pack);
@@ -107,7 +107,7 @@ class ChatFormatterTest {
     }
 
     @Test
-    void testChatFormattingException() {
+    void chat_formatting_exception() {
         final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.INFO, MESSAGE, plugin);
         record.setThrown(new NullPointerException("Exception Message"));
         final String message = getFormattedMessage(ChatFormatter.PluginDisplayMethod.NONE, null, null, record);
@@ -119,7 +119,7 @@ class ChatFormatterTest {
     }
 
     @Test
-    void testConstructorThrowsException() {
+    void constructor_throws_exception() {
         final Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> new ChatFormatter(ChatFormatter.PluginDisplayMethod.PLUGIN, null, "BQ"),
                 "Expected IllegalArgumentException is thrown");
@@ -127,7 +127,7 @@ class ChatFormatterTest {
     }
 
     @Test
-    void testLevelColors() {
+    void level_colors() {
         final ChatFormatter formatter = new ChatFormatter();
         assertEquals("{\"text\":\"§4\"}", formatter.format(new LogRecord(Level.OFF, "")), "Expected color 4");
         assertEquals("{\"text\":\"§4\"}", formatter.format(new LogRecord(Level.SEVERE, "")), "Expected color 4");

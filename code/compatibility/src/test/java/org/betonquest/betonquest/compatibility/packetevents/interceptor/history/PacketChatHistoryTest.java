@@ -52,7 +52,7 @@ class PacketChatHistoryTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void evictsOldestMessagesAndClearsHistoryOnQuit() {
+    void evicts_oldest_messages_and_clears_history_on_quit() {
         final PacketEventsAPI<?> api = mock(PacketEventsAPI.class, RETURNS_DEEP_STUBS);
         final Player player = player();
         final User user = mock(User.class);
@@ -83,7 +83,7 @@ class PacketChatHistoryTest {
     }
 
     @Test
-    void includesPacketsArrivingDuringReplay() {
+    void includes_packets_arriving_during_replay() {
         final PacketEventsAPI<?> api = mock(PacketEventsAPI.class, RETURNS_DEEP_STUBS);
         final Player player = player();
         final User user = mock(User.class);
@@ -112,7 +112,7 @@ class PacketChatHistoryTest {
 
     @Test
     @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
-    void capturesReplaysAndRemovesHistoriesFromConcurrentThreads() throws Exception {
+    void captures_replays_and_removes_histories_from_concurrent_threads() throws Exception {
         final PacketEventsAPI<?> api = mock(PacketEventsAPI.class, RETURNS_DEEP_STUBS);
         when(api.getPlayerManager().getUser(any(Player.class))).thenReturn(mock(User.class));
         final PacketChatHistory history = new PacketChatHistory(api, 2);

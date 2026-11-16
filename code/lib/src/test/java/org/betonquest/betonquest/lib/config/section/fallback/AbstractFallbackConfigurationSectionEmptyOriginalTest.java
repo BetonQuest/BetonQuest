@@ -26,7 +26,7 @@ public abstract class AbstractFallbackConfigurationSectionEmptyOriginalTest exte
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testSetSectionOverwritingExisting() {
+    public void set_section_overwriting_existing() {
         assertTrue(config.isSet("childSection"));
         final MemoryConfiguration configuration = new MemoryConfiguration();
         configuration.set("test", "test");
@@ -38,14 +38,14 @@ public abstract class AbstractFallbackConfigurationSectionEmptyOriginalTest exte
 
     @Test
     @Override
-    public void testSetExistingSectionToNull() {
+    public void set_existing_section_to_null() {
         assertTrue(config.isSet("childSection"));
         config.set("childSection", null);
         assertTrue(config.isSet("childSection"));
     }
 
     @Test
-    void testOriginalIsNotModifiedByRead() {
+    void original_is_not_modified_by_read() {
         config.getValues(true);
         final Set<String> keys = getOriginal().getKeys(true);
         assertTrue(keys.isEmpty(), "Original was modified by read operation: " + keys);
@@ -53,7 +53,7 @@ public abstract class AbstractFallbackConfigurationSectionEmptyOriginalTest exte
 
     @Test
     @Override
-    public void testSetComments() {
+    public void set_comments() {
         final List<String> comments = new ArrayList<>();
         comments.add("Test Comment");
         config.setComments("existingSet", comments);
@@ -62,7 +62,7 @@ public abstract class AbstractFallbackConfigurationSectionEmptyOriginalTest exte
 
     @Test
     @Override
-    public void testSetInlineComments() {
+    public void set_inline_comments() {
         final List<String> comments = new ArrayList<>();
         comments.add("Test Inline Comment");
         config.setInlineComments("existingSet", comments);

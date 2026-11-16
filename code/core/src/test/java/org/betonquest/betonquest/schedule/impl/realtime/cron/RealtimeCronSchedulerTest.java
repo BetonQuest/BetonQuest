@@ -64,7 +64,7 @@ class RealtimeCronSchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithoutSchedules() {
+    void start_without_schedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final RealtimeCronScheduler scheduler = spy(new RealtimeCronScheduler(logger, actionManager, cache));
         scheduler.start(now);
@@ -80,7 +80,7 @@ class RealtimeCronSchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithRebootSchedules() {
+    void start_with_reboot_schedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final RealtimeCronScheduler scheduler = new RealtimeCronScheduler(logger, actionManager, cache);
         final CronSchedule schedule = getSchedule(CatchupStrategy.NONE, true);
@@ -104,7 +104,7 @@ class RealtimeCronSchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithMissedSchedulesStrategyOne() {
+    void start_with_missed_schedules_strategy_one() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = now.minusSeconds(60);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
@@ -132,7 +132,7 @@ class RealtimeCronSchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithMissedSchedulesStrategyAll() {
+    void start_with_missed_schedules_strategy_all() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = now.minusSeconds(65);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
@@ -169,7 +169,7 @@ class RealtimeCronSchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithoutMissedSchedulesStrategyAll() {
+    void start_without_missed_schedules_strategy_all() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = now.minusSeconds(40);
         when(cache.getLastExecutionTime(SCHEDULE_ID)).thenReturn(Optional.of(lastExecution));
@@ -196,7 +196,7 @@ class RealtimeCronSchedulerTest {
     // TODO version switch:
     //  Remove suppression PMD.CloseResource when only Java 21 is supported
     @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.UnitTestContainsTooManyAsserts"})
-    void testStartSchedule() {
+    void start_schedule() {
         final Duration duration = Duration.ofSeconds(20);
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final ScheduledExecutorService executorService = mock(ScheduledExecutorService.class);

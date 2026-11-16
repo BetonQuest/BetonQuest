@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 class ChatHandlerTest {
 
     @Test
-    void testLoggingToPlayersChat(
+    void logging_to_players_chat(
             @Mock final RecordReceiverSelector selector,
             @Mock final Server server,
             @Mock final Player player) {
@@ -46,7 +46,7 @@ class ChatHandlerTest {
     }
 
     @Test
-    void testFormatException() {
+    void format_exception() {
         final RecordReceiverSelector recordReceiverSelector = mock(RecordReceiverSelector.class);
         when(recordReceiverSelector.findReceivers(any())).thenReturn(Set.of(UUID.randomUUID()));
         final ChatHandler handler = new ChatHandler(mock(Server.class), recordReceiverSelector);

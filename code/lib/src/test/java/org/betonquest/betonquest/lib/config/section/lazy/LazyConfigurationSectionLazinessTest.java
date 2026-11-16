@@ -37,39 +37,39 @@ class LazyConfigurationSectionLazinessTest {
     }
 
     @Test
-    void testLazySet() {
+    void lazy_set() {
         lazy.set("key", "value");
         assertEquals("value", config.getString("lazy.key"));
     }
 
     @Test
-    void testLazyAddDefault() {
+    void lazy_add_default() {
         lazy.addDefault("key", "value");
         assertTrue(config.isSet("lazy"));
         assertEquals("value", config.getString("lazy.key"));
     }
 
     @Test
-    void testLazyCreateSection() {
+    void lazy_create_section() {
         lazy.createSection("key");
         assertNotNull(config.getConfigurationSection("lazy.key"));
     }
 
     @Test
-    void testLazyCreateSectionWithMap() {
+    void lazy_create_section_with_map() {
         final Map<String, String> map = Map.of("key", "value");
         lazy.createSection("section", map);
         assertEquals("value", config.getString("lazy.section.key"));
     }
 
     @Test
-    void testLazySetComments() {
+    void lazy_set_comments() {
         lazy.setComments("key", null);
         assertTrue(config.isSet("lazy"));
     }
 
     @Test
-    void testLazySetInlineComments() {
+    void lazy_set_inline_comments() {
         lazy.setInlineComments("key", null);
         assertTrue(config.isSet("lazy"));
     }

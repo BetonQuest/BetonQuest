@@ -44,31 +44,31 @@ class EntityInteractObjectiveTest {
     }
 
     @Test
-    void testCreateFromMinimalCountingDataWithoutInteractAppendix() throws QuestException {
+    void create_from_minimal_counting_data_without_interact_appendix() throws QuestException {
         final EntityInteractData data = new EntityInteractData("1", null, null);
         assertEquals(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, data.toString(), "Data should serialize from default data.");
     }
 
     @Test
-    void testCreateFromExtendedCountingDataWithoutInteractAppendix() throws QuestException {
+    void create_from_extended_counting_data_without_interact_appendix() throws QuestException {
         final EntityInteractData data = new EntityInteractData("1/1/1/0", null, null);
         assertEquals(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, data.toString(), "Data should serialize from serialized data without UUID list.");
     }
 
     @Test
-    void testCreateFromMinimalCountingDataWithInteractAppendix() throws QuestException {
+    void create_from_minimal_counting_data_with_interact_appendix() throws QuestException {
         final EntityInteractData data = new EntityInteractData("1;", null, null);
         assertEquals(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, data.toString(), "Data should serialize from minimal data with empty UUID list.");
     }
 
     @Test
-    void testCreateFromExtendedCountingDataWithInteractAppendix() throws QuestException {
+    void create_from_extended_counting_data_with_interact_appendix() throws QuestException {
         final EntityInteractData data = new EntityInteractData(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, null, null);
         assertEquals(NO_PROGRESS_ON_SIMPLE_INTERACT_SERIALIZED, data.toString(), "Data should serialize from serialized data.");
     }
 
     @Test
-    void testCreateDataWithCollected() throws QuestException {
+    void create_data_with_collected() throws QuestException {
         final EntityInteractData data = new EntityInteractData("2/1/1/1;00000000-0000-0000-0000-000000000000", null, null);
         assertEquals("2/1/1/1;00000000-0000-0000-0000-000000000000", data.toString(), "Data should serialize with UUID.");
     }

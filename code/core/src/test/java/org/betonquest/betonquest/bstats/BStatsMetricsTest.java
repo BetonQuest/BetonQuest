@@ -101,7 +101,7 @@ class BStatsMetricsTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
-    void testCreateBStatsMetrics() {
+    void create_b_stats_metrics() {
         final Plugin plugin = mock(Plugin.class);
 
         final PluginDescriptionFile description = new PluginDescriptionFile("BetonQuest", "2.0.0", "org.betonquest.betonquest.BetonQuest");
@@ -116,7 +116,7 @@ class BStatsMetricsTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testCustomChartCallableGetsUpdates(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void custom_chart_callable_gets_updates(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         setupLogger();
         final Plugin plugin = mock(Plugin.class);
 

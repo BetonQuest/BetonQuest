@@ -119,14 +119,14 @@ class ScheduleTypeTest {
     }
 
     @Test
-    void testCreate(final BetonQuestLoggerFactory loggerFactory) {
+    void create(final BetonQuestLoggerFactory loggerFactory) {
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(new MockedScheduleFactory(), scheduler);
         assertDoesNotThrow(() -> type.newScheduleInstance(scheduleID, getMockedInstruction(section, loggerFactory)), "");
     }
 
     @Test
-    void testCreateThrowingUnchecked(final BetonQuestLoggerFactory loggerFactory) {
+    void create_throwing_unchecked(final BetonQuestLoggerFactory loggerFactory) {
         final Scheduler<ThrowingUncheckedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<ThrowingUncheckedSchedule, FictiveTime> type =
                 new ScheduleType<>(new ThrowingUncheckedScheduleFactory(), scheduler);
@@ -134,7 +134,7 @@ class ScheduleTypeTest {
     }
 
     @Test
-    void testCreateInvalidInstruction(final BetonQuestLoggerFactory loggerFactory) {
+    void create_invalid_instruction(final BetonQuestLoggerFactory loggerFactory) {
         when(section.getString("time")).thenReturn(null);
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(new MockedScheduleFactory(), scheduler);
@@ -142,7 +142,7 @@ class ScheduleTypeTest {
     }
 
     @Test
-    void testAddSchedule(final BetonQuestLoggerFactory loggerFactory) {
+    void add_schedule(final BetonQuestLoggerFactory loggerFactory) {
         final Scheduler<MockedSchedule, FictiveTime> scheduler = mockScheduler();
         final ScheduleType<MockedSchedule, FictiveTime> type = new ScheduleType<>(new MockedScheduleFactory(), scheduler);
         assertDoesNotThrow(() -> type.createAndScheduleNewInstance(scheduleID, getMockedInstruction(section, loggerFactory)));

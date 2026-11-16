@@ -89,19 +89,19 @@ class DefaultBetonQuestLoggerTest {
     }
 
     @Test
-    void debugWithPackage() {
+    void debug_with_package() {
         logger.debug(logSource, LOG_MESSAGE);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.FINE, LOG_MESSAGE)));
     }
 
     @Test
-    void debugException() {
+    void debug_exception() {
         logger.debug(LOG_MESSAGE, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(Level.FINE, LOG_MESSAGE, IO_EXCEPTION)));
     }
 
     @Test
-    void debugExceptionWithPackage() {
+    void debug_exception_with_package() {
         logger.debug(logSource, LOG_MESSAGE, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.FINE, LOG_MESSAGE, IO_EXCEPTION)));
     }
@@ -113,7 +113,7 @@ class DefaultBetonQuestLoggerTest {
     }
 
     @Test
-    void infoWithPackage() {
+    void info_with_package() {
         logger.info(logSource, LOG_MESSAGE);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.INFO, LOG_MESSAGE)));
     }
@@ -125,20 +125,20 @@ class DefaultBetonQuestLoggerTest {
     }
 
     @Test
-    void warnWithPackage() {
+    void warn_with_package() {
         logger.warn(logSource, LOG_MESSAGE);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.WARNING, LOG_MESSAGE)));
     }
 
     @Test
-    void warnException() {
+    void warn_exception() {
         logger.warn(LOG_MESSAGE, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(Level.WARNING, LOG_MESSAGE)));
         verify(handler, times(1)).publish(argThat(new RecordMatcher(Level.FINE, STACKTRACE_MESSAGE, IO_EXCEPTION)));
     }
 
     @Test
-    void warnExceptionWithPackage() {
+    void warn_exception_with_package() {
         logger.warn(logSource, LOG_MESSAGE, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.WARNING, LOG_MESSAGE)));
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.FINE, STACKTRACE_MESSAGE, IO_EXCEPTION)));
@@ -151,31 +151,31 @@ class DefaultBetonQuestLoggerTest {
     }
 
     @Test
-    void errorWithPackage() {
+    void error_with_package() {
         logger.error(logSource, LOG_MESSAGE);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.SEVERE, LOG_MESSAGE)));
     }
 
     @Test
-    void errorException() {
+    void error_exception() {
         logger.error(LOG_MESSAGE, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(Level.SEVERE, LOG_MESSAGE, IO_EXCEPTION)));
     }
 
     @Test
-    void errorExceptionWithPackage() {
+    void error_exception_with_package() {
         logger.error(logSource, LOG_MESSAGE, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.SEVERE, LOG_MESSAGE, IO_EXCEPTION)));
     }
 
     @Test
-    void reportException() {
+    void report_exception() {
         logger.reportException(IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(Level.SEVERE, REPORT_MESSAGE, IO_EXCEPTION)));
     }
 
     @Test
-    void reportExceptionWithPackage() {
+    void report_exception_with_package() {
         logger.reportException(logSource, IO_EXCEPTION);
         verify(handler, times(1)).publish(argThat(new RecordMatcher(PACKAGE_NAME, Level.SEVERE, REPORT_MESSAGE, IO_EXCEPTION)));
     }

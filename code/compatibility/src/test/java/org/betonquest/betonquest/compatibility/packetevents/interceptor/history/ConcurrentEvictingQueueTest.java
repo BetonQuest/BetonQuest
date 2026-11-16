@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ConcurrentEvictingQueueTest {
 
     @Test
-    void keepsNewestElementsInInsertionOrder() {
+    void keeps_newest_elements_in_insertion_order() {
         final Queue<Integer> queue = new ConcurrentEvictingQueue<>(3);
         for (int i = 1; i <= 5; i++) {
             queue.add(i);
@@ -25,20 +25,20 @@ class ConcurrentEvictingQueueTest {
     }
 
     @Test
-    void zeroSizeQueueStaysEmpty() {
+    void zero_size_queue_stays_empty() {
         final Queue<Integer> queue = new ConcurrentEvictingQueue<>(0);
         queue.add(1);
         assertTrue(queue.isEmpty(), "Queue with size limit 0 should never hold elements");
     }
 
     @Test
-    void rejectsNegativeSize() {
+    void rejects_negative_size() {
         assertThrows(IllegalArgumentException.class, () -> new ConcurrentEvictingQueue<>(-1),
                 "Negative size limit should be rejected");
     }
 
     @Test
-    void iterationIncludesElementsAddedWhileIterating() {
+    void iteration_includes_elements_added_while_iterating() {
         final Queue<Integer> queue = new ConcurrentEvictingQueue<>(5);
         queue.add(1);
         queue.add(2);
@@ -55,7 +55,7 @@ class ConcurrentEvictingQueueTest {
 
     @Test
     @SuppressWarnings({"PMD.DoNotUseThreads", "PMD.CloseResource"})
-    void staysWithinLimitUnderConcurrentAddsAndIteration() throws Exception {
+    void stays_within_limit_under_concurrent_adds_and_iteration() throws Exception {
         final int limit = 10;
         final Queue<Integer> queue = new ConcurrentEvictingQueue<>(limit);
         final CountDownLatch start = new CountDownLatch(1);

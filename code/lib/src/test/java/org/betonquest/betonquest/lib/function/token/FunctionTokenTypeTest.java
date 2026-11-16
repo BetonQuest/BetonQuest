@@ -81,7 +81,7 @@ class FunctionTokenTypeTest {
 
     @ParameterizedTest
     @MethodSource("validCases")
-    void test_valid_cases(final String input, final String value, final FunctionTokenType type) {
+    void valid_cases(final String input, final String value, final FunctionTokenType type) {
         testedValid.add(type);
         final Matcher matcher = type.getRegex().matcher(input);
         assertTrue(matcher.find(), "Token '%s' should match regex '%s'".formatted(input, type.getRegex()));
@@ -90,7 +90,7 @@ class FunctionTokenTypeTest {
 
     @ParameterizedTest
     @MethodSource("invalidCases")
-    void test_invalid_cases(final String input, final FunctionTokenType type) {
+    void invalid_cases(final String input, final FunctionTokenType type) {
         testedInvalid.add(type);
         final Matcher matcher = type.getRegex().matcher(input);
         assertFalse(matcher.matches(), "Token '%s' should not match regex '%s'".formatted(input, type.getRegex()));

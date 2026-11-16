@@ -74,7 +74,7 @@ class VersionComparatorTest {
      * {@link BetonQuestUpdateStrategy#MAJOR} strategy.
      */
     @Test
-    void testVersionCompareMajor() {
+    void version_compare_major() {
         final Comparator<Version> comparator = BetonQuestUpdateStrategy.MAJOR.getComparator(true);
         final BetonQuestUpdateStrategy strategy = BetonQuestUpdateStrategy.MAJOR;
 
@@ -148,7 +148,7 @@ class VersionComparatorTest {
      * {@link BetonQuestUpdateStrategy#MINOR} strategy.
      */
     @Test
-    void testVersionCompareMinor() {
+    void version_compare_minor() {
         final Comparator<Version> comparator = BetonQuestUpdateStrategy.MINOR.getComparator(true);
         final BetonQuestUpdateStrategy strategy = BetonQuestUpdateStrategy.MINOR;
 
@@ -220,7 +220,7 @@ class VersionComparatorTest {
      * {@link BetonQuestUpdateStrategy#PATCH} strategy.
      */
     @Test
-    void testVersionComparePatch() {
+    void version_compare_patch() {
         final Comparator<Version> comparator = BetonQuestUpdateStrategy.PATCH.getComparator(true);
         final BetonQuestUpdateStrategy strategy = BetonQuestUpdateStrategy.PATCH;
 
@@ -290,7 +290,7 @@ class VersionComparatorTest {
      * {@link BetonQuestUpdateStrategy#MAJOR} strategy with dev qualifier.
      */
     @Test
-    void testVersionCompareMajorDev() {
+    void version_compare_major_dev() {
         final Comparator<Version> comparator = BetonQuestUpdateStrategy.MAJOR.getComparator(false);
         final BetonQuestUpdateStrategy strategy = BetonQuestUpdateStrategy.MAJOR;
 
@@ -358,7 +358,7 @@ class VersionComparatorTest {
      * {@link BetonQuestUpdateStrategy#MINOR} strategy with dev qualifier.
      */
     @Test
-    void testVersionCompareMinorDev() {
+    void version_compare_minor_dev() {
         final Comparator<Version> comparator = BetonQuestUpdateStrategy.MINOR.getComparator(false);
         final BetonQuestUpdateStrategy strategy = BetonQuestUpdateStrategy.MINOR;
 
@@ -428,7 +428,7 @@ class VersionComparatorTest {
      * {@link BetonQuestUpdateStrategy#PATCH} strategy with dev qualifier.
      */
     @Test
-    void testVersionComparePatchDev() {
+    void version_compare_patch_dev() {
         final Comparator<Version> comparator = BetonQuestUpdateStrategy.PATCH.getComparator(false);
         final BetonQuestUpdateStrategy strategy = BetonQuestUpdateStrategy.PATCH;
 

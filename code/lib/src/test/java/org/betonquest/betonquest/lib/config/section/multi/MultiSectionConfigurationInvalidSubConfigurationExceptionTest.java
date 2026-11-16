@@ -21,7 +21,7 @@ class MultiSectionConfigurationInvalidSubConfigurationExceptionTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testInvalidPathSeparator() {
+    void invalid_path_separator() {
         final Configuration configuration = new MemoryConfiguration();
         configuration.options().pathSeparator('/');
         try {
@@ -38,7 +38,7 @@ class MultiSectionConfigurationInvalidSubConfigurationExceptionTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testNoRoot() {
+    void no_root() {
         try {
             new MultiSectionConfiguration(List.of(Mockito.mock(ConfigurationSection.class)));
         } catch (final InvalidSubConfigurationException e) {

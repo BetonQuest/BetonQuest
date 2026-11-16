@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class LogRecordTypeFilterTest {
 
     @Test
-    void testInstanceOf() {
+    void instance_of() {
         final Filter filter = new LogRecordTypeFilter(BetonQuestLogRecord.class);
         assertTrue(filter.isLoggable(new BetonQuestLogRecord(Level.INFO, "", "", null)), "BetonQuestLogRecord should be loggable");
     }
 
     @Test
-    void testNotInstanceOf() {
+    void not_instance_of() {
         final Filter filter = new LogRecordTypeFilter(BetonQuestLogRecord.class);
         assertFalse(filter.isLoggable(new LogRecord(Level.INFO, "")), "LogRecord should not be loggable");
     }
