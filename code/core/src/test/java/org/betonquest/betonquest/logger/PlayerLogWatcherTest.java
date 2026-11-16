@@ -27,35 +27,35 @@ class PlayerLogWatcherTest {
     private static final String PATTERN = "test-pattern";
 
     @Test
-    void testNewLogWatcherHasNoFilters(@Mock final ReceiverSelectorRegistry registry) {
+    void new_log_watcher_has_no_filters(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);
         final UUID uuid = UUID.randomUUID();
         assertFalse(watcher.hasActiveFilters(uuid), "PlayerLogWatcher should not have active filters");
     }
 
     @Test
-    void testNewLogWatcherReturnsEmptySetForActivePatterns(@Mock final ReceiverSelectorRegistry registry) {
+    void new_log_watcher_returns_empty_set_for_active_patterns(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);
         final UUID uuid = UUID.randomUUID();
         assertEquals(Collections.emptySet(), watcher.getActivePatterns(uuid), "PlayerLogWatcher should have no active patterns");
     }
 
     @Test
-    void testInNewLogWatcherNoPatternIsActive(@Mock final ReceiverSelectorRegistry registry) {
+    void in_new_log_watcher_no_pattern_is_active(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);
         final UUID uuid = UUID.randomUUID();
         assertFalse(watcher.isActivePattern(uuid, PATTERN), "No pattern should be reported as active from PlayerLogWatcher");
     }
 
     @Test
-    void testRemovingAnNeverRegisteredFilterIsSilentlyIgnored(@Mock final ReceiverSelectorRegistry registry) {
+    void removing_an_never_registered_filter_is_silently_ignored(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);
         final UUID uuid = UUID.randomUUID();
         assertDoesNotThrow(() -> watcher.removeFilter(uuid, PATTERN), "Removing an pattern that wasn't registered should not throw any exception");
     }
 
     @Test
-    void testHasActiveFilterAfterRegisteringOne(@Mock final ReceiverSelectorRegistry registry) {
+    void has_active_filter_after_registering_one(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);
         final UUID uuid = UUID.randomUUID();
 
@@ -65,14 +65,14 @@ class PlayerLogWatcherTest {
     }
 
     @Test
-    void testHasNoActiveFilterAfterRegisteringOneForAnotherUser(@Mock final ReceiverSelectorRegistry registry) {
+    void has_no_active_filter_after_registering_one_for_another_user(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);
         watcher.addFilter(UUID.randomUUID(), PATTERN, Level.INFO);
         assertFalse(watcher.hasActiveFilters(UUID.randomUUID()), "After registering a filter the PlayerLogWatcher should report no active filters for any other UUID");
     }
 
     @Test
-    void testAddFilterRegistersASelector(@Mock final ReceiverSelectorRegistry registry) {
+    void add_filter_registers_a_selector(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);
         final UUID uuid = UUID.randomUUID();
 
@@ -82,7 +82,7 @@ class PlayerLogWatcherTest {
     }
 
     @Test
-    void testRemoveFilterUnregistersTheSelectorAgain(@Mock final ReceiverSelectorRegistry registry) {
+    void remove_filter_unregisters_the_selector_again(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);
         final UUID uuid = UUID.randomUUID();
 
@@ -94,7 +94,7 @@ class PlayerLogWatcherTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testOverwritingAFilterUnregistersTheOldSelector(@Mock final ReceiverSelectorRegistry registry) {
+    void overwriting_a_filter_unregisters_the_old_selector(@Mock final ReceiverSelectorRegistry registry) {
         final PlayerLogWatcher watcher = new PlayerLogWatcher(registry);
         final UUID uuid = UUID.randomUUID();
 

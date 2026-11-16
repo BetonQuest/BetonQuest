@@ -50,7 +50,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateGlobalTagAddActionWithMultipleTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_global_tag_add_action_with_multiple_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -59,7 +59,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagAddActionWithOneTag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_add_action_with_one_tag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -68,7 +68,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagAddActionWithoutTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_add_action_without_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -77,7 +77,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDeleteActionWithMultipleTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_delete_action_with_multiple_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -86,7 +86,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDeleteActionWithOneTag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_delete_action_with_one_tag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -95,7 +95,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDeleteActionWithoutTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_delete_action_without_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -104,7 +104,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDelActionWithMultipleTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_del_action_with_multiple_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -113,7 +113,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDelActionWithOneTag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_del_action_with_one_tag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -122,7 +122,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDelActionWithoutTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_del_action_without_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -131,7 +131,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateInvalidTagAction(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_invalid_tag_action(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -140,7 +140,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagAddPlayerlessActionWithMultipleTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_add_playerless_action_with_multiple_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -149,7 +149,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagAddPlayerlessActionWithOneTag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_add_playerless_action_with_one_tag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -158,7 +158,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagAddPlayerlessActionWithoutTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_add_playerless_action_without_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -167,7 +167,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDeletePlayerlessActionWithMultipleTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_delete_playerless_action_with_multiple_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -176,7 +176,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDeletePlayerlessActionWithOneTag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_delete_playerless_action_with_one_tag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -185,7 +185,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDeletePlayerlessActionWithoutTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_delete_playerless_action_without_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -194,7 +194,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDelPlayerlessActionWithMultipleTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_del_playerless_action_with_multiple_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -203,7 +203,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDelPlayerlessActionWithOneTag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_del_playerless_action_with_one_tag(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -212,7 +212,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateTagDelPlayerlessActionWithoutTags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_tag_del_playerless_action_without_tags(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 
@@ -221,7 +221,7 @@ class TagGlobalActionFactoryIT {
     }
 
     @Test
-    void testCreateInvalidPlayerlessTagAction(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
+    void create_invalid_playerless_tag_action(final BetonQuestLoggerFactory loggerFactory, final BetonQuestLogger logger, @TempDir final Path questPackagesDirectory) throws IOException, InvalidConfigurationException, QuestException {
         final TagGlobalActionFactory tagFactory = new TagGlobalActionFactory(globalData);
         final QuestPackage questPackage = setupQuestPackage(loggerFactory, logger, questPackagesDirectory);
 

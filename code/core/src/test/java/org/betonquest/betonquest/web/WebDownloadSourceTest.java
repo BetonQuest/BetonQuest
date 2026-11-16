@@ -26,7 +26,7 @@ class WebDownloadSourceTest {
     private static final Path UPDATE_FILE_PATH = UPDATE_FILE.toPath();
 
     @Test
-    void testDownloadFile(@TempDir final File tempDir) throws IOException {
+    void download_file(@TempDir final File tempDir) throws IOException {
         final File file = new File(tempDir, "BetonQuest.jar");
         final DownloadSource downloadSource = new WebDownloadSource();
 

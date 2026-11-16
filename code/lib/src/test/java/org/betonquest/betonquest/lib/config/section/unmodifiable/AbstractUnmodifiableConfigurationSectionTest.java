@@ -60,85 +60,85 @@ public abstract class AbstractUnmodifiableConfigurationSectionTest extends Confi
 
     @Test
     @Override
-    public void testCreateSectionWithValuesOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testCreateSectionWithValuesOnExistingConfigPath);
+    public void create_section_with_values_on_existing_config_path() {
+        assertThrowsUnmodifiableException(super::create_section_with_values_on_existing_config_path);
     }
 
     @Test
     @Override
-    public void testAddDefault() {
-        assertThrowsUnmodifiableException(super::testAddDefault);
+    public void add_default() {
+        assertThrowsUnmodifiableException(super::add_default);
     }
 
     @Test
     @Override
-    public void testSet() {
-        assertThrowsUnmodifiableException(super::testSet);
+    public void set() {
+        assertThrowsUnmodifiableException(super::set);
     }
 
     @Test
     @Override
-    public void testSetOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testSetOnExistingConfigPath);
+    public void set_on_existing_config_path() {
+        assertThrowsUnmodifiableException(super::set_on_existing_config_path);
     }
 
     @Test
     @Override
-    public void testSetSectionOverwritingExisting() {
-        assertThrowsUnmodifiableException(super::testSetSectionOverwritingExisting);
+    public void set_section_overwriting_existing() {
+        assertThrowsUnmodifiableException(super::set_section_overwriting_existing);
     }
 
     @Test
     @Override
-    public void testSetExistingSectionToNull() {
-        assertThrowsUnmodifiableException(super::testSetExistingSectionToNull);
+    public void set_existing_section_to_null() {
+        assertThrowsUnmodifiableException(super::set_existing_section_to_null);
     }
 
     @Test
     @Override
-    public void testCreateSectionOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testCreateSectionOnExistingConfigPath);
+    public void create_section_on_existing_config_path() {
+        assertThrowsUnmodifiableException(super::create_section_on_existing_config_path);
     }
 
     @Test
     @Override
-    public void testCreateSection() {
-        assertThrowsUnmodifiableException(super::testCreateSection);
+    public void create_section() {
+        assertThrowsUnmodifiableException(super::create_section);
     }
 
     @Test
     @Override
-    public void testAddDefaultOnExistingConfigPath() {
-        assertThrowsUnmodifiableException(super::testAddDefaultOnExistingConfigPath);
+    public void add_default_on_existing_config_path() {
+        assertThrowsUnmodifiableException(super::add_default_on_existing_config_path);
     }
 
     @Test
     @Override
-    public void testCreateSectionWithValues() {
-        assertThrowsUnmodifiableException(super::testCreateSectionWithValues);
+    public void create_section_with_values() {
+        assertThrowsUnmodifiableException(super::create_section_with_values);
     }
 
     @Test
     @Override
-    public void testSetComments() {
-        assertThrowsUnmodifiableException(super::testSetComments);
+    public void set_comments() {
+        assertThrowsUnmodifiableException(super::set_comments);
     }
 
     @Test
     @Override
-    public void testSetCommentsOnInvalid() {
-        assertThrowsUnmodifiableException(super::testSetCommentsOnInvalid);
+    public void set_comments_on_invalid() {
+        assertThrowsUnmodifiableException(super::set_comments_on_invalid);
     }
 
     @Test
     @Override
-    public void testSetInlineComments() {
-        assertThrowsUnmodifiableException(super::testSetInlineComments);
+    public void set_inline_comments() {
+        assertThrowsUnmodifiableException(super::set_inline_comments);
     }
 
     @Test
     @Override
-    public void testSetInlineCommentsOnInvalid() {
-        assertThrowsUnmodifiableException(super::testSetInlineCommentsOnInvalid);
+    public void set_inline_comments_on_invalid() {
+        assertThrowsUnmodifiableException(super::set_inline_comments_on_invalid);
     }
 }

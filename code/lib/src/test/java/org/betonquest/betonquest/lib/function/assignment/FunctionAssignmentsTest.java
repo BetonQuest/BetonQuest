@@ -46,20 +46,20 @@ class FunctionAssignmentsTest {
 
     @ParameterizedTest
     @MethodSource("assignments")
-    void test_numbers(final FunctionAssignment assignment, final String value, final Number number, final boolean booleanValue) {
+    void numbers(final FunctionAssignment assignment, final String value, final Number number, final boolean booleanValue) {
         assertEquals(number.doubleValue(), assignment.asNumber().doubleValue(), 0.000_001, "Number value should be the same as the original value");
     }
 
     @ParameterizedTest
     @MethodSource("assignments")
-    void test_strings(final FunctionAssignment assignment, final String value, final Number number, final boolean booleanValue) {
+    void strings(final FunctionAssignment assignment, final String value, final Number number, final boolean booleanValue) {
         assertEquals(value, assignment.asString(), "String value should be the same as the original value");
         assertEquals(value, assignment.toString(), "toString value should be the same as the original value");
     }
 
     @ParameterizedTest
     @MethodSource("assignments")
-    void test_booleans(final FunctionAssignment assignment, final String value, final Number number, final boolean booleanValue) {
+    void booleans(final FunctionAssignment assignment, final String value, final Number number, final boolean booleanValue) {
         assertEquals(booleanValue, assignment.asBoolean(), "Boolean value should be the same as the original value");
     }
 }

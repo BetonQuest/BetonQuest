@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class AddTagChangerTest {
 
     @Test
-    void testAddTagChangerAddNoTags(@Mock final TagHolder tagData) throws QuestException {
+    void add_tag_changer_add_no_tags(@Mock final TagHolder tagData) throws QuestException {
         final AddTagChanger changer = new AddTagChanger(new DefaultArgument<>(Collections.emptyList()));
         changer.changeTags(tagData, null);
         verifyNoInteractions(tagData);
@@ -28,7 +28,7 @@ class AddTagChangerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testAddTagChangerAddMultipleTags(@Mock final TagHolder tagData) throws QuestException {
+    void add_tag_changer_add_multiple_tags(@Mock final TagHolder tagData) throws QuestException {
         final AddTagChanger changer = new AddTagChanger(new DefaultArgument<>(List.of("tag-1", "tag-2", "tag-3")));
 
         changer.changeTags(tagData, null);

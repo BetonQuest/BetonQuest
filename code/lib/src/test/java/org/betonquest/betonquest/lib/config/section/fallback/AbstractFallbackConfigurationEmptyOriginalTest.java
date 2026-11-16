@@ -21,7 +21,7 @@ public abstract class AbstractFallbackConfigurationEmptyOriginalTest extends Abs
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testSetDefaults() {
+    public void set_defaults() {
         final Configuration defaultSection = new MemoryConfiguration();
         defaultSection.set("default.one", 1);
         defaultSection.set("default.two", 2);

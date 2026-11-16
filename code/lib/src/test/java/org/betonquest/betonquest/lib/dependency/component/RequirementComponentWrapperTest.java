@@ -63,7 +63,7 @@ class RequirementComponentWrapperTest {
     }
 
     @Test
-    void ensure_dependencyProvider_is_only_called_once() {
+    void ensure_dependency_provider_is_only_called_once() {
         final ComponentMock rawDummyComponent = spy(new ComponentMock(provider -> provider.take(String.class, ""), Set.of(String.class)));
         final RequirementComponentWrapper wrapped = spy(new RequirementComponentWrapper(rawDummyComponent, RequirementComponentWrapper.class));
         loader.register(wrapped);
@@ -74,7 +74,7 @@ class RequirementComponentWrapperTest {
     }
 
     @Test
-    void normal_without_Wrapper() {
+    void normal_without_wrapper() {
         loader.register(dummyComponent);
         loader.load();
         assertTrue(dummyComponent.isLoaded(), "Component should be loaded");

@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 class NoNotificationSenderTest {
 
     @Test
-    void testSendNotificationDoesNothing() {
+    void send_notification_does_nothing() {
         final NoNotificationSender sender = new NoNotificationSender();
         final OnlineProfile onlineProfile = mock(OnlineProfile.class);
         assertDoesNotThrow(() -> sender.sendNotification(onlineProfile), "Sending no notification should fail in no case.");

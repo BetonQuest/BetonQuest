@@ -95,7 +95,7 @@ class ActionSchedulingTest {
     }
 
     @Test
-    void testStartAll() {
+    void start_all() {
         final Scheduler<?, FictiveTime> schedulerA = registerMockedType("typeA");
         final Scheduler<?, FictiveTime> schedulerB = registerMockedType("typeB");
         scheduling.startAll();
@@ -104,7 +104,7 @@ class ActionSchedulingTest {
     }
 
     @Test
-    void testStartWithError() {
+    void start_with_error() {
         final Scheduler<?, FictiveTime> throwingScheduler = registerMockedType("throwing");
         doThrow(RuntimeException.class).when(throwingScheduler).start();
         final List<? extends Scheduler<?, FictiveTime>> schedulers = IntStream.range(0, 10)
@@ -119,7 +119,7 @@ class ActionSchedulingTest {
     }
 
     @Test
-    void testStopAll() {
+    void stop_all() {
         final Scheduler<?, FictiveTime> schedulerA = registerMockedType("typeA");
         final Scheduler<?, FictiveTime> schedulerB = registerMockedType("typeB");
         scheduling.clear();
@@ -128,7 +128,7 @@ class ActionSchedulingTest {
     }
 
     @Test
-    void testStopWithError() {
+    void stop_with_error() {
         final Scheduler<?, FictiveTime> throwingScheduler = registerMockedType("throwing");
         doThrow(RuntimeException.class).when(throwingScheduler).stop();
         final List<? extends Scheduler<?, FictiveTime>> schedulers = IntStream.range(0, 10)
@@ -143,7 +143,7 @@ class ActionSchedulingTest {
     }
 
     @Test
-    void testLoad() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
+    void load() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         doReturn(mock(Schedule.class)).when(simpleType).createAndScheduleNewInstance(any(), any());
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
@@ -155,7 +155,7 @@ class ActionSchedulingTest {
     }
 
     @Test
-    void testLoadParseException() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
+    void load_parse_exception() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
@@ -166,7 +166,7 @@ class ActionSchedulingTest {
     }
 
     @Test
-    void testLoadUncheckedException() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
+    void load_unchecked_exception() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageExample.yml");
@@ -177,7 +177,7 @@ class ActionSchedulingTest {
     }
 
     @Test
-    void testLoadNoSchedules() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
+    void load_no_schedules() throws KeyConflictException, InvalidSubConfigurationException, QuestException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageNoSchedules.yml");
@@ -187,7 +187,7 @@ class ActionSchedulingTest {
     }
 
     @Test
-    void testLoadNameWithSpace() throws QuestException, KeyConflictException, InvalidSubConfigurationException {
+    void load_name_with_space() throws QuestException, KeyConflictException, InvalidSubConfigurationException {
         final ScheduleType<?, FictiveTime> simpleType = registerSpyType("realtime-daily");
         final ScheduleType<?, FictiveTime> cronType = registerSpyType("realtime-cron");
         final QuestPackage pack = mockQuestPackage("src/test/resources/schedule/packageNameWithSpace.yml");

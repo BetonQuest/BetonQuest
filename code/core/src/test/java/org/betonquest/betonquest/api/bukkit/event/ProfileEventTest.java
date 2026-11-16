@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 class ProfileEventTest {
 
     @Test
-    void testGetProfile() {
+    void get_profile() {
         final Profile profile = mock(Profile.class);
         final ProfileEvent profileEvent = new ProfileEventMock(profile);
         assertEquals(profile, profileEvent.getProfile(), "getProfile should return the profile");
@@ -21,7 +21,7 @@ class ProfileEventTest {
     }
 
     @Test
-    void testGetProfileAsync() {
+    void get_profile_async() {
         final Profile profile = mock(Profile.class);
         final ProfileEvent profileEvent = new ProfileEventMock(profile, true);
         assertEquals(profile, profileEvent.getProfile(), "getProfile should return the profile");
@@ -29,7 +29,7 @@ class ProfileEventTest {
     }
 
     @Test
-    void testGetProfileSync() {
+    void get_profile_sync() {
         final Profile profile = mock(Profile.class);
         final ProfileEvent profileEvent = new ProfileEventMock(profile, false);
         assertEquals(profile, profileEvent.getProfile(), "getProfile should return the profile");

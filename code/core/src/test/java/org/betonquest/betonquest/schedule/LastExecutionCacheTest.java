@@ -69,7 +69,7 @@ class LastExecutionCacheTest {
     }
 
     @Test
-    void testSaveIOException() throws IOException {
+    void save_io_exception() throws IOException {
         when(scheduleID.getFull()).thenReturn("test-package.testCacheIOException");
         when(cacheAccessor.save()).thenThrow(new IOException("ioexception"));
         lastExecutionCache.cacheExecutionTime(Instant.parse("1970-01-01T00:00:00Z"), scheduleID);
@@ -77,14 +77,14 @@ class LastExecutionCacheTest {
     }
 
     @Test
-    void testReloadIOException() throws IOException {
+    void reload_io_exception() throws IOException {
         doThrow(new IOException("ioexception")).when(cacheAccessor).reload();
         lastExecutionCache.reload();
         verify(logger, times(1)).error(eq("Could not reload schedule cache: ioexception"), any(IOException.class));
     }
 
     @Test
-    void testRawExecutionTime() {
+    void raw_execution_time() {
         final String expected = "2022-06-17T08:45:49.000000000Z";
         when(scheduleID.getFull()).thenReturn("test-package.testRawExecutionTime");
         when(cacheContent.getString("test-package.testRawExecutionTime")).thenReturn(expected);
@@ -92,7 +92,7 @@ class LastExecutionCacheTest {
     }
 
     @Test
-    void testExecutionTime() {
+    void execution_time() {
         final String expected = "1997-02-02T02:02:02.020202020Z";
         when(scheduleID.getFull()).thenReturn("test-package.testExecutionTime");
         when(cacheContent.getString("test-package.testExecutionTime")).thenReturn(expected);
@@ -100,21 +100,21 @@ class LastExecutionCacheTest {
     }
 
     @Test
-    void testRawNotCached() {
+    void raw_not_cached() {
         when(scheduleID.getFull()).thenReturn("test-package.testRawNotCached");
         when(cacheContent.getString("test-package.testRawNotCached")).thenReturn(null);
         assertEquals(Optional.empty(), lastExecutionCache.getRawLastExecutionTime(scheduleID), "Cache should return empty optional");
     }
 
     @Test
-    void testNotCached() {
+    void not_cached() {
         when(scheduleID.getFull()).thenReturn("test-package.testNotCached");
         when(cacheContent.getString("test-package.testNotCached")).thenReturn(null);
         assertEquals(Optional.empty(), lastExecutionCache.getLastExecutionTime(scheduleID), "Cache should return empty optional");
     }
 
     @Test
-    void testIsContained() {
+    void is_contained() {
         final String expected = "2000-01-01T00:00:00Z";
         when(scheduleID.getFull()).thenReturn("test-package.testIsContained");
         when(cacheContent.getString("test-package.testIsContained")).thenReturn(expected);
@@ -122,14 +122,14 @@ class LastExecutionCacheTest {
     }
 
     @Test
-    void testIsNotContained() {
+    void is_not_contained() {
         when(scheduleID.getFull()).thenReturn("test-package.testIsNotContained");
         when(cacheContent.getString("test-package.testIsNotContained")).thenReturn(null);
         assertFalse(lastExecutionCache.isCached(scheduleID), "isCached() should return false");
     }
 
     @Test
-    void testCacheRaw() throws IOException {
+    void cache_raw() throws IOException {
         final String expected = "2014-10-16T14:28:00Z";
         when(scheduleID.getFull()).thenReturn("test-package.testCacheRaw");
         lastExecutionCache.cacheRawExecutionTime(scheduleID, expected);
@@ -138,7 +138,7 @@ class LastExecutionCacheTest {
     }
 
     @Test
-    void testCacheInstant() throws IOException {
+    void cache_instant() throws IOException {
         final Instant toCache = Instant.parse("1970-01-01T00:00:00Z");
         when(scheduleID.getFull()).thenReturn("test-package.testCacheInstant");
         lastExecutionCache.cacheExecutionTime(toCache, scheduleID);
@@ -154,7 +154,7 @@ class LastExecutionCacheTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testCacheStartup() throws IOException {
+    void cache_startup() throws IOException {
         final Instant now = this.now;
         final ScheduleIdentifier newSchedule = mock(ScheduleIdentifier.class);
         final ScheduleIdentifier cachedSchedule = mock(ScheduleIdentifier.class);

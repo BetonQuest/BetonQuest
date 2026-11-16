@@ -25,7 +25,7 @@ class JournalActionTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testJournalActionChangesUpdatesAndNotifiesInOrder(
+    void journal_action_changes_updates_and_notifies_in_order(
             @Mock final PlayerDataStorage dataStorage, @Mock final PlayerData data, @Mock final Journal journal,
             @Mock final JournalChanger changer, @Mock final NotificationSender sender) throws QuestException {
         final ProfileProvider profileProvider = mock(ProfileProvider.class);

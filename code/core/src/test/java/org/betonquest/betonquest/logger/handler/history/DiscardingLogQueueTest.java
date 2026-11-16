@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 class DiscardingLogQueueTest {
 
     @Test
-    void testCanPush() {
+    void can_push() {
         final DiscardingLogQueue logQueue = new DiscardingLogQueue();
         assertFalse(logQueue.canPublish(), "canPublish should be false");
         logQueue.push(new LogRecord(Level.INFO, ""));
@@ -23,7 +23,7 @@ class DiscardingLogQueueTest {
     }
 
     @Test
-    void testPublishNext() {
+    void publish_next() {
         final DiscardingLogQueue logQueue = new DiscardingLogQueue();
         assertThrows(UnsupportedOperationException.class, () -> logQueue.publishNext(mock(Handler.class)),
                 "publishNext should throw UnsupportedOperationException exception");

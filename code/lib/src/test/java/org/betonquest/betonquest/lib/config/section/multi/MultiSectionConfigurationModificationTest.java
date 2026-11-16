@@ -141,7 +141,7 @@ public class MultiSectionConfigurationModificationTest {
     }
 
     @Test
-    void testMergedResult() {
+    void merged_result() {
         assertConfigurationEquals(configAll, config);
     }
 
@@ -166,7 +166,7 @@ public class MultiSectionConfigurationModificationTest {
     }
 
     @Test
-    void testModificationToConfigs() {
+    void modification_to_configs() {
         config.set("actions.custom.path.give.item", "stone");
         assertTrue(config.needSave());
         final Set<ConfigurationSection> unsavedConfigs1 = config.getUnsavedConfigs();
@@ -202,7 +202,7 @@ public class MultiSectionConfigurationModificationTest {
     }
 
     @Test
-    void testUnassociatedKeys() throws InvalidConfigurationException {
+    void unassociated_keys() throws InvalidConfigurationException {
         assertFalse(config.needSave());
         config.set("objectives.block.type", "block");
         config.set("objectives.block.material", "bedrock");
@@ -253,7 +253,7 @@ public class MultiSectionConfigurationModificationTest {
     }
 
     @Test
-    void testGetSourceConfigurationSection() throws InvalidConfigurationException {
+    void get_source_configuration_section() throws InvalidConfigurationException {
         assertNull(config.getSourceConfigurationSection("actions.custom.path.give.slot"));
         config.set("actions.custom.path.give.slot", "hand");
         assertThrows(InvalidConfigurationException.class,
@@ -268,7 +268,7 @@ public class MultiSectionConfigurationModificationTest {
     }
 
     @Test
-    void testMoveChildSection() {
+    void move_child_section() {
         final ConfigurationSection section = config.getConfigurationSection("actions.custom.path.take");
         assertNotNull(section);
         config.set("actions.custom.path.take_more", section);

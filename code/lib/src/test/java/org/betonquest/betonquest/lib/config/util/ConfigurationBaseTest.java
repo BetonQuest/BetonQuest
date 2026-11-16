@@ -35,14 +35,14 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
 
     @Test
     @Override
-    public void testAddDefaultOnRootSection() {
+    public void add_default_on_root_section() {
         config.addDefault("default.add", "value");
         assertEquals("value", config.getString("default.add"));
     }
 
     @Test
     @Override
-    public void testAddDefaultOnRootSectionOnExistingConfigPath() {
+    public void add_default_on_root_section_on_existing_config_path() {
         config.addDefault("default.override", "first");
         config.addDefault("default.override", "second");
         assertEquals("second", config.getString("default.override"));
@@ -50,7 +50,7 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
 
     @Test
     @Override
-    public void testAddDefaultsAsMap() {
+    public void add_defaults_as_map() {
         final Map<String, Object> defaultMap = new HashMap<>();
         defaultMap.put("default.one", 1);
         defaultMap.put("default.two", 2);
@@ -62,7 +62,7 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testAddDefaultsAsMapOnExistingConfigPath() {
+    public void add_defaults_as_map_on_existing_config_path() {
         final Map<String, Object> defaultMap1 = new HashMap<>();
         defaultMap1.put("default.one", 1);
         defaultMap1.put("default.two", 2);
@@ -83,7 +83,7 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
 
     @Test
     @Override
-    public void testAddDefaultsAsConfiguration() {
+    public void add_defaults_as_configuration() {
         final Configuration defaultSection = new MemoryConfiguration();
         defaultSection.set("default.one", 1);
         defaultSection.set("default.two", 2);
@@ -95,7 +95,7 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testAddDefaultsAsConfigurationOnExistingConfigPath() {
+    public void add_defaults_as_configuration_on_existing_config_path() {
         final Configuration defaultSection1 = new MemoryConfiguration();
         defaultSection1.set("default.one", 1);
         defaultSection1.set("default.two", 2);
@@ -116,7 +116,7 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
 
     @Test
     @Override
-    public void testGetDefaults() {
+    public void get_defaults() {
         final Configuration defaults = config.getDefaults();
         assertNotNull(defaults);
         final Pattern pattern = Pattern.compile(Pattern.quote("{default=") + "\\w+"
@@ -130,7 +130,7 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testSetDefaults() {
+    public void set_defaults() {
         final Configuration defaultSection = new MemoryConfiguration();
         defaultSection.set("default.one", 1);
         defaultSection.set("default.two", 2);
@@ -143,7 +143,7 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testSetDefaultsOnExistingConfigPath() {
+    public void set_defaults_on_existing_config_path() {
         final Configuration defaultSection1 = new MemoryConfiguration();
         defaultSection1.set("default.one", 1);
         defaultSection1.set("default.two", 2);
@@ -165,7 +165,7 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testOptions() {
+    public void options() {
         assertFalse(config.options().copyDefaults());
         config.options().copyDefaults(true);
         assertTrue(config.options().copyDefaults());
@@ -180,7 +180,7 @@ public abstract class ConfigurationBaseTest extends AbstractConfigBaseTest<Confi
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testOptionsPathSeparator() {
+    public void options_path_separator() {
         assertEquals('.', config.options().pathSeparator());
         assertEquals("value", config.getString("childSection.nestedChildSection.key"));
 

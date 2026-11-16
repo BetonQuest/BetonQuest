@@ -15,7 +15,7 @@ import java.io.IOException;
 class QuestMigrationTest extends QuestFixture {
 
     @Test
-    void test_flat() throws IOException, InvalidConfigurationException {
+    void flat() throws IOException, InvalidConfigurationException {
         original.loadFromString("""
                 # Test Comment 1
                 old:
@@ -35,7 +35,7 @@ class QuestMigrationTest extends QuestFixture {
     }
 
     @Test
-    void test_deep() throws IOException, InvalidConfigurationException {
+    void deep() throws IOException, InvalidConfigurationException {
         original.loadFromString("""
                 # Test Comment 1
                 old:
@@ -59,7 +59,7 @@ class QuestMigrationTest extends QuestFixture {
     }
 
     @Test
-    void test_nested() throws IOException, InvalidConfigurationException {
+    void nested() throws IOException, InvalidConfigurationException {
         original.loadFromString("""
                 old:
                   avc:
@@ -81,7 +81,7 @@ class QuestMigrationTest extends QuestFixture {
     }
 
     @Test
-    void migrateSubSectionsForSingeLineInstructions() throws InvalidConfigurationException, IOException {
+    void migrate_sub_sections_for_singe_line_instructions() throws InvalidConfigurationException, IOException {
         original.loadFromString("""
                 bar:
                   foo1: oldValue Bob 0;0;0;world

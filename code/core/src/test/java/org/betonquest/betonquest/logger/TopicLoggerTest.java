@@ -55,14 +55,14 @@ class TopicLoggerTest {
     }
 
     @Test
-    void logLevelAndMessage() {
+    void log_level_and_message() {
         logger.log(Level.INFO, LOG_MESSAGE);
         verify(handler, times(1)).publish(argThat(record -> record.getLevel() == Level.INFO && LOG_MESSAGE_WITH_TOPIC.equals(record.getMessage())));
         verifyNoMoreInteractions(handler);
     }
 
     @Test
-    void logLevelMessageExceptionAndExceptionMessage() {
+    void log_level_message_exception_and_exception_message() {
         logger.log(Level.SEVERE, LOG_MESSAGE, new IOException(EXCEPTION_MESSAGE));
         verify(handler, times(1)).publish(argThat(record -> record.getLevel() == Level.SEVERE && LOG_MESSAGE_WITH_TOPIC.equals(record.getMessage())));
         verifyNoMoreInteractions(handler);

@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 class PlayerlessTagActionTest {
 
     @Test
-    void test_playerless_tag_action(
+    void playerless_tag_action(
             @Mock final TagHolder data,
             @Mock final TagChanger tagChanger) throws QuestException {
         final PlayerlessTagAction playerlessTagAction = new PlayerlessTagAction(data, tagChanger);

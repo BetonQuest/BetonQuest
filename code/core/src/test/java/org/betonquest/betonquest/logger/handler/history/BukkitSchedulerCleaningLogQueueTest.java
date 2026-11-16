@@ -44,7 +44,7 @@ class BukkitSchedulerCleaningLogQueueTest {
     private Plugin plugin;
 
     @Test
-    void testSchedulerClearsOldRecords() {
+    void scheduler_clears_old_records() {
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
             final BukkitSchedulerCleaningLogQueue logQueue = new BukkitSchedulerCleaningLogQueue(nowSource, validFor);
             logQueue.runCleanupTimerAsynchronously(scheduler, plugin, 20, 20);
@@ -58,7 +58,7 @@ class BukkitSchedulerCleaningLogQueueTest {
     }
 
     @Test
-    void testSchedulerKeepsRecentRecords() {
+    void scheduler_keeps_recent_records() {
         try (BukkitSchedulerMock scheduler = new BukkitSchedulerMock()) {
             final BukkitSchedulerCleaningLogQueue logQueue = new BukkitSchedulerCleaningLogQueue(nowSource, validFor);
             logQueue.runCleanupTimerAsynchronously(scheduler, plugin, 20, 20);

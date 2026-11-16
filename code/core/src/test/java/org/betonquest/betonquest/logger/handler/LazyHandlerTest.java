@@ -33,7 +33,7 @@ class LazyHandlerTest {
     private Handler internalHandler;
 
     @Test
-    void testLazyInstantiation(final BetonQuestLogger log, @Mock final LazyHandler.LazyHandlerSupplier handlerSupplier) throws IOException {
+    void lazy_instantiation(final BetonQuestLogger log, @Mock final LazyHandler.LazyHandlerSupplier handlerSupplier) throws IOException {
         when(handlerSupplier.get()).thenReturn(internalHandler);
         final LazyHandler handler = new LazyHandler(log, handlerSupplier);
         verify(handlerSupplier, never()).get();
@@ -42,35 +42,35 @@ class LazyHandlerTest {
     }
 
     @Test
-    void testFlushDoesNotCauseInitialization(final BetonQuestLogger log, @Mock final LazyHandler.LazyHandlerSupplier handlerSupplier) throws IOException {
+    void flush_does_not_cause_initialization(final BetonQuestLogger log, @Mock final LazyHandler.LazyHandlerSupplier handlerSupplier) throws IOException {
         final LazyHandler handler = new LazyHandler(log, handlerSupplier);
         handler.flush();
         verify(handlerSupplier, never()).get();
     }
 
     @Test
-    void testCloseDoesNotCauseInitialization(final BetonQuestLogger log, @Mock final LazyHandler.LazyHandlerSupplier handlerSupplier) throws IOException {
+    void close_does_not_cause_initialization(final BetonQuestLogger log, @Mock final LazyHandler.LazyHandlerSupplier handlerSupplier) throws IOException {
         final LazyHandler handler = new LazyHandler(log, handlerSupplier);
         handler.close();
         verify(handlerSupplier, never()).get();
     }
 
     @Test
-    void testPublishAfterClosingDoesNotCauseInitialization(final BetonQuestLogger log, @Mock final LazyHandler.LazyHandlerSupplier handlerSupplier) throws IOException {
+    void publish_after_closing_does_not_cause_initialization(final BetonQuestLogger log, @Mock final LazyHandler.LazyHandlerSupplier handlerSupplier) throws IOException {
         final LazyHandler handler = new LazyHandler(log, handlerSupplier);
         handler.close();
         verify(handlerSupplier, never()).get();
     }
 
     @Test
-    void testPublishIsPropagated(final BetonQuestLogger log) {
+    void publish_is_propagated(final BetonQuestLogger log) {
         final LazyHandler handler = new LazyHandler(log, () -> internalHandler);
         handler.publish(record);
         verify(internalHandler).publish(record);
     }
 
     @Test
-    void testFlushIsPropagated(final BetonQuestLogger log) {
+    void flush_is_propagated(final BetonQuestLogger log) {
         final LazyHandler handler = new LazyHandler(log, () -> internalHandler);
         handler.publish(record);
         handler.flush();
@@ -78,7 +78,7 @@ class LazyHandlerTest {
     }
 
     @Test
-    void testCloseIsPropagated(final BetonQuestLogger log) {
+    void close_is_propagated(final BetonQuestLogger log) {
         final LazyHandler handler = new LazyHandler(log, () -> internalHandler);
         handler.publish(record);
         handler.close();
@@ -86,7 +86,7 @@ class LazyHandlerTest {
     }
 
     @Test
-    void testRequireNotClosed(final BetonQuestLogger log) {
+    void require_not_closed(final BetonQuestLogger log) {
         final LazyHandler handler = new LazyHandler(log, () -> internalHandler);
         handler.close();
         final Exception exception = assertThrows(IllegalStateException.class, () -> handler.publish(null), "Expected IllegalStateException is thrown");

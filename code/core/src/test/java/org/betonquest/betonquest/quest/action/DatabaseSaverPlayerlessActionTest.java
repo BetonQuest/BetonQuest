@@ -21,7 +21,7 @@ class DatabaseSaverPlayerlessActionTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testAddRecord(@Mock final Saver saver) throws QuestException {
+    void add_record(@Mock final Saver saver) throws QuestException {
         final Saver.Record record = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
         final DatabaseSaverPlayerlessAction action = new DatabaseSaverPlayerlessAction(saver, () -> record);
 
@@ -33,7 +33,7 @@ class DatabaseSaverPlayerlessActionTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testRecordSupplierIsCalledEveryTime(@Mock final Saver saver) throws QuestException {
+    void record_supplier_is_called_every_time(@Mock final Saver saver) throws QuestException {
         final Saver.Record firstRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_TAGS);
         final Saver.Record secondRecord = new Saver.Record(UpdateType.DELETE_GLOBAL_POINTS);
         final Iterator<Saver.Record> recordsForSupplier = List.of(firstRecord, secondRecord).iterator();

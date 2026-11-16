@@ -66,7 +66,7 @@ class RealtimeDailySchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithoutSchedules() {
+    void start_without_schedules() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final RealtimeDailyScheduler scheduler = spy(new RealtimeDailyScheduler(logger, actionManager, cache));
         scheduler.start(now);
@@ -82,7 +82,7 @@ class RealtimeDailySchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithMissedSchedulesStrategyOne() {
+    void start_with_missed_schedules_strategy_one() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = now.minus(2, ChronoUnit.DAYS).plusSeconds(60);
         final Instant nextMissedExecution = lastExecution.plus(1, ChronoUnit.DAYS);
@@ -107,7 +107,7 @@ class RealtimeDailySchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithMissedSchedulesStrategyAll() {
+    void start_with_missed_schedules_strategy_all() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = now.minus(4, ChronoUnit.DAYS).plusSeconds(60);
         final Instant nextMissedExecution1 = lastExecution.plus(1, ChronoUnit.DAYS);
@@ -136,7 +136,7 @@ class RealtimeDailySchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithoutMissedSchedulesStrategyAll() {
+    void start_without_missed_schedules_strategy_all() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant lastExecution = now.minus(1, ChronoUnit.DAYS).plus(1, ChronoUnit.HOURS);
         final Instant nextExecution = lastExecution.plus(1, ChronoUnit.DAYS);
@@ -158,7 +158,7 @@ class RealtimeDailySchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartWithIrregularLastExecution() {
+    void start_with_irregular_last_execution() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant firstStartup = now.minus(1, ChronoUnit.DAYS).minus(3, ChronoUnit.HOURS);
         final Instant missedExecution = now.minus(6, ChronoUnit.HOURS);
@@ -183,7 +183,7 @@ class RealtimeDailySchedulerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testStartSchedule() {
+    void start_schedule() {
         final LastExecutionCache cache = mock(LastExecutionCache.class);
         final Instant nextExecution1 = now;
         final Instant nextExecution2 = nextExecution1.plus(1, ChronoUnit.DAYS);

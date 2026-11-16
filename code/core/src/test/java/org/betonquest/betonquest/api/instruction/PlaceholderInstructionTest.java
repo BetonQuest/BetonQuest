@@ -34,21 +34,21 @@ class PlaceholderInstructionTest {
     }
 
     @Test
-    void placeholderInstructionShouldThrowExceptionWhenInstructionDoesNotStartAndEndWithPercentCharacter() {
+    void placeholder_instruction_should_throw_exception_when_instruction_does_not_start_and_end_with_percent_character() {
         assertThrows(QuestException.class, () -> {
             createNoIDInstruction("instruction");
         }, "Should throw an exception");
     }
 
     @Test
-    void placeholderInstructionShouldNotThrowExceptionWhenInstructionStartsAndEndsWithPercentCharacter() {
+    void placeholder_instruction_should_not_throw_exception_when_instruction_starts_and_ends_with_percent_character() {
         assertDoesNotThrow(() -> {
             createNoIDInstruction("%instruction%");
         }, "Should not throw an exception");
     }
 
     @Test
-    void copyShouldReturnNewPlaceholderInstructionWithSameProperties() throws QuestException {
+    void copy_should_return_new_placeholder_instruction_with_same_properties() throws QuestException {
         final PlaceholderInstruction original = createNoIDInstruction("%instruction%");
         final PlaceholderInstruction copy = original.copy();
         assertEquals(original.toString(), copy.toString(), "Should have the same instruction");
@@ -56,7 +56,7 @@ class PlaceholderInstructionTest {
     }
 
     @Test
-    void copyWithNewIDShouldReturnNewPlaceholderInstructionWithNewID() throws QuestException {
+    void copy_with_new_id_should_return_new_placeholder_instruction_with_new_id() throws QuestException {
         final PlaceholderIdentifier placeholderID1 = mock(PlaceholderIdentifier.class);
         final PlaceholderIdentifier placeholderID2 = mock(PlaceholderIdentifier.class);
         final PlaceholderInstruction original = new PlaceholderInstruction(mock(PlaceholderManager.class), mock(QuestPackageManager.class),
@@ -68,7 +68,7 @@ class PlaceholderInstructionTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void partsShouldBeSplitByDot() throws QuestException {
+    void parts_should_be_split_by_dot() throws QuestException {
         final PlaceholderInstruction instruction = createNoIDInstruction("%instruction.part1.part2%");
         assertTrue(instruction.hasNext(), "Should have more parts");
         assertEquals("part1", instruction.nextElement(), "Should return the next part");
@@ -77,7 +77,7 @@ class PlaceholderInstructionTest {
     }
 
     @Test
-    void shouldReferenceOtherPack() throws QuestException {
+    void should_reference_other_pack() throws QuestException {
         final QuestPackageManager packageManager = mock(QuestPackageManager.class);
         final QuestPackage otherPack = mock(QuestPackage.class);
         when(packageManager.getPackage("OtherPack")).thenReturn(otherPack);

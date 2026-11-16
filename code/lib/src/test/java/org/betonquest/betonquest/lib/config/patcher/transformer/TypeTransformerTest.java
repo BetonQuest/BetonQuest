@@ -19,31 +19,31 @@ class TypeTransformerTest extends TransformersFixture {
     private static final TypeTransformer TRANSFORMER = new TypeTransformer();
 
     @Test
-    void flawless_String_to_Boolean() throws PatchException {
+    void flawless_string_to_boolean() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.booleanString", "newType", "boolean")), config);
         assertEquals(true, config.get("section.booleanString"), "The String was not converted to a boolean.");
     }
 
     @Test
-    void flawless_String_to_Int() throws PatchException {
+    void flawless_string_to_int() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.int", "newType", "integer")), config);
         assertEquals(2, config.get("section.int"), "The String was not converted to an integer.");
     }
 
     @Test
-    void flawless_String_to_Float() throws PatchException {
+    void flawless_string_to_float() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.float", "newType", "float")), config);
         assertEquals(2.5F, config.get("section.float"), "The String was not converted to a float.");
     }
 
     @Test
-    void flawless_String_to_Double() throws PatchException {
+    void flawless_string_to_double() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.double", "newType", "double")), config);
         assertEquals(2.123_456_789_123_456_7D, config.get("section.double"), "The String was not converted to a double.");
     }
 
     @Test
-    void flawless_Boolean_to_String() throws PatchException {
+    void flawless_boolean_to_string() throws PatchException {
         TRANSFORMER.transform(new DefaultPatcherOptions(Map.of("key", "section.boolean", "newType", "string")), config);
         assertEquals("true", config.get("section.boolean"), "The boolean was not converted to a string.");
     }

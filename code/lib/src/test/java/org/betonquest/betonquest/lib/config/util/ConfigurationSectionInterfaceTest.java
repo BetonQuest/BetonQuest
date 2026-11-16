@@ -1,295 +1,296 @@
 package org.betonquest.betonquest.lib.config.util;
 
-@SuppressWarnings({"unused", "PMD.CommentRequired", "PMD.UnitTestShouldUseTestAnnotation", "PMD.TooManyMethods", "PMD.ExcessivePublicCount", "MissingJavadocMethod", "MissingJavadocType"})
+@SuppressWarnings({"unused", "PMD.CommentRequired", "PMD.TooManyMethods", "PMD.ExcessivePublicCount",
+        "MissingJavadocMethod", "MissingJavadocType", "PMD.MethodNamingConventions"})
 public interface ConfigurationSectionInterfaceTest {
 
-    void testGetKeysDeepFalse();
+    void get_keys_deep_false();
 
-    void testGetKeysDeepTrue();
+    void get_keys_deep_true();
 
-    void testGetValuesDeepFalse();
+    void get_values_deep_false();
 
-    void testGetValuesDeepTrue();
+    void get_values_deep_true();
 
-    void testContains();
+    void contains();
 
-    void testContainsOnInvalidConfigPath();
+    void contains_on_invalid_config_path();
 
-    void testContainsIgnoreDefaultFalse();
+    void contains_ignore_default_false();
 
-    void testContainsIgnoreDefaultFalseOnInvalidConfigPath();
+    void contains_ignore_default_false_on_invalid_config_path();
 
-    void testContainsIgnoreDefaultTrue();
+    void contains_ignore_default_true();
 
-    void testContainsIgnoreDefaultTrueOnInvalidConfigPath();
+    void contains_ignore_default_true_on_invalid_config_path();
 
-    void testContainsOnDefault();
+    void contains_on_default();
 
-    void testContainsOnDefaultOnInvalidConfigPath();
+    void contains_on_default_on_invalid_config_path();
 
-    void testContainsIgnoreDefaultFalseOnDefault();
+    void contains_ignore_default_false_on_default();
 
-    void testContainsIgnoreDefaultFalseOnDefaultOnInvalidConfigPath();
+    void contains_ignore_default_false_on_default_on_invalid_config_path();
 
-    void testContainsIgnoreDefaultTrueOnDefault();
+    void contains_ignore_default_true_on_default();
 
-    void testContainsIgnoreDefaultTrueOnDefaultOnInvalidConfigPath();
+    void contains_ignore_default_true_on_default_on_invalid_config_path();
 
-    void testIsSet();
+    void is_set();
 
-    void testIsSetOnInvalidConfigPath();
+    void is_set_on_invalid_config_path();
 
-    void testGetCurrentPath();
+    void get_current_path();
 
-    void testGetName();
+    void get_name();
 
-    void testGetRoot();
+    void get_root();
 
-    void testGetParent();
+    void get_parent();
 
-    void testGet();
+    void get();
 
-    void testGetOnInvalidConfigPath();
+    void get_on_invalid_config_path();
 
-    void testGetWithDefault();
+    void get_with_default();
 
-    void testGetWithDefaultOnInvalidConfigPath();
+    void get_with_default_on_invalid_config_path();
 
-    void testSet();
+    void set();
 
-    void testSetSectionOverwritingExisting();
+    void set_section_overwriting_existing();
 
-    void testSetExistingSectionToNull();
+    void set_existing_section_to_null();
 
-    void testSetOnExistingConfigPath();
+    void set_on_existing_config_path();
 
-    void testCreateSection();
+    void create_section();
 
-    void testCreateSectionOnExistingConfigPath();
+    void create_section_on_existing_config_path();
 
-    void testCreateSectionWithValues();
+    void create_section_with_values();
 
-    void testCreateSectionWithValuesOnExistingConfigPath();
+    void create_section_with_values_on_existing_config_path();
 
-    void testGetString();
+    void get_string();
 
-    void testGetStringOnInvalidConfigPath();
+    void get_string_on_invalid_config_path();
 
-    void testGetStringWithDefault();
+    void get_string_with_default();
 
-    void testGetStringWithDefaultOnInvalidConfigPath();
+    void get_string_with_default_on_invalid_config_path();
 
-    void testIsString();
+    void is_string();
 
-    void testIsStringOnInvalidConfigPath();
+    void is_string_on_invalid_config_path();
 
-    void testGetInt();
+    void get_int();
 
-    void testGetIntOnInvalidConfigPath();
+    void get_int_on_invalid_config_path();
 
-    void testGetIntWithDefault();
+    void get_int_with_default();
 
-    void testGetIntWithDefaultOnInvalidConfigPath();
+    void get_int_with_default_on_invalid_config_path();
 
-    void testIsInt();
+    void is_int();
 
-    void testIsIntOnInvalidConfigPath();
+    void is_int_on_invalid_config_path();
 
-    void testGetBoolean();
+    void get_boolean();
 
-    void testGetBooleanOnInvalidConfigPath();
+    void get_boolean_on_invalid_config_path();
 
-    void testGetBooleanWithDefault();
+    void get_boolean_with_default();
 
-    void testGetBooleanWithDefaultOnInvalidConfigPath();
+    void get_boolean_with_default_on_invalid_config_path();
 
-    void testIsBoolean();
+    void is_boolean();
 
-    void testIsBooleanOnInvalidConfigPath();
+    void is_boolean_on_invalid_config_path();
 
-    void testGetDouble();
+    void get_double();
 
-    void testGetDoubleOnInvalidConfigPath();
+    void get_double_on_invalid_config_path();
 
-    void testGetDoubleWithDefault();
+    void get_double_with_default();
 
-    void testGetDoubleWithDefaultOnInvalidConfigPath();
+    void get_double_with_default_on_invalid_config_path();
 
-    void testIsDouble();
+    void is_double();
 
-    void testIsDoubleOnInvalidConfigPath();
+    void is_double_on_invalid_config_path();
 
-    void testGetLong();
+    void get_long();
 
-    void testGetLongOnInvalidConfigPath();
+    void get_long_on_invalid_config_path();
 
-    void testGetLongWithDefault();
+    void get_long_with_default();
 
-    void testGetLongWithDefaultOnInvalidConfigPath();
+    void get_long_with_default_on_invalid_config_path();
 
-    void testIsLong();
+    void is_long();
 
-    void testIsLongOnInvalidConfigPath();
+    void is_long_on_invalid_config_path();
 
-    void testGetList();
+    void get_list();
 
-    void testGetListOnInvalidConfigPath();
+    void get_list_on_invalid_config_path();
 
-    void testGetListWithDefault();
+    void get_list_with_default();
 
-    void testGetListWithDefaultOnInvalidConfigPath();
+    void get_list_with_default_on_invalid_config_path();
 
-    void testIsList();
+    void is_list();
 
-    void testIsListOnInvalidConfigPath();
+    void is_list_on_invalid_config_path();
 
-    void testGetStringList();
+    void get_string_list();
 
-    void testGetStringListOnInvalidConfigPath();
+    void get_string_list_on_invalid_config_path();
 
-    void testGetIntegerList();
+    void get_integer_list();
 
-    void testGetIntegerListOnInvalidConfigPath();
+    void get_integer_list_on_invalid_config_path();
 
-    void testGetBooleanList();
+    void get_boolean_list();
 
-    void testGetBooleanListOnInvalidConfigPath();
+    void get_boolean_list_on_invalid_config_path();
 
-    void testGetDoubleList();
+    void get_double_list();
 
-    void testGetDoubleListOnInvalidConfigPath();
+    void get_double_list_on_invalid_config_path();
 
-    void testGetFloatList();
+    void get_float_list();
 
-    void testGetFloatListOnInvalidConfigPath();
+    void get_float_list_on_invalid_config_path();
 
-    void testGetLongList();
+    void get_long_list();
 
-    void testGetLongListOnInvalidConfigPath();
+    void get_long_list_on_invalid_config_path();
 
-    void testGetByteList();
+    void get_byte_list();
 
-    void testGetByteListOnInvalidConfigPath();
+    void get_byte_list_on_invalid_config_path();
 
-    void testGetCharacterList();
+    void get_character_list();
 
-    void testGetCharacterListOnInvalidConfigPath();
+    void get_character_list_on_invalid_config_path();
 
-    void testGetShortList();
+    void get_short_list();
 
-    void testGetShortListOnInvalidConfigPath();
+    void get_short_list_on_invalid_config_path();
 
-    void testGetMapList();
+    void get_map_list();
 
-    void testGetMapListOnInvalidConfigPath();
+    void get_map_list_on_invalid_config_path();
 
-    void testGetObject();
+    void get_object();
 
-    void testGetObjectOnInvalidConfigPath();
+    void get_object_on_invalid_config_path();
 
-    void testGetObjectWithDefault();
+    void get_object_with_default();
 
-    void testGetObjectWithDefaultOnInvalidConfigPath();
+    void get_object_with_default_on_invalid_config_path();
 
-    void testGetSerializable();
+    void get_serializable();
 
-    void testGetSerializableOnInvalidConfigPath();
+    void get_serializable_on_invalid_config_path();
 
-    void testGetSerializableWithDefault();
+    void get_serializable_with_default();
 
-    void testGetSerializableWithDefaultOnInvalidConfigPath();
+    void get_serializable_with_default_on_invalid_config_path();
 
-    void testGetVector();
+    void get_vector();
 
-    void testGetVectorOnInvalidConfigPath();
+    void get_vector_on_invalid_config_path();
 
-    void testGetVectorWithDefault();
+    void get_vector_with_default();
 
-    void testGetVectorWithDefaultOnInvalidConfigPath();
+    void get_vector_with_default_on_invalid_config_path();
 
-    void testIsVector();
+    void is_vector();
 
-    void testIsVectorOnInvalidConfigPath();
+    void is_vector_on_invalid_config_path();
 
-    void testGetOfflinePlayer();
+    void get_offline_player();
 
-    void testGetOfflinePlayerOnInvalidConfigPath();
+    void get_offline_player_on_invalid_config_path();
 
-    void testGetOfflinePlayerWithDefault();
+    void get_offline_player_with_default();
 
-    void testGetOfflinePlayerWithDefaultOnInvalidConfigPath();
+    void get_offline_player_with_default_on_invalid_config_path();
 
-    void testIsOfflinePlayer();
+    void is_offline_player();
 
-    void testIsOfflinePlayerOnInvalidConfigPath();
+    void is_offline_player_on_invalid_config_path();
 
-    void testGetItemStack();
+    void get_item_stack();
 
-    void testGetItemStackOnInvalidConfigPath();
+    void get_item_stack_on_invalid_config_path();
 
-    void testGetItemStackWithDefault();
+    void get_item_stack_with_default();
 
-    void testGetItemStackWithDefaultOnInvalidConfigPath();
+    void get_item_stack_with_default_on_invalid_config_path();
 
-    void testIsItemStack();
+    void is_item_stack();
 
-    void testIsItemStackOnInvalidConfigPath();
+    void is_item_stack_on_invalid_config_path();
 
-    void testGetColor();
+    void get_color();
 
-    void testGetColorOnInvalidConfigPath();
+    void get_color_on_invalid_config_path();
 
-    void testGetColorWithDefault();
+    void get_color_with_default();
 
-    void testGetColorWithDefaultOnInvalidConfigPath();
+    void get_color_with_default_on_invalid_config_path();
 
-    void testIsColor();
+    void is_color();
 
-    void testIsColorOnInvalidConfigPath();
+    void is_color_on_invalid_config_path();
 
-    void testGetLocation();
+    void get_location();
 
-    void testGetLocationOnInvalidConfigPath();
+    void get_location_on_invalid_config_path();
 
-    void testGetLocationWithDefault();
+    void get_location_with_default();
 
-    void testGetLocationWithDefaultOnInvalidConfigPath();
+    void get_location_with_default_on_invalid_config_path();
 
-    void testIsLocation();
+    void is_location();
 
-    void testIsLocationOnInvalidConfigPath();
+    void is_location_on_invalid_config_path();
 
-    void testGetConfigurationSection();
+    void get_configuration_section();
 
-    void testGetConfigurationSectionOnInvalidConfigPath();
+    void get_configuration_section_on_invalid_config_path();
 
-    void testIsConfigurationSection();
+    void is_configuration_section();
 
-    void testIsConfigurationSectionOnInvalidConfigPath();
+    void is_configuration_section_on_invalid_config_path();
 
-    void testGetDefaultSection();
+    void get_default_section();
 
-    void testGetDefaultSectionOnInvalidConfigPath();
+    void get_default_section_on_invalid_config_path();
 
-    void testAddDefault();
+    void add_default();
 
-    void testAddDefaultOnExistingConfigPath();
+    void add_default_on_existing_config_path();
 
-    void testSetComments();
+    void set_comments();
 
-    void testSetCommentsOnInvalid();
+    void set_comments_on_invalid();
 
-    void testSetInlineComments();
+    void set_inline_comments();
 
-    void testSetInlineCommentsOnInvalid();
+    void set_inline_comments_on_invalid();
 
-    void testGetComments();
+    void get_comments();
 
-    void testGetCommentsOnInvalid();
+    void get_comments_on_invalid();
 
-    void testGetInlineComments();
+    void get_inline_comments();
 
-    void testGetInlineCommentsOnInvalid();
+    void get_inline_comments_on_invalid();
 
-    void testToString();
+    void to_string();
 }

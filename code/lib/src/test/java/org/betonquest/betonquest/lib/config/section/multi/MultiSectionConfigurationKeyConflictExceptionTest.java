@@ -52,7 +52,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testKeyConflictException() {
+    void key_conflict_exception() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
         try {
             createConfig(configs, CONFIG_STRING_1, CONFIG_STRING_2);
@@ -74,7 +74,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testPathConflictException() {
+    void path_conflict_exception() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
         try {
             createConfig(configs, CONFIG_STRING_1, CONFIG_STRING_3);
@@ -95,7 +95,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testKeyPathConflictException() {
+    void key_path_conflict_exception() {
         final Map<ConfigurationSection, String> configs = new HashMap<>();
         try {
             createConfig(configs, CONFIG_STRING_1, CONFIG_STRING_2, CONFIG_STRING_3);

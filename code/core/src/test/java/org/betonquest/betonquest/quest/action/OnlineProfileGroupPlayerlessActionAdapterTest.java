@@ -45,7 +45,7 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
     @ParameterizedTest
     @EmptySource
     @MethodSource("playerListSource")
-    void testInternalActionIsExecutedForEachPlayerExactlyOnce(final List<OnlineProfile> onlineProfileList) throws QuestException {
+    void internal_action_is_executed_for_each_player_exactly_once(final List<OnlineProfile> onlineProfileList) throws QuestException {
         final OnlineProfileGroupPlayerlessActionAdapter subject = new OnlineProfileGroupPlayerlessActionAdapter(() -> onlineProfileList, internalPlayerAction);
         subject.execute();
 
@@ -55,7 +55,7 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testSupplierIsCalledEveryTime() throws QuestException {
+    void supplier_is_called_every_time() throws QuestException {
         final List<OnlineProfile> firstExecution = List.of(createRandomProfile(), createRandomProfile());
         final List<OnlineProfile> secondExecution = List.of(createRandomProfile(), createRandomProfile(), createRandomProfile());
         final Iterator<List<OnlineProfile>> playerListsForSupplier = List.of(
@@ -76,7 +76,7 @@ class OnlineProfileGroupPlayerlessActionAdapterTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testAdapterFailsOnFirstActionFailure() throws QuestException {
+    void adapter_fails_on_first_action_failure() throws QuestException {
         final List<OnlineProfile> playerList = List.of(createRandomProfile(), createRandomProfile(), createRandomProfile());
         final OnlineProfile firstProfile = playerList.get(0);
         final OnlineProfile failingProfile = playerList.get(1);

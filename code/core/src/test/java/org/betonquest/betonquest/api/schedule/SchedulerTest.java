@@ -33,7 +33,7 @@ class SchedulerTest {
     private ActionManager actionManager;
 
     @Test
-    void testAddSchedule() {
+    void add_schedule() {
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, actionManager);
         final ScheduleIdentifier scheduleID = mock(ScheduleIdentifier.class);
         final Schedule schedule = mock(Schedule.class);
@@ -44,7 +44,7 @@ class SchedulerTest {
     }
 
     @Test
-    void testStart() {
+    void start() {
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, actionManager);
         assertFalse(scheduler.isRunning(), "isRunning should be false before start is called");
         scheduler.start();
@@ -53,7 +53,7 @@ class SchedulerTest {
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    void testStop() {
+    void stop() {
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, actionManager);
         final ScheduleIdentifier scheduleID = mock(ScheduleIdentifier.class);
         final Schedule schedule = mock(Schedule.class);
@@ -66,7 +66,7 @@ class SchedulerTest {
     }
 
     @Test
-    void testExecuteActions() {
+    void execute_actions() {
         final ActionManager actionManager = mock(ActionManager.class);
         final Scheduler<Schedule, FictiveTime> scheduler = new MockedScheduler(logger, actionManager);
         final Schedule schedule = mock(Schedule.class);

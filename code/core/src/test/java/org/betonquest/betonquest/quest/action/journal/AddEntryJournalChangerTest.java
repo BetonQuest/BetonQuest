@@ -27,7 +27,7 @@ class AddEntryJournalChangerTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testChangeJournalAddsPointer(@Mock final Journal journal) throws QuestException {
+    void change_journal_adds_pointer(@Mock final Journal journal) throws QuestException {
         final Instant now = Instant.now();
         final JournalEntryIdentifier entryID = mock(JournalEntryIdentifier.class);
         final AddEntryJournalChanger changer = new AddEntryJournalChanger(InstantSource.fixed(now), new DefaultArgument<>(entryID));

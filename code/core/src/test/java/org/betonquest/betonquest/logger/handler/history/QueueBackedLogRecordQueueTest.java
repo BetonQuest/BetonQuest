@@ -21,7 +21,7 @@ class QueueBackedLogRecordQueueTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testLogEntriesAreInOrder(@Mock final Handler handler) {
+    void log_entries_are_in_order(@Mock final Handler handler) {
         final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final LogRecord firstRecord = new LogRecord(Level.INFO, "record 1");
         final LogRecord secondRecord = new LogRecord(Level.INFO, "record 2");
@@ -37,7 +37,7 @@ class QueueBackedLogRecordQueueTest {
 
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     @Test
-    void testPublishAllEmptiesTheQueue(@Mock final Handler handler) {
+    void publish_all_empties_the_queue(@Mock final Handler handler) {
         final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         final LogRecord firstRecord = new LogRecord(Level.INFO, "record 1");
         final LogRecord secondRecord = new LogRecord(Level.INFO, "record 2");
@@ -50,7 +50,7 @@ class QueueBackedLogRecordQueueTest {
     }
 
     @Test
-    void testCanPublishWithAtLeastOneRecord() {
+    void can_publish_with_at_least_one_record() {
         final QueueBackedLogRecordQueue logQueue = new QueueBackedLogRecordQueue(new LinkedList<>());
         assertFalse(logQueue.canPublish(), "empty queue should not allow publishing");
         logQueue.push(new LogRecord(Level.INFO, "record"));

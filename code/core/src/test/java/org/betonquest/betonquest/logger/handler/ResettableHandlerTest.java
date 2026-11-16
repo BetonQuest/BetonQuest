@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class ResettableHandlerTest {
 
     @Test
-    void testPublishPassesThrough(@Mock final Handler internal) {
+    void publish_passes_through(@Mock final Handler internal) {
         final LogRecord record = new LogRecord(Level.INFO, "message");
         final ResettableHandler handler = new ResettableHandler(() -> internal);
 
@@ -32,21 +32,21 @@ class ResettableHandlerTest {
     }
 
     @Test
-    void testFlushPassesThrough(@Mock final Handler internal) {
+    void flush_passes_through(@Mock final Handler internal) {
         final ResettableHandler handler = new ResettableHandler(() -> internal);
         handler.flush();
         verify(internal).flush();
     }
 
     @Test
-    void testInternalHandlerIsEagerlyLoaded(@Mock final Handler internal, @Mock final Supplier<Handler> supplier) {
+    void internal_handler_is_eagerly_loaded(@Mock final Handler internal, @Mock final Supplier<Handler> supplier) {
         when(supplier.get()).thenReturn(internal);
         new ResettableHandler(supplier);
         verify(supplier).get();
     }
 
     @Test
-    void testResetClosesOldHandler(@Mock final Handler internal) {
+    void reset_closes_old_handler(@Mock final Handler internal) {
         final ResettableHandler handler = new ResettableHandler(() -> internal);
         verifyNoInteractions(internal);
         handler.reset();
@@ -54,7 +54,7 @@ class ResettableHandlerTest {
     }
 
     @Test
-    void testResetFetchesNewHandler(@Mock final Handler internal, @Mock final Supplier<Handler> supplier) {
+    void reset_fetches_new_handler(@Mock final Handler internal, @Mock final Supplier<Handler> supplier) {
         when(supplier.get()).thenReturn(internal);
         final ResettableHandler handler = new ResettableHandler(supplier);
 
@@ -64,7 +64,7 @@ class ResettableHandlerTest {
     }
 
     @Test
-    void testCorrectHandlerIsUsedAfterReset(@Mock final Handler handlerBeforeReset, @Mock final Handler handlerAfterReset) {
+    void correct_handler_is_used_after_reset(@Mock final Handler handlerBeforeReset, @Mock final Handler handlerAfterReset) {
         final Iterator<Handler> supplier = List.of(handlerBeforeReset, handlerAfterReset).iterator();
 
         final ResettableHandler handler = new ResettableHandler(supplier::next);
@@ -80,7 +80,7 @@ class ResettableHandlerTest {
     }
 
     @Test
-    void testCloseClosesUnderlyingHandler(@Mock final Handler internal) {
+    void close_closes_underlying_handler(@Mock final Handler internal) {
         final ResettableHandler handler = new ResettableHandler(() -> internal);
         verifyNoInteractions(internal);
         handler.close();
@@ -88,7 +88,7 @@ class ResettableHandlerTest {
     }
 
     @Test
-    void testResetFailsAfterClose(@Mock final Handler internal) {
+    void reset_fails_after_close(@Mock final Handler internal) {
         final ResettableHandler handler = new ResettableHandler(() -> internal);
         handler.close();
 

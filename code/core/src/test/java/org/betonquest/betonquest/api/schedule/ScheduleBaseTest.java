@@ -62,7 +62,7 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
      */
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testScheduleValidLoad() throws QuestException {
+    public void schedule_valid_load() throws QuestException {
         final Schedule schedule = createSchedule();
         assertEquals(scheduleID, schedule.getId(), "Schedule should return the id it was constructed with");
         assertEquals(CatchupStrategy.NONE, schedule.getCatchup(), "Returned catchup strategy should be correct");
@@ -72,40 +72,40 @@ public class ScheduleBaseTest extends AbstractScheduleTest {
     }
 
     @Test
-    void testTimeNotSet() {
+    void time_not_set() {
         when(section.getString("time")).thenReturn(null);
         lenient().when(section.contains("time")).thenReturn(false);
         assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid time");
     }
 
     @Test
-    void testActionsNotSet() {
+    void actions_not_set() {
         when(section.contains("actions")).thenReturn(false);
         assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for missing actions");
     }
 
     @Test
-    void testActionsNotFound() {
+    void actions_not_found() {
         when(section.getString("actions")).thenReturn("bell_ring,notify_goodNight,action_does_not_exist");
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid action names");
         assertInstanceOf(QuestException.class, exception.getCause(), "Cause should be QuestException");
     }
 
     @Test
-    void testInvalidCatchup() {
+    void invalid_catchup() {
         when(section.getString("catchup")).thenReturn("NotExistingCatchupStrategy");
         assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid catchup");
     }
 
     @Test
-    void testNoCatchup() throws QuestException {
+    void no_catchup() throws QuestException {
         when(section.getString("catchup")).thenReturn(null);
         final Schedule schedule = createSchedule();
         assertEquals(CatchupStrategy.NONE, schedule.getCatchup(), "Returned catchup strategy should be correct");
     }
 
     @Test
-    void testLowerCaseCatchup() throws QuestException {
+    void lower_case_catchup() throws QuestException {
         when(section.getString("catchup")).thenReturn("one");
         final Schedule schedule = createSchedule();
         assertEquals(CatchupStrategy.ONE, schedule.getCatchup(), "Returned catchup strategy should be correct");

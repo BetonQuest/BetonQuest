@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class RemoveEntryJournalChangerTest {
 
     @Test
-    void testChangeJournalRemovesPointer(@Mock final Journal journal) throws QuestException {
+    void change_journal_removes_pointer(@Mock final Journal journal) throws QuestException {
         final JournalEntryIdentifier entryID = mock(JournalEntryIdentifier.class);
         final RemoveEntryJournalChanger changer = new RemoveEntryJournalChanger(new DefaultArgument<>(entryID));
 

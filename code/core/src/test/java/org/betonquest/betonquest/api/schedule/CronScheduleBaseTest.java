@@ -42,7 +42,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     @Test
     @Override
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-    public void testScheduleValidLoad() throws QuestException {
+    public void schedule_valid_load() throws QuestException {
         final CronSchedule schedule = createSchedule();
 
         final Cron cron = schedule.getTimeCron();
@@ -58,21 +58,21 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testInvalidTime() {
+    void invalid_time() {
         when(section.getString("time")).thenReturn("22:00");
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid cron syntax");
         assertEquals("Time is no valid cron syntax: '22:00'", exception.getMessage(), "QuestException should have correct reason message");
     }
 
     @Test
-    void testDifferentCronDefinition() {
+    void different_cron_definition() {
         when(section.getString("time")).thenReturn("0 22 * * * *");
         final QuestException exception = assertThrows(QuestException.class, this::createSchedule, "Schedule should throw instruction parse exception for invalid cron syntax");
         assertEquals("Time is no valid cron syntax: '0 22 * * * *'", exception.getMessage(), "QuestException should have correct reason message");
     }
 
     @Test
-    void testCronHourly() throws QuestException {
+    void cron_hourly() throws QuestException {
         when(section.getString("time")).thenReturn("@hourly");
         final CronSchedule schedule = createSchedule();
         final Cron expected = CronBuilder.cron(DEFAULT_CRON_DEFINITION).withMinute(on(0)).withHour(always()).withDoM(always()).withMonth(always()).withDoW(always()).instance();
@@ -80,7 +80,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testCronDaily() throws QuestException {
+    void cron_daily() throws QuestException {
         when(section.getString("time")).thenReturn("@daily");
         final CronSchedule schedule = createSchedule();
         final Cron expected = CronBuilder.cron(DEFAULT_CRON_DEFINITION).withMinute(on(0)).withHour(on(0)).withDoM(always()).withMonth(always()).withDoW(always()).instance();
@@ -88,7 +88,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testCronMidnight() throws QuestException {
+    void cron_midnight() throws QuestException {
         when(section.getString("time")).thenReturn("@midnight");
         final CronSchedule schedule = createSchedule();
         final Cron expected = CronBuilder.cron(DEFAULT_CRON_DEFINITION).withMinute(on(0)).withHour(on(0)).withDoM(always()).withMonth(always()).withDoW(always()).instance();
@@ -96,7 +96,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testCronWeekly() throws QuestException {
+    void cron_weekly() throws QuestException {
         when(section.getString("time")).thenReturn("@weekly");
         final CronSchedule schedule = createSchedule();
         final Cron expected = CronBuilder.cron(DEFAULT_CRON_DEFINITION).withMinute(on(0)).withHour(on(0)).withDoM(always()).withMonth(always()).withDoW(on(0)).instance();
@@ -104,7 +104,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testCronMonthly() throws QuestException {
+    void cron_monthly() throws QuestException {
         when(section.getString("time")).thenReturn("@monthly");
         final CronSchedule schedule = createSchedule();
         final Cron expected = CronBuilder.cron(DEFAULT_CRON_DEFINITION).withMinute(on(0)).withHour(on(0)).withDoM(on(1)).withMonth(always()).withDoW(always()).instance();
@@ -112,7 +112,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testCronYearly() throws QuestException {
+    void cron_yearly() throws QuestException {
         when(section.getString("time")).thenReturn("@yearly");
         final CronSchedule schedule = createSchedule();
         final Cron expected = CronBuilder.cron(DEFAULT_CRON_DEFINITION).withMinute(on(0)).withHour(on(0)).withDoM(on(1)).withMonth(on(1)).withDoW(always()).instance();
@@ -120,7 +120,7 @@ public class CronScheduleBaseTest extends ScheduleBaseTest {
     }
 
     @Test
-    void testCronAnnually() throws QuestException {
+    void cron_annually() throws QuestException {
         when(section.getString("time")).thenReturn("@annually");
         final CronSchedule schedule = createSchedule();
         final Cron expected = CronBuilder.cron(DEFAULT_CRON_DEFINITION).withMinute(on(0)).withHour(on(0)).withDoM(on(1)).withMonth(on(1)).withDoW(always()).instance();

@@ -22,7 +22,7 @@ class SettableVersionTest extends QuestFixture {
     private static final String PACKAGE_VERSION = "package.version";
 
     @Test
-    void test_no_version_present() throws IOException, InvalidConfigurationException {
+    void no_version_present() throws IOException, InvalidConfigurationException {
         final Quest quest = setupQuest();
         final BetonQuestMigratorVersion version = new BetonQuestMigratorVersion("1.2.3-QUEST-4");
         version.setVersion(quest, PACKAGE_VERSION);
@@ -34,7 +34,7 @@ class SettableVersionTest extends QuestFixture {
     }
 
     @Test
-    void test_version_present() throws IOException, InvalidConfigurationException {
+    void version_present() throws IOException, InvalidConfigurationException {
         final Version presentVersion = VersionParser.parse(BetonQuestMigratorVersion.QUEST_PACKAGE_VERSION_TYPE, "2.3.4-QUEST-5");
         original.set(PACKAGE_VERSION, presentVersion.toString());
         final Quest quest = setupQuest();
