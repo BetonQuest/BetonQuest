@@ -3,7 +3,7 @@
 @snippet:versions:minimum@ _10.3_
 
 If you install this plugin on your server you will be able to play particle effects on NPCs and locations.
-You can also use the `particle` action to trigger particle.
+You can also use the `el_particle` action to trigger particle.
 
 !!! info EffectLib Documentation
     EffectLib is not a normal plugin, it's a powerful developer tool - there are no official docs. However, the Magic plugin has a
@@ -44,10 +44,10 @@ effectlib: #(1)!
 
 ## Actions
 
-### `Particle`
+### `EL_Particle`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `particle <effect> [loc] [target] {private}`  
+__Syntax__: `el_particle <effect> [loc] [target] {private}`  
 __Description__: Load an effect defined in `effects` section and display it on player's location.
 
 | Parameter                                                                         | Type                   | Explanation                                                   |
@@ -72,6 +72,6 @@ effects:
   pointer:
     class: LineEffect
 actions:
-  playEffect: "particle beton loc:100;200;300;world;180;-90 private"
-  showPointer: "particle pointer target:100;200;300;world"
+  playEffect: "el_particle beton loc:100;200;300;world;180;-90 private"
+  showPointer: "el_particle pointer target:100;200;300;world"
 ```

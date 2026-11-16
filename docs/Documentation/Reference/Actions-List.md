@@ -896,6 +896,26 @@ actions:
   spawn: "opsudo spawn"
 ```
 
+## `Particle`
+
+__Context__: @snippet:action-meta:independent@  
+__Syntax__: `particle <particle> <location> [count] [offset] [range]`  
+__Description__: Spawns particles at the specified location.
+
+| Parameter                                                                      | Type                  | Explanation                                                                                                              |
+|--------------------------------------------------------------------------------|-----------------------|--------------------------------------------------------------------------------------------------------------------------|
+| particle<br>[Particle]                                                         | Required              | The type of particle to spawn. See [Spigot Javadocs](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html). |
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required              | The location where the particles should be spawned.                                                                      |
+| count<br>[Number]                                                              | Optional<br>[1]       | The number of particles to spawn.                                                                                        |
+| offset<br>[Vector]                                                             | Optional<br>[(0;0;0)] | The offset of the particles to scatter.                                                                                  |
+| range<br>[Number]                                                              | Optional<br>[32]      | The range in which players can see the particles.                                                                        |
+
+```YAML title="Example"
+actions:
+  simpleParticles: "particle FLAME 100;64;100;world"
+  lotsOfParticles: "particle CLOUD 100;64;100;world count:50 offset:(1;1;1) range:64"
+```
+
 ## `Party`
 
 __Context__: @snippet:action-meta:online@  

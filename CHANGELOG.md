@@ -9,7 +9,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 - `world` placeholder to get properties from a specific world
 - `boostelytra` action to boost the player's fly speed while gliding
+- `particle` action to spawn particles at a specific location without the need for an integration
 ### Changed
+- `particle` action of EffectLib integration is now called `el_particle`
 ### Deprecated
 ### Removed
 ### Fixed

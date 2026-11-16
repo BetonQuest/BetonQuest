@@ -17,6 +17,7 @@ import org.betonquest.betonquest.config.migrator.from2to3.BurnDurationArgumentNa
 import org.betonquest.betonquest.config.migrator.from2to3.ChestGiveDropFlag;
 import org.betonquest.betonquest.config.migrator.from2to3.DeleteEffectAny;
 import org.betonquest.betonquest.config.migrator.from2to3.DynamicHologramTopLine;
+import org.betonquest.betonquest.config.migrator.from2to3.EffectLibParticleRename;
 import org.betonquest.betonquest.config.migrator.from2to3.EventsToActionsRename;
 import org.betonquest.betonquest.config.migrator.from2to3.FolderTimeUnit;
 import org.betonquest.betonquest.config.migrator.from2to3.HeadOwnerMigrator;
@@ -134,6 +135,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.1.0", 1), new BurnDurationArgumentName());
         migrations.put(questVersion("3.2.0", 1), new DeleteEffectAny());
         migrations.put(questVersion("3.2.0", 2), new ChestGiveDropFlag());
+        migrations.put(questVersion("3.4.0", 1), new EffectLibParticleRename());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 
