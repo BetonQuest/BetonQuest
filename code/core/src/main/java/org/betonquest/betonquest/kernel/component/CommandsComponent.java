@@ -106,8 +106,7 @@ public class CommandsComponent extends AbstractCoreComponent {
         javaPlugin.getCommand("journal").setExecutor(new JournalCommand(playerDataStorage, profileProvider));
         final BackpackFactory backpackFactory = new BackpackFactory(javaPlugin, loggerFactory, config, playerDataStorage,
                 cancelerProcessor, compassManager, itemManager, identifiers, localizations);
-        javaPlugin.getCommand("backpack").setExecutor(new BackpackCommand(loggerFactory.create(BackpackCommand.class),
-                profileProvider, backpackFactory));
+        javaPlugin.getCommand("backpack").setExecutor(new BackpackCommand(profileProvider, backpackFactory));
         javaPlugin.getCommand("cancelquest").setExecutor(new CancelQuestCommand(profileProvider, backpackFactory));
         javaPlugin.getCommand("compass").setExecutor(new CompassCommand(profileProvider, backpackFactory));
         final LangCommand langCommand = new LangCommand(loggerFactory.create(LangCommand.class), playerDataStorage, localizations, profileProvider, languageProvider, config);

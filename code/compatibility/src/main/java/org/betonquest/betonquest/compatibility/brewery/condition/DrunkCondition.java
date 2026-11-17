@@ -30,7 +30,7 @@ public class DrunkCondition implements OnlineCondition {
     public boolean check(final OnlineProfile profile) throws QuestException {
         final int drunkenness = drunk.getValue(profile).intValue();
         if (drunkenness < 0 || drunkenness > 100) {
-            throw new QuestException("Drunkenness can only be between 0 and 100!");
+            throw new QuestException("Drunkenness can only be between 0 and 100");
         }
 
         final BPlayer bPlayer = BreweryApi.getBPlayer(profile.getPlayer());

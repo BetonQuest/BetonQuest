@@ -116,7 +116,7 @@ public class NpcHologramLoop extends HologramLoop implements PostLoadTask {
         final Vector vector = new Vector(0, 3, 0);
         final String stringVector = section.getString("vector");
         if (stringVector != null) {
-            vector.add(instruction.chainForArgument("(" + stringVector + ")").vector().get().getValue(null));
+            vector.add(instruction.chainForArgument("(%s)".formatted(stringVector)).vector().get().getValue(null));
         }
         final List<NpcIdentifier> npcIDs = instruction.read().value("npcs").identifier(NpcIdentifier.class).list().get().getValue(null);
         final boolean follow = section.getBoolean("follow", false);
@@ -143,7 +143,7 @@ public class NpcHologramLoop extends HologramLoop implements PostLoadTask {
                     try {
                         npcs = npcManager.getAll(null, npcID);
                     } catch (final QuestException exception) {
-                        log.warn("Could not get Npc for id '" + npcID + "' at hologram creation: " + exception.getMessage(), exception);
+                        log.warn("Could not get Npc for id '%s' at hologram creation: %s.".formatted(npcID, exception.getMessage()), exception);
                         continue;
                     }
                     final Map<Object, BetonHologram> holograms = new HashMap<>();
@@ -154,7 +154,7 @@ public class NpcHologramLoop extends HologramLoop implements PostLoadTask {
                         }
                         final Optional<Location> location = npc.getLocation();
                         if (location.isEmpty()) {
-                            log.debug("Spawned Npc '" + npcID + "' has no location at hologram creation");
+                            log.debug("Spawned Npc '%s' has no location at hologram creation.".formatted(npcID));
                             continue;
                         }
                         final BetonHologram hologram = hologramProvider.createHologram(location.get().add(holo.vector));
@@ -175,7 +175,7 @@ public class NpcHologramLoop extends HologramLoop implements PostLoadTask {
                     try {
                         npcs = npcManager.getAll(null, npcID);
                     } catch (final QuestException exception) {
-                        log.warn("Could not get Npc for id '" + npcID + "' in hologram loop: " + exception.getMessage(), exception);
+                        log.warn("Could not get Npc for id '%s' in hologram loop: %s.".formatted(npcID, exception.getMessage()), exception);
                         return;
                     }
                     final Map<Object, BetonHologram> oldHolograms = entry.getValue();

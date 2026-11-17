@@ -109,13 +109,13 @@ public class Patcher {
             if (section.isConfigurationSection(key)) {
                 final ConfigurationSection nestedSection = section.getConfigurationSection(key);
                 if (nestedSection == null) {
-                    throw new InvalidConfigurationException("The patch file at '" + currentKey + "' is not a list or a section.");
+                    throw new InvalidConfigurationException("The patch file at '%s' is not a list or a section".formatted(currentKey));
                 }
                 buildVersionIndex(nestedSection, currentKey);
             } else if (currentKey.split("\\.").length == 4) {
                 collectVersion(currentKey, section.getMapList(key));
             } else {
-                throw new InvalidConfigurationException("The patch file at '" + currentKey + "' is too long or too short.");
+                throw new InvalidConfigurationException("The patch file at '%s' is too long or too short.".formatted(currentKey));
             }
         }
     }
@@ -123,9 +123,9 @@ public class Patcher {
     private void collectVersion(final String currentKey, @NotNull final List<Map<?, ?>> mapList) throws InvalidConfigurationException {
         final Matcher matcher = VERSION_PATTERN.matcher(currentKey);
         if (!matcher.matches()) {
-            throw new InvalidConfigurationException("The patch file at '" + currentKey + "' has an invalid version format.");
+            throw new InvalidConfigurationException("The patch file at '%s' has an invalid version format".formatted(currentKey));
         }
-        final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
+        final String result = "%s-CONFIG-%s".formatted(matcher.group(1), matcher.group(2));
         final Version discoveredVersion = VersionParser.parse(CONFIG_VERSION_TYPE, result);
         patches.put(discoveredVersion, mapList);
     }
@@ -139,21 +139,21 @@ public class Patcher {
     public void patch(final FileConfigAccessor accessor) throws InvalidConfigurationException {
         final Configuration config = accessor.getConfig();
         final String configVersionString = config.getString(CONFIG_VERSION_PATH);
-        final String logPrefix = String.format("The config file '%s' ", accessor.getConfigurationFile().getName());
+        final String logPrefix = String.format("The config file '%s'", accessor.getConfigurationFile().getName());
         config.setDefaults(resourceAccessor.getConfig());
         if (patches.isEmpty()) {
-            log.debug(logPrefix + "has no patches to apply, setting zero version.");
+            log.debug("%s has no patches to apply, setting zero version.".formatted(logPrefix));
             setConfigVersion(config, ZERO_VERSION);
         } else if (configVersionString != null && configVersionString.isEmpty()) {
-            log.debug(logPrefix + "gets the latest version '" + patches.lastKey() + "' set.");
+            log.debug("%s gets the latest version '%s' set.".formatted(logPrefix, patches.lastKey()));
             setConfigVersion(config, patches.lastKey());
         } else {
             final Version version = getConfigVersion(configVersionString);
             if (version != null && !version.isOlderThan(VersionComparisonStrategies.DEFAULT, patches.lastEntry().getKey())) {
-                log.debug(logPrefix + "is already up to date.");
+                log.debug("%s is already up to date.".formatted(logPrefix));
             } else {
                 final String displayVersion = version == null ? "'legacy' version" : "version '" + version + "'";
-                log.info(logPrefix + "gets updated from " + displayVersion + "...");
+                log.info("%s gets updated from %s...".formatted(logPrefix, displayVersion));
                 patch(version, config);
             }
         }
@@ -168,7 +168,7 @@ public class Patcher {
         boolean noErrors = true;
         final NavigableMap<Version, List<Map<?, ?>>> actualPatches = version == null ? patches : patches.tailMap(version, false);
         for (final Map.Entry<Version, List<Map<?, ?>>> patch : actualPatches.entrySet()) {
-            log.info("Applying patches to update to '" + patch.getKey() + "'...");
+            log.info("Applying patches to update to '%s'...".formatted(patch.getKey()));
             setConfigVersion(config, patch.getKey());
             if (!applyPatch(config, patch.getValue())) {
                 noErrors = false;
@@ -199,7 +199,7 @@ public class Patcher {
                 getPatchTransformer(patcherOptions.getString("type")).transform(patcherOptions, config);
             } catch (final PatchException e) {
                 noErrors = false;
-                log.warn("There has been an issue while applying the patches: " + e.getMessage());
+                log.warn("There has been an issue while applying the patches: %s".formatted(e.getMessage()));
             }
         }
         return noErrors;
@@ -213,7 +213,7 @@ public class Patcher {
         final String transformationTypeUpperCase = transformationType.toUpperCase(Locale.ROOT);
         final PatchTransformer patchTransformer = transformerRegistry.getTransformers().get(transformationTypeUpperCase);
         if (patchTransformer == null) {
-            throw new PatchException("Unknown transformation type '" + transformationTypeUpperCase + "' used!");
+            throw new PatchException("Unknown transformation type '%s' used".formatted(transformationTypeUpperCase));
         }
         return patchTransformer;
     }

@@ -214,8 +214,9 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         try {
             return localizations.getMessage(profile, "menu." + message, replacements);
         } catch (final QuestException e) {
-            log.warn("Failed to get message '" + message + "': " + e.getMessage(), e);
-            return Component.text("Failed to get message '" + message + "': " + e.getMessage());
+            final String errorMessage = "Could not get message: %s".formatted(e.getMessage());
+            log.warn(errorMessage, e);
+            return Component.text(errorMessage);
         }
     }
 }

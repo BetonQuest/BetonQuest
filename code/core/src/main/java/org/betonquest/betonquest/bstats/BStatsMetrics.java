@@ -115,7 +115,7 @@ public class BStatsMetrics {
 
                 final Map<String, Integer> entry = new HashMap<>();
                 entry.put(hookVersion, 1);
-                map.put(plug.getName() + " by " + plug.getDescription().getAuthors(), entry);
+                map.put("%s by %s".formatted(plug.getName(), plug.getDescription().getAuthors()), entry);
             }
             return map;
         }));

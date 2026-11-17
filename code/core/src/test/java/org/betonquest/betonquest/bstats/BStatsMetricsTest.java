@@ -186,7 +186,7 @@ class BStatsMetricsTest {
     }
 
     private void assertCollectedChartData(final String expected, final CustomChart chart) {
-        final String actual = chart.getRequestJsonObject((s, throwable) -> fail("Encountered error: " + s), true).toString();
+        final String actual = chart.getRequestJsonObject((s, throwable) -> fail("Encountered error: %s".formatted(s)), true).toString();
         assertEquals(expected, actual, "generated chart data did not match");
     }
 }

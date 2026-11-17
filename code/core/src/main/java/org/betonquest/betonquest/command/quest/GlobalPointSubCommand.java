@@ -44,7 +44,7 @@ public class GlobalPointSubCommand extends QuestCommandPart {
             sendMessage(sender, "global_points");
             globalData.points().get().entrySet().stream()
                     .filter(shouldDisplay)
-                    .forEach(point -> sender.sendMessage("§b- " + point.getKey() + "§e: §a" + point.getValue()));
+                    .forEach(point -> sender.sendMessage("§b- %s§e: §a%d".formatted(point.getKey(), point.getValue())));
             return;
         }
         // handle purge

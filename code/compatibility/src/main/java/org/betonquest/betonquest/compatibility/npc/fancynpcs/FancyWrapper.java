@@ -64,7 +64,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
             for (final Npc aNpc : npcManager.getAllNpcs()) {
                 if (npcId.equals(aNpc.getData().getName())) {
                     if (npc != null) {
-                        throw new QuestException("Multiple Fancy Npcs with the same name: " + npcId);
+                        throw new QuestException("Multiple Fancy Npcs with the name '%s'".formatted(npcId));
                     }
                     npc = aNpc;
                 }

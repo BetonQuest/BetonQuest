@@ -42,7 +42,7 @@ public class ZNPCsPlusWrapper implements NpcWrapper<NpcEntry> {
         final String npcId = this.npcId.getValue(profile);
         final NpcEntry npcEntry = npcRegistry.getById(npcId);
         if (npcEntry == null) {
-            throw new QuestException("ZNPCsPlus Npc with ID " + npcId + " not found");
+            throw new QuestException("ZNPCsPlus Npc with ID '%s' not found".formatted(npcId));
         }
         return new ZNPCsPlusAdapter(npcEntry);
     }

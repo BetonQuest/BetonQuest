@@ -59,7 +59,7 @@ public record BetonQuestMigratorVersion(Version wrappedVersion) {
                 final ConfigAccessor packageFile = quest.getOrCreateConfigAccessor("package.yml");
                 config.associateWith(path, packageFile.getConfig());
             } catch (final InvalidConfigurationException e) {
-                throw new IllegalStateException("Could not load package file: " + e.getMessage(), e);
+                throw new IllegalStateException("Could not load package file: %s".formatted(e.getMessage()), e);
             }
         }
     }

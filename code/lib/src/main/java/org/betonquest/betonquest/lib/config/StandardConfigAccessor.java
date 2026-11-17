@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.lib.config;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.betonquest.betonquest.api.config.FileConfigAccessor;
 import org.betonquest.betonquest.lib.config.section.ConfigurationSectionDecorator;
 import org.bukkit.configuration.Configuration;
@@ -20,7 +21,7 @@ import java.nio.file.Files;
 /**
  * Represents a {@link YamlConfiguration} that is a file or a resource from a plugin.
  */
-@SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
+@SuppressWarnings("PMD.GodClass")
 public class StandardConfigAccessor extends ConfigurationSectionDecorator implements FileConfigAccessor {
 
     /**
@@ -65,8 +66,8 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
         try {
             this.save();
         } catch (final IOException e) {
-            throw new InvalidConfigurationException(buildExceptionMessage(true, resourceFile,
-                    "could not be saved to the representing file! Reason: " + e.getMessage()), e);
+            throw new InvalidConfigurationException("The resource '%s' could not be saved to the representing file: %s"
+                    .formatted(resourceFile, e.getMessage()), e);
         }
     }
 
@@ -77,7 +78,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
     private void readFromResource(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         try (InputStream stream = plugin.getResource(resourceFile)) {
             if (stream == null) {
-                throw new FileNotFoundException(buildExceptionMessage(true, resourceFile, "could not be found!"));
+                throw new FileNotFoundException("The resource '%s' could not be found".formatted(resourceFile));
             }
             try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                 load(reader, true, resourceFile);
@@ -85,23 +86,22 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
         } catch (final FileNotFoundException e) {
             throw e;
         } catch (final IOException e) {
-            throw new InvalidConfigurationException(buildExceptionMessage(true, resourceFile, "could not be closed! Reason: " + e.getMessage()), e);
+            throw new InvalidConfigurationException("The resource '%s' could not be closed: %s".formatted(resourceFile, e.getMessage()), e);
         }
     }
 
     @SuppressWarnings({"PMD.PreserveStackTrace", "PMD.AvoidThrowingNewInstanceOfSameException"})
+    @SuppressFBWarnings("VA_FORMAT_STRING_USES_NEWLINE")
     private void load(@Nullable final Object input, final boolean isResource, final String sourcePath) throws InvalidConfigurationException, FileNotFoundException {
+        final String sourceType = isResource ? "resource" : "file";
         try {
             loadFromObject(input, (YamlConfiguration) original);
         } catch (final FileNotFoundException e) {
-            throw new FileNotFoundException(buildExceptionMessage(isResource, sourcePath,
-                    "could not be found! Reason: " + e.getMessage()));
+            throw new FileNotFoundException("The %s '%s' could not be found: %s".formatted(sourceType, sourcePath, e.getMessage()));
         } catch (final IOException e) {
-            throw new InvalidConfigurationException(buildExceptionMessage(isResource, sourcePath,
-                    "could not be read! Reason: " + e.getMessage()), e);
+            throw new InvalidConfigurationException("The %s '%s' could not be read: %s".formatted(sourceType, sourcePath, e.getMessage()), e);
         } catch (final InvalidConfigurationException e) {
-            throw new InvalidConfigurationException(buildExceptionMessage(isResource, sourcePath,
-                    "contains a YAML syntax error that needs to be fixed! \n" + e.getMessage()), e);
+            throw new InvalidConfigurationException("The %s '%s' contains a YAML syntax error that needs to be fixed: \n%s".formatted(sourceType, sourcePath, e.getMessage()), e);
         }
     }
 
@@ -130,8 +130,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
             ((YamlConfiguration) original).save(configurationFile);
             return true;
         } catch (final IOException e) {
-            throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
-                    "could not be saved! Reason: " + e.getMessage()), e);
+            throw new IOException("The file '%s' could not be saved: %s".formatted(configurationFile.getPath(), e.getMessage()), e);
         }
     }
 
@@ -144,8 +143,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
             Files.delete(configurationFile.toPath());
             return true;
         } catch (final IOException e) {
-            throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
-                    "could not be deleted! Reason: " + e.getMessage()), e);
+            throw new IOException("The file '%s' could not be deleted: %s".formatted(configurationFile.getPath(), e.getMessage()), e);
         }
     }
 
@@ -157,8 +155,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
         try {
             readFromFile(configurationFile);
         } catch (InvalidConfigurationException | FileNotFoundException e) {
-            throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
-                    "could not be reloaded! Reason: " + e.getMessage()), e);
+            throw new IOException("The file '%s' could not be reloaded: %s".formatted(configurationFile.getPath(), e.getMessage()), e);
         }
     }
 
@@ -168,9 +165,5 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
             throw new IllegalStateException("The configuration file is null!");
         }
         return configurationFile;
-    }
-
-    private String buildExceptionMessage(final boolean isResource, final String sourcePath, final String message) {
-        return "The " + (isResource ? "resource" : "file") + " '" + sourcePath + "' " + message;
     }
 }

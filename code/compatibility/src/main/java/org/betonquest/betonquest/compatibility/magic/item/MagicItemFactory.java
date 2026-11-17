@@ -41,7 +41,7 @@ public class MagicItemFactory implements TypeFactory<QuestItemWrapper> {
         this.itemDataMapper = key -> {
             final ItemData item = mageController.getItem(key);
             if (item == null) {
-                throw new QuestException("Magic item not found: '" + key + "'");
+                throw new QuestException("Magic item '%s' not found".formatted(key));
             }
             return item;
         };
@@ -54,7 +54,7 @@ public class MagicItemFactory implements TypeFactory<QuestItemWrapper> {
             final ItemData dataValue = itemData.getValue(profile);
             final ItemStack itemStack = dataValue.getItemStack();
             if (itemStack == null) {
-                throw new QuestException("Magic item not found: '" + dataValue.getKey() + "'");
+                throw new QuestException("Magic item '%s' not found".formatted(dataValue.getKey()));
             }
             return new MagicItem(mageController, itemStack);
         };

@@ -80,12 +80,8 @@ public class TopLine extends AbstractLine {
 
     @Override
     public String toString() {
-        return "TopLine{"
-                + "category='" + category + '\''
-                + ", orderType=" + orderType
-                + ", linesAdded=" + linesAdded
-                + ", formatted=" + formatted
-                + '}';
+        return "TopLine{category='%s', orderType=%s, linesAdded=%d, formatted=%s}"
+                .formatted(category, orderType, linesAdded, formatted);
     }
 
     @Override

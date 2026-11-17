@@ -26,9 +26,9 @@ public class EventScheduling implements QuestMigration {
             return;
         }
         staticSection.getValues(false).forEach((key, value) -> {
-            config.set("schedules." + key + ".type", "realtime-daily");
-            config.set("schedules." + key + ".time", key);
-            config.set("schedules." + key + ".events", value);
+            config.set("schedules.%s.type".formatted(key), "realtime-daily");
+            config.set("schedules.%s.time".formatted(key), key);
+            config.set("schedules.%s.events".formatted(key), value);
         });
         config.set("static", null);
         config.associateWith(source);

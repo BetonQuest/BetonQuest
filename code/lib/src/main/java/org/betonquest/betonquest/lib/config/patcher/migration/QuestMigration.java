@@ -113,7 +113,7 @@ public interface QuestMigration {
             }
             final ConfigurationSection source = config.getSourceConfigurationSection(oldPath + "." + key);
             if (source == null) {
-                throw new InvalidConfigurationException("Cannot migrate '" + oldPath + "' to '" + newPath + "' for key: " + key);
+                throw new InvalidConfigurationException("Cannot migrate '%s' to '%s' for key: %s".formatted(oldPath, newPath, key));
             }
             newSection.set(key, oldSection.get(key));
             newSection.setComments(key, oldSection.getComments(key));
@@ -171,7 +171,7 @@ public interface QuestMigration {
         if (value != null) {
             final ConfigurationSection source = root.getSourceConfigurationSection(section.getCurrentPath() + "." + oldKey);
             if (source == null) {
-                throw new InvalidConfigurationException("Cannot migrate key '" + oldKey + "' to '" + newKey + "'");
+                throw new InvalidConfigurationException("Cannot migrate key '%s' to '%s'".formatted(oldKey, newKey));
             }
             section.set(newKey, value);
             section.setComments(newKey, section.getComments(oldKey));

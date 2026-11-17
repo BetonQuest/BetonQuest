@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * Deletes stuff.
  */
-@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.GodClass"})
+@SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.GodClass", "PMD.AvoidDuplicateLiterals"})
 public class DeleteSubCommand extends QuestCommandPart {
 
     /**
@@ -97,11 +97,10 @@ public class DeleteSubCommand extends QuestCommandPart {
         try {
             objectiveID = getIdentifier(ObjectiveIdentifier.class, name);
         } catch (final QuestException e) {
-            final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn(message, e);
-            log.debug("Removing non existent objective only from database: " + e.getMessage(), e);
+            log.warn("Objective '%s' could not be parsed, it will still be removed from the database : %s.".formatted(name, e.getMessage()), e);
+            log.debug("Removing non existent objective only from database.");
             return;
         }
         for (final OnlineProfile onlineProfile : onlineProfiles) {
@@ -115,10 +114,10 @@ public class DeleteSubCommand extends QuestCommandPart {
         try {
             entryID = getIdentifier(JournalEntryIdentifier.class, name);
         } catch (final QuestException e) {
-            final String message = "The journal entry '" + name + "' does not exist, it will still be removed from the database!";
-            log.warn(message, e);
-            log.debug("Removing non existent journal entry only from database: " + e.getMessage(), e);
-            sender.sendMessage("§2" + message);
+            sendMessage(sender, "error",
+                    new VariableReplacement("error", Component.text(e.getMessage())));
+            log.warn("Journal entry '%s' could not be parsed, it will still be removed from the database : %s.".formatted(name, e.getMessage()), e);
+            log.debug("Removing non existent objective only from database.");
             return;
         }
         for (final OnlineProfile onlineProfile : onlineProfiles) {

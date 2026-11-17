@@ -119,17 +119,17 @@ public class Quest {
                     try {
                         configAccessor.save();
                     } catch (final IOException e) {
-                        log.warn("Could not save file '" + configAccessor.getConfigurationFile().getPath() + "'! Reason: " + e.getMessage(), e);
+                        log.warn("Could not save file '%s': %s".formatted(configAccessor.getConfigurationFile().getPath(), e.getMessage()), e);
                         exceptionOccurred = true;
                     }
                     continue unsaved;
                 }
             }
-            log.warn("No related ConfigAccessor found for ConfigurationSection '" + unsavedConfig.getName() + "'!");
+            log.warn("No related ConfigAccessor found for ConfigurationSection '%s'.".formatted(unsavedConfig.getName()));
             exceptionOccurred = true;
         }
         if (exceptionOccurred) {
-            throw new IOException("It was not possible to save everything to files in the Quest '" + questPath + "'!");
+            throw new IOException("It was not possible to save everything to files in the Quest '%s'".formatted(questPath));
         }
         return config.needSave();
     }
@@ -156,7 +156,7 @@ public class Quest {
         final File newConfig = new File(root, relativePath);
         final File newConfigParent = newConfig.getParentFile();
         if (!newConfigParent.exists() && !newConfigParent.mkdirs()) {
-            throw new InvalidConfigurationException("It was not possible to create the folders for the file '" + newConfig.getPath() + "'!");
+            throw new InvalidConfigurationException("It was not possible to create the folders for the file '%s'".formatted(newConfig.getPath()));
         }
         try {
             if (!newConfig.createNewFile()) {

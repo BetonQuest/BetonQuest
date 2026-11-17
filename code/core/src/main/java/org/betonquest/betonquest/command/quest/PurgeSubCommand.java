@@ -32,7 +32,7 @@ public class PurgeSubCommand extends QuestCommandPart {
         if (playerData == null) {
             return;
         }
-        log.debug("Purging player " + args[1]);
+        log.debug("Purging player %s.".formatted(args[1]));
         playerData.purgePlayer();
         sendMessage(sender, "purged", new VariableReplacement("player", Component.text(args[1])));
     }

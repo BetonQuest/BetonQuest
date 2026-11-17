@@ -129,7 +129,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             try {
                 conv.sendMessage(localizations.getMessage(onlineProfile, "pullback"));
             } catch (final QuestException e) {
-                log.warn("Failed to get pullback message: " + e.getMessage(), e);
+                log.warn("Could not send message: %s".formatted(e.getMessage()), e);
             }
         }
     }

@@ -34,7 +34,7 @@ public class MMOAttributeParser implements SimpleArgumentParser<PlayerAttribute>
     public PlayerAttribute apply(final String attributeName) throws QuestException {
         final PlayerAttribute attribute = attributeManager.get(attributeName);
         if (attribute == null) {
-            throw new QuestException("Attribute does not exist: " + attributeName);
+            throw new QuestException("Attribute '%s' does not exist".formatted(attributeName));
         }
         return attribute;
     }

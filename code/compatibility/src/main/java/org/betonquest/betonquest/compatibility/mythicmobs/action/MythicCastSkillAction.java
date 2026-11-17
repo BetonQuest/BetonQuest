@@ -71,7 +71,7 @@ public class MythicCastSkillAction implements OnlineAction {
         }
         final Consumer<SkillMetadata> consumer = meta -> meta.getParameters().putAll(parameters);
         if (!apiHelper.castSkill(profile.getPlayer(), name, consumer)) {
-            log.debug(pack, "Could not cast skill '" + name + "' for profile " + profile);
+            log.debug(pack, "Could not cast skill '%s' for profile %s.".formatted(name, profile));
         }
     }
 }

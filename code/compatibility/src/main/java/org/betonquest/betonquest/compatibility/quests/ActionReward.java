@@ -70,13 +70,13 @@ public class ActionReward extends BukkitCustomReward {
         try {
             final Player player = Bukkit.getPlayer(uuid);
             if (player == null) {
-                log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
+                log.warn("Error while running quest reward, player with UUID '%s' not found.".formatted(uuid));
                 return;
             }
             final ActionIdentifier action = identifierFactory.parseIdentifier(null, string);
             actionManager.run(profileProvider.getProfile(player), action);
         } catch (final QuestException e) {
-            log.warn("Error while running quest reward - BetonQuest action '" + string + "' not found: " + e.getMessage(), e);
+            log.warn("Error while running quest reward, BetonQuest action '%s' not found: %s.".formatted(string, e.getMessage()), e);
         }
     }
 }

@@ -32,6 +32,6 @@ public class BooleanParser implements SimpleArgumentParser<Boolean> {
         if (FALSE.equalsIgnoreCase(value)) {
             return false;
         }
-        throw new QuestException("Could not parse value to boolean: " + value);
+        throw new QuestException("Could not parse value '%s' to boolean".formatted(value));
     }
 }

@@ -66,7 +66,7 @@ public class JournalSubCommand extends QuestCommandPart {
                         final String date = Instant.ofEpochMilli(pointer.timestamp())
                                 .atZone(ZoneId.systemDefault())
                                 .format(formatter);
-                        sender.sendMessage("§b- " + pointer.pointer() + " §c(§2" + date + "§c)");
+                        sender.sendMessage("§b- %s §c(§2%s§c)".formatted(pointer.pointer(), date));
                     });
             return;
         }
@@ -98,24 +98,24 @@ public class JournalSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("The journal entry'" + pointerName + "' does not exist!");
-            log.debug("Tried to add non existing journal entry: " + e.getMessage(), e);
+            log.warn("Journal entry '%s' could not be parsed: %s".formatted(pointerName, e.getMessage()), e);
             return;
         }
         final Pointer pointer;
         if (args.length < 5) {
             final long timestamp = System.currentTimeMillis();
-            log.debug("Adding pointer with current date: " + timestamp);
+            log.debug("Adding pointer '%s' with current date '%s'.".formatted(entryID, timestamp));
             pointer = new Pointer(entryID, timestamp);
         } else {
-            log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
+            final String timeStamp = args[4].replace("_", " ");
+            log.debug("Adding pointer '%s' with date '%s'.".formatted(entryID, timeStamp));
             try {
                 pointer = new Pointer(entryID,
                         new SimpleDateFormat(config.getString("date_format", ""), Locale.ROOT)
-                                .parse(args[4].replaceAll("_", " ")).getTime());
+                                .parse(timeStamp).getTime());
             } catch (final ParseException e) {
                 sendMessage(sender, "specify_date");
-                log.warn("Could not parse date: " + e.getMessage(), e);
+                log.warn("Could not parse date: %s".formatted(e.getMessage()), e);
                 return;
             }
         }
@@ -132,8 +132,7 @@ public class JournalSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("The journal entry'" + pointerName + "' does not exist!");
-            log.debug("Tried to remove non existing journal entry: " + e.getMessage(), e);
+            log.warn("Journal entry '%s' could not be parsed: %s".formatted(pointerName, e.getMessage()), e);
             return;
         }
         journal.removePointer(entryID);

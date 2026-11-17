@@ -42,7 +42,7 @@ public class LuckPermsActionFactory implements PlayerActionFactory {
             case "removepermission" ->
                     new LuckPermsPermissionAction(getNodeBuilder(instruction), luckPermsAPI, NodeMap::remove);
             default ->
-                    throw new QuestException("Unknown action: " + action + ". Expected addPermission or removePermission.");
+                    throw new QuestException("Unknown action '%s' (valid options are: addPermission, removePermission)".formatted(action));
         };
     }
 

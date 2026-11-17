@@ -77,7 +77,7 @@ public abstract class ConfigurationSectionBaseTest extends AbstractConfigBaseTes
                 + Pattern.quote("']}"));
         final String sectionString = section.getValues(false).toString();
         final Matcher matcher = pattern.matcher(sectionString);
-        assertTrue(matcher.matches(), "Didn't match regex: " + pattern + "\n" + "Actual string: " + sectionString);
+        assertTrue(matcher.matches(), "Didn't match regex '%s'\nActual string '%s'".formatted(pattern, sectionString));
     }
 
     @Test
@@ -90,7 +90,7 @@ public abstract class ConfigurationSectionBaseTest extends AbstractConfigBaseTes
                 + Pattern.quote("'], nestedChildSection.key=value}"));
         final String sectionString = section.getValues(true).toString();
         final Matcher matcher = pattern.matcher(sectionString);
-        assertTrue(matcher.matches(), "Didn't match regex: " + pattern + "\n" + "Actual string: " + sectionString);
+        assertTrue(matcher.matches(), "Didn't match regex '%s'\nActual string '%s'".formatted(pattern, sectionString));
     }
 
     @Test
@@ -1075,6 +1075,6 @@ public abstract class ConfigurationSectionBaseTest extends AbstractConfigBaseTes
                 + Pattern.quote("']"));
         final String sectionString = config.toString();
         final Matcher matcher = pattern.matcher(sectionString);
-        assertTrue(matcher.matches(), "Didn't match regex: " + pattern + "\n" + "Actual string: " + sectionString);
+        assertTrue(matcher.matches(), "Didn't match regex '%s'\nActual string '%s'".formatted(pattern, sectionString));
     }
 }

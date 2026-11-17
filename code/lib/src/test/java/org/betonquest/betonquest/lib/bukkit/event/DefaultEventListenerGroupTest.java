@@ -46,9 +46,9 @@ class DefaultEventListenerGroupTest {
                                           final Set<EventPriority> expectedRegistered) {
         listeners.forEach((priority, listener) -> {
             if (expectedRegistered.contains(priority)) {
-                assertTrue(listener.isRegistered(), "Expected " + priority + " to be registered");
+                assertTrue(listener.isRegistered(), "Expected '%s' to be registered".formatted(priority));
             } else {
-                assertFalse(listener.isRegistered(), "Expected " + priority + " not to be registered");
+                assertFalse(listener.isRegistered(), "Expected '%s' not to be registered".formatted(priority));
             }
         });
     }
@@ -126,7 +126,7 @@ class DefaultEventListenerGroupTest {
         @Test
         void subscribe() {
             final EventServiceSubscriber<PlayerJumpEvent> subscriber = (event, priority) -> {
-                throw new QuestException(event.getEventName() + "/" + priority);
+                throw new QuestException("%s/%s".formatted(event.getEventName(), priority));
             };
             final EventServiceSubscriber<PlayerJumpEvent> resultSubscriber = group.subscribe(EventPriority.NORMAL, false, subscriber);
             final EventServiceSubscriber<PlayerJumpEvent> resultSubscriber2 = group.subscribe(EventPriority.NORMAL, true, subscriber);

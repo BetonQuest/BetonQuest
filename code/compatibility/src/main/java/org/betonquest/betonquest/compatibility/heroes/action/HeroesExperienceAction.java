@@ -59,7 +59,7 @@ public class HeroesExperienceAction implements OnlineAction {
         }
 
         if (heroClass == null) {
-            throw new QuestException("The specified player does not have a class of the type: " + (isPrimary ? "primary" : "secondary"));
+            throw new QuestException("The specified player does not have a class of the '%s' type".formatted(isPrimary ? "primary" : "secondary"));
         }
         hero.addExp(amount.getValue(profile).intValue(), heroClass, hero.getPlayer().getLocation());
     }

@@ -38,7 +38,7 @@ public class ListEntryAddTransformer implements PatchTransformer {
         config.set(key, list);
 
         if (!listExists) {
-            throw new PatchException("List '" + key + "' did not exist, so it was created.");
+            throw new PatchException("List '%s' did not exist, so it was created".formatted(key));
         }
     }
 }

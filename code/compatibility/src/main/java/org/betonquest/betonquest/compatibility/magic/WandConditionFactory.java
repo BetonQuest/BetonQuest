@@ -62,7 +62,7 @@ public class WandConditionFactory implements PlayerConditionFactory {
         public Map.Entry<String, Integer> apply(final String value) throws QuestException {
             final String[] parts = value.split(":");
             if (parts.length != SPELL_FORMAT_LENGTH) {
-                throw new QuestException("Invalid spell format: " + value);
+                throw new QuestException("Spell format '%s' is invalid".formatted(value));
             }
             return Map.entry(parts[0], NumberParser.DEFAULT.apply(parts[1]).intValue());
         }

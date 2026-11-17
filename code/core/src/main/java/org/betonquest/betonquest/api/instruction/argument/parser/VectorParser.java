@@ -59,7 +59,7 @@ public class VectorParser implements SimpleArgumentParser<Vector> {
     private static Vector parseVector(final String vector) throws QuestException {
         if (!PATTERN_VECTOR.matcher(vector).find()) {
             throw new QuestException(
-                    "Incorrect vector format '" + vector + "'. A vector has to be in the format '(x;y;z)'");
+                    "Incorrect vector format '%s'. A vector has to be in the format '(x;y;z)'".formatted(vector));
         }
         final String[] parts = vector.substring(1, vector.indexOf(')')).split(";");
         try {
@@ -68,7 +68,7 @@ public class VectorParser implements SimpleArgumentParser<Vector> {
             final double locZ = Double.parseDouble(parts[2]);
             return new Vector(locX, locY, locZ);
         } catch (final NumberFormatException e) {
-            throw new QuestException("Could not parse a number in the vector. " + e.getMessage(), e);
+            throw new QuestException("Could not parse a number in the vector: %s".formatted(e.getMessage()), e);
         }
     }
 

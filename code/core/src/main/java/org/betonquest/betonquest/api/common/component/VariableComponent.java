@@ -18,7 +18,7 @@ public record VariableComponent(Component component) {
     public Component resolve(final VariableReplacement... replacements) {
         Component component = this.component;
         for (final VariableReplacement replacement : replacements) {
-            component = component.replaceText(builder -> builder.matchLiteral("{" + replacement.placeholder() + "}").replacement(replacement.replacement()));
+            component = component.replaceText(builder -> builder.matchLiteral("{%s}".formatted(replacement.placeholder())).replacement(replacement.replacement()));
         }
         return component;
     }

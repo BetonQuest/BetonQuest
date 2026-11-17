@@ -56,7 +56,7 @@ public class DefaultQuestExceptionHandler implements QuestExceptionHandler {
         this.logger = logger;
         this.errorRateLimit = errorRateLimit;
         this.source = source;
-        this.sourceDetails = sourceDetails.length > 0 ? "{'" + String.join("', '", sourceDetails) + "'}" : "";
+        this.sourceDetails = sourceDetails.length > 0 ? "{'%s'}".formatted(String.join("', '", sourceDetails)) : "";
     }
 
     /**

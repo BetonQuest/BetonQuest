@@ -82,9 +82,9 @@ public class HolographicDisplaysHologramFactory implements BetonHologramFactory 
             try {
                 final PlaceholderIdentifier placeholderIdentifier = identifierFactory.parseIdentifier(pack, group);
                 final Instruction instruction = instructionApi.createPlaceholder(placeholderIdentifier, placeholderIdentifier.readRawInstruction());
-                return "{bq:" + placeholderIdentifier.getPackage().getQuestPath() + ":" + instruction + "}";
+                return "{bq:%s:%s}".formatted(placeholderIdentifier.getPackage().getQuestPath(), instruction);
             } catch (final QuestException exception) {
-                log.warn("Could not create placeholder '" + group + "': " + exception.getMessage(), exception);
+                log.warn("Could not create placeholder '%s': %s.".formatted(group, exception.getMessage()), exception);
             }
             return group;
         });

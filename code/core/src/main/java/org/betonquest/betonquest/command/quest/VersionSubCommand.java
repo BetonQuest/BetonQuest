@@ -70,7 +70,7 @@ public class VersionSubCommand {
      * @throws QuestException if a message could not be parsed
      */
     public void displayVersionInfo(final CommandSender sender, final String commandAlias) throws QuestException {
-        final String updateCommand = "/" + commandAlias + " update";
+        final String updateCommand = "/%s update".formatted(commandAlias);
 
         final Component hooked = displayVersionInfoHooked(compatibility.getBetonQuest());
 

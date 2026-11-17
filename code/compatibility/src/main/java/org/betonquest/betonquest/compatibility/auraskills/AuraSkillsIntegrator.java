@@ -38,7 +38,7 @@ public class AuraSkillsIntegrator extends IntegrationTemplate {
     public static Skill getNonNullSkill(final AuraSkillsApi auraSkillsApi, final NamespacedId namespacedId) throws QuestException {
         final Skill skill = auraSkillsApi.getGlobalRegistry().getSkill(namespacedId);
         if (skill == null) {
-            throw new QuestException("Skill '%s' does not exist!".formatted(namespacedId));
+            throw new QuestException("Skill '%s' does not exist".formatted(namespacedId));
         }
         return skill;
     }

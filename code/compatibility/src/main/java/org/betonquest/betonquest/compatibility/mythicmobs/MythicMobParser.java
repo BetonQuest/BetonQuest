@@ -18,7 +18,7 @@ public record MythicMobParser(MobManager mobManager) implements SimpleArgumentPa
     public MythicMob apply(final String value) throws QuestException {
         final Optional<MythicMob> mythicMob = mobManager.getMythicMob(value);
         if (mythicMob.isEmpty()) {
-            throw new QuestException("MythicMob type " + value + " is invalid.");
+            throw new QuestException("MythicMob type '%s' is invalid".formatted(value));
         }
         return mythicMob.get();
     }

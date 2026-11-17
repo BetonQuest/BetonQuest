@@ -88,12 +88,12 @@ public class QuestFixture {
                                         final ConfigurationSection contains, final String actualName, final boolean checkParents) throws InvalidConfigurationException {
         for (final String key : contains.getKeys(true)) {
             if (contains.isConfigurationSection(key)) {
-                assertTrue(actual.isConfigurationSection(key), "Key '" + key + "' is missing in the '" + actualName + "' config");
+                assertTrue(actual.isConfigurationSection(key), "Key '%s' is missing in the '%s' config".formatted(key, actualName));
             } else {
-                assertTrue(actual.contains(key), "Key '" + key + "' is missing in the '" + actualName + "' config");
-                assertEquals(contains.get(key), actual.get(key), "Key '" + key + "' has different value in the '" + actualName + "' config");
-                assertEquals(contains.getComments(key), actual.getComments(key), "Key '" + key + "' has different comments in the '" + actualName + "' config");
-                assertEquals(contains.getInlineComments(key), actual.getInlineComments(key), "Key '" + key + "' has different inline comments in the '" + actualName + "' config");
+                assertTrue(actual.contains(key), "Key '%s' is missing in the '%s' config".formatted(key, actualName));
+                assertEquals(contains.get(key), actual.get(key), "Key '%s' has different value in the '%s' config".formatted(key, actualName));
+                assertEquals(contains.getComments(key), actual.getComments(key), "Key '%s' has different comments in the '%s' config".formatted(key, actualName));
+                assertEquals(contains.getInlineComments(key), actual.getInlineComments(key), "Key '%s' has different inline comments in the '%s' config".formatted(key, actualName));
                 if (checkParents && key.contains(".")) {
                     assertParentComments(key.substring(0, key.lastIndexOf('.')), actual, contains);
                 }
@@ -102,8 +102,8 @@ public class QuestFixture {
     }
 
     private void assertParentComments(final String key, final ConfigurationSection expected, final ConfigurationSection actual) {
-        assertEquals(expected.getComments(key), actual.getComments(key), "Key '" + key + "' has different comments.");
-        assertEquals(expected.getInlineComments(key), actual.getInlineComments(key), "Key '" + key + "' has different inline comments.");
+        assertEquals(expected.getComments(key), actual.getComments(key), "Key '%s' has different comments".formatted(key));
+        assertEquals(expected.getInlineComments(key), actual.getInlineComments(key), "Key '%s' has different inline comments".formatted(key));
         if (key.contains(".")) {
             assertParentComments(key.substring(0, key.lastIndexOf('.')), expected, actual);
         }

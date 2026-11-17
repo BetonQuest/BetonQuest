@@ -48,7 +48,7 @@ public class DebugSubCommand extends QuestCommandPart {
     public void handle(final CommandSender sender, final String... args) {
         if (args.length == 1) {
             sender.sendMessage(
-                    "§2Debugging mode is currently " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
+                    "§2Debugging mode is currently %s!".formatted(debuggingController.isLogging() ? "enabled" : "disabled"));
             return;
         }
         switch (args[1].toLowerCase(Locale.ROOT)) {
@@ -79,7 +79,7 @@ public class DebugSubCommand extends QuestCommandPart {
         }
         final UUID uuid = ((Player) sender).getUniqueId();
         if (args.length < 3) {
-            sender.sendMessage("§2Active Filters: " + String.join(", ", logWatcher.getActivePatterns(uuid)));
+            sender.sendMessage("§2Active Filters: %s".formatted(String.join(", ", logWatcher.getActivePatterns(uuid))));
             return;
         }
         final String filter = args[2];
@@ -113,7 +113,7 @@ public class DebugSubCommand extends QuestCommandPart {
     private void handleRest(final CommandSender sender, final boolean input) {
         if (debuggingController.isLogging() && input || !debuggingController.isLogging() && !input) {
             sender.sendMessage(
-                    "§2Debugging mode is already " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
+                    "§2Debugging mode is already %s!".formatted(debuggingController.isLogging() ? "enabled" : "disabled"));
             return;
         }
         try {
@@ -124,10 +124,10 @@ public class DebugSubCommand extends QuestCommandPart {
             }
         } catch (final IOException e) {
             sender.sendMessage("Could not save new debugging state to configuration file!");
-            log.warn("Could not save new debugging state to configuration file! " + e.getMessage(), e);
+            log.warn("Could not save new debugging state to configuration file: %s.".formatted(e.getMessage()), e);
         }
-        sender.sendMessage("§2Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
-        log.info("Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
+        sender.sendMessage("§2Debugging mode was %s!".formatted(debuggingController.isLogging() ? "enabled" : "disabled"));
+        log.info("Debugging mode was %s!".formatted(debuggingController.isLogging() ? "enabled" : "disabled"));
     }
 
     private Level getLogLevel(@Nullable final String arg) {

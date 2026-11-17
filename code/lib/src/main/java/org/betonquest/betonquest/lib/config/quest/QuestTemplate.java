@@ -117,12 +117,12 @@ public class QuestTemplate extends Quest {
         for (final String template : templatePaths) {
             final QuestTemplate questTemplate = questTemplates.get(template);
             if (questTemplate == null) {
-                throw new InvalidConfigurationException("The template '" + template + "' does not exist");
+                throw new InvalidConfigurationException("The template '%s' does not exist".formatted(template));
             }
             try {
                 questTemplate.applyQuestTemplates(questTemplates);
             } catch (final InvalidConfigurationException e) {
-                throw new InvalidConfigurationException("The template '" + template + "' could not be loaded! Reason: " + e.getMessage(), e);
+                throw new InvalidConfigurationException("The template '%s' could not be loaded: %s".formatted(template, e.getMessage()), e);
             }
             templateConfigs.add(questTemplate);
         }

@@ -37,7 +37,7 @@ public class TypeTransformer implements PatchTransformer {
             case "double" -> config.set(key, Double.valueOf(valueString));
             case "float" -> config.set(key, Float.valueOf(valueString));
             case "string" -> config.set(key, valueString);
-            default -> throw new PatchException("Unknown type '" + type + "', skipping transformation.");
+            default -> throw new PatchException("Unknown type '%s', skipping transformation".formatted(type));
         }
     }
 }

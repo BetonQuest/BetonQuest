@@ -53,7 +53,7 @@ public class UpdatedPotionHandler extends PotionHandler {
             string.append(effect.getType().getKey().asMinimalString())
                     .append(':').append(power).append(':').append(duration).append(',');
         }
-        return (effects == null ? "" : effects) + " effects:" + string.substring(0, string.length() - 1);
+        return "%s effects:%s".formatted(effects == null ? "" : effects, string.substring(0, string.length() - 1));
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UpdatedPotionHandler extends PotionHandler {
         } else {
             effect = minimalString;
         }
-        return "type:" + effect;
+        return "type:%s".formatted(effect);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class UpdatedPotionHandler extends PotionHandler {
             try {
                 return PotionType.valueOf(potionType.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {
-                throw new QuestException("Invalid potion type: " + potionType, e);
+                throw new QuestException("Invalid potion type '%s'".formatted(potionType), e);
             }
         }
 

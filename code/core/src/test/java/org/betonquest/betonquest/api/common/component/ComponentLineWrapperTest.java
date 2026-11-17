@@ -183,7 +183,7 @@ class ComponentLineWrapperTest extends ComponentFixture {
                         if (result instanceof final TextComponent textComponent) {
                             results.add(textComponent.content());
                         } else {
-                            fail("Expected TextComponent but got: " + component.getClass().getSimpleName());
+                            fail("Expected TextComponent but got '%s'".formatted(component.getClass().getSimpleName()));
                         }
                     }
                     return results;

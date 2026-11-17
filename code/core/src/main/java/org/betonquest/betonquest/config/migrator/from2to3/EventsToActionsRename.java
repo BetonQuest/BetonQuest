@@ -51,8 +51,8 @@ public class EventsToActionsRename implements QuestMigration {
             if (conversation == null) {
                 continue;
             }
-            replaceEventsKeysInSection(root, "conversations." + key + ".NPC_options");
-            replaceEventsKeysInSection(root, "conversations." + key + ".player_options");
+            replaceEventsKeysInSection(root, "conversations.%s.NPC_options".formatted(key));
+            replaceEventsKeysInSection(root, "conversations.%s.player_options".formatted(key));
         }
     }
 

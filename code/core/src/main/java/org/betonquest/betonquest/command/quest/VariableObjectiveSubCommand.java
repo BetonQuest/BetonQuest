@@ -84,7 +84,7 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find objective: " + e.getMessage(), e);
+            log.warn("Objective '%s' could not be parsed: %s".formatted(args[2], e.getMessage()), e);
             return;
         }
         if (!(tmp instanceof final VariableObjective variableObjective)) {
@@ -92,7 +92,7 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
             sendMessage(sender, "specify_objective");
             return;
         }
-        log.debug("Using variable objective " + variableObjective.getObjectiveID().getFull());
+        log.debug("Using objective '%s' as variable objective.".formatted(variableObjective.getObjectiveID().getFull()));
 
         final boolean isOnline = profile.getOnlineProfile().isPresent();
         final VariableObjective.VariableData data;
@@ -133,7 +133,7 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
                 properties.entrySet().stream()
                         .filter(entry -> shouldDisplay.test(entry.getKey()))
                         .sorted((o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()))
-                        .forEach(entry -> sender.sendMessage("§b- " + entry.getKey() + "§e: §a" + entry.getValue()));
+                        .forEach(entry -> sender.sendMessage("§b- %s§e: §a%s".formatted(entry.getKey(), entry.getValue())));
             }
             case "set", "s" -> {
                 if (args.length < 6) {
@@ -142,7 +142,7 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
                     return;
                 }
                 final String value = String.join(" ", Arrays.copyOfRange(args, 5, args.length));
-                log.debug("Setting value " + value + " for key " + args[4] + " for " + profile + " in " + variableObjective.getObjectiveID().getFull());
+                log.debug("Setting value '%s' for key '%s' for %s in '%s'.".formatted(value, args[4], profile, variableObjective.getObjectiveID().getFull()));
                 if (data == null) {
                     variableObjective.store(profile, args[4], value);
                 } else {
@@ -158,7 +158,7 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
                     sendMessage(sender, "arguments");
                     return;
                 }
-                log.debug("Removing key " + args[4] + " for " + profile + " in " + variableObjective.getObjectiveID().getFull());
+                log.debug("Removing key '%s' for %s in '%s'.".formatted(args[4], profile, variableObjective.getObjectiveID().getFull()));
                 if (data == null) {
                     variableObjective.store(profile, args[4], null);
                 } else {

@@ -132,7 +132,7 @@ public class PluginMessage implements Localizations {
         }
 
         for (final String language : getLanguages()) {
-            log.debug("Loaded " + language + " language");
+            log.debug("Loaded '%s' language.".formatted(language));
         }
     }
 
@@ -145,7 +145,8 @@ public class PluginMessage implements Localizations {
         for (final Map.Entry<String, String> file : loadMessageFiles(root).entrySet()) {
             final String langKey = file.getKey();
             if (!langKey.matches(LANG_KEY)) {
-                log.warn("Could not load '" + langKey + "' language file because the name is invalid! It has to be in the pattern: " + LANG_KEY);
+                log.warn("Could not load '%s' language file because the name is invalid! It has to be in the pattern '%s'."
+                        .formatted(langKey, LANG_KEY));
                 continue;
             }
             if (!messages.containsKey(langKey)) {
@@ -251,8 +252,12 @@ public class PluginMessage implements Localizations {
     public Component getMessage(@Nullable final Profile profile, final String message, final VariableReplacement... replacements) throws QuestException {
         final Text component = loadedMessages.get(message);
         if (component == null) {
-            throw new IllegalArgumentException("Message not found: " + message);
+            throw new IllegalArgumentException("Message '%s' not found".formatted(message));
         }
-        return new VariableComponent(component.asComponent(profile)).resolve(replacements);
+        try {
+            return new VariableComponent(component.asComponent(profile)).resolve(replacements);
+        } catch (final QuestException e) {
+            throw new QuestException("Message '%s' could not be parsed: %s".formatted(message, e.getMessage()), e);
+        }
     }
 }

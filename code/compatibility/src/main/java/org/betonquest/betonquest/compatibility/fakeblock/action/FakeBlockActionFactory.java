@@ -53,14 +53,15 @@ public class FakeBlockActionFactory implements PlayerActionFactory {
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "hidegroup" -> new HideGroupAction(groupNames, playerGroupService);
             case "showgroup" -> new ShowGroupAction(groupNames, playerGroupService);
-            default -> throw new QuestException("Unknown action (valid options are: showgroup, hidegroup): " + action);
+            default ->
+                    throw new QuestException("Unknown action '%s' (valid options are: showgroup, hidegroup)".formatted(action));
         };
     }
 
     private ValueValidator<String> checkForNotExistingGroups() {
         return value -> {
             if (!groupService.getProvider().hasGroup(value)) {
-                throw new QuestException("This group do not exist: " + value);
+                throw new QuestException("The group '%s' does not exist".formatted(value));
             }
             return true;
         };

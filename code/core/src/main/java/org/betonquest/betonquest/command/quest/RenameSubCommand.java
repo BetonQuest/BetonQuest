@@ -139,12 +139,12 @@ public class RenameSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find Objective: " + e.getMessage(), e);
+            log.warn("Objective '%s' could not be parsed: %s".formatted(name, e.getMessage()), e);
             return true;
         }
         // rename objective in the file
         final MultiConfiguration configuration = nameID.getPackage().getConfig();
-        final String newPath = "objectives." + rename.split(Identifier.SEPARATOR)[1];
+        final String newPath = "objectives.%s".formatted(rename.split(Identifier.SEPARATOR)[1]);
         configuration.set(newPath, nameID.readRawInstruction());
         try {
             final ConfigurationSection sourceConfigurationSection = configuration.getSourceConfigurationSection(nameID.get());
@@ -165,8 +165,9 @@ public class RenameSubCommand extends QuestCommandPart {
         try {
             renameID = getIdentifier(ObjectiveIdentifier.class, rename);
         } catch (final QuestException e) {
-            sender.sendMessage("§4There was an unexpected error: " + e.getMessage());
-            log.reportException(e);
+            sendMessage(sender, "error",
+                    new VariableReplacement("error", Component.text(e.getMessage())));
+            log.warn("Objective '%s' could not be parsed: %s".formatted(rename, e.getMessage()), e);
             return true;
         }
         final ObjectiveProcessor objectiveProcessor = (ObjectiveProcessor) objectiveManager;
@@ -195,9 +196,9 @@ public class RenameSubCommand extends QuestCommandPart {
         try {
             newEntryID = getIdentifier(JournalEntryIdentifier.class, rename);
         } catch (final QuestException e) {
-            final String message = "You can't rename into non-existent id!";
-            sendMessage(sender, "error", new VariableReplacement("error", Component.text(message)));
-            log.error(message);
+            sendMessage(sender, "error",
+                    new VariableReplacement("error", Component.text(e.getMessage())));
+            log.warn("Journal entry '%s' could not be parsed: %s".formatted(rename, e.getMessage()), e);
             return true;
         }
 
@@ -205,10 +206,9 @@ public class RenameSubCommand extends QuestCommandPart {
         try {
             oldEntryID = getIdentifier(JournalEntryIdentifier.class, name);
         } catch (final QuestException e) {
-            final String message = "Old journal entry " + name + " does not exist, renaming only database entries!";
-            log.warn(message, e);
-            log.debug("Renaming non existent journal entry only from database: " + e.getMessage(), e);
-            sender.sendMessage("§2" + message);
+            sendMessage(sender, "error",
+                    new VariableReplacement("error", Component.text(e.getMessage())));
+            log.warn("Journal entry '%s' could not be parsed: %s".formatted(name, e.getMessage()), e);
             return false;
         }
 
