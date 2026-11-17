@@ -33,6 +33,7 @@ import org.betonquest.betonquest.quest.objective.interact.EntityInteractObjectiv
 import org.betonquest.betonquest.quest.objective.jump.JumpObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.kill.KillPlayerObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.kill.MobKillObjectiveFactory;
+import org.betonquest.betonquest.quest.objective.lectern.LecternObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.location.LocationObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.login.LoginObjectiveFactory;
 import org.betonquest.betonquest.quest.objective.logout.LogoutObjectiveFactory;
@@ -103,6 +104,7 @@ public class ObjectiveTypeComponent extends AbstractCoreComponent {
         objectiveTypes.register("fish", new FishObjectiveFactory());
         objectiveTypes.register("interact", new EntityInteractObjectiveFactory());
         objectiveTypes.register("kill", new KillPlayerObjectiveFactory(conditionManager));
+        objectiveTypes.register("lectern", new LecternObjectiveFactory());
         objectiveTypes.register("location", new LocationObjectiveFactory());
         objectiveTypes.register("login", new LoginObjectiveFactory());
         objectiveTypes.register("logout", new LogoutObjectiveFactory());

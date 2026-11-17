@@ -519,6 +519,26 @@ objectives:
   kill5: "kill 5 required:team_B"
 ```
 
+## `Lectern`
+
+__Context__: @snippet:objective-meta:online@  
+__Syntax__: `lectern <location> [page]`  
+__Description__: Reacts to interactions with a lectern block.
+
+This objective can be used to track opening a lectern or reaching a specific page.
+If the `page` parameter is not specified, the objective completes upon simply opening the lectern at the specified location.
+
+| Parameter               | Type               | Explanation                                                                        |
+|-------------------------|--------------------|------------------------------------------------------------------------------------|
+| location <br>[Location] | Required           | The [location](Definition-Encyclopedia.md#unified-location-format) of the lectern. |
+| page     <br>[Number]   | Optional<br>[None] | A specific page that must be reached. (first page is 1)                            |
+
+```YAML title="Examples"
+objectives:
+  openLectern: "lectern 100;200;300;world"
+  reachPage10: "lectern 100;200;300;world page:10"
+```
+
 ## `Location`
 
 __Context__: @snippet:objective-meta:online@  
