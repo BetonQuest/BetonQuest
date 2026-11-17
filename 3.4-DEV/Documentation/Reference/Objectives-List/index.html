@@ -4467,6 +4467,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#lectern">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Lectern</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#location">
     <span class="md-ellipsis">
 
@@ -9833,6 +9856,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#lectern">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Lectern</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#location">
     <span class="md-ellipsis">
 
@@ -11272,6 +11318,37 @@ and <code>notify</code> will display notifications when a player is killed, opti
 already killed players and <code>total</code> is the initially required amount to kill.</p>
 <div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">kill5</span><span class="p">:</span><span class="w"> </span><span class="s">"kill</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">required:team_B"</span>
+</code></pre></div>
+<h2 id="lectern"><code>Lectern</code><a class="headerlink" href="#lectern" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
+<strong>Syntax</strong>: <code>lectern &lt;location&gt; [page]</code><br>
+<strong>Description</strong>: Reacts to interactions with a lectern block.</p>
+<p>This objective can be used to track opening a lectern or reaching a specific page.
+If the <code>page</code> parameter is not specified, the objective completes upon simply opening the lectern at the specified location.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>location <br>[Location]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The <a href="../Definition-Encyclopedia/#unified-location-format">location</a> of the lectern.</td>
+</tr>
+<tr>
+<td>page     <br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
+<td>A specific page that must be reached. (first page is 1)</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">openLectern</span><span class="p">:</span><span class="w"> </span><span class="s">"lectern</span><span class="nv"> </span><span class="s">100;200;300;world"</span>
+<span class="w">  </span><span class="nt">reachPage10</span><span class="p">:</span><span class="w"> </span><span class="s">"lectern</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">page:10"</span>
 </code></pre></div>
 <h2 id="location"><code>Location</code><a class="headerlink" href="#location" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This objective can only be completed by a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
