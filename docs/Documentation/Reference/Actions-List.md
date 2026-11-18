@@ -21,7 +21,7 @@ The power overrides the item's power if both are specified.
 | item<br>[Item]    | Optional<br>[firework_rocket] | The optional item to use as a booster. Has to be a `firework_rocket`. |
 | power<br>[Number] | Optional<br>[1]               | An optional power override. Has to be in the inclusive range 0-127.   |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   simpleBoost: "boostelytra"
   justPower: "boostelytra power:2" 
@@ -40,7 +40,7 @@ __Description__: Ignite the player for the specified duration.
 | duration<br>[Number] | Required              | The duration the player will burn.                 |
 | unit<br>[TimeUnit]   | Optional<br>[seconds] | The unit of the duration time. Default is seconds. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   burn: "burn 30 unit:ticks"
   punishing_fire: "burn %point.punishment.amount%"
@@ -60,7 +60,7 @@ Running this action is equal to the player canceling a quest using the backpack.
 | canceler<br>[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Required              | The identifier of the quest canceler to execute.                                                                              |
 | bypass<br>[Boolean]                                                  | Flag<br>[false, true] | If the canceler conditions should be ignored. If enabled the canceler will be executed, even when its conditions are not met. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   cancelSmallQuest: "cancel smallQuest"
   cancelWoodQuest: "cancel woodQuest bypass"
@@ -77,7 +77,7 @@ __Description__: Cancel the conversation that is currently active for the player
 |------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | skipDelay<br>[Boolean] | Flag<br>[false, true] | If the interceptor delay should be skipped and the conversation interceptor ended immediately. This also ends any delayed interceptor. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   cancel: "cancelconversation"
   cancelInstant: "cancelconversation skipDelay"
@@ -95,7 +95,7 @@ Additional messages can be defined by separating them with `|` character. If you
 
 If a plugin does not work with the sudo / command action you need to use this action.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   sendMSG: "chat Hello!"
   sendMultipleMSGs: "chat Hi %player%|ban %player%|pardon %player%"
@@ -112,7 +112,7 @@ __Description__: Remove all items from the chest at the specified location.
 |--------------------------------------------------------------------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------|
 | location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required | The location of the chest to be cleared. In case there is no chest at the given location or it could not be cleared, an error is thrown. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   chestclear: "chestclear 100;200;300;world"
 ```
@@ -133,7 +133,7 @@ If the chest is full, the items will be dropped on the ground if the `dropExcess
 | items<br>List[Item]                                                            | Required              | The items with their optional amounts.                                                                                                 |
 | dropExcess<br>[Boolean]                                                        | Flag<br>[false, true] | If the excess amount of items that won't fit into the chest should be dropped on the ground.                                           |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   chestgive: "chestgive 100;200;300;world emerald:5,sword dropExcess"
   nodrop: "chestgive 100;200;300;world emerald:5,sword"
@@ -155,7 +155,7 @@ The instruction accepts the same `abort` and `fail` options.
 | abort<br>[Boolean]                                                             | Flag<br>[false, true] | No items will be taken if not all specified items are present.                                                                                        |
 | fail<br>List[Identifier]                                                       | Optional<br>[None]    | If the action fails to take all items, those actions will be executed.                                                                                |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   chesttake: "chesttake 100;200;300;world emerald:5,sword"
   finishRiddle: "chesttake 300;200;100;world stone:8,artifact:2,sand:3 abort fail:thunder"
@@ -176,7 +176,7 @@ If you want to use a `|` character in the command use `\|`.
 Looking for [execute as player commands](#command)?
 Looking for [execute as operator commands](#opsudo)?
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   killAndBan: "command kill %player%|ban %player%"
 ```
@@ -190,11 +190,15 @@ __Description__: Manage the compass destinations for the player.
 When you run this action, you can add or remove a compass destination for the player. You may also directly set the player's compass destination as well.
 When a destination is added the player will be able to select a specified location as a target of his compass.
 To select the target the player must open his backpack and click on the compass icon.
-The first argument is `add`,`del` or `set`, and second one is the name of the target, as defined in the _compass_ section.
 Note that if you set a target the player will not automatically have it added to their choices.
 
 The destination must be defined in `compass` section.
 You can specify a name for the target in each language or just give a general name, and optionally add a custom item (from _items_ section) to be displayed in the backpack.
+
+| Parameter                | Type     | Explanation                                                  |
+|--------------------------|----------|--------------------------------------------------------------|
+| operation<br>[CompassOp] | Required | The operation to perform.                                    |
+| target<br>[Identifier]   | Required | The name of the target, as defined in the `compass` section. |
 
 ```YAML title="Example compass configuration"
 compass:
@@ -206,23 +210,28 @@ compass:
     item: scroll
 ```
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   compassBeton: "compass add beton"
 ```
 
+*[CompassOp]: add, del, set
+
 ## `Conversation`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `conversation <conversation> <option>`  
+__Syntax__: `conversation <conversation> [option]`  
 __Description__: Start a conversation.
 
-The first argument is ID of the conversation. This bypasses the conversation permission!
+This bypasses the conversation permission!
+When using the optional `option` argument, the conversation will start without its header.
 
-The optional `option` argument is a NPC option where the conversation will start.
-When using this argument the conversation will start without its header.
+| Parameter                    | Type               | Explanation                                       |
+|------------------------------|--------------------|---------------------------------------------------|
+| conversation<br>[Identifier] | Required           | The ID of the conversation.                       |
+| option<br>[String]           | Optional<br>[None] | The NPC option where the conversation will start. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   startConversation: "conversation village_smith"
   startConversationOption: "conversation tutorial option:explain_world"
@@ -234,9 +243,11 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `damage <amount>`  
 __Description__: Apply the specified amount of damage to the player.
 
-The only argument is a number (can have a floating point).
+| Parameter          | Type     | Explanation                                                        |
+|--------------------|----------|--------------------------------------------------------------------|
+| amount<br>[Number] | Required | The absolute amount of damage to apply. Can have a floating point. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   dealDamage: "damage 20"
 ```
@@ -247,9 +258,11 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `deleffect <effects>`  
 __Description__: Remove the specified potion effects from the player.
 
-Use `any` instead of a list of types to remove all potion effects from the player.
+| Parameter               | Type     | Explanation                                                   |
+|-------------------------|----------|---------------------------------------------------------------|
+| effects<br>List[String] | Required | The list of potion effects to remove, or `any` to remove all. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   deleteEffects: "deleffect ABSORPTION,BLINDNESS"
   deleteAny: "deleffect any"
@@ -263,7 +276,11 @@ __Description__: Delete the global point category.
 
 See also the [`deletepoint` action](#deletepoint).
 
-```YAML title="Example"
+| Parameter                                                            | Type     | Explanation                            |
+|----------------------------------------------------------------------|----------|----------------------------------------|
+| category<br>[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Required | The name of the global point category. |
+
+```YAML title="Examples"
 actions:
   deleteBonus: "deleteglobalpoint bonus"
 ```
@@ -278,7 +295,11 @@ The independent context will delete the points for all players in the database (
 
 See also the [`deleteglobalpoint` action](#deleteglobalpoint).
 
-```YAML title="Example"
+| Parameter                                                            | Type     | Explanation                     |
+|----------------------------------------------------------------------|----------|---------------------------------|
+| category<br>[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Required | The name of the point category. |
+
+```YAML title="Examples"
 actions:
   deletePoints: "deletepoint npc_attitude"
 ```
@@ -291,7 +312,7 @@ __Description__: Open and close doors, trapdoors, and fence gates.
 
 The syntax is exactly the same as in `lever` action above.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   close: "door 100;200;300;world off"
 ```
@@ -320,16 +341,19 @@ actions:
 ## `Effect`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `effect <effect> <duration> <level> [ambient] [noicon] [hidden]`  
+__Syntax__: `effect <effect> <duration> <level> {ambient} {noicon} {hidden}`  
 __Description__: Apply the specified potion effect to the player.
 
-First argument is potion type. You can find all available types [here](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html).
-Second is integer defining how long the effect will last in seconds.
-Third argument, also integer, defines level of the effect (1 means first level).
-Add a parameter `ambient` to make potion particles appear more invisible (just like beacon effects).
-To hide particles add a parameter `hidden`. To hide the icon for the effect add `noicon`.
+| Parameter            | Type                  | Explanation                                                                                               |
+|----------------------|-----------------------|-----------------------------------------------------------------------------------------------------------|
+| effect<br>[String]   | Required              | See [PotionEffectType](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html). |
+| duration<br>[Number] | Required              | How long the effect will last in seconds.                                                                 |
+| level<br>[Number]    | Required              | Level of the effect.                                                                                      |
+| ambient<br>[Boolean] | Flag<br>[false, true] | Make potion particles appear more often and translucent.                                                  |
+| noicon<br>[Boolean]  | Flag<br>[false, true] | Hide the icon for the effect.                                                                             |
+| hidden<br>[Boolean]  | Flag<br>[false, true] | Hide particles.                                                                                           |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   effectBlindness: "effect BLINDNESS 30 1 ambient noicon"
 ```
@@ -350,7 +374,7 @@ The `force` flag replaces an existing item, and combining it with `drop` drops t
 | drop<br>[Boolean]             | Flag<br>[false, true] | Whether an item that cannot remain in the equipment slot should be dropped.            |
 | force<br>[Boolean]            | Flag<br>[false, true] | Whether an item already in the equipment slot should be replaced by the specified one. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   equipHelmet: "equip diamond_helmet HEAD"
   replaceHelmet: "equip quest_helmet HEAD drop force"
@@ -365,7 +389,7 @@ __Description__: Evaluate the expression and execute the resulting action.
 This action allows you to resolve an expression containing placeholders, and the result will then be interpreted
 again as an action.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   simpleEval: 'eval notify "This is actually an eval action evaluating to a notify action."'
   complexEval: "eval point ranking 5 action:add %objective.settings.notify%" #(1)!
@@ -380,22 +404,24 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `experience <amount> <action>`  
 __Description__: Manipulate the player's experience bar.
 
-This action allows you to manipulate player's experience. First you specify a number as the amount, then the modification action.
-You can use `action:addExperience`, `action:addLevel`, `action:setExperienceBar` and `action:setLevel` as modification types.
-
 To use this correctly, you need to understand this:
 
 * A player has experience points.
-* Experience levels, shown are shown as a number in the experience bar. Every level requires more experience points than the previous.
+* Experience levels are shown as a number in the experience bar. Every level requires more experience points than the previous.
 * The experience bar itself shows the percentage of the experience points needed to reach the next level.
 
 While `action:addExperience` only adds experience points, `action:addLevel` adds a level and keeps the current percentage.
 `action:setExperienceBar` sets the progress of the bar. Decimal values between `0` and `1` represent the fill level.
 This changes the underlying experience points, it's **not** just a visual change.
-`action:setLevel` sets only the level, expect if you specify a decimal number, then the experience bar will be
+`action:setLevel` sets only the level, except if you specify a decimal number, then the experience bar will be
 set to the specified percentage.
 
-```YAML title="Example"
+| Parameter          | Type     | Explanation                                                 |
+|--------------------|----------|-------------------------------------------------------------|
+| amount<br>[Number] | Required | The amount of experience or levels to use in the operation. |
+| action<br>[XPType] | Required | The operation to perform on the player's experience.        |
+
+```YAML title="Examples"
 actions:
   add15XP: "experience 15 action:addExperience"
   add4andAHalfLevel: "experience 4.5 action:addLevel"
@@ -403,6 +429,8 @@ actions:
   setXPBar: "experience 0.5 action:setExperienceBar"
   resetLevel: "experience 0.01 action:setLevel"
 ```
+
+*[XPType]: addExperience, addLevel, setExperienceBar, setLevel
 
 ## `Explosion`
 
@@ -412,11 +440,15 @@ __Description__: Create an explosion at the specified location.
 
 You can also define power, so be careful not to blow your server away.
 Default TNT power is 4, while Wither on creation is 7.
-First argument can be 0 or 1 and states if explosion will generate fire (like Ghast's fireball).
-Second is also 0 or 1 but this defines if block will be destroyed or not.
-Third argument is the power (float number). At the end (4th attribute) there is location.
 
-```YAML title="Example"
+| Parameter                                                                      | Type     | Explanation                                         |
+|--------------------------------------------------------------------------------|----------|-----------------------------------------------------|
+| fire<br>[Boolean]                                                              | Required | If the explosion will generate fire.                |
+| block<br>[Boolean]                                                             | Required | If blocks will be destroyed.                        |
+| power<br>[Number]                                                              | Required | The power of the explosion.                         |
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required | The location where the explosion should be created. |
+
+```YAML title="Examples"
 actions:
   explosion: "explosion 0 1 4 100;64;-100;survival"
 ```
@@ -434,7 +466,7 @@ collapsing long if-else chains into single actions.
 This action is especially powerful when it is used in conjunction with the `conditions:` keyword,
 which can be used with any action.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   firstExample: "first action1,action2,action3" # (1)!
   action1: "point carry boxes 10 action:add conditions:firstCondition"
@@ -482,7 +514,7 @@ You can use the `cancelOnLogout` argument to stop the folder executing any remai
 | _cancelConditions_ | cancelConditions:cond1,cond2 | Disabled               | If enabled, the folder will stop executing actions if the conditions are true.        |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   simpleFolder: "folder action1,action2,action3" # (1)!
   runActions: "folder action1,action2,action3 delay:5 period:1" # (2)!
@@ -498,17 +530,19 @@ actions:
 ## `Give`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `give <items> [notify] [backpack]`  
+__Syntax__: `give <items> {notify} {backpack}`  
 __Description__: Give the player all specified items.
 
-They are specified exactly as in `item` condition -
-list separated by commas, every item can have amount separated by colon. Default amount is 1.
 If the player doesn't have required space in the inventory, the items are dropped on the ground,
-unless they are quest items. Then they will be put into the backpack. You can also specify `notify` keyword to display a
-simple message to the player about receiving items.
-The optional `backpack` argument forces quest items to be placed in the backpack.
+unless they are quest items. Then they will be put into the backpack.
 
-```YAML title="Example"
+| Parameter              | Type                  | Explanation                                                                |
+|------------------------|-----------------------|----------------------------------------------------------------------------|
+| items<br>List[Item]    | Required              | The items with their optional amounts.                                     |
+| notify<br>[Boolean]    | Flag<br>[false, true] | Display a simple message to the player about receiving items.              |
+| backpack<br>[Boolean]  | Flag<br>[false, true] | Force quest items to be placed in the backpack.                            |
+
+```YAML title="Examples"
 actions:
   giveEmeralds: "give emerald:5,emerald_block:9"
   giveSign: "give important_sign notify backpack"
@@ -522,7 +556,7 @@ __Description__: Give the journal to the player.
 
 It acts the same way as **/journal** command would.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   giveJournal: "givejournal"
 ```
@@ -587,7 +621,7 @@ Using negative amounts will skip the damage animation and any related effects.
 | amount<br>[Number]      | Required          | The amount of health to heal. |
 | operation<br>[HealType] | Optional<br>[add] | The operation to perform.     |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   give5: "heal 5"
   set20: "heal 20 operation:set"
@@ -601,16 +635,20 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `hunger <operation> <amount>`  
 __Description__: Manage the food level of the player.
 
-The second argument is the modification type.
-There are `give`, `take` and `set`. The second argument is the amount. With `set` can the food level be anything.
-If `give` or `take` is specified the final amount won't be more than 20 or less than 0.
 If the hunger level is below 7, the player cannot sprint.
 
-```YAML title="Example"
+| Parameter                 | Type     | Explanation                                       |
+|---------------------------|----------|---------------------------------------------------|
+| operation<br>[HungerType] | Required | The operation to perform.                         |
+| amount<br>[Number]        | Required | The amount of food level to use in the operation. |
+
+```YAML title="Examples"
 actions:
   set20: "hunger set 20"
   give5: "hunger give 5"
 ```
+
+*[HungerType]: give, take, set
 
 ## `If`
 
@@ -623,7 +661,7 @@ string is `if condition action1 else action2`, where `condition` is a condition 
  `else` keyword is mandatory between actions for no practical reason. Keep in mind that this action is player-independent 
 but probably the condition or the actions are not.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   toggleWeather: "if sun rain else sun"
 ```
@@ -631,23 +669,30 @@ actions:
 ## `ItemDurability`
 
 __Context__: @snippet:action-meta:online@  
-__Syntax__: `itemdurability <slot> <operation> <amount> [ignoreUnbreakable] [ignoreEvents]`  
+__Syntax__: `itemdurability <slot> <operation> <amount> {ignoreUnbreakable} {ignoreEvents}`  
 __Description__: Manage the durability of an item in the specified slot.
 
-The first argument is the slot, the second the change of durability and the third the amount.
-Optional arguments are `ignoreUnbreakable` to ignore the unbreakable flag and unbreaking enchantment
-and `ignoreEvents` to bypass action logic, so other plugins will not be able to interfere.
 Available slot types: `HAND`, `OFF_HAND`, `HEAD`, `CHEST`, `LEGS`, `FEET`.
 
 !!! info
     Both increasing and decreasing durability will be affected by the unbreaking enchantment.
-    To prevent this behaviour use the `ignoreUnbreakable` argument.
+    To prevent this behavior, use the `ignoreUnbreakable` argument.
 
-```YAML title="Example"
+| Parameter                      | Type                  | Explanation                                                          |
+|--------------------------------|-----------------------|----------------------------------------------------------------------|
+| slot<br>[PlayerEquipmentSlot]  | Required              | The slot of the item to change.                                      |
+| operation<br>[PointType]       | Required              | The operation to perform on the durability.                          |
+| amount<br>[Number]             | Required              | The amount of durability to use in the operation.                    |
+| ignoreUnbreakable<br>[Boolean] | Flag<br>[false, true] | Ignore the unbreakable flag and unbreaking enchantment.              |
+| ignoreEvents<br>[Boolean]      | Flag<br>[false, true] | Bypass action logic, so other plugins will not be able to interfere. |
+
+```YAML title="Examples"
 actions:
   add1ToHand: "itemdurability HAND ADD 1"
   damageChest: "itemdurability CHEST SUBTRACT %randomnumber.whole.15~30% ignoreUnbreakable ignoreEvents"
 ```
+
+*[PointType]: ADD, SUBTRACT, SET, MULTIPLY
 
 ## `ItemOverride`
 
@@ -662,7 +707,7 @@ Only `simple` items are valid identifiers for this action.
 | slot <br>[PlayerEquipmentSlot] | Required | The slot of the item to change.            |
 | itemId <br>[Identifier]        | Required | The identifier of the definition to apply. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   setNameToHand: "itemoverride HAND named"
   updateStatistic: "itemoverride OFF_HAND statistic"
@@ -674,27 +719,27 @@ items:
 ## `Journal`
 
 __Context__: @snippet:action-meta:online-offline-independent@  
-__Syntax__: `journal <operation> <entry>`  
+__Syntax__: `journal <operation> [entry]`  
 __Description__: Manage entries in the player's journal.
 
-Journal entries have to be defined in the `journal` section. The
-first argument is the action to perform, the second one is the name of the entry if required. Changing journal entries
-will also reload the journal.
-
-Possible actions are:
-- `add`: Adds a page to the journal.
-- `delete`: Deletes a page from the journal.
-- `update`: Refreshes the journal. This is especially useful when you need to update the main page.
-
+Journal entries have to be defined in the `journal` section.
+Changing journal entries will also reload the journal.
 The independent context is only available for the `delete` operation,
-and delete the journal enty for all players in the database (even if offline).
+and deletes the journal entry for all players in the database (even if offline).
 
-```YAML title="Example"
+| Parameter                | Type               | Explanation                        |
+|--------------------------|--------------------|------------------------------------|
+| operation<br>[JournalOp] | Required           | The action to perform.             |
+| entry<br>[Identifier]    | Optional<br>[None] | The name of the entry if required. |
+
+```YAML title="Examples"
 actions:
   questStarted: "journal add quest_started"
   questAvailable: "journal delete quest_available"
   update: "journal update"
 ```
+
+*[JournalOp]: add, delete, update
 
 ## `Kill`
 
@@ -702,7 +747,7 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `kill`  
 __Description__: Kill the player.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   killPlayer: "kill"
 ```
@@ -713,9 +758,11 @@ __Context__: @snippet:action-meta:online-offline@
 __Syntax__: `language <language>`  
 __Description__: Set the player's language to the specified one.
 
-There is only one argument, the language name.
+| Parameter            | Type     | Explanation       |
+|----------------------|----------|-------------------|
+| language<br>[String] | Required | The language key. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   setLangEn: "language en-US"
 ```
@@ -726,23 +773,30 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `lever <location> <state>`  
 __Description__: Control the lever at the specified location.
 
-The first argument is a location, and the second one is a state: `on`, `off` or `toggle`.
+| Parameter                                                                      | Type          | Explanation                    |
+|--------------------------------------------------------------------------------|---------------|--------------------------------|
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required      | The location of the lever.     |
+| state<br>[LeverState]                                                          | Required      | The state to set the lever to. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   toggle: "lever 100;200;300;world toggle"
 ```
 
+*[LeverState]: on, off, toggle
+
 ## `Lightning`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `lightning <location> [noDamage]`  
-__Description__: Strike lightning at specified location.
+__Syntax__: `lightning <location> {noDamage}`  
+__Description__: Strike lightning at the specified location.
 
-The first argument is the location. By adding `noDamage` the lightning is only
-an effect and therefor does no damage.
+| Parameter                                                                      | Type                  | Explanation                                                                                  |
+|--------------------------------------------------------------------------------|-----------------------|----------------------------------------------------------------------------------------------|
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required              | The location where the lightning should strike.                                              |
+| noDamage<br>[Boolean]                                                          | Flag<br>[false, true] | If the lightning should be purely visual and deal no damage.                                 |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   strikeLightning: "lightning 100;64;-100;survival"
   showEntrance: "lightning 200;65;100;survival noDamage"
@@ -758,7 +812,7 @@ __Description__: Print the specified message to the server's console.
 |-----------|------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------|
 | _level_   | `level:logLevel` | `INFO`        | Optionally the log level can be specified but only **before** the message. <br>There are 4 levels: `debug`, `info`, `warning` and `error` |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
     logPlayer: "log %player% completed first quest."
     debug: "log daily quests have been reset level:DEBUG "
@@ -798,7 +852,7 @@ In this example, english users would see `ABC` and german ones would see `DEF`.
 | _io_                       | `io:bossbar`          | io:chat                | Any NotifyIO Overrides the "category". settings.                                                                                 |
 | _any io specific settings_ | `setting:value`       | None                   | Some notifyIO's provide specific settings. Can be used multiple times. Overrides the "category" settings.                        |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   #The simplest of all notify actions. Just a chat message:
   customAction: "notify Hello %player%!"  
@@ -836,7 +890,7 @@ You can broadcast notifications to all online players on the server using the `n
 It works just like the notify action.
 Placeholders are resolved for each online player, not for the player the action is executed for.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   announceDungeon: "notifyall A new dungeon has opened!"
 ```
@@ -844,16 +898,16 @@ actions:
 ## `NpcTeleport`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `npcteleport <Npc> <Location> [spawn]`  
+__Syntax__: `npcteleport <npc> <location> {spawn}`  
 __Description__: Teleport the NPC to the specified location.
 
-| Parameter  | Syntax                                                                            | Default Value          | Explanation                                      |
-|------------|-----------------------------------------------------------------------------------|------------------------|--------------------------------------------------|
-| _Npc_      | Npc                                                                               | :octicons-x-circle-16: | The ID of the Npc                                |
-| _Location_ | [Unified Location Formatting](Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to which the Npc will be teleported |
-| _Spawn_    | Keyword (`spawn`)                                                                 | Disabled               | If the NPC should be spawned if not in the world |
+| Parameter                                                                      | Type                  | Explanation                                       |
+|--------------------------------------------------------------------------------|-----------------------|---------------------------------------------------|
+| npc<br>[Identifier]                                                            | Required              | The ID of the NPC.                                |
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required              | The location to which the NPC will be teleported. |
+| spawn<br>[Boolean]                                                             | Flag<br>[false, true] | If the NPC should be spawned if not in the world. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   teleportToSpawn: "npcteleport mayorHans 100;200;300;world"
 ```
@@ -867,17 +921,18 @@ __Description__: Manage objectives.
 The independent context is only available for the `remove` operation,
 and removes the objective for all players in the database (even if offline).
 
-| Parameter      | Syntax                             | Default Value          | Explanation                             |
-|----------------|------------------------------------|------------------------|-----------------------------------------|
-| _action_       | Keyword: `add`,`remove`,`complete` | :octicons-x-circle-16: | The action to do with the objective(s). |
-| _objective(s)_ | `objectiveName` or `obj1,obj2`     | :octicons-x-circle-16: | The objective(s) to run the action on.  |
+| Parameter                                                                  | Type     | Explanation                             |
+|----------------------------------------------------------------------------|----------|-----------------------------------------|
+| operation<br>[ObjectiveOp]                                                 | Required | The action to do with the objective(s). |
+| objectives<br>List[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Required | The objective(s) to run the action on.  |
 
-
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   startQuest: "objective add killTheDragon,goToDungeon"
   progressQuest: "objective complete killTheDragon"
 ```
+
+*[ObjectiveOp]: add, remove, complete
 
 ## `OpSudo`
 
@@ -891,7 +946,7 @@ Additional commands can be defined by separating them with `|` character. If you
 Looking for [execute as player commands](#sudo)?
 Looking for [execute as console commands](#command)?
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   spawn: "opsudo spawn"
 ```
@@ -910,7 +965,7 @@ __Description__: Spawns particles at the specified location.
 | offset<br>[Vector]                                                             | Optional<br>[(0;0;0)] | The offset of the particles to scatter.                                                                                  |
 | range<br>[Number]                                                              | Optional<br>[32]      | The range in which players can see the particles.                                                                        |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   simpleParticles: "particle FLAME 100;64;100;world"
   lotsOfParticles: "particle CLOUD 100;64;100;world count:50 offset:(1;1;1) range:64"
@@ -930,7 +985,7 @@ Players are selected according to their distance from the player who triggered t
 For example, if the 'amount' is two, the player who triggered the action and the player closest to that player will be selected.
 A negative amount will select all players and therefore act as if there was no amount given.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   givePartyReward: "party 10 has_tag1,!has_tag2 give_reward"
   giveLimitedPartyReward: "party 10 has_tag1,!has_tag2 give_special_reward amount:3"
@@ -949,7 +1004,7 @@ The weighting is a floating point number, that is the ratio of the action's chan
 It picks one action from the list by default, but you can add an optional `amount:` if you want more to be picked.
 Note that only as many actions as specified can be picked and `amount:0` will do nothing.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   pickTwo: "pickrandom 20.5~action1,0.5~action2,79~action3 amount:2"
   PickThree: "pickrandom %point.factionXP.amount%~action1,0.5~action2,79~action3,1~action4 amount:3"
@@ -958,17 +1013,19 @@ actions:
 ## `Point`
 
 __Context__: @snippet:action-meta:online-offline@  
-__Syntax__: `point <category> <amount> <action>`  
+__Syntax__: `point <category> <amount> [action] {notify}`  
 __Description__: Manage the points in the specific category.
-
-First you can specify a number of points, then the modification action.
-For that, you can use `action:add`, `action:subtract`, `action:set` and `action:multiply`
-as modification types. This action also supports an optional `notify` argument that will display information about the
-change using the notification system.
 
 See also the [`globalpoint` action](#globalpoint).
 
-```YAML title="Example"
+| Parameter                                                            | Type                  | Explanation                                                           |
+|----------------------------------------------------------------------|-----------------------|-----------------------------------------------------------------------|
+| category<br>[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Required              | The name of the point category.                                       |
+| amount<br>[Number]                                                   | Required              | The number of points to use in the operation.                         |
+| action<br>[PointOp]                                                  | Optional<br>[ADD]     | The operation to perform on the category.                             |
+| notify<br>[Boolean]                                                  | Flag<br>[false, true] | If a notification about the change should be displayed to the player. |
+
+```YAML title="Examples"
 actions:
   gainAttitude: "point npc_attitude 5 action:add"
   loseAttitude: "point npc_attitude 2 action:subtract"
@@ -976,26 +1033,26 @@ actions:
   boostPoints: "point points 1.25 action:multiply notify"
 ```
 
+*[PointOp]: ADD, SUBTRACT, SET, MULTIPLY
+
 ## `RemoveEntity`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `removeentity <entitys> <location> <radius> [name] [marked] [type]`  
+__Syntax__: `removeentity <entities> <location> <radius> [name] [marked] {kill}`  
 __Description__: Remove or kill all entities of the specified type at the specified location.
-
-Here you can look up all [type's of entity's](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html).
 
 Can only effect loaded entities!
 
-| Parameter   | Syntax                                                                            | Default Value          | Explanation                                                       |
-|-------------|-----------------------------------------------------------------------------------|------------------------|-------------------------------------------------------------------|
-| _entity(s)_ | `entity,entity`                                                                   | :octicons-x-circle-16: | Required. List of entity's (separated by `,`).                    |
-| _location_  | [Unified Location Formatting](Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | Required. The center location of the target entity's.             |
-| _radius_    | Number                                                                            | :octicons-x-circle-16: | Required. The radius around the location.                         |
-| _name_      | `name:name`                                                                       | :octicons-x-circle-16: | Name of the entity.                                               |
-| _marked_    | `marked:mark`                                                                     | :octicons-x-circle-16: | Mark of the entity (from the [spawn action](#spawn) for example). |
-| _kill_      | `kill`                                                                            | :octicons-x-circle-16: | Whether to remove or actually kill the entity (if possible).      |
+| Parameter                                                                      | Type                  | Explanation                                                                                   |
+|--------------------------------------------------------------------------------|-----------------------|-----------------------------------------------------------------------------------------------|
+| entities<br>List[String]                                                       | Required              | See [EntityType](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html). |
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required              | The center location of the target entities.                                                   |
+| radius<br>[Number]                                                             | Required              | The radius around the location.                                                               |
+| name<br>[String]                                                               | Optional<br>[None]    | Name of the entity.                                                                           |
+| marked<br>[String]                                                             | Optional<br>[None]    | Mark of the entity.                                                                           |
+| kill<br>[Boolean]                                                              | Flag<br>[false, true] | Whether to remove or actually kill the entity (if possible).                                  |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   killArenaMobs: "removeentity ZOMBIE 100;200;300;world 10 name:Monster kill"
   clearGameArea: "removeentity ARROW,SNOWBALL,WOLF,ARMOR_STAND 100;200;300;world 50 marked:minigame"
@@ -1011,7 +1068,7 @@ Each instruction must be started with the `^` character (it divides all the inst
 It's not the same as the `folder` action, because you have to specify the actual instruction, not an action name.
 Don't use conditions here, it behaves strangely.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   eliminate: "run ^tag add beton ^journal add beton ^give emerald:5 ^kill"
 ```
@@ -1031,7 +1088,7 @@ actions:
 ## `RunForAll`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `runforall <actions> <where>`  
+__Syntax__: `runforall [actions] [where]`  
 __Description__: Run the specified actions once for each online player.
 
 The most common use case is to run an action for all online players from a [schedule](../Advanced/Schedules.md).
@@ -1039,10 +1096,10 @@ But you can also use it in conversations, objectives, or other actions.
 
 To run the actions only for a selection of players, use the `where:` option to filter for players that meet specific conditions.
 
-| Parameter | Syntax             | Default Value          | Explanation                                                                                                                                                                                      |
-|-----------|--------------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| _actions_ | `actions:actions`  | :octicons-x-circle-16: | Required. The actions to be run, separated by `,`.                                                                                                                                               |
-| _where_   | `where:conditions` | :octicons-x-circle-16: | A list of optional conditions (separated by `,`) that are checked for every player. <br>The actions supplied in `actions:` are only executed for the players that meet all the given conditions. |
+| Parameter                   | Type               | Explanation                                                                                                                 |
+|-----------------------------|--------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| actions<br>List[Identifier] | Optional<br>[None] | The actions to be run.                                                                                                      |
+| where<br>List[Identifier]   | Optional<br>[None] | A list of conditions that are checked for every player. The actions are only executed for players that meet all conditions. |
 
 !!! warning
     You can still append conditions to the `runForAll` action (e.g. `runForAll actions:kickPlayer conditions:!isOp`).  
@@ -1051,7 +1108,7 @@ To run the actions only for a selection of players, use the `where:` option to f
     triggered player independent (e.g. by a schedule).
 
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   kickAll: "runforall where:!isOp actions:kickPlayer,restartQuest"
 ```
@@ -1059,12 +1116,12 @@ actions:
 ## `RunIndependent`
 
 __Context__: @snippet:action-meta:independent@  
-__Syntax__: `runindependent <actions>`  
+__Syntax__: `runindependent [actions]`  
 __Description__: Run the specified actions as if they were independent.
 
-Runs the specified action (or list of actions) player independent (as if it was run from a [schedule](../Advanced/Schedules.md)).
+Runs the specified action (or list of actions) player-independent (as if it was run from a [schedule](../Advanced/Schedules.md)).
 
-This is usefully for actions that behave differently when run player independent.
+This is useful for actions that behave differently when run player-independent.
 
 ??? abstract "Actions that behave different if run player independent"
     * [`tag delete`](#tag) - deletes the tag for all players in the database (even if offline)
@@ -1072,11 +1129,11 @@ This is usefully for actions that behave differently when run player independent
     * [`journal delete`](#journal) - deletes the journal entry for all players in the database (even if offline)
     * [`deletepoint`](#deletepoint) - clears points of a given category for all players in the database (even if offline)
 
-| Parameter | Syntax            | Default Value          | Explanation                                        |
-|-----------|-------------------|------------------------|----------------------------------------------------|
-| _actions_ | `actions:actions` | :octicons-x-circle-16: | Required. The actions to be run, separated by `,`. |
+| Parameter                   | Type               | Explanation            |
+|-----------------------------|--------------------|------------------------|
+| actions<br>List[Identifier] | Optional<br>[None] | The actions to be run. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   resetQuestForAll: "runindependent actions:removeObjective,clearTags,resetJournal"
 ```
@@ -1091,20 +1148,27 @@ actions:
 ## `Score`
 
 __Context__: @snippet:action-meta:online-offline@  
-__Syntax__: `score <objective> <number> <action>`  
+__Syntax__: `score <objective> <number> [action]`  
 __Description__: Manage the scoreboard objective of the player.
 
 This action works in the same way as [point](#point), the only difference being that it uses scoreboards instead of points.
-You can use `action:add`, `action:subtract`, `action:set` and `action:multiply` to change the value.
-It's only possible to change the value, you have to create the scoreboard target first.
+It's only possible to change the value; you have to create the scoreboard target first.
 
-```YAML title="Example"
+| Parameter             | Type              | Explanation                                           |
+|-----------------------|-------------------|-------------------------------------------------------|
+| objective<br>[String] | Required          | The name of the scoreboard objective.                 |
+| number<br>[Number]    | Required          | The value to use in the operation.                    |
+| action<br>[ScoreOp]   | Optional<br>[ADD] | The operation to perform on the scoreboard objective. |
+
+```YAML title="Examples"
 actions:
   gotKill: "score kill 1 action:add"
   gotKilled: "score kill 1 action:subtract"
   resetKill: "score kill 0 action:set"
   applyBonus: "score kill 1.2 action:multiply"
 ```
+
+*[ScoreOp]: ADD, SUBTRACT, SET, MULTIPLY
 
 ## `ScoreTag`
 
@@ -1114,16 +1178,18 @@ __Description__: Manage the scoreboard tag of the player.
 
 The kind of tags that are used by vanilla Minecraft and not the [betonquest tags](#tag).
 
-| Parameter        | Syntax            | Default Value          | Explanation                       |
-|------------------|-------------------|------------------------|-----------------------------------|
-| _modifier_       | `add` or `remove` | :octicons-x-circle-16: | Whether to add or remove the tag. |
-| _scoreboard tag_ | Tag name          | :octicons-x-circle-16: | The name of the scoreboard tag.   |
+| Parameter                | Type     | Explanation                       |
+|--------------------------|----------|-----------------------------------|
+| operation<br>[TagOpType] | Required | Whether to add or remove the tag. |
+| tag<br>[String]          | Required | The name of the scoreboard tag.   |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   addVanillaTag: "scoretag add vanilla_tag"
   removeVanillaTag: "scoretag remove vanilla_tag"
 ```
+
+*[TagOpType]: add, remove
 
 ## `SetBlock`
 
@@ -1135,7 +1201,7 @@ The first argument is a [Block Selector](Definition-Encyclopedia.md#block-select
 deactivate the physics of the block by adding `ignorePhysics` at the end.
 Very powerful if used to trigger redstone contraptions.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   setRedstoneBlock: "setblock REDSTONE_BLOCK 100;200;300;world"
   flyingSand: "setblock SAND 100;200;300;world ignorePhysics"
@@ -1157,7 +1223,7 @@ You can specify armor which the mob will wear and items it will hold with
 These take a single item without amount, as defined in the _items_ section. You can also add a list of drops with
 `drops:` argument, followed by a list of items with amounts after colons, separated by commas.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   spawnSkeleton: "spawn 100;200;300;world SKELETON 5 marked:targets"
   spawnZombie: "spawn 100;200;300;world ZOMBIE name:Bolec 1 h:blue_hat c:red_vest drops:emerald:10,bread:2"
@@ -1183,7 +1249,7 @@ For more take a look at the [stage objective](Objectives-List.md#stage).
 | _stage_           | Stage                           | :octicons-x-circle-16: | The name of the stage to set when `set` is used |
 | _amount_          | Number                          | 1                      | The amount to increase or decrease by           |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   setCookCookies: "stage bakeCookies set cookCookies"
   increase: "stage bakeCookies increase"
@@ -1202,7 +1268,7 @@ Additional commands can be defined by separating them with `|` character. If you
 Looking for [execute as operator commands](#opsudo)?
 Looking for [execute as console commands](#command)?
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   spawn: "sudo spawn"
 ```
@@ -1213,17 +1279,20 @@ __Context__: @snippet:action-meta:online-offline-independent@
 __Syntax__: `tag <operation> <tags>`  
 __Description__: Manage the tags of the player.
 
-The first argument after action's name must be `add` or `delete`. Next goes the tag name.
-It can't contain spaces (though `_` is fine).
-Multiple tags can be added and deleted separated by commas (without spaces).
-
 The independent context is only available for the `delete` operation,
-and delete the tag for all players in the database (even if offline).
+and deletes the tag for all players in the database (even if offline).
 
-```YAML title="Example"
+| Parameter                | Type     | Explanation                                       |
+|--------------------------|----------|---------------------------------------------------|
+| operation<br>[TagOpType] | Required | Whether to add or delete the tags.                |
+| tags<br>List[String]     | Required | A list of tag names. Tags may not contain spaces. |
+
+```YAML title="Examples"
 actions:
   addStartTags: "tag add quest_started,new_entry"
 ```
+
+*[TagOpType]: add, delete
 
 ## `Take`
 
@@ -1249,7 +1318,7 @@ However, item movement can be prevented with the `conversation.block_item_transf
 
 You can also specify `notify` keyword to display a simple message to the player about losing items.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   emeraldsAndSword: "take emerald:120,sword"
   nuggets: "take nugget:6 notify"
@@ -1269,11 +1338,11 @@ Ends any active conversations.
 
 Do you only want to [cancel the conversation](#cancelconversation)?
 
-| Parameter  | Syntax                                                                            | Default Value          | Explanation                                          |
-|------------|-----------------------------------------------------------------------------------|------------------------|------------------------------------------------------|
-| _location_ | [Unified Location Formatting](Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to which the player will be teleported. |
+| Parameter                                                                      | Type     | Explanation                                          |
+|--------------------------------------------------------------------------------|----------|------------------------------------------------------|
+| location<br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required | The location to which the player will be teleported. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   toCity: "teleport 432;121;532;world" # (1)!
   toHell: "teleport 123;32;-789;world_the_nether;180;45" # (2)!
@@ -1295,7 +1364,7 @@ to set the time by setting no prefix.
 Additionally, you can specify the world in which the time will be changed, by adding `world:`.
 Using the `ticks` argument changes the time like the vanilla command.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   set6: "time 6"
   increase: "time +0.1"
@@ -1356,7 +1425,7 @@ To store more complex values you can use [quoting](../Basics/Quoting-&-YAML.md#q
 Refer to the [`variable` objective](Objectives-List.md#variable) documentation for more information about storing variables.
 This action will do nothing if the player does not already have a `variable` objective assigned to them.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   goody: "variable CustomVariable MyFirstVariable Goodbye!"
   playerName: "variable variable_objectiveID name %player%"
@@ -1377,7 +1446,7 @@ __Description__: Manage the velocity of the player.
 
 @snippet:general:relativeAxisExplanation@
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   jumppad: "velocity vector:(2;0.8;4)"
   dash: "velocity vector:(0;0.1;1.3) direction:relative_y"
@@ -1392,21 +1461,22 @@ __Context__: @snippet:action-meta:independent@
 __Syntax__: `weather <type> [duration] [world]`  
 __Description__: Manage the weather of the world.
 
-Sets the weather in the world the player is currently in. The argument is `sun` for clear, sunny weather, `rain` for pure rain,
-`storm` for storm with rain, lightning, and thunder.
+Sets the weather in the world the player is currently in.
 Durations less than 1 is equal to no duration.
 
-| Parameter  | Syntax            | Default Value               | Explanation                                                                                 |
-|------------|-------------------|-----------------------------|---------------------------------------------------------------------------------------------|
-| _type_     | Keyword           | :octicons-x-circle-16:      | The type of weather to set. Either `sun`, `rain` or `storm`.                                |
-| _duration_ | `duration:number` | Minecraft decides randomly. | The duration the weather will last (in seconds). <br> Is handled from minecraft afterwards. |
-| _world_    | `world:worldName` | The player's current world. | The world to change the weather in.                                                         |
+| Parameter             | Type               | Explanation                                    |
+|-----------------------|--------------------|------------------------------------------------|
+| type<br>[WeatherType] | Required           | The type of weather to set.                    |
+| duration<br>[Number]  | Optional<br>[0]    | The duration the weather will last (in ticks). |
+| world<br>[String]     | Optional<br>[None] | The world to change the weather in.            |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   setSun: "weather sun"
   setShortRain: "weather rain duration:60 world:rpgworld"
   setStorm: "weather storm duration:%point.tribute.left:150%"
 ```
+
+*[WeatherType]: sun, rain, storm
 
 --8<-- "instruction-datatypes.md"
