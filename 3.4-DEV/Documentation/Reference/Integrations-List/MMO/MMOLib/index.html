@@ -9017,7 +9017,7 @@ They follow a strict order of priority in their execution:</p>
 <li><code>VOID</code></li>
 </ul>
 </details>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">damageReduction3</span><span class="p">:</span><span class="w"> </span><span class="s">"mmostat</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">stat:DAMAGE_REDUCTION</span><span class="nv"> </span><span class="s">value:3"</span>
 <span class="w">  </span><span class="nt">damageReductionRemove</span><span class="p">:</span><span class="w"> </span><span class="s">"mmostat</span><span class="nv"> </span><span class="s">remove</span><span class="nv"> </span><span class="s">stat:DAMAGE_REDUCTION"</span>
 <span class="w">  </span><span class="nt">armorToughnessReplace</span><span class="p">:</span><span class="w"> </span><span class="s">"mmostat</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">remove</span><span class="nv"> </span><span class="s">stat:ARMOR_TOUGHNESS</span><span class="nv"> </span><span class="s">value:5</span><span class="nv"> </span><span class="s">key:default</span><span class="nv"> </span><span class="s">type:ADDITIVE_MULTIPLIER</span><span class="nv"> </span><span class="s">slot:CHEST</span><span class="nv"> </span><span class="s">source:ACCESSORY"</span>
@@ -9052,7 +9052,7 @@ They follow a strict order of priority in their execution:</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">triggerSkill</span><span class="p">:</span><span class="w"> </span><span class="s">"mmoskill</span><span class="nv"> </span><span class="s">LIFE_ENDER</span><span class="nv"> </span><span class="s">actions:updateStatistics"</span>
 <span class="w">  </span><span class="nt">castSkillWithMMOCore</span><span class="p">:</span><span class="w"> </span><span class="s">"mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:CAST</span><span class="nv"> </span><span class="s">actions:completeTutorial"</span>
 <span class="w">  </span><span class="nt">itemSkill</span><span class="p">:</span><span class="w"> </span><span class="s">"mmoskill</span><span class="nv"> </span><span class="s">DEEP_WOUND</span><span class="nv"> </span><span class="s">trigger:RIGHT_CLICK,LEFT_CLICK</span><span class="nv"> </span><span class="s">actions:giveReward"</span>
@@ -9065,7 +9065,7 @@ They follow a strict order of priority in their execution:</p>
 <p>Checks <a href="https://gitlab.com/phoenix-dvpmt/mythiclib/-/blob/master/plugin/src/main/java/io/lumine/mythic/lib/api/stat/SharedStat.java">stats</a>
 that combine all sorts of stats from MMOCore and MMOItems.
 You can disable this behaviour by adding the <code>equal</code> argument.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">damageReduction3</span><span class="p">:</span><span class="w"> </span><span class="s">"mmostat</span><span class="nv"> </span><span class="s">DAMAGE_REDUCTION</span><span class="nv"> </span><span class="s">3"</span>
 </code></pre></div>
 

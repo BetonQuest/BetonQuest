@@ -9563,7 +9563,7 @@
 The placeholder will return <code>true</code> or <code>false</code> by default. If you add <code>papiMode</code> to the instruction it will return <code>yes</code> or <code>no</code>.  <br>
 You can translate the papiMode's result by changing the values of <code>condition_placeholder_met</code> <code>condition_placeholder_not_met</code> in 
 the <em>messages.yml</em> config.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">condition</span><span class="nc">.myCondition</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">condition</span><span class="nc">.myCondition</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">condition</span><span class="nc">.myCondition.papiMode</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="constant"><code>Constant</code><a class="headerlink" href="#constant" title="Permanent link">🔗</a></h2>
@@ -9577,7 +9577,7 @@ They are defined in the <em>constants</em> section like this:</p>
 <span class="w">  </span><span class="nt">village_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Concrete</span>
 </code></pre></div>
 <p>To use a <code>constant</code> placeholder, you must use <code>%constant.constantName%</code>:</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">constant</span><span class="nc">.village_location</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">constant</span><span class="nc">.village_location</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">constant</span><span class="nc">.village_name</span><span class="err">%</span>
 </code></pre></div>
 <p>If you want to parse a placeholder from a different package,
@@ -9593,7 +9593,7 @@ If you do so, you need to add one escape level with each nesting level,
 this means normally you write <code>\%</code> and in the next level you need to write <code>\\\%</code>.</p>
 <p>When using a cross package reference, remember to escape the <code>&gt;</code> of a nested placeholder too. More
 on this in the <a href="../../Basics/Packages-%26-Templates/#nested-package-paths">nested package paths</a> article.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">eval</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">objective</span><span class="nc">.placeholderStore.displayType</span><span class="err">\%%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">eval</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">objective</span><span class="nc">.placeholderStore.displayType</span><span class="err">\%%</span>
 <span class="err">%</span><span class="nt">eval</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">eval</span><span class="nc">.objective.</span><span class="err">\\\%</span><span class="nt">objective</span><span class="nc">.otherStore.targetStore</span><span class="err">\\\%</span><span class="nc">.displayType</span><span class="err">\%%</span>
 <span class="err">%</span><span class="nt">eval</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">OtherPackage</span><span class="err">\</span><span class="o">&gt;</span><span class="nt">objective</span><span class="nc">.placeholderStore.displayType</span><span class="err">\%%</span>
 </code></pre></div>
@@ -9604,7 +9604,7 @@ on this in the <a href="../../Basics/Packages-%26-Templates/#nested-package-path
 <p>It is also possible to display the remaining number of points to reach a certain number of points.
 The first argument is the name of a category and the second argument is either <code>amount</code> or <code>left:x</code>, where <code>x</code> is a number.</p>
 <p>See also the <a href="#point"><code>point</code> placeholder</a>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">globalpoint</span><span class="nc">.global_knownusers.amount</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">globalpoint</span><span class="nc">.global_knownusers.amount</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">globalpoint</span><span class="nc">.global_knownusers.left</span><span class="nd">:100</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="globaltag"><code>GlobalTag</code><a class="headerlink" href="#globaltag" title="Permanent link">🔗</a></h2>
@@ -9614,7 +9614,7 @@ The first argument is the name of a category and the second argument is either <
 <p>The placeholder will return true or false by default. If you add papiMode to the instruction it will return yes or no.
 You can translate the papiMode's result by changing the values of <code>condition_placeholder_met</code> and <code>condition_placeholder_not_met</code>
 in the messages.yml config.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">globaltag</span><span class="nc">.test</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">globaltag</span><span class="nc">.test</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">globaltag</span><span class="nc">.test.papiMode</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="item"><code>Item</code><a class="headerlink" href="#item" title="Permanent link">🔗</a></h2>
@@ -9628,7 +9628,7 @@ The <code>name</code> argument simply gives the defined name or an empty <abbr t
 and <code>lore:x</code> displays the lore row with index <code>x</code> (starting with 0).
 Just use <code>lore</code> to get the whole lore lines separated with newlines, to change them use <code>delimiter:&lt;yourSeparator&gt;</code>.
 Both <code>name</code> and <code>lore</code> supports the <code>raw</code> subargument to get the text without formatting.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">item</span><span class="nc">.stick.amount</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">item</span><span class="nc">.stick.amount</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">item</span><span class="nc">.stick.left</span><span class="nd">:32</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">item</span><span class="nc">.epic_sword.name</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">item</span><span class="nc">.epic_sword.lore</span><span class="nd">:0</span><span class="nc">.raw</span><span class="err">%</span>
@@ -9643,7 +9643,7 @@ An optional argument is <code>relative</code> which will display the durability 
 from 0 to 1, where 1 is the maximum. You can specify the amount of digits with the argument <code>digits:x</code>,
 where <code>x</code> is a whole number. This default is 2 digits.
 Additionally, you get the output in <code>percent</code> (inclusive the '%' symbol).</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">itemdurability</span><span class="nc">.HAND</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">itemdurability</span><span class="nc">.HAND</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">itemdurability</span><span class="nc">.CHEST.relative</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">itemdurability</span><span class="nc">.CHEST.relative.percent</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">itemdurability</span><span class="nc">.HEAD.relative.digits</span><span class="nd">:5</span><span class="err">%</span>
@@ -9658,7 +9658,7 @@ which means that this placeholder can also be used in actions, conditions etc.
 If you just specify <code>%location%</code> the placeholders will resolve to a ULF with yaw and pitch.
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
 the placeholder will resolve. </p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">location</span><span class="err">%</span><span class="w">           </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="o">;</span><span class="nt">121</span><span class="o">;</span><span class="nt">814</span><span class="o">;</span><span class="nt">myWorldName</span><span class="o">;</span><span class="nt">12</span><span class="o">;</span><span class="nt">6</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">location</span><span class="err">%</span><span class="w">           </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="o">;</span><span class="nt">121</span><span class="o">;</span><span class="nt">814</span><span class="o">;</span><span class="nt">myWorldName</span><span class="o">;</span><span class="nt">12</span><span class="o">;</span><span class="nt">6</span>
 <span class="err">%</span><span class="nt">location</span><span class="nc">.xyz</span><span class="err">%</span><span class="w">       </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="w"> </span><span class="nt">121</span><span class="w"> </span><span class="nt">814</span><span class="w"> </span>
 <span class="err">%</span><span class="nt">location</span><span class="nc">.x</span><span class="err">%</span><span class="w">         </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span>
 <span class="err">%</span><span class="nt">location</span><span class="nc">.y</span><span class="err">%</span><span class="w">         </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">121</span>
@@ -9697,7 +9697,7 @@ Don't forget to escape the backslash itself with another backslash if you are in
 More on this in the <a href="../../Basics/Packages-%26-Templates/#nested-package-paths">nested package paths</a>
 article.</p>
 </div>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:100</span><span class="o">*(</span><span class="nt">15-point</span><span class="nc">.reputation.amount</span><span class="o">)</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:100</span><span class="o">*(</span><span class="nt">15-point</span><span class="nc">.reputation.amount</span><span class="o">)</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:objective</span><span class="nc">.kill_zombies.left</span><span class="o">/</span><span class="nt">objective</span><span class="nc">.kill_zombies.total</span><span class="o">*</span><span class="nt">100</span><span class="o">~</span><span class="nt">2</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:-</span><span class="p">{</span><span class="nt">ph</span><span class="nc">.myplugin_stragee</span><span class="o">+</span><span class="nt">placeholder</span><span class="p">}</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">math</span><span class="nc">.calc</span><span class="nd">:64</span><span class="err">\%</span><span class="nt">32</span><span class="err">%</span>
@@ -9715,7 +9715,7 @@ article.</p>
 <li><code>location</code> - Return Npc location in the specified format, for details see the <a href="#location">location placeholder</a>.
   The general syntax is <code>%npc.&lt;id&gt;.location.&lt;mode&gt;.&lt;precision&gt;%</code>.</li>
 </ul>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">npc</span><span class="nc">.bob.name</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">npc</span><span class="nc">.bob.name</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">npc</span><span class="nc">.bob.full_name</span><span class="err">%</span>
 
 <span class="err">%</span><span class="nt">npc</span><span class="nc">.mayor.location</span><span class="err">%</span><span class="w">           </span><span class="nn">#</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span><span class="w"> </span><span class="nt">325</span><span class="o">;</span><span class="nt">121</span><span class="o">;</span><span class="nt">814</span><span class="o">;</span><span class="nt">npcWorldName</span><span class="o">;</span><span class="nt">12</span><span class="o">;</span><span class="nt">6</span>
@@ -9730,7 +9730,7 @@ article.</p>
 Make sure that the player has this objective active or it will be replaced with nothing ("").
 Second argument is the name of a property you want to display.
 All properties are described in "Objectives <abbr title="A list is a sequence of values separated by commas.">List</abbr>" chapter.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">objective</span><span class="nc">.kill_zombies.left</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">objective</span><span class="nc">.kill_zombies.left</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="player"><code>Player</code><a class="headerlink" href="#player" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This placeholder can only be resolved on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This placeholder can be resolved on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span><br>
@@ -9738,7 +9738,7 @@ All properties are described in "Objectives <abbr title="A list is a sequence of
 <strong>Description</strong>: Represents the player's name in the specified format.</p>
 <p>The placeholder <code>%player%</code> is the same as <code>%player.name%</code> and will display the name of the player.
 <code>%player.display%</code> will use the display name used in chat and <code>%player.uuid%</code> will display the UUID of the player.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">player</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">player</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">player</span><span class="nc">.name</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">player</span><span class="nc">.display</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">player</span><span class="nc">.uuid</span><span class="err">%</span>
@@ -9750,7 +9750,7 @@ All properties are described in "Objectives <abbr title="A list is a sequence of
 <p>It is also possible to display the remaining number of points to reach a certain number of points.
 The first argument is the name of a category and the second argument is either <code>amount</code> or <code>left:x</code>, where <code>x</code> is a number.</p>
 <p>See also the <a href="#globalpoint"><code>globalpoint</code> placeholder</a>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">point</span><span class="nc">.reputation.amount</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">point</span><span class="nc">.reputation.amount</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">point</span><span class="nc">.reputation.left</span><span class="nd">:15</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="quester"><code>Quester</code><a class="headerlink" href="#quester" title="Permanent link">🔗</a></h2>
@@ -9758,7 +9758,7 @@ The first argument is the name of a category and the second argument is either <
 <strong>Syntax</strong>: <code>quester</code><br>
 <strong>Description</strong>: Represents the name of the quester in the current conversation.</p>
 <p>If the player is not in a conversation, the placeholder is empty.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">quester</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">quester</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="randomnumber"><code>RandomNumber</code><a class="headerlink" href="#randomnumber" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This placeholder can be resolved without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
@@ -9770,7 +9770,7 @@ Like the <code>math</code> placeholder you can round the decimal value by using
 instead of <code>decimal</code> the argument <code>decimal~x</code> where <code>x</code> is the maximal amount of decimal places. 
 Placeholders can be used with <code>{}</code> instead of <code>%%</code>.
 Note that the first value is returned when it is higher than the second.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.whole.0</span><span class="o">~</span><span class="nt">10</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.whole.0</span><span class="o">~</span><span class="nt">10</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.whole.-70</span><span class="o">~</span><span class="nt">70</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.decimal</span><span class="o">~</span><span class="nt">3</span><span class="nc">.3.112</span><span class="o">~</span><span class="nt">100</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">randomnumber</span><span class="nc">.decimal</span><span class="o">~</span><span class="nt">1</span><span class="nc">.0</span><span class="o">~</span><span class="p">{</span><span class="nt">location</span><span class="nc">.y</span><span class="p">}</span><span class="err">%</span>
@@ -9820,7 +9820,7 @@ Note that the first value is returned when it is higher than the second.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">section</span><span class="nc">.actions.mySection</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">section</span><span class="nc">.actions.mySection</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">section</span><span class="nc">.actions.mySection.shuffle</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">section</span><span class="nc">.objectives.mySection.select</span><span class="nd">:random</span><span class="nc">.limit</span><span class="nd">:3</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">section</span><span class="nc">.conditions.</span><span class="p">{</span><span class="nt">my</span><span class="nc">.deeply.nested.section</span><span class="p">}</span><span class="nc">.select</span><span class="nd">:random</span><span class="nc">.limit</span><span class="nd">:3</span><span class="err">%</span>
@@ -9875,7 +9875,7 @@ or the page of <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Stat
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">statistic</span><span class="nc">.jump</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">statistic</span><span class="nc">.jump</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">statistic</span><span class="nc">.mine_block.material</span><span class="nd">:diamond_block</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">statistic</span><span class="nc">.kill_entity.entity</span><span class="nd">:ZOMBIE</span><span class="err">%</span>
 </code></pre></div>
@@ -9886,7 +9886,7 @@ or the page of <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Stat
 <p>Its syntax is identical to the <a href="#eval">eval placeholder</a>, but you should only use it if syncing is required.
 If you encapsule multiple evaluations with <code>sync</code>, all sub-evaluations will be executed on the server's main thread 
 and should be done with <code>eval</code> instead.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">sync</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">objective</span><span class="nc">.placeholderStore.displayType</span><span class="err">\%%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">sync</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">objective</span><span class="nc">.placeholderStore.displayType</span><span class="err">\%%</span>
 <span class="err">%</span><span class="nt">sync</span><span class="nc">.player.</span><span class="err">\%</span><span class="nt">eval</span><span class="nc">.objective.</span><span class="err">\\\%</span><span class="nt">objective</span><span class="nc">.otherStore.targetStore</span><span class="err">\\\%</span><span class="nc">.displayType</span><span class="err">\%%</span>
 </code></pre></div>
 <h2 id="tag"><code>Tag</code><a class="headerlink" href="#tag" title="Permanent link">🔗</a></h2>
@@ -9896,7 +9896,7 @@ and should be done with <code>eval</code> instead.</p>
 <p>The placeholder will return true or false by default. If you add papiMode to the instruction it will return yes or no.
 You can translate the papiMode's result by changing the values of <code>condition_placeholder_met</code> and <code>condition_placeholder_not_met</code>
 in the messages.yml config.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">tag</span><span class="nc">.test</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">tag</span><span class="nc">.test</span><span class="err">%</span>
 <span class="err">%</span><span class="nt">tag</span><span class="nc">.test.papiMode</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="translate"><code>Translate</code><a class="headerlink" href="#translate" title="Permanent link">🔗</a></h2>
@@ -9913,14 +9913,14 @@ They are defined in the <em>constants</em> section like this:</p>
 <span class="w">    </span><span class="nt">en-US</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Stone Village</span>
 </code></pre></div>
 <p>To use a <code>translate</code> placeholder, you must use <code>%translate.translatableName%</code>:</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">translate</span><span class="nc">.village_name</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">translate</span><span class="nc">.village_name</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="version"><code>Version</code><a class="headerlink" href="#version" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This placeholder can be resolved without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>version.[plugin]</code><br>
 <strong>Description</strong>: Represents the version of the specified plugin.</p>
 <p>You can optionally add the name of the plugin as an argument to display version of another plugin.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="err">%</span><span class="nt">version</span><span class="nc">.Citizens</span><span class="err">%</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="err">%</span><span class="nt">version</span><span class="nc">.Citizens</span><span class="err">%</span>
 </code></pre></div>
 <h2 id="world"><code>World</code><a class="headerlink" href="#world" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This placeholder can only be resolved on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This placeholder can be resolved on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span> <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This placeholder can be resolved without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>

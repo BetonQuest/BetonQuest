@@ -11275,7 +11275,7 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">killedAllMobs</span><span class="p">:</span><span class="w"> </span><span class="s">"advancement</span><span class="nv"> </span><span class="s">adventure/kill_all_mobs"</span>
 <span class="w">  </span><span class="nt">killedAMob</span><span class="p">:</span><span class="w"> </span><span class="s">"advancement</span><span class="nv"> </span><span class="s">minecraft:adventure/kill_a_mob"</span>
 </code></pre></div>
@@ -11286,7 +11286,7 @@
 <p>This means that every condition has to be met in order for conjunction to be true.
 Used only in complex alternatives, because conditions generally work as conjunction.
 Instruction string is exactly the same as in <code>alternative</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasArmor</span><span class="p">:</span><span class="w"> </span><span class="s">"and</span><span class="nv"> </span><span class="s">has_helmet,has_chestplate,has_leggings,has_boots"</span>
 </code></pre></div>
 <h2 id="armor"><code>Armor</code><a class="headerlink" href="#armor" title="Permanent link">🔗</a></h2>
@@ -11328,14 +11328,14 @@ are checked instead of the whole equipment.</p>
 <strong>Syntax</strong>: <code>biome &lt;biome&gt;</code><br>
 <strong>Description</strong>: Whether the player is in the specified biome.</p>
 <p>The only argument is the <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html">biome type</a>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">inSavannaRock</span><span class="p">:</span><span class="w"> </span><span class="s">"biome</span><span class="nv"> </span><span class="s">savanna_rock"</span>
 </code></pre></div>
 <h2 id="burning"><code>Burning</code><a class="headerlink" href="#burning" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>burning</code><br>
 <strong>Description</strong>: Whether the player is on fire.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isOnFire</span><span class="p">:</span><span class="w"> </span><span class="s">"burning"</span>
 </code></pre></div>
 <h2 id="check"><code>Check</code><a class="headerlink" href="#check" title="Permanent link">🔗</a></h2>
@@ -11343,7 +11343,7 @@ are checked instead of the whole equipment.</p>
 <strong>Syntax</strong>: <code>check &lt;conditions&gt;</code><br>
 <strong>Description</strong>: Allows you to specify multiple instructions in one long conjunctive instruction.</p>
 <p>Each instruction must be started with <code>^</code> character and no other dividers should be used. The condition will be met if all inner conditions are met. It's not the same as <code>and</code> condition, because you can specify an instruction string, not a condition name.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">fulfillRequirements</span><span class="p">:</span><span class="w"> </span><span class="s">"check</span><span class="nv"> </span><span class="s">^tag</span><span class="nv"> </span><span class="s">beton</span><span class="nv"> </span><span class="s">^item</span><span class="nv"> </span><span class="s">emerald:5</span><span class="nv"> </span><span class="s">^location</span><span class="nv"> </span><span class="s">100;200;300;survival_nether;5</span><span class="nv"> </span><span class="s">^experience</span><span class="nv"> </span><span class="s">20"</span>
 </code></pre></div>
 <h2 id="chestitem"><code>ChestItem</code><a class="headerlink" href="#chestitem" title="Permanent link">🔗</a></h2>
@@ -11351,7 +11351,7 @@ are checked instead of the whole equipment.</p>
 <strong>Syntax</strong>: <code>chestitem &lt;location&gt; &lt;items&gt;</code><br>
 <strong>Description</strong>: Whether the specified items are in the specified chest.</p>
 <p>This condition works in the same way as <code>item</code> condition, but it checks the specified chest instead of a player. The first argument is a location of the chest and the second one is the list of items defined in the same way as in <code>item</code> condition. If there is no chest at specified location the condition won't be met.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">emeraldsInChest</span><span class="p">:</span><span class="w"> </span><span class="s">"chestitem</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword"</span>
 </code></pre></div>
 <h2 id="conversation"><code>Conversation</code><a class="headerlink" href="#conversation" title="Permanent link">🔗</a></h2>
@@ -11359,7 +11359,7 @@ are checked instead of the whole equipment.</p>
 <strong>Syntax</strong>: <code>conversation &lt;conversation&gt;</code><br>
 <strong>Description</strong>: Whether the conversation has an available starting option.</p>
 <p>If no starting option has a condition that returns true then this will return false.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isInInnkeeperConv</span><span class="p">:</span><span class="w"> </span><span class="s">"conversation</span><span class="nv"> </span><span class="s">innkeeper"</span>
 </code></pre></div>
 <h2 id="dayofweek"><code>DayOfWeek</code><a class="headerlink" href="#dayofweek" title="Permanent link">🔗</a></h2>
@@ -11367,7 +11367,7 @@ are checked instead of the whole equipment.</p>
 <strong>Syntax</strong>: <code>dayofweek &lt;day&gt;</code><br>
 <strong>Description</strong>: Whether the current day of the week is the specified one.</p>
 <p>You can specify either the english name of the day or the number of the day (1 being monday, 7 sunday,...).</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isSunday</span><span class="p">:</span><span class="w"> </span><span class="s">"dayofweek</span><span class="nv"> </span><span class="s">sunday"</span>
 </code></pre></div>
 <h2 id="effect"><code>Effect</code><a class="headerlink" href="#effect" title="Permanent link">🔗</a></h2>
@@ -11375,7 +11375,7 @@ are checked instead of the whole equipment.</p>
 <strong>Syntax</strong>: <code>effect &lt;effect&gt;</code><br>
 <strong>Description</strong>: Whether the player has the specified potion effect.</p>
 <p>There is only one argument and it takes values from this page: <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html">potion types</a>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasSpeed</span><span class="p">:</span><span class="w"> </span><span class="s">"effect</span><span class="nv"> </span><span class="s">SPEED"</span>
 </code></pre></div>
 <h2 id="empty"><code>Empty</code><a class="headerlink" href="#empty" title="Permanent link">🔗</a></h2>
@@ -11383,7 +11383,7 @@ are checked instead of the whole equipment.</p>
 <strong>Syntax</strong>: <code>empty &lt;amount&gt;</code><br>
 <strong>Description</strong>: Whether the player has at least the specified amount of empty inventory slots.</p>
 <p>If you want to check for a specific amount (for example for a full inventory with 0 empty slots) you can append the <code>equal</code> argument.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasFiveEmptySlots</span><span class="p">:</span><span class="w"> </span><span class="s">"empty</span><span class="nv"> </span><span class="s">5"</span>
 </code></pre></div>
 <h2 id="entities"><code>Entities</code><a class="headerlink" href="#entities" title="Permanent link">🔗</a></h2>
@@ -11395,7 +11395,7 @@ Each entity type (taken from <a href="https://hub.spigotmc.org/javadocs/spigot/o
 can have an additional amount suffix, for example <code>ZOMBIE:5,SKELETON:2</code> means 5 or more zombies and 2 or more skeletons.
 The location is defined as usual. The number after the location is the range around the location in which will be checked for these entities. You can also specify additional <code>name:</code> argument,
 with the name of the required entity. You can use <code>marked:</code> argument to check only for entities marked in <code>spawn</code> action.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">daemonsSpawned</span><span class="p">:</span><span class="w"> </span><span class="s">"entities</span><span class="nv"> </span><span class="s">ZOMBIE:2</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">name:Daemon"</span>
 </code></pre></div>
 <h2 id="eval"><code>Eval</code><a class="headerlink" href="#eval" title="Permanent link">🔗</a></h2>
@@ -11404,7 +11404,7 @@ with the name of the required entity. You can use <code>marked:</code> argument 
 <strong>Description</strong>: Evaluate the expression and checks the resulting condition.</p>
 <p>This condition allows you to resolve an expression containing placeholders, and the result will then be interpreted
 again as a condition.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">simpleEval</span><span class="p">:</span><span class="w"> </span><span class="s">"eval</span><span class="nv"> </span><span class="s">chestitem</span><span class="nv"> </span><span class="s">-288;64;357;World</span><span class="nv"> </span><span class="s">emerald:5"</span>
 <span class="w">  </span><span class="nt">complexEval</span><span class="p">:</span><span class="w"> </span><span class="s">"eval</span><span class="nv"> </span><span class="s">point</span><span class="nv"> </span><span class="s">ranking</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">%objective.settings.equal%"</span><span class="w"> </span><span class="c1">#(1)!</span>
 </code></pre></div>
@@ -11419,7 +11419,7 @@ again as a condition.</p>
 <strong>Description</strong>: Whether the player has the specified amount of experience levels.</p>
 <p>You can also define decimal numbers, for example <code>experience 1.5</code> will be met when the player has 1.5 or more experience levels.
 If you want to check for an absolute amount of experience points you can convert it to decimal levels.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasLevel30</span><span class="p">:</span><span class="w"> </span><span class="s">"experience</span><span class="nv"> </span><span class="s">30"</span>
 <span class="w">  </span><span class="nt">hasLevel5dot5</span><span class="p">:</span><span class="w"> </span><span class="s">"experience</span><span class="nv"> </span><span class="s">5.5"</span>
 </code></pre></div>
@@ -11428,14 +11428,14 @@ If you want to check for an absolute amount of experience points you can convert
 <strong>Syntax</strong>: <code>facing &lt;direction&gt;</code><br>
 <strong>Description</strong>: Whether the player is facing the specified direction.</p>
 <p>Valid directions are <code>UP</code>, <code>DOWN</code>, <code>NORTH</code>, <code>EAST</code>, <code>WEST</code> and <code>SOUTH</code>. Up and down start at a pitch of 60°.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">lookingEast</span><span class="p">:</span><span class="w"> </span><span class="s">"facing</span><span class="nv"> </span><span class="s">EAST"</span>
 </code></pre></div>
 <h2 id="fly"><code>Fly</code><a class="headerlink" href="#fly" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>fly</code><br>
 <strong>Description</strong>: Whether the player is currently flying (Elytra type of flight).</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isFlying</span><span class="p">:</span><span class="w"> </span><span class="s">"fly"</span>
 </code></pre></div>
 <h2 id="function"><code>Function</code><a class="headerlink" href="#function" title="Permanent link">🔗</a></h2>
@@ -11465,7 +11465,7 @@ See <a href="../../Advanced/Functions/#value-interpretation">Value Interpretatio
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">myFunction</span><span class="p">:</span><span class="w"> </span><span class="s">"function</span><span class="nv"> </span><span class="s">reward</span><span class="nv"> </span><span class="s">%point.reputation.amount%,15,%tag.questCompleted%"</span>
 <span class="nt">functions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">reward</span><span class="p">:</span><span class="w"> </span><span class="s">'b(reputation,reqRep,completed)</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">completed</span><span class="nv"> </span><span class="s">&amp;</span><span class="nv"> </span><span class="s">reputation</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">reqRep'</span>
@@ -11475,7 +11475,7 @@ See <a href="../../Advanced/Functions/#value-interpretation">Value Interpretatio
 <strong>Syntax</strong>: <code>gamemode &lt;gamemode&gt;</code><br>
 <strong>Description</strong>: Whether the player is in the specified gamemode.</p>
 <p>The first argument is the game mode, i.e. survival, creative, adventure.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isInSurvival</span><span class="p">:</span><span class="w"> </span><span class="s">"gamemode</span><span class="nv"> </span><span class="s">survival"</span>
 </code></pre></div>
 <h2 id="globalpoint"><code>GlobalPoint</code><a class="headerlink" href="#globalpoint" title="Permanent link">🔗</a></h2>
@@ -11514,14 +11514,14 @@ See <a href="../../Advanced/Functions/#value-interpretation">Value Interpretatio
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">has100Users</span><span class="p">:</span><span class="w"> </span><span class="s">"globalpoint</span><span class="nv"> </span><span class="s">global_knownusers</span><span class="nv"> </span><span class="s">100"</span>
 </code></pre></div>
 <h2 id="globaltag"><code>GlobalTag</code><a class="headerlink" href="#globaltag" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This condition can be checked without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>globaltag &lt;tag&gt;</code><br>
 <strong>Description</strong>: Whether the specified global tag is set.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">areNpcsAggressive</span><span class="p">:</span><span class="w"> </span><span class="s">"globaltag</span><span class="nv"> </span><span class="s">global_areNPCsAggressive"</span>
 </code></pre></div>
 <h2 id="hand"><code>Hand</code><a class="headerlink" href="#hand" title="Permanent link">🔗</a></h2>
@@ -11530,7 +11530,7 @@ See <a href="../../Advanced/Functions/#value-interpretation">Value Interpretatio
 <strong>Description</strong>: Whether the player holds the specified quest item in the hand.</p>
 <p>The offhand will be checked instead of the main hand if the <code>offhand</code> keyword is added.
 Amount cannot be set here, though it may be checked with the <code>item</code> condition.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">holdSword</span><span class="p">:</span><span class="w"> </span><span class="s">"hand</span><span class="nv"> </span><span class="s">SpecialSword"</span>
 <span class="w">  </span><span class="nt">holdShieldOffhand</span><span class="p">:</span><span class="w"> </span><span class="s">"hand</span><span class="nv"> </span><span class="s">QuestShield</span><span class="nv"> </span><span class="s">offhand"</span>
 </code></pre></div>
@@ -11539,7 +11539,7 @@ Amount cannot be set here, though it may be checked with the <code>item</code> c
 <strong>Syntax</strong>: <code>hasglobalpoint &lt;category&gt;</code><br>
 <strong>Description</strong>: Whether the specified global point category has any amount.</p>
 <p>See the <a href="#haspoint"><code>haspoint</code> condition</a> for argument explanation.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasBetonUsers</span><span class="p">:</span><span class="w"> </span><span class="s">"hasglobalpoint</span><span class="nv"> </span><span class="s">beton"</span>
 </code></pre></div>
 <h2 id="haspoint"><code>HasPoint</code><a class="headerlink" href="#haspoint" title="Permanent link">🔗</a></h2>
@@ -11548,7 +11548,7 @@ Amount cannot be set here, though it may be checked with the <code>item</code> c
 <strong>Description</strong>: Whether the player has any amount of points in the specified category.</p>
 <p>This explicit checks for any set value. <code>0</code> is a set value.</p>
 <p>See also the <a href="#hasglobalpoint"><code>hasglobalpoint</code> condition</a>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasBetonPoints</span><span class="p">:</span><span class="w"> </span><span class="s">"haspoint</span><span class="nv"> </span><span class="s">beton"</span>
 </code></pre></div>
 <h2 id="health"><code>Health</code><a class="headerlink" href="#health" title="Permanent link">🔗</a></h2>
@@ -11558,7 +11558,7 @@ Amount cannot be set here, though it may be checked with the <code>item</code> c
 <p>The only argument is a number (double).
 Players can have 0 to 20 health by default (there are some plugins and commands which change the maximum)
 (0 means dead, don't use that since it will only be met when the player sees the red respawn screen).</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">has5dot6Health</span><span class="p">:</span><span class="w"> </span><span class="s">"health</span><span class="nv"> </span><span class="s">5.6"</span>
 </code></pre></div>
 <h2 id="height"><code>Height</code><a class="headerlink" href="#height" title="Permanent link">🔗</a></h2>
@@ -11567,7 +11567,7 @@ Players can have 0 to 20 health by default (there are some plugins and commands 
 <strong>Description</strong>: Whether the player is <em>below</em> the specified height.</p>
 <p>The required argument is a number or a location (for example 100;200;300;world).
 In case of location it will take the height from it and use it as regular height.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isBelow16</span><span class="p">:</span><span class="w"> </span><span class="s">"height</span><span class="nv"> </span><span class="s">16"</span>
 </code></pre></div>
 <h2 id="hunger"><code>Hunger</code><a class="headerlink" href="#hunger" title="Permanent link">🔗</a></h2>
@@ -11575,7 +11575,7 @@ In case of location it will take the height from it and use it as regular height
 <strong>Syntax</strong>: <code>hunger &lt;amount&gt;</code><br>
 <strong>Description</strong>: Whether the player has at least the specified amount of hunger.</p>
 <p>If the hunger level is below 7, the player cannot sprint.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">has15orMoreHunger</span><span class="p">:</span><span class="w"> </span><span class="s">"hunger</span><span class="nv"> </span><span class="s">15"</span>
 </code></pre></div>
 <h2 id="inconversation"><code>InConversation</code><a class="headerlink" href="#inconversation" title="Permanent link">🔗</a></h2>
@@ -11600,7 +11600,7 @@ In case of location it will take the height from it and use it as regular height
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isInConversation</span><span class="p">:</span><span class="w"> </span><span class="s">"inconversation"</span>
 <span class="w">  </span><span class="nt">talksToInnkeeper</span><span class="p">:</span><span class="w"> </span><span class="s">"inconversation</span><span class="nv"> </span><span class="s">conversation:innkeeper"</span>
 </code></pre></div>
@@ -11611,7 +11611,7 @@ In case of location it will take the height from it and use it as regular height
 <p>You specify items in a list separated by commas (without spaces between!).
 Each item consists of its name and amount, separated by a colon.
 Amount is optional, so if you specify just item's name the plugin will assume there should be only one item.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">emeraldsAndGold</span><span class="p">:</span><span class="w"> </span><span class="s">"item</span><span class="nv"> </span><span class="s">emerald:5,gold:10"</span>
 </code></pre></div>
 <h2 id="itemdurability"><code>ItemDurability</code><a class="headerlink" href="#itemdurability" title="Permanent link">🔗</a></h2>
@@ -11622,7 +11622,7 @@ Amount is optional, so if you specify just item's name the plugin will assume th
 <abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <code>relative</code> argument sets 0 to broken and 1 to the maximum durability the item can have.
 This condition returns false when no item is in the given slot or does not have durability, like stone or sticks.
 Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code>, <code>CHEST</code>, <code>LEGS</code>, <code>FEET</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">handOver50</span><span class="p">:</span><span class="w"> </span><span class="s">"itemdurability</span><span class="nv"> </span><span class="s">HAND</span><span class="nv"> </span><span class="s">50"</span>
 <span class="w">  </span><span class="nt">chestMoreThan50Percent</span><span class="p">:</span><span class="w"> </span><span class="s">"itemdurability</span><span class="nv"> </span><span class="s">CHEST</span><span class="nv"> </span><span class="s">0.5</span><span class="nv"> </span><span class="s">relative"</span>
 </code></pre></div>
@@ -11631,14 +11631,14 @@ Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code
 <strong>Syntax</strong>: <code>journal &lt;entry&gt;</code><br>
 <strong>Description</strong>: Whether the player has the specified journal entry.</p>
 <p>The only argument is name of the entry.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">journalHasWoodStarted</span><span class="p">:</span><span class="w"> </span><span class="s">"journal</span><span class="nv"> </span><span class="s">wood_started"</span>
 </code></pre></div>
 <h2 id="language"><code>Language</code><a class="headerlink" href="#language" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This condition can only be checked on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This condition can be checked on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span><br>
 <strong>Syntax</strong>: <code>language &lt;languages&gt;</code><br>
 <strong>Description</strong>: Whether the player has one of the specified languages selected.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasValidLanguage</span><span class="p">:</span><span class="w"> </span><span class="s">"language</span><span class="nv"> </span><span class="s">en-US,de-DE,fr-FR"</span>
 </code></pre></div>
 <h2 id="location"><code>Location</code><a class="headerlink" href="#location" title="Permanent link">🔗</a></h2>
@@ -11646,7 +11646,7 @@ Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code
 <strong>Syntax</strong>: <code>location &lt;location&gt; &lt;radius&gt;</code><br>
 <strong>Description</strong>: Whether the player is at the specified location within the specified radius.</p>
 <p>Just two mandatory attributes - location and radius around it.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">netherEntrance</span><span class="p">:</span><span class="w"> </span><span class="s">"location</span><span class="nv"> </span><span class="s">100;200;300;survival_nether</span><span class="nv"> </span><span class="s">5"</span>
 </code></pre></div>
 <h2 id="looking"><code>Looking</code><a class="headerlink" href="#looking" title="Permanent link">🔗</a></h2>
@@ -11655,7 +11655,7 @@ Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code
 <strong>Description</strong>: Whether the player is looking towards the specified block at the specified location or with the specified material.</p>
 <p>You must specify either <code>loc:</code> optional (the location of the block) or <code>type:</code> optional as a <code>block selector</code>.
 You can also specify both.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">targetingStone</span><span class="p">:</span><span class="w"> </span><span class="s">"looking</span><span class="nv"> </span><span class="s">loc:12.0;14.0;-15.0;world</span><span class="nv"> </span><span class="s">type:STONE"</span>
 </code></pre></div>
 <h2 id="moonphase"><code>Moonphase</code><a class="headerlink" href="#moonphase" title="Permanent link">🔗</a></h2>
@@ -11686,7 +11686,7 @@ You can also specify both.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">fullMoon</span><span class="p">:</span><span class="w"> </span><span class="s">"moonphase</span><span class="nv"> </span><span class="s">FULL_MOON"</span>
 <span class="w">  </span><span class="nt">darkInHub</span><span class="p">:</span><span class="w"> </span><span class="s">"moonphase</span><span class="nv"> </span><span class="s">WANING_CRESCENT,NEW_MOON,WAXING_CRESCENT</span><span class="nv"> </span><span class="s">world:hub"</span>
 <span class="w">  </span><span class="nt">playersFirstJoinMoon</span><span class="p">:</span><span class="w"> </span><span class="s">"moonphase</span><span class="nv"> </span><span class="s">%ph.player_first_join_moon%"</span>
@@ -11719,7 +11719,7 @@ You can also specify both.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">canHearBandit</span><span class="p">:</span><span class="w"> </span><span class="s">"npcdistance</span><span class="nv"> </span><span class="s">bandit</span><span class="nv"> </span><span class="s">22"</span>
 </code></pre></div>
 <h2 id="npclocation"><code>NpcLocation</code><a class="headerlink" href="#npclocation" title="Permanent link">🔗</a></h2>
@@ -11756,7 +11756,7 @@ You can also specify both.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">nearTarget</span><span class="p">:</span><span class="w"> </span><span class="s">"npclocation</span><span class="nv"> </span><span class="s">merchant</span><span class="nv"> </span><span class="s">4.0;14.0;-20.0;world</span><span class="nv"> </span><span class="s">22"</span>
 </code></pre></div>
 <h2 id="numbercompare"><code>NumberCompare</code><a class="headerlink" href="#numbercompare" title="Permanent link">🔗</a></h2>
@@ -11764,7 +11764,7 @@ You can also specify both.</p>
 <strong>Syntax</strong>: <code>numbercompare &lt;number1&gt; &lt;operation&gt; &lt;number2&gt;</code><br>
 <strong>Description</strong>: This condition compares two numbers.</p>
 <p>The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>, <code>!=</code>, <code>&gt;=</code>, <code>&gt;</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasMoreThan100Points</span><span class="p">:</span><span class="w"> </span><span class="s">"numbercompare</span><span class="nv"> </span><span class="s">%ph.other_plugin:points%</span><span class="nv"> </span><span class="s">&gt;=</span><span class="nv"> </span><span class="s">100"</span>
 </code></pre></div>
 <h2 id="objective"><code>Objective</code><a class="headerlink" href="#objective" title="Permanent link">🔗</a></h2>
@@ -11772,7 +11772,7 @@ You can also specify both.</p>
 <strong>Syntax</strong>: <code>objective &lt;objective&gt;</code><br>
 <strong>Description</strong>: Whether the player has the specified objective.</p>
 <p>The only argument is the name of the objective, as defined in the <em>objectives</em> section.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasWoodObjective</span><span class="p">:</span><span class="w"> </span><span class="s">"objective</span><span class="nv"> </span><span class="s">wood"</span>
 </code></pre></div>
 <h2 id="or"><code>Or</code><a class="headerlink" href="#or" title="Permanent link">🔗</a></h2>
@@ -11781,7 +11781,7 @@ You can also specify both.</p>
 <strong>Description</strong>: The disjunction of the specified conditions.</p>
 <p>This means that only one of the conditions has to be met in order for alternative
 to be true. You just define one mandatory argument, condition names separated by commas. <code>!</code> prefix works as always.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasOneRequirement</span><span class="p">:</span><span class="w"> </span><span class="s">"or</span><span class="nv"> </span><span class="s">night,rain,!has_armor"</span>
 </code></pre></div>
 <h2 id="partialdate"><code>PartialDate</code><a class="headerlink" href="#partialdate" title="Permanent link">🔗</a></h2>
@@ -11792,7 +11792,7 @@ to be true. You just define one mandatory argument, condition names separated by
 You can also specify multiple days/months/years by just separating them by <code>,</code> or an interval by using <code>-</code>.
 If you have trouble understanding how this works have a look at the example.</p>
 <p>The example is true between the 1<sup>st</sup> and the 5<sup>th</sup> or on the 20<sup>th</sup> of each month, but only in the year 2017.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isEventDate</span><span class="p">:</span><span class="w"> </span><span class="s">"partialdate</span><span class="nv"> </span><span class="s">day:1-5,20</span><span class="nv"> </span><span class="s">year:2017"</span>
 </code></pre></div>
 <h2 id="party"><code>Party</code><a class="headerlink" href="#party" title="Permanent link">🔗</a></h2>
@@ -11807,7 +11807,7 @@ one can meet first condition, another one can meet the rest, and it will work).<
 Count is just a number, minimal amount of players in the party.
 Location can be used to create a party without the need of a player that is the center of the party.
 You don't have to specify all those arguments, you can use only one if you want.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">partyRequirements</span><span class="p">:</span><span class="w"> </span><span class="s">"party</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">has_tag1,!has_tag2</span><span class="nv"> </span><span class="s">every:some_item</span><span class="nv"> </span><span class="s">any:some_location,some_other_item</span><span class="nv"> </span><span class="s">count:5"</span>
 </code></pre></div>
 <h2 id="permission"><code>Permission</code><a class="headerlink" href="#permission" title="Permanent link">🔗</a></h2>
@@ -11815,7 +11815,7 @@ You don't have to specify all those arguments, you can use only one if you want.
 <strong>Syntax</strong>: <code>permission &lt;permission&gt;</code><br>
 <strong>Description</strong>: Whether the player has the specified permission.</p>
 <p>The instruction string must contain permission node as the required argument.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">essentialsTpaPermissions</span><span class="p">:</span><span class="w"> </span><span class="s">"permission</span><span class="nv"> </span><span class="s">essentials.tpa"</span>
 </code></pre></div>
 <h2 id="point"><code>Point</code><a class="headerlink" href="#point" title="Permanent link">🔗</a></h2>
@@ -11864,7 +11864,7 @@ You don't have to specify all those arguments, you can use only one if you want.
 <strong>Syntax</strong>: <code>random &lt;number&gt;</code><br>
 <strong>Description</strong>: This condition is met randomly using the specified chance.</p>
 <p>There is one argument: two positive numbers like <code>5-12</code>. They mean something like that: "It will be true 5 times out of 12".</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">twelfthPercent</span><span class="p">:</span><span class="w"> </span><span class="s">"random</span><span class="nv"> </span><span class="s">12-100"</span>
 </code></pre></div>
 <h2 id="rating"><code>Rating</code><a class="headerlink" href="#rating" title="Permanent link">🔗</a></h2>
@@ -11872,7 +11872,7 @@ You don't have to specify all those arguments, you can use only one if you want.
 <strong>Syntax</strong>: <code>rating &lt;amount&gt;</code><br>
 <strong>Description</strong>: Whether the player wears armor which gives at least the specified amount of protection (armor icons).</p>
 <p>The first and only argument should be an integer. One armor point is equal to half armor icon in-game (10 means half of the bar filled).</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">armorRating10</span><span class="p">:</span><span class="w"> </span><span class="s">"rating</span><span class="nv"> </span><span class="s">10"</span>
 </code></pre></div>
 <h2 id="realtime"><code>RealTime</code><a class="headerlink" href="#realtime" title="Permanent link">🔗</a></h2>
@@ -11897,7 +11897,7 @@ You don't have to specify all those arguments, you can use only one if you want.
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">allDayReal</span><span class="p">:</span><span class="w"> </span><span class="s">"realtime</span><span class="nv"> </span><span class="s">6-19"</span>
 <span class="w">  </span><span class="nt">midnightReal</span><span class="p">:</span><span class="w"> </span><span class="s">"realtime</span><span class="nv"> </span><span class="s">23:30-0:30"</span>
 <span class="w">  </span><span class="nt">knoppersTimeReal</span><span class="p">:</span><span class="w"> </span><span class="s">"realtime</span><span class="nv"> </span><span class="s">9:30-10"</span>
@@ -11932,7 +11932,7 @@ You don't have to specify all those arguments, you can use only one if you want.
 <strong>Syntax</strong>: <code>ride &lt;entity&gt;</code><br>
 <strong>Description</strong>: Whether the player is mounted on the specified <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html">entity</a>.</p>
 <p><code>any</code> is also a valid input and matches any entity.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">horse</span><span class="p">:</span><span class="w"> </span><span class="s">"ride</span><span class="nv"> </span><span class="s">horse"</span>
 <span class="w">  </span><span class="nt">anything</span><span class="p">:</span><span class="w"> </span><span class="s">"ride</span><span class="nv"> </span><span class="s">any"</span>
 </code></pre></div>
@@ -11964,7 +11964,7 @@ You don't have to specify all those arguments, you can use only one if you want.
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasAtLeastTenKills</span><span class="p">:</span><span class="w"> </span><span class="s">"score</span><span class="nv"> </span><span class="s">kills</span><span class="nv"> </span><span class="s">10"</span>
 </code></pre></div>
 <h2 id="scoretag"><code>ScoreTag</code><a class="headerlink" href="#scoretag" title="Permanent link">🔗</a></h2>
@@ -11990,7 +11990,7 @@ You don't have to specify all those arguments, you can use only one if you want.
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasVanillaTag</span><span class="p">:</span><span class="w"> </span><span class="s">"scoretag</span><span class="nv"> </span><span class="s">vanilla_tag"</span>
 </code></pre></div>
 <h2 id="section"><code>Section</code><a class="headerlink" href="#section" title="Permanent link">🔗</a></h2>
@@ -12045,7 +12045,7 @@ You don't have to specify all those arguments, you can use only one if you want.
 <strong>Syntax</strong>: <code>sneak</code><br>
 <strong>Description</strong>: Whether the player is sneaking.</p>
 <p>This would probably be useful for creating traps, I'm not sure. There are no arguments for this one.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isSneaking</span><span class="p">:</span><span class="w"> </span><span class="s">"sneak"</span>
 </code></pre></div>
 <h2 id="stage"><code>Stage</code><a class="headerlink" href="#stage" title="Permanent link">🔗</a></h2>
@@ -12084,7 +12084,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isDeliverCookies</span><span class="p">:</span><span class="w"> </span><span class="s">"stage</span><span class="nv"> </span><span class="s">bakeCookies</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">deliverCookies"</span>
 <span class="w">  </span><span class="nt">isDeliverCookiesOrAbove</span><span class="p">:</span><span class="w"> </span><span class="s">"stage</span><span class="nv"> </span><span class="s">bakeCookies</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">cookCookies"</span>
 </code></pre></div>
@@ -12093,7 +12093,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 <strong>Syntax</strong>: <code>tag &lt;tag&gt;</code><br>
 <strong>Description</strong>: Whether the player has the specified tag.</p>
 <p>Together with <code>!</code> negation it is one of the most powerful tools when creating conversations. The instruction string must contain tag name.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">questCompleted</span><span class="p">:</span><span class="w"> </span><span class="s">"tag</span><span class="nv"> </span><span class="s">quest_completed"</span>
 </code></pre></div>
 <h2 id="testforblock"><code>TestForBlock</code><a class="headerlink" href="#testforblock" title="Permanent link">🔗</a></h2>
@@ -12101,7 +12101,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 <strong>Syntax</strong>: <code>testforblock &lt;location&gt; &lt;selector&gt;</code><br>
 <strong>Description</strong>: Whether the block at specified location matches the specified material.</p>
 <p>First argument is a location, and the second one is a <code>block selector</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">stoneSet</span><span class="p">:</span><span class="w"> </span><span class="s">"testforblock</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">STONE"</span>
 </code></pre></div>
 <h2 id="time"><code>Time</code><a class="headerlink" href="#time" title="Permanent link">🔗</a></h2>
@@ -12132,7 +12132,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">allDay</span><span class="p">:</span><span class="w"> </span><span class="s">"time</span><span class="nv"> </span><span class="s">6-19"</span>
 <span class="w">  </span><span class="nt">midnightInOverworld</span><span class="p">:</span><span class="w"> </span><span class="s">"time</span><span class="nv"> </span><span class="s">23:30-0:30</span><span class="nv"> </span><span class="s">world:overworld"</span>
 <span class="w">  </span><span class="nt">knoppersTime</span><span class="p">:</span><span class="w"> </span><span class="s">"time</span><span class="nv"> </span><span class="s">9:30-10"</span>
@@ -12172,7 +12172,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">anyNumber</span><span class="p">:</span><span class="w"> </span><span class="s">"variable</span><span class="nv"> </span><span class="s">%objective.var.price%</span><span class="nv"> </span><span class="s">-?\\d+"</span><span class="w"> </span><span class="c1">#(1)!</span>
 <span class="w">  </span><span class="nt">isPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">"variable</span><span class="nv"> </span><span class="s">%ph.parties_members_1%</span><span class="nv"> </span><span class="s">%player%"</span><span class="w"> </span><span class="c1">#(2)!</span>
 <span class="w">  </span><span class="nt">denizenPlaceholder</span><span class="p">:</span><span class="w"> </span><span class="s">"variable</span><span class="nv"> </span><span class="s">%ph.denizen_&lt;server.match_player[SomeName].has_flag[flag_name]&gt;%</span><span class="nv"> </span><span class="s">true</span><span class="nv"> </span><span class="s">forceSync"</span><span class="w"> </span><span class="c1">#(3)!</span>
@@ -12214,7 +12214,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isSunny</span><span class="p">:</span><span class="w"> </span><span class="s">"weather</span><span class="nv"> </span><span class="s">sun"</span>
 <span class="w">  </span><span class="nt">weatherInPlayerWorld</span><span class="p">:</span><span class="w"> </span><span class="s">"weather</span><span class="nv"> </span><span class="s">rain</span><span class="nv"> </span><span class="s">world:%ph.player_home_world%"</span>
 <span class="w">  </span><span class="nt">overworldIsRainy</span><span class="p">:</span><span class="w"> </span><span class="s">"weather</span><span class="nv"> </span><span class="s">rain</span><span class="nv"> </span><span class="s">world:overworld"</span>
@@ -12224,7 +12224,7 @@ The valid operations are: <code>&lt;</code>, <code>&lt;=</code>, <code>=</code>,
 <strong>Syntax</strong>: <code>world &lt;world&gt;</code><br>
 <strong>Description</strong>: Whether the player is in the specified world.</p>
 <p>The first argument is the name of a world.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">isInWorld</span><span class="p">:</span><span class="w"> </span><span class="s">"world</span><span class="nv"> </span><span class="s">world"</span>
 </code></pre></div>
 

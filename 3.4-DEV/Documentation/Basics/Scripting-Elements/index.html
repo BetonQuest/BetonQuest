@@ -8909,7 +8909,7 @@ For example, you could create a custom respawn system with a <code>die</code> ob
 teleported to the spawnpoint and the <code>die</code> objective will be started again.
 The <code>persistent</code> argument prevents the objective from being completed, although it will run all its actions. To cancel such
 an objective, you need to use <code>objective delete</code> action.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">mineDiamonds</span><span class="p">:</span><span class="w"> </span><span class="s">'block</span><span class="nv"> </span><span class="s">DIAMONDS</span><span class="nv"> </span><span class="s">-10</span><span class="nv"> </span><span class="s">actions:reward'</span>
 <span class="w">  </span><span class="nt">die</span><span class="p">:</span><span class="w"> </span><span class="s">'die</span><span class="nv"> </span><span class="s">cancel</span><span class="nv"> </span><span class="s">respawn:100;200;300;world;90;0</span><span class="nv"> </span><span class="s">actions:sendRespawnMessage</span><span class="nv"> </span><span class="s">conditions:hasCustomTotem'</span>
 </code></pre></div>
@@ -8922,7 +8922,7 @@ When you then reload BetonQuest it is started for all online players and also wi
 is started. With this tag, the objective will not be started again.<br>
 These tags follow the syntax <code>&lt;package&gt;&gt;auto-once-&lt;id&gt;</code>, where <code>&lt;id&gt;</code> is the objective identifier and <code>&lt;package&gt;</code> the package where
 the objective is located.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">startQuestByMining</span><span class="p">:</span><span class="w"> </span><span class="s">'location</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">actions:start_quest_mine_folder</span><span class="nv"> </span><span class="s"><ins class="critic">auto-once</ins>'</span>
 </code></pre></div>
 <h4 id="placeholders">Placeholders<a class="headerlink" href="#placeholders" title="Permanent link">🔗</a></h4>
@@ -8942,7 +8942,7 @@ will be completed. They check if a given in-game state is present and return <co
 <p>You can negate the condition (revert its output) by adding an exclamation mark (<code>!</code>) at the beginning of its name. 
 This only works in the place where conditions are used (i.e. in conversations, not in the <em>conditions</em> section).
 If you do so, make sure to enclose the condition in quotes, otherwise YAML will give you a syntax error.
-</p><div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+</p><div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">hasFullHealth</span><span class="p">:</span><span class="w"> </span><span class="s">"health</span><span class="nv"> </span><span class="s">20"</span>
 <span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">helpWithHealing</span><span class="p">:</span><span class="w"> </span><span class="s">"hunger</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">conditions:!hasFullHealth"</span>

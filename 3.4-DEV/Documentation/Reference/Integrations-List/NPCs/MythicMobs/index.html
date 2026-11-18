@@ -8980,7 +8980,7 @@ For those, please visit the <a href="../../Items/MythicMobs/">MythicMobs</a> Ite
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">castPoison</span><span class="p">:</span><span class="w"> </span><span class="s">"mcast</span><span class="nv"> </span><span class="s">AngrySludgePoison"</span>
 <span class="w">  </span><span class="nt">giveItem</span><span class="p">:</span><span class="w"> </span><span class="s">"mcast</span><span class="nv"> </span><span class="s">giveNItem</span><span class="nv"> </span><span class="s">+amount:20</span><span class="nv"> </span><span class="s">+item:gold_coin"</span>
 </code></pre></div>
@@ -9036,7 +9036,7 @@ For those, please visit the <a href="../../Items/MythicMobs/">MythicMobs</a> Ite
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">spawnBoss</span><span class="p">:</span><span class="w"> </span><span class="s">"mspawnmob</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">MegaBoss:1</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">target"</span>
 <span class="w">  </span><span class="nt">spawnKnights</span><span class="p">:</span><span class="w"> </span><span class="s">"mspawnmob</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">SkeletalKnight:3</span><span class="nv"> </span><span class="s">5"</span>
 <span class="w">  </span><span class="nt">spawnPrivateDevil</span><span class="p">:</span><span class="w"> </span><span class="s">"mspawnmob</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">Mephisto:1</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">target</span><span class="nv"> </span><span class="s">private</span><span class="nv"> </span><span class="s">marked:DungeonBoss3"</span>
@@ -9122,7 +9122,7 @@ Additionally, the mob should be configured to never change its AI target using M
 <p>This objective has three properties: <code>amount</code>, <code>left</code> and <code>total</code>. <code>amount</code> is the amount of mythic mobs already killed,
 <code>left</code> is the amount of mythic mobs still needed to kill and <code>total</code> is the amount of mythic mobs initially required.
 <code>mode</code> gives the identification type.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">objectives</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">killKnight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SkeletalKnight amount:2 actions:reward</span>
 <span class="w">  </span><span class="nt">killSnails</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill SnekBoss,SnailBoss,SunBoss amount:10 actions:reward</span>
 <span class="w">  </span><span class="nt">snailFaction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mmobkill snail mode:faction amount:10 actions:reward</span>
@@ -9136,7 +9136,7 @@ Additionally, the mob should be configured to never change its AI target using M
 <strong>Syntax</strong>: <code>mythicmobdistance &lt;name&gt; &lt;distance&gt;</code><br>
 <strong>Description</strong>: Whether the player is near a specific MythicMobs entity.</p>
 <p>The first argument is the internal name of the mob (the one defined in MythicMobs' configuration). The second argument is the distance to check, measured in block lengths in a circular radius.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">conditions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">nearKnight</span><span class="p">:</span><span class="w"> </span><span class="s">"mythicmobdistance</span><span class="nv"> </span><span class="s">SkeletalKnight</span><span class="nv"> </span><span class="s">7"</span>
 </code></pre></div>
 

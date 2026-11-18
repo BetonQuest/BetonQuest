@@ -11650,7 +11650,7 @@ The power overrides the item's power if both are specified.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">simpleBoost</span><span class="p">:</span><span class="w"> </span><span class="s">"boostelytra"</span>
 <span class="w">  </span><span class="nt">justPower</span><span class="p">:</span><span class="w"> </span><span class="s">"boostelytra</span><span class="nv"> </span><span class="s">power:2"</span><span class="w"> </span>
 <span class="w">  </span><span class="nt">justItem</span><span class="p">:</span><span class="w"> </span><span class="s">"boostelytra</span><span class="nv"> </span><span class="s">item:my_rocket"</span>
@@ -11681,7 +11681,7 @@ The power overrides the item's power if both are specified.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">burn</span><span class="p">:</span><span class="w"> </span><span class="s">"burn</span><span class="nv"> </span><span class="s">30</span><span class="nv"> </span><span class="s">unit:ticks"</span>
 <span class="w">  </span><span class="nt">punishing_fire</span><span class="p">:</span><span class="w"> </span><span class="s">"burn</span><span class="nv"> </span><span class="s">%point.punishment.amount%"</span>
 </code></pre></div>
@@ -11712,7 +11712,7 @@ Running this action is equal to the player canceling a quest using the backpack.
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">cancelSmallQuest</span><span class="p">:</span><span class="w"> </span><span class="s">"cancel</span><span class="nv"> </span><span class="s">smallQuest"</span>
 <span class="w">  </span><span class="nt">cancelWoodQuest</span><span class="p">:</span><span class="w"> </span><span class="s">"cancel</span><span class="nv"> </span><span class="s">woodQuest</span><span class="nv"> </span><span class="s">bypass"</span>
 <span class="w">  </span><span class="nt">cancelWaterQuest</span><span class="p">:</span><span class="w"> </span><span class="s">"cancel</span><span class="nv"> </span><span class="s">_-package&gt;waterQuest</span><span class="nv"> </span><span class="s">bypass:%tag.startedWaterQuest%"</span>
@@ -11737,7 +11737,7 @@ Running this action is equal to the player canceling a quest using the backpack.
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">cancel</span><span class="p">:</span><span class="w"> </span><span class="s">"cancelconversation"</span>
 <span class="w">  </span><span class="nt">cancelInstant</span><span class="p">:</span><span class="w"> </span><span class="s">"cancelconversation</span><span class="nv"> </span><span class="s">skipDelay"</span>
 </code></pre></div>
@@ -11749,7 +11749,7 @@ Running this action is equal to the player canceling a quest using the backpack.
 The instruction string is the command, without leading slash. You can only use <code>%player%</code> as a placeholder in this action.
 Additional messages can be defined by separating them with <code>|</code> character. If you want to use a <code>|</code> character in the message use <code>\|</code>.</p>
 <p>If a plugin does not work with the sudo / command action you need to use this action.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">sendMSG</span><span class="p">:</span><span class="w"> </span><span class="s">"chat</span><span class="nv"> </span><span class="s">Hello!"</span>
 <span class="w">  </span><span class="nt">sendMultipleMSGs</span><span class="p">:</span><span class="w"> </span><span class="s">"chat</span><span class="nv"> </span><span class="s">Hi</span><span class="nv"> </span><span class="s">%player%|ban</span><span class="nv"> </span><span class="s">%player%|pardon</span><span class="nv"> </span><span class="s">%player%"</span>
 <span class="w">  </span><span class="nt">sendPluginCommand</span><span class="p">:</span><span class="w"> </span><span class="s">"chat</span><span class="nv"> </span><span class="s">/someCommand</span><span class="nv"> </span><span class="s">x</span><span class="nv"> </span><span class="s">y</span><span class="nv"> </span><span class="s">z"</span>
@@ -11774,7 +11774,7 @@ Additional messages can be defined by separating them with <code>|</code> charac
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">chestclear</span><span class="p">:</span><span class="w"> </span><span class="s">"chestclear</span><span class="nv"> </span><span class="s">100;200;300;world"</span>
 </code></pre></div>
 <h2 id="chestgive"><code>ChestGive</code><a class="headerlink" href="#chestgive" title="Permanent link">🔗</a></h2>
@@ -11810,7 +11810,7 @@ If the chest is full, the items will be dropped on the ground if the <code>dropE
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">chestgive</span><span class="p">:</span><span class="w"> </span><span class="s">"chestgive</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword</span><span class="nv"> </span><span class="s">dropExcess"</span>
 <span class="w">  </span><span class="nt">nodrop</span><span class="p">:</span><span class="w"> </span><span class="s">"chestgive</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword"</span>
 </code></pre></div>
@@ -11851,7 +11851,7 @@ The instruction accepts the same <code>abort</code> and <code>fail</code> option
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">chesttake</span><span class="p">:</span><span class="w"> </span><span class="s">"chesttake</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">emerald:5,sword"</span>
 <span class="w">  </span><span class="nt">finishRiddle</span><span class="p">:</span><span class="w"> </span><span class="s">"chesttake</span><span class="nv"> </span><span class="s">300;200;100;world</span><span class="nv"> </span><span class="s">stone:8,artifact:2,sand:3</span><span class="nv"> </span><span class="s">abort</span><span class="nv"> </span><span class="s">fail:thunder"</span>
 </code></pre></div>
@@ -11866,7 +11866,7 @@ You can define additional commands by separating them with <code>|</code> charac
 If you want to use a <code>|</code> character in the command use <code>\|</code>.</p>
 <p>Looking for <a href="#command">execute as player commands</a>?
 Looking for <a href="#opsudo">execute as operator commands</a>?</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">killAndBan</span><span class="p">:</span><span class="w"> </span><span class="s">"command</span><span class="nv"> </span><span class="s">kill</span><span class="nv"> </span><span class="s">%player%|ban</span><span class="nv"> </span><span class="s">%player%"</span>
 </code></pre></div>
 <h2 id="compass"><code>Compass</code><a class="headerlink" href="#compass" title="Permanent link">🔗</a></h2>
@@ -11876,10 +11876,30 @@ Looking for <a href="#opsudo">execute as operator commands</a>?</p>
 <p>When you run this action, you can add or remove a compass destination for the player. You may also directly set the player's compass destination as well.
 When a destination is added the player will be able to select a specified location as a target of his compass.
 To select the target the player must open his backpack and click on the compass icon.
-The first argument is <code>add</code>,<code>del</code> or <code>set</code>, and second one is the name of the target, as defined in the <em>compass</em> section.
 Note that if you set a target the player will not automatically have it added to their choices.</p>
 <p>The destination must be defined in <code>compass</code> section.
 You can specify a name for the target in each language or just give a general name, and optionally add a custom item (from <em>items</em> section) to be displayed in the backpack.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operation<br>[<abbr title="add, del, set">CompassOp</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The operation to perform.</td>
+</tr>
+<tr>
+<td>target<br>[Identifier]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The name of the target, as defined in the <code>compass</code> section.</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight"><span class="filename">Example compass configuration</span><pre><span></span><code><span class="nt">compass</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">beton</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span>
@@ -11888,17 +11908,37 @@ You can specify a name for the target in each language or just give a general na
 <span class="w">    </span><span class="nt">location</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100;200;300;world</span>
 <span class="w">    </span><span class="nt">item</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scroll</span>
 </code></pre></div>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">compassBeton</span><span class="p">:</span><span class="w"> </span><span class="s">"compass</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">beton"</span>
 </code></pre></div>
 <h2 id="conversation"><code>Conversation</code><a class="headerlink" href="#conversation" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
-<strong>Syntax</strong>: <code>conversation &lt;conversation&gt; &lt;option&gt;</code><br>
+<strong>Syntax</strong>: <code>conversation &lt;conversation&gt; [option]</code><br>
 <strong>Description</strong>: Start a conversation.</p>
-<p>The first argument is ID of the conversation. This bypasses the conversation permission!</p>
-<p>The optional <code>option</code> argument is a NPC option where the conversation will start.
-When using this argument the conversation will start without its header.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<p>This bypasses the conversation permission!
+When using the optional <code>option</code> argument, the conversation will start without its header.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>conversation<br>[Identifier]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The ID of the conversation.</td>
+</tr>
+<tr>
+<td>option<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
+<td>The NPC option where the conversation will start.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">startConversation</span><span class="p">:</span><span class="w"> </span><span class="s">"conversation</span><span class="nv"> </span><span class="s">village_smith"</span>
 <span class="w">  </span><span class="nt">startConversationOption</span><span class="p">:</span><span class="w"> </span><span class="s">"conversation</span><span class="nv"> </span><span class="s">tutorial</span><span class="nv"> </span><span class="s">option:explain_world"</span>
 </code></pre></div>
@@ -11906,16 +11946,46 @@ When using this argument the conversation will start without its header.</p>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>damage &lt;amount&gt;</code><br>
 <strong>Description</strong>: Apply the specified amount of damage to the player.</p>
-<p>The only argument is a number (can have a floating point).</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>amount<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The absolute amount of damage to apply. Can have a floating point.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">dealDamage</span><span class="p">:</span><span class="w"> </span><span class="s">"damage</span><span class="nv"> </span><span class="s">20"</span>
 </code></pre></div>
 <h2 id="deleffect"><code>DelEffect</code><a class="headerlink" href="#deleffect" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>deleffect &lt;effects&gt;</code><br>
 <strong>Description</strong>: Remove the specified potion effects from the player.</p>
-<p>Use <code>any</code> instead of a list of types to remove all potion effects from the player.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>effects<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The list of potion effects to remove, or <code>any</code> to remove all.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">deleteEffects</span><span class="p">:</span><span class="w"> </span><span class="s">"deleffect</span><span class="nv"> </span><span class="s">ABSORPTION,BLINDNESS"</span>
 <span class="w">  </span><span class="nt">deleteAny</span><span class="p">:</span><span class="w"> </span><span class="s">"deleffect</span><span class="nv"> </span><span class="s">any"</span>
 </code></pre></div>
@@ -11924,7 +11994,23 @@ When using this argument the conversation will start without its header.</p>
 <strong>Syntax</strong>: <code>deleteglobalpoint &lt;category&gt;</code><br>
 <strong>Description</strong>: Delete the global point category.</p>
 <p>See also the <a href="#deletepoint"><code>deletepoint</code> action</a>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category<br><a href="../Definition-Encyclopedia/#identifiers">[Identifier]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The name of the global point category.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">deleteBonus</span><span class="p">:</span><span class="w"> </span><span class="s">"deleteglobalpoint</span><span class="nv"> </span><span class="s">bonus"</span>
 </code></pre></div>
 <h2 id="deletepoint"><code>DeletePoint</code><a class="headerlink" href="#deletepoint" title="Permanent link">🔗</a></h2>
@@ -11933,7 +12019,23 @@ When using this argument the conversation will start without its header.</p>
 <strong>Description</strong>: Delete the point category for the player.</p>
 <p>The independent context will delete the points for all players in the database (even if offline).</p>
 <p>See also the <a href="#deleteglobalpoint"><code>deleteglobalpoint</code> action</a>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category<br><a href="../Definition-Encyclopedia/#identifiers">[Identifier]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The name of the point category.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">deletePoints</span><span class="p">:</span><span class="w"> </span><span class="s">"deletepoint</span><span class="nv"> </span><span class="s">npc_attitude"</span>
 </code></pre></div>
 <h2 id="door"><code>Door</code><a class="headerlink" href="#door" title="Permanent link">🔗</a></h2>
@@ -11941,7 +12043,7 @@ When using this argument the conversation will start without its header.</p>
 <strong>Syntax</strong>: <code>door &lt;location&gt; &lt;operation&gt;</code><br>
 <strong>Description</strong>: Open and close doors, trapdoors, and fence gates.</p>
 <p>The syntax is exactly the same as in <code>lever</code> action above.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">close</span><span class="p">:</span><span class="w"> </span><span class="s">"door</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">off"</span>
 </code></pre></div>
 <h2 id="drop"><code>Drop</code><a class="headerlink" href="#drop" title="Permanent link">🔗</a></h2>
@@ -11978,14 +12080,50 @@ In an independent context, omitting the location will cause an error.</p>
 </code></pre></div>
 <h2 id="effect"><code>Effect</code><a class="headerlink" href="#effect" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
-<strong>Syntax</strong>: <code>effect &lt;effect&gt; &lt;duration&gt; &lt;level&gt; [ambient] [noicon] [hidden]</code><br>
+<strong>Syntax</strong>: <code>effect &lt;effect&gt; &lt;duration&gt; &lt;level&gt; {ambient} {noicon} {hidden}</code><br>
 <strong>Description</strong>: Apply the specified potion effect to the player.</p>
-<p>First argument is potion type. You can find all available types <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html">here</a>.
-Second is integer defining how long the effect will last in seconds.
-Third argument, also integer, defines level of the effect (1 means first level).
-Add a parameter <code>ambient</code> to make potion particles appear more invisible (just like beacon effects).
-To hide particles add a parameter <code>hidden</code>. To hide the icon for the effect add <code>noicon</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>effect<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>See <a href="https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html">PotionEffectType</a>.</td>
+</tr>
+<tr>
+<td>duration<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>How long the effect will last in seconds.</td>
+</tr>
+<tr>
+<td>level<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>Level of the effect.</td>
+</tr>
+<tr>
+<td>ambient<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>Make potion particles appear more often and translucent.</td>
+</tr>
+<tr>
+<td>noicon<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>Hide the icon for the effect.</td>
+</tr>
+<tr>
+<td>hidden<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>Hide particles.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">effectBlindness</span><span class="p">:</span><span class="w"> </span><span class="s">"effect</span><span class="nv"> </span><span class="s">BLINDNESS</span><span class="nv"> </span><span class="s">30</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">ambient</span><span class="nv"> </span><span class="s">noicon"</span>
 </code></pre></div>
 <h2 id="equip"><code>Equip</code><a class="headerlink" href="#equip" title="Permanent link">🔗</a></h2>
@@ -12025,7 +12163,7 @@ The <code>force</code> flag replaces an existing item, and combining it with <co
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">equipHelmet</span><span class="p">:</span><span class="w"> </span><span class="s">"equip</span><span class="nv"> </span><span class="s">diamond_helmet</span><span class="nv"> </span><span class="s">HEAD"</span>
 <span class="w">  </span><span class="nt">replaceHelmet</span><span class="p">:</span><span class="w"> </span><span class="s">"equip</span><span class="nv"> </span><span class="s">quest_helmet</span><span class="nv"> </span><span class="s">HEAD</span><span class="nv"> </span><span class="s">drop</span><span class="nv"> </span><span class="s">force"</span>
 </code></pre></div>
@@ -12035,7 +12173,7 @@ The <code>force</code> flag replaces an existing item, and combining it with <co
 <strong>Description</strong>: Evaluate the expression and execute the resulting action.</p>
 <p>This action allows you to resolve an expression containing placeholders, and the result will then be interpreted
 again as an action.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">simpleEval</span><span class="p">:</span><span class="w"> </span><span class="s">'eval</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">"This</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">actually</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">eval</span><span class="nv"> </span><span class="s">action</span><span class="nv"> </span><span class="s">evaluating</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">action."'</span>
 <span class="w">  </span><span class="nt">complexEval</span><span class="p">:</span><span class="w"> </span><span class="s">"eval</span><span class="nv"> </span><span class="s">point</span><span class="nv"> </span><span class="s">ranking</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">action:add</span><span class="nv"> </span><span class="s">%objective.settings.notify%"</span><span class="w"> </span><span class="c1">#(1)!</span>
 </code></pre></div>
@@ -12047,20 +12185,39 @@ again as an action.</p>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>experience &lt;amount&gt; &lt;action&gt;</code><br>
 <strong>Description</strong>: Manipulate the player's experience bar.</p>
-<p>This action allows you to manipulate player's experience. First you specify a number as the amount, then the modification action.
-You can use <code>action:addExperience</code>, <code>action:addLevel</code>, <code>action:setExperienceBar</code> and <code>action:setLevel</code> as modification types.</p>
 <p>To use this correctly, you need to understand this:</p>
 <ul>
 <li>A player has experience points.</li>
-<li>Experience levels, shown are shown as a number in the experience bar. Every level requires more experience points than the previous.</li>
+<li>Experience levels are shown as a number in the experience bar. Every level requires more experience points than the previous.</li>
 <li>The experience bar itself shows the percentage of the experience points needed to reach the next level.</li>
 </ul>
 <p>While <code>action:addExperience</code> only adds experience points, <code>action:addLevel</code> adds a level and keeps the current percentage.
 <code>action:setExperienceBar</code> sets the progress of the bar. Decimal values between <code>0</code> and <code>1</code> represent the fill level.
 This changes the underlying experience points, it's <strong>not</strong> just a visual change.
-<code>action:setLevel</code> sets only the level, expect if you specify a decimal number, then the experience bar will be
+<code>action:setLevel</code> sets only the level, except if you specify a decimal number, then the experience bar will be
 set to the specified percentage.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>amount<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The amount of experience or levels to use in the operation.</td>
+</tr>
+<tr>
+<td>action<br>[<abbr title="addExperience, addLevel, setExperienceBar, setLevel">XPType</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The operation to perform on the player's experience.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">add15XP</span><span class="p">:</span><span class="w"> </span><span class="s">"experience</span><span class="nv"> </span><span class="s">15</span><span class="nv"> </span><span class="s">action:addExperience"</span>
 <span class="w">  </span><span class="nt">add4andAHalfLevel</span><span class="p">:</span><span class="w"> </span><span class="s">"experience</span><span class="nv"> </span><span class="s">4.5</span><span class="nv"> </span><span class="s">action:addLevel"</span>
 <span class="w">  </span><span class="nt">remove2Level</span><span class="p">:</span><span class="w"> </span><span class="s">"experience</span><span class="nv"> </span><span class="s">-2</span><span class="nv"> </span><span class="s">action:addLevel"</span>
@@ -12072,11 +12229,39 @@ set to the specified percentage.</p>
 <strong>Syntax</strong>: <code>explosion &lt;fire&gt; &lt;block&gt; &lt;power&gt; &lt;location&gt;</code><br>
 <strong>Description</strong>: Create an explosion at the specified location.</p>
 <p>You can also define power, so be careful not to blow your server away.
-Default TNT power is 4, while Wither on creation is 7.
-First argument can be 0 or 1 and states if explosion will generate fire (like Ghast's fireball).
-Second is also 0 or 1 but this defines if block will be destroyed or not.
-Third argument is the power (float number). At the end (4<sup>th</sup> attribute) there is location.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+Default TNT power is 4, while Wither on creation is 7.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fire<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>If the explosion will generate fire.</td>
+</tr>
+<tr>
+<td>block<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>If blocks will be destroyed.</td>
+</tr>
+<tr>
+<td>power<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The power of the explosion.</td>
+</tr>
+<tr>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The location where the explosion should be created.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">explosion</span><span class="p">:</span><span class="w"> </span><span class="s">"explosion</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">4</span><span class="nv"> </span><span class="s">100;64;-100;survival"</span>
 </code></pre></div>
 <h2 id="first"><code>First</code><a class="headerlink" href="#first" title="Permanent link">🔗</a></h2>
@@ -12088,7 +12273,7 @@ starting from the first onward. Once it successfully executes one action, it sto
 collapsing long if-else chains into single actions.</p>
 <p>This action is especially powerful when it is used in conjunction with the <code>conditions:</code> keyword,
 which can be used with any action.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">firstExample</span><span class="p">:</span><span class="w"> </span><span class="s">"first</span><span class="nv"> </span><span class="s">action1,action2,action3"</span><span class="w"> </span><span class="c1"># (1)!</span>
 <span class="w">  </span><span class="nt">action1</span><span class="p">:</span><span class="w"> </span><span class="s">"point</span><span class="nv"> </span><span class="s">carry</span><span class="nv"> </span><span class="s">boxes</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">action:add</span><span class="nv"> </span><span class="s">conditions:firstCondition"</span>
 <span class="w">  </span><span class="nt">action2</span><span class="p">:</span><span class="w"> </span><span class="s">"point</span><span class="nv"> </span><span class="s">carry</span><span class="nv"> </span><span class="s">boxes</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">action:add</span><span class="nv"> </span><span class="s">conditions:secondCondition"</span>
@@ -12173,7 +12358,7 @@ You can use the <code>cancelOnLogout</code> argument to stop the folder executin
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">simpleFolder</span><span class="p">:</span><span class="w"> </span><span class="s">"folder</span><span class="nv"> </span><span class="s">action1,action2,action3"</span><span class="w"> </span><span class="c1"># (1)!</span>
 <span class="w">  </span><span class="nt">runActions</span><span class="p">:</span><span class="w"> </span><span class="s">"folder</span><span class="nv"> </span><span class="s">action1,action2,action3</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">period:1"</span><span class="w"> </span><span class="c1"># (2)!</span>
 <span class="w">  </span><span class="nt">troll</span><span class="p">:</span><span class="w"> </span><span class="s">"folder</span><span class="nv"> </span><span class="s">killPlayer,banPlayer,kickPlayer</span><span class="nv"> </span><span class="s">delay:5</span><span class="nv"> </span><span class="s">random:1"</span><span class="w"> </span><span class="c1"># (3)!</span>
@@ -12187,15 +12372,37 @@ You can use the <code>cancelOnLogout</code> argument to stop the folder executin
 </ol>
 <h2 id="give"><code>Give</code><a class="headerlink" href="#give" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
-<strong>Syntax</strong>: <code>give &lt;items&gt; [notify] [backpack]</code><br>
+<strong>Syntax</strong>: <code>give &lt;items&gt; {notify} {backpack}</code><br>
 <strong>Description</strong>: Give the player all specified items.</p>
-<p>They are specified exactly as in <code>item</code> condition -
-list separated by commas, every item can have amount separated by colon. Default amount is 1.
-If the player doesn't have required space in the inventory, the items are dropped on the ground,
-unless they are quest items. Then they will be put into the backpack. You can also specify <code>notify</code> keyword to display a
-simple message to the player about receiving items.
-The optional <code>backpack</code> argument forces quest items to be placed in the backpack.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<p>If the player doesn't have required space in the inventory, the items are dropped on the ground,
+unless they are quest items. Then they will be put into the backpack.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>items<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="An item refers to elements defined in the items section of a quest package. It may be specified with an amount after a colon.">Item</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The items with their optional amounts.</td>
+</tr>
+<tr>
+<td>notify<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>Display a simple message to the player about receiving items.</td>
+</tr>
+<tr>
+<td>backpack<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>Force quest items to be placed in the backpack.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">giveEmeralds</span><span class="p">:</span><span class="w"> </span><span class="s">"give</span><span class="nv"> </span><span class="s">emerald:5,emerald_block:9"</span>
 <span class="w">  </span><span class="nt">giveSign</span><span class="p">:</span><span class="w"> </span><span class="s">"give</span><span class="nv"> </span><span class="s">important_sign</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">backpack"</span>
 </code></pre></div>
@@ -12204,7 +12411,7 @@ The optional <code>backpack</code> argument forces quest items to be placed in t
 <strong>Syntax</strong>: <code>givejournal</code><br>
 <strong>Description</strong>: Give the journal to the player.</p>
 <p>It acts the same way as <strong>/journal</strong> command would.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">giveJournal</span><span class="p">:</span><span class="w"> </span><span class="s">"givejournal"</span>
 </code></pre></div>
 <h2 id="globalpoint"><code>GlobalPoint</code><a class="headerlink" href="#globalpoint" title="Permanent link">🔗</a></h2>
@@ -12302,7 +12509,7 @@ Using negative amounts will skip the damage animation and any related effects.</
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">give5</span><span class="p">:</span><span class="w"> </span><span class="s">"heal</span><span class="nv"> </span><span class="s">5"</span>
 <span class="w">  </span><span class="nt">set20</span><span class="p">:</span><span class="w"> </span><span class="s">"heal</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">operation:set"</span>
 </code></pre></div>
@@ -12310,11 +12517,29 @@ Using negative amounts will skip the damage animation and any related effects.</
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>hunger &lt;operation&gt; &lt;amount&gt;</code><br>
 <strong>Description</strong>: Manage the food level of the player.</p>
-<p>The second argument is the modification type.
-There are <code>give</code>, <code>take</code> and <code>set</code>. The second argument is the amount. With <code>set</code> can the food level be anything.
-If <code>give</code> or <code>take</code> is specified the final amount won't be more than 20 or less than 0.
-If the hunger level is below 7, the player cannot sprint.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<p>If the hunger level is below 7, the player cannot sprint.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operation<br>[<abbr title="give, take, set">HungerType</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The operation to perform.</td>
+</tr>
+<tr>
+<td>amount<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The amount of food level to use in the operation.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">set20</span><span class="p">:</span><span class="w"> </span><span class="s">"hunger</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">20"</span>
 <span class="w">  </span><span class="nt">give5</span><span class="p">:</span><span class="w"> </span><span class="s">"hunger</span><span class="nv"> </span><span class="s">give</span><span class="nv"> </span><span class="s">5"</span>
 </code></pre></div>
@@ -12326,23 +12551,56 @@ If the hunger level is below 7, the player cannot sprint.</p>
 string is <code>if condition action1 else action2</code>, where <code>condition</code> is a condition ID and <code>action1</code> and <code>action2</code> are action IDs.
  <code>else</code> keyword is mandatory between actions for no practical reason. Keep in mind that this action is player-independent 
 but probably the condition or the actions are not.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">toggleWeather</span><span class="p">:</span><span class="w"> </span><span class="s">"if</span><span class="nv"> </span><span class="s">sun</span><span class="nv"> </span><span class="s">rain</span><span class="nv"> </span><span class="s">else</span><span class="nv"> </span><span class="s">sun"</span>
 </code></pre></div>
 <h2 id="itemdurability"><code>ItemDurability</code><a class="headerlink" href="#itemdurability" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
-<strong>Syntax</strong>: <code>itemdurability &lt;slot&gt; &lt;operation&gt; &lt;amount&gt; [ignoreUnbreakable] [ignoreEvents]</code><br>
+<strong>Syntax</strong>: <code>itemdurability &lt;slot&gt; &lt;operation&gt; &lt;amount&gt; {ignoreUnbreakable} {ignoreEvents}</code><br>
 <strong>Description</strong>: Manage the durability of an item in the specified slot.</p>
-<p>The first argument is the slot, the second the change of durability and the third the amount.
-<abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> arguments are <code>ignoreUnbreakable</code> to ignore the unbreakable flag and unbreaking enchantment
-and <code>ignoreEvents</code> to bypass action logic, so other plugins will not be able to interfere.
-Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code>, <code>CHEST</code>, <code>LEGS</code>, <code>FEET</code>.</p>
+<p>Available slot types: <code>HAND</code>, <code>OFF_HAND</code>, <code>HEAD</code>, <code>CHEST</code>, <code>LEGS</code>, <code>FEET</code>.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>Both increasing and decreasing durability will be affected by the unbreaking enchantment.
-To prevent this behaviour use the <code>ignoreUnbreakable</code> argument.</p>
+To prevent this behavior, use the <code>ignoreUnbreakable</code> argument.</p>
 </div>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>slot<br>[<abbr title="hand, off_hand, feet, legs, chest, head">PlayerEquipmentSlot</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The slot of the item to change.</td>
+</tr>
+<tr>
+<td>operation<br>[<abbr title="ADD, SUBTRACT, SET, MULTIPLY">PointType</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The operation to perform on the durability.</td>
+</tr>
+<tr>
+<td>amount<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The amount of durability to use in the operation.</td>
+</tr>
+<tr>
+<td>ignoreUnbreakable<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>Ignore the unbreakable flag and unbreaking enchantment.</td>
+</tr>
+<tr>
+<td>ignoreEvents<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>Bypass action logic, so other plugins will not be able to interfere.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">add1ToHand</span><span class="p">:</span><span class="w"> </span><span class="s">"itemdurability</span><span class="nv"> </span><span class="s">HAND</span><span class="nv"> </span><span class="s">ADD</span><span class="nv"> </span><span class="s">1"</span>
 <span class="w">  </span><span class="nt">damageChest</span><span class="p">:</span><span class="w"> </span><span class="s">"itemdurability</span><span class="nv"> </span><span class="s">CHEST</span><span class="nv"> </span><span class="s">SUBTRACT</span><span class="nv"> </span><span class="s">%randomnumber.whole.15~30%</span><span class="nv"> </span><span class="s">ignoreUnbreakable</span><span class="nv"> </span><span class="s">ignoreEvents"</span>
 </code></pre></div>
@@ -12372,7 +12630,7 @@ To prevent this behaviour use the <code>ignoreUnbreakable</code> argument.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">setNameToHand</span><span class="p">:</span><span class="w"> </span><span class="s">"itemoverride</span><span class="nv"> </span><span class="s">HAND</span><span class="nv"> </span><span class="s">named"</span>
 <span class="w">  </span><span class="nt">updateStatistic</span><span class="p">:</span><span class="w"> </span><span class="s">"itemoverride</span><span class="nv"> </span><span class="s">OFF_HAND</span><span class="nv"> </span><span class="s">statistic"</span>
 <span class="nt">items</span><span class="p">:</span>
@@ -12381,18 +12639,34 @@ To prevent this behaviour use the <code>ignoreUnbreakable</code> argument.</p>
 </code></pre></div>
 <h2 id="journal"><code>Journal</code><a class="headerlink" href="#journal" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This action can be executed on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span> <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
-<strong>Syntax</strong>: <code>journal &lt;operation&gt; &lt;entry&gt;</code><br>
+<strong>Syntax</strong>: <code>journal &lt;operation&gt; [entry]</code><br>
 <strong>Description</strong>: Manage entries in the player's journal.</p>
-<p>Journal entries have to be defined in the <code>journal</code> section. The
-first argument is the action to perform, the second one is the name of the entry if required. Changing journal entries
-will also reload the journal.</p>
-<p>Possible actions are:
-- <code>add</code>: Adds a page to the journal.
-- <code>delete</code>: Deletes a page from the journal.
-- <code>update</code>: Refreshes the journal. This is especially useful when you need to update the main page.</p>
-<p>The independent context is only available for the <code>delete</code> operation,
-and delete the journal enty for all players in the database (even if offline).</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<p>Journal entries have to be defined in the <code>journal</code> section.
+Changing journal entries will also reload the journal.
+The independent context is only available for the <code>delete</code> operation,
+and deletes the journal entry for all players in the database (even if offline).</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operation<br>[<abbr title="add, delete, update">JournalOp</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The action to perform.</td>
+</tr>
+<tr>
+<td>entry<br>[Identifier]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
+<td>The name of the entry if required.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">questStarted</span><span class="p">:</span><span class="w"> </span><span class="s">"journal</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">quest_started"</span>
 <span class="w">  </span><span class="nt">questAvailable</span><span class="p">:</span><span class="w"> </span><span class="s">"journal</span><span class="nv"> </span><span class="s">delete</span><span class="nv"> </span><span class="s">quest_available"</span>
 <span class="w">  </span><span class="nt">update</span><span class="p">:</span><span class="w"> </span><span class="s">"journal</span><span class="nv"> </span><span class="s">update"</span>
@@ -12401,32 +12675,86 @@ and delete the journal enty for all players in the database (even if offline).</
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span><br>
 <strong>Syntax</strong>: <code>kill</code><br>
 <strong>Description</strong>: Kill the player.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">killPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">"kill"</span>
 </code></pre></div>
 <h2 id="language"><code>Language</code><a class="headerlink" href="#language" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This action can be executed on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span><br>
 <strong>Syntax</strong>: <code>language &lt;language&gt;</code><br>
 <strong>Description</strong>: Set the player's language to the specified one.</p>
-<p>There is only one argument, the language name.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>language<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The language key.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">setLangEn</span><span class="p">:</span><span class="w"> </span><span class="s">"language</span><span class="nv"> </span><span class="s">en-US"</span>
 </code></pre></div>
 <h2 id="lever"><code>Lever</code><a class="headerlink" href="#lever" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>lever &lt;location&gt; &lt;state&gt;</code><br>
 <strong>Description</strong>: Control the lever at the specified location.</p>
-<p>The first argument is a location, and the second one is a state: <code>on</code>, <code>off</code> or <code>toggle</code>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The location of the lever.</td>
+</tr>
+<tr>
+<td>state<br>[<abbr title="on, off, toggle">LeverState</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The state to set the lever to.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">toggle</span><span class="p">:</span><span class="w"> </span><span class="s">"lever</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">toggle"</span>
 </code></pre></div>
 <h2 id="lightning"><code>Lightning</code><a class="headerlink" href="#lightning" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
-<strong>Syntax</strong>: <code>lightning &lt;location&gt; [noDamage]</code><br>
-<strong>Description</strong>: Strike lightning at specified location.</p>
-<p>The first argument is the location. By adding <code>noDamage</code> the lightning is only
-an effect and therefor does no damage.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<strong>Syntax</strong>: <code>lightning &lt;location&gt; {noDamage}</code><br>
+<strong>Description</strong>: Strike lightning at the specified location.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The location where the lightning should strike.</td>
+</tr>
+<tr>
+<td>noDamage<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>If the lightning should be purely visual and deal no damage.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">strikeLightning</span><span class="p">:</span><span class="w"> </span><span class="s">"lightning</span><span class="nv"> </span><span class="s">100;64;-100;survival"</span>
 <span class="w">  </span><span class="nt">showEntrance</span><span class="p">:</span><span class="w"> </span><span class="s">"lightning</span><span class="nv"> </span><span class="s">200;65;100;survival</span><span class="nv"> </span><span class="s">noDamage"</span>
 </code></pre></div>
@@ -12452,7 +12780,7 @@ an effect and therefor does no damage.</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">logPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">"log</span><span class="nv"> </span><span class="s">%player%</span><span class="nv"> </span><span class="s">completed</span><span class="nv"> </span><span class="s">first</span><span class="nv"> </span><span class="s">quest."</span>
 <span class="w">    </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">"log</span><span class="nv"> </span><span class="s">daily</span><span class="nv"> </span><span class="s">quests</span><span class="nv"> </span><span class="s">have</span><span class="nv"> </span><span class="s">been</span><span class="nv"> </span><span class="s">reset</span><span class="nv"> </span><span class="s">level:DEBUG</span><span class="nv"> </span><span class="s">"</span>
 </code></pre></div>
@@ -12515,7 +12843,7 @@ You also need to escape the backslash itself, if you use double quotes for some 
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="c1">#The simplest of all notify actions. Just a chat message:</span>
 <span class="w">  </span><span class="nt">customAction</span><span class="p">:</span><span class="w"> </span><span class="s">"notify</span><span class="nv"> </span><span class="s">Hello</span><span class="nv"> </span><span class="s">%player%!"</span><span class="w">  </span>
 
@@ -12548,44 +12876,40 @@ You also need to escape the backslash itself, if you use double quotes for some 
 <p>You can broadcast notifications to all online players on the server using the <code>notifyall</code> action.
 It works just like the notify action.
 Placeholders are resolved for each online player, not for the player the action is executed for.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">announceDungeon</span><span class="p">:</span><span class="w"> </span><span class="s">"notifyall</span><span class="nv"> </span><span class="s">A</span><span class="nv"> </span><span class="s">new</span><span class="nv"> </span><span class="s">dungeon</span><span class="nv"> </span><span class="s">has</span><span class="nv"> </span><span class="s">opened!"</span>
 </code></pre></div>
 <h2 id="npcteleport"><code>NpcTeleport</code><a class="headerlink" href="#npcteleport" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
-<strong>Syntax</strong>: <code>npcteleport &lt;Npc&gt; &lt;Location&gt; [spawn]</code><br>
+<strong>Syntax</strong>: <code>npcteleport &lt;npc&gt; &lt;location&gt; {spawn}</code><br>
 <strong>Description</strong>: Teleport the NPC to the specified location.</p>
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Syntax</th>
-<th>Default Value</th>
+<th>Type</th>
 <th>Explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>Npc</em></td>
-<td>Npc</td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td>The ID of the Npc</td>
+<td>npc<br>[Identifier]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The ID of the NPC.</td>
 </tr>
 <tr>
-<td><em>Location</em></td>
-<td><a href="../Definition-Encyclopedia/#unified-location-format">Unified Location Formatting</a></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td>The location to which the Npc will be teleported</td>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The location to which the NPC will be teleported.</td>
 </tr>
 <tr>
-<td><em>Spawn</em></td>
-<td>Keyword (<code>spawn</code>)</td>
-<td>Disabled</td>
-<td>If the NPC should be spawned if not in the world</td>
+<td>spawn<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>If the NPC should be spawned if not in the world.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">teleportToSpawn</span><span class="p">:</span><span class="w"> </span><span class="s">"npcteleport</span><span class="nv"> </span><span class="s">mayorHans</span><span class="nv"> </span><span class="s">100;200;300;world"</span>
 </code></pre></div>
 <h2 id="objective"><code>Objective</code><a class="headerlink" href="#objective" title="Permanent link">🔗</a></h2>
@@ -12598,27 +12922,24 @@ and removes the objective for all players in the database (even if offline).</p>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Syntax</th>
-<th>Default Value</th>
+<th>Type</th>
 <th>Explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>action</em></td>
-<td>Keyword: <code>add</code>,<code>remove</code>,<code>complete</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
+<td>operation<br>[<abbr title="add, remove, complete">ObjectiveOp</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
 <td>The action to do with the objective(s).</td>
 </tr>
 <tr>
-<td><em>objective(s)</em></td>
-<td><code>objectiveName</code> or <code>obj1,obj2</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
+<td>objectives<br><abbr title="A list is a sequence of values separated by commas.">List</abbr><a href="../Definition-Encyclopedia/#identifiers">[Identifier]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
 <td>The objective(s) to run the action on.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">startQuest</span><span class="p">:</span><span class="w"> </span><span class="s">"objective</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">killTheDragon,goToDungeon"</span>
 <span class="w">  </span><span class="nt">progressQuest</span><span class="p">:</span><span class="w"> </span><span class="s">"objective</span><span class="nv"> </span><span class="s">complete</span><span class="nv"> </span><span class="s">killTheDragon"</span>
 </code></pre></div>
@@ -12630,7 +12951,7 @@ and removes the objective for all players in the database (even if offline).</p>
 Additional commands can be defined by separating them with <code>|</code> character. If you want to use a <code>|</code> character in the message use <code>\|</code>.</p>
 <p>Looking for <a href="#sudo">execute as player commands</a>?
 Looking for <a href="#command">execute as console commands</a>?</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">spawn</span><span class="p">:</span><span class="w"> </span><span class="s">"opsudo</span><span class="nv"> </span><span class="s">spawn"</span>
 </code></pre></div>
 <h2 id="particle"><code>Particle</code><a class="headerlink" href="#particle" title="Permanent link">🔗</a></h2>
@@ -12673,7 +12994,7 @@ Looking for <a href="#command">execute as console commands</a>?</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">simpleParticles</span><span class="p">:</span><span class="w"> </span><span class="s">"particle</span><span class="nv"> </span><span class="s">FLAME</span><span class="nv"> </span><span class="s">100;64;100;world"</span>
 <span class="w">  </span><span class="nt">lotsOfParticles</span><span class="p">:</span><span class="w"> </span><span class="s">"particle</span><span class="nv"> </span><span class="s">CLOUD</span><span class="nv"> </span><span class="s">100;64;100;world</span><span class="nv"> </span><span class="s">count:50</span><span class="nv"> </span><span class="s">offset:(1;1;1)</span><span class="nv"> </span><span class="s">range:64"</span>
 </code></pre></div>
@@ -12688,7 +13009,7 @@ Selected players will be picked from the party if they are in range and meet the
 Players are selected according to their distance from the player who triggered the action.
 For example, if the 'amount' is two, the player who triggered the action and the player closest to that player will be selected.
 A negative amount will select all players and therefore act as if there was no amount given.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">givePartyReward</span><span class="p">:</span><span class="w"> </span><span class="s">"party</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">has_tag1,!has_tag2</span><span class="nv"> </span><span class="s">give_reward"</span>
 <span class="w">  </span><span class="nt">giveLimitedPartyReward</span><span class="p">:</span><span class="w"> </span><span class="s">"party</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">has_tag1,!has_tag2</span><span class="nv"> </span><span class="s">give_special_reward</span><span class="nv"> </span><span class="s">amount:3"</span>
 </code></pre></div>
@@ -12701,20 +13022,47 @@ You must specify how likely it is that each action is picked by adding the weigh
 The weighting is a floating point number, that is the ratio of the action's chance to be picked.</p>
 <p>It picks one action from the list by default, but you can add an optional <code>amount:</code> if you want more to be picked.
 Note that only as many actions as specified can be picked and <code>amount:0</code> will do nothing.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">pickTwo</span><span class="p">:</span><span class="w"> </span><span class="s">"pickrandom</span><span class="nv"> </span><span class="s">20.5~action1,0.5~action2,79~action3</span><span class="nv"> </span><span class="s">amount:2"</span>
 <span class="w">  </span><span class="nt">PickThree</span><span class="p">:</span><span class="w"> </span><span class="s">"pickrandom</span><span class="nv"> </span><span class="s">%point.factionXP.amount%~action1,0.5~action2,79~action3,1~action4</span><span class="nv"> </span><span class="s">amount:3"</span>
 </code></pre></div>
 <h2 id="point"><code>Point</code><a class="headerlink" href="#point" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This action can be executed on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span><br>
-<strong>Syntax</strong>: <code>point &lt;category&gt; &lt;amount&gt; &lt;action&gt;</code><br>
+<strong>Syntax</strong>: <code>point &lt;category&gt; &lt;amount&gt; [action] {notify}</code><br>
 <strong>Description</strong>: Manage the points in the specific category.</p>
-<p>First you can specify a number of points, then the modification action.
-For that, you can use <code>action:add</code>, <code>action:subtract</code>, <code>action:set</code> and <code>action:multiply</code>
-as modification types. This action also supports an optional <code>notify</code> argument that will display information about the
-change using the notification system.</p>
 <p>See also the <a href="#globalpoint"><code>globalpoint</code> action</a>.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category<br><a href="../Definition-Encyclopedia/#identifiers">[Identifier]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The name of the point category.</td>
+</tr>
+<tr>
+<td>amount<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The number of points to use in the operation.</td>
+</tr>
+<tr>
+<td>action<br>[<abbr title="ADD, SUBTRACT, SET, MULTIPLY">PointOp</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[ADD]</td>
+<td>The operation to perform on the category.</td>
+</tr>
+<tr>
+<td>notify<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
+<td>If a notification about the change should be displayed to the player.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">gainAttitude</span><span class="p">:</span><span class="w"> </span><span class="s">"point</span><span class="nv"> </span><span class="s">npc_attitude</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">action:add"</span>
 <span class="w">  </span><span class="nt">loseAttitude</span><span class="p">:</span><span class="w"> </span><span class="s">"point</span><span class="nv"> </span><span class="s">npc_attitude</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">action:subtract"</span>
 <span class="w">  </span><span class="nt">resetCombo</span><span class="p">:</span><span class="w"> </span><span class="s">"point</span><span class="nv"> </span><span class="s">combo</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">action:set"</span>
@@ -12722,59 +13070,51 @@ change using the notification system.</p>
 </code></pre></div>
 <h2 id="removeentity"><code>RemoveEntity</code><a class="headerlink" href="#removeentity" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
-<strong>Syntax</strong>: <code>removeentity &lt;entitys&gt; &lt;location&gt; &lt;radius&gt; [name] [marked] [type]</code><br>
+<strong>Syntax</strong>: <code>removeentity &lt;entities&gt; &lt;location&gt; &lt;radius&gt; [name] [marked] {kill}</code><br>
 <strong>Description</strong>: Remove or kill all entities of the specified type at the specified location.</p>
-<p>Here you can look up all <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html">type's of entity's</a>.</p>
 <p>Can only effect loaded entities!</p>
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Syntax</th>
-<th>Default Value</th>
+<th>Type</th>
 <th>Explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>entity(s)</em></td>
-<td><code>entity,entity</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr>. <abbr title="A list is a sequence of values separated by commas.">List</abbr> of entity's (separated by <code>,</code>).</td>
+<td>entities<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>See <a href="https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html">EntityType</a>.</td>
 </tr>
 <tr>
-<td><em>location</em></td>
-<td><a href="../Definition-Encyclopedia/#unified-location-format">Unified Location Formatting</a></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr>. The center location of the target entity's.</td>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The center location of the target entities.</td>
 </tr>
 <tr>
-<td><em>radius</em></td>
-<td><abbr title="Any number representation that may also have decimal places.">Number</abbr></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr>. The radius around the location.</td>
+<td>radius<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The radius around the location.</td>
 </tr>
 <tr>
-<td><em>name</em></td>
-<td><code>name:name</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
+<td>name<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
 <td>Name of the entity.</td>
 </tr>
 <tr>
-<td><em>marked</em></td>
-<td><code>marked:mark</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td>Mark of the entity (from the <a href="#spawn">spawn action</a> for example).</td>
+<td>marked<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
+<td>Mark of the entity.</td>
 </tr>
 <tr>
-<td><em>kill</em></td>
-<td><code>kill</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
+<td>kill<br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="A flag can be either absent or undefined with separate default values [absent, undefined] or explicitly defined with a value.">Flag</abbr><br>[false, true]</td>
 <td>Whether to remove or actually kill the entity (if possible).</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">killArenaMobs</span><span class="p">:</span><span class="w"> </span><span class="s">"removeentity</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">10</span><span class="nv"> </span><span class="s">name:Monster</span><span class="nv"> </span><span class="s">kill"</span>
 <span class="w">  </span><span class="nt">clearGameArea</span><span class="p">:</span><span class="w"> </span><span class="s">"removeentity</span><span class="nv"> </span><span class="s">ARROW,SNOWBALL,WOLF,ARMOR_STAND</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">50</span><span class="nv"> </span><span class="s">marked:minigame"</span>
 </code></pre></div>
@@ -12785,7 +13125,7 @@ change using the notification system.</p>
 <p>Each instruction must be started with the <code>^</code> character (it divides all the instructions).
 It's not the same as the <code>folder</code> action, because you have to specify the actual instruction, not an action name.
 Don't use conditions here, it behaves strangely.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">eliminate</span><span class="p">:</span><span class="w"> </span><span class="s">"run</span><span class="nv"> </span><span class="s">^tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">beton</span><span class="nv"> </span><span class="s">^journal</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">beton</span><span class="nv"> </span><span class="s">^give</span><span class="nv"> </span><span class="s">emerald:5</span><span class="nv"> </span><span class="s">^kill"</span>
 </code></pre></div>
 <p>However, consider the usage of implicit actions instead of <code>run</code>.
@@ -12799,7 +13139,7 @@ can be referenced independent and conditions work there as expected.</p>
 </code></pre></div>
 <h2 id="runforall"><code>RunForAll</code><a class="headerlink" href="#runforall" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
-<strong>Syntax</strong>: <code>runforall &lt;actions&gt; &lt;where&gt;</code><br>
+<strong>Syntax</strong>: <code>runforall [actions] [where]</code><br>
 <strong>Description</strong>: Run the specified actions once for each online player.</p>
 <p>The most common use case is to run an action for all online players from a <a href="../../Advanced/Schedules/">schedule</a>.
 But you can also use it in conversations, objectives, or other actions.</p>
@@ -12808,23 +13148,20 @@ But you can also use it in conversations, objectives, or other actions.</p>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Syntax</th>
-<th>Default Value</th>
+<th>Type</th>
 <th>Explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>actions</em></td>
-<td><code>actions:actions</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr>. The actions to be run, separated by <code>,</code>.</td>
+<td>actions<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[Identifier]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
+<td>The actions to be run.</td>
 </tr>
 <tr>
-<td><em>where</em></td>
-<td><code>where:conditions</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td>A list of optional conditions (separated by <code>,</code>) that are checked for every player. <br>The actions supplied in <code>actions:</code> are only executed for the players that meet all the given conditions.</td>
+<td>where<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[Identifier]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
+<td>A list of conditions that are checked for every player. The actions are only executed for players that meet all conditions.</td>
 </tr>
 </tbody>
 </table>
@@ -12835,15 +13172,15 @@ But you can also use it in conversations, objectives, or other actions.</p>
 Instead it will check the conditions for the player that triggered the action or check them player independent if
 triggered player independent (e.g. by a schedule).</p>
 </div>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">kickAll</span><span class="p">:</span><span class="w"> </span><span class="s">"runforall</span><span class="nv"> </span><span class="s">where:!isOp</span><span class="nv"> </span><span class="s">actions:kickPlayer,restartQuest"</span>
 </code></pre></div>
 <h2 id="runindependent"><code>RunIndependent</code><a class="headerlink" href="#runindependent" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
-<strong>Syntax</strong>: <code>runindependent &lt;actions&gt;</code><br>
+<strong>Syntax</strong>: <code>runindependent [actions]</code><br>
 <strong>Description</strong>: Run the specified actions as if they were independent.</p>
-<p>Runs the specified action (or list of actions) player independent (as if it was run from a <a href="../../Advanced/Schedules/">schedule</a>).</p>
-<p>This is usefully for actions that behave differently when run player independent.</p>
+<p>Runs the specified action (or list of actions) player-independent (as if it was run from a <a href="../../Advanced/Schedules/">schedule</a>).</p>
+<p>This is useful for actions that behave differently when run player-independent.</p>
 <details class="abstract">
 <summary>Actions that behave different if run player independent</summary>
 <ul>
@@ -12857,21 +13194,19 @@ triggered player independent (e.g. by a schedule).</p>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Syntax</th>
-<th>Default Value</th>
+<th>Type</th>
 <th>Explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>actions</em></td>
-<td><code>actions:actions</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr>. The actions to be run, separated by <code>,</code>.</td>
+<td>actions<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[Identifier]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
+<td>The actions to be run.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">resetQuestForAll</span><span class="p">:</span><span class="w"> </span><span class="s">"runindependent</span><span class="nv"> </span><span class="s">actions:removeObjective,clearTags,resetJournal"</span>
 </code></pre></div>
 <div class="admonition warning">
@@ -12883,12 +13218,37 @@ and you will get an error message in the console.</p>
 </div>
 <h2 id="score"><code>Score</code><a class="headerlink" href="#score" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This action can be executed on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span><br>
-<strong>Syntax</strong>: <code>score &lt;objective&gt; &lt;number&gt; &lt;action&gt;</code><br>
+<strong>Syntax</strong>: <code>score &lt;objective&gt; &lt;number&gt; [action]</code><br>
 <strong>Description</strong>: Manage the scoreboard objective of the player.</p>
 <p>This action works in the same way as <a href="#point">point</a>, the only difference being that it uses scoreboards instead of points.
-You can use <code>action:add</code>, <code>action:subtract</code>, <code>action:set</code> and <code>action:multiply</code> to change the value.
-It's only possible to change the value, you have to create the scoreboard target first.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+It's only possible to change the value; you have to create the scoreboard target first.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>objective<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The name of the scoreboard objective.</td>
+</tr>
+<tr>
+<td>number<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The value to use in the operation.</td>
+</tr>
+<tr>
+<td>action<br>[<abbr title="ADD, SUBTRACT, SET, MULTIPLY">ScoreOp</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[ADD]</td>
+<td>The operation to perform on the scoreboard objective.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">gotKill</span><span class="p">:</span><span class="w"> </span><span class="s">"score</span><span class="nv"> </span><span class="s">kill</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">action:add"</span>
 <span class="w">  </span><span class="nt">gotKilled</span><span class="p">:</span><span class="w"> </span><span class="s">"score</span><span class="nv"> </span><span class="s">kill</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">action:subtract"</span>
 <span class="w">  </span><span class="nt">resetKill</span><span class="p">:</span><span class="w"> </span><span class="s">"score</span><span class="nv"> </span><span class="s">kill</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">action:set"</span>
@@ -12903,27 +13263,24 @@ It's only possible to change the value, you have to create the scoreboard target
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Syntax</th>
-<th>Default Value</th>
+<th>Type</th>
 <th>Explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>modifier</em></td>
-<td><code>add</code> or <code>remove</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
+<td>operation<br>[<abbr title="add, delete">TagOpType</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
 <td>Whether to add or remove the tag.</td>
 </tr>
 <tr>
-<td><em>scoreboard tag</em></td>
-<td>Tag name</td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
+<td>tag<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
 <td>The name of the scoreboard tag.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">addVanillaTag</span><span class="p">:</span><span class="w"> </span><span class="s">"scoretag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">vanilla_tag"</span>
 <span class="w">  </span><span class="nt">removeVanillaTag</span><span class="p">:</span><span class="w"> </span><span class="s">"scoretag</span><span class="nv"> </span><span class="s">remove</span><span class="nv"> </span><span class="s">vanilla_tag"</span>
 </code></pre></div>
@@ -12934,7 +13291,7 @@ It's only possible to change the value, you have to create the scoreboard target
 <p>The first argument is a <a href="../Definition-Encyclopedia/#block-selectors">Block Selector</a>, the second a location. It's possible to
 deactivate the physics of the block by adding <code>ignorePhysics</code> at the end.
 Very powerful if used to trigger redstone contraptions.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">setRedstoneBlock</span><span class="p">:</span><span class="w"> </span><span class="s">"setblock</span><span class="nv"> </span><span class="s">REDSTONE_BLOCK</span><span class="nv"> </span><span class="s">100;200;300;world"</span>
 <span class="w">  </span><span class="nt">flyingSand</span><span class="p">:</span><span class="w"> </span><span class="s">"setblock</span><span class="nv"> </span><span class="s">SAND</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">ignorePhysics"</span>
 </code></pre></div>
@@ -12950,7 +13307,7 @@ It won't show anywhere, and you can check for only marked mobs in <code>mobkill<
 <code>h:</code> (helmet), <code>c:</code> (chestplate), <code>l:</code> (leggings), <code>b:</code> (boots), <code>m:</code> (main hand) and <code>o:</code> (off hand) optional arguments.
 These take a single item without amount, as defined in the <em>items</em> section. You can also add a list of drops with
 <code>drops:</code> argument, followed by a list of items with amounts after colons, separated by commas.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">spawnSkeleton</span><span class="p">:</span><span class="w"> </span><span class="s">"spawn</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">SKELETON</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">marked:targets"</span>
 <span class="w">  </span><span class="nt">spawnZombie</span><span class="p">:</span><span class="w"> </span><span class="s">"spawn</span><span class="nv"> </span><span class="s">100;200;300;world</span><span class="nv"> </span><span class="s">ZOMBIE</span><span class="nv"> </span><span class="s">name:Bolec</span><span class="nv"> </span><span class="s">1</span><span class="nv"> </span><span class="s">h:blue_hat</span><span class="nv"> </span><span class="s">c:red_vest</span><span class="nv"> </span><span class="s">drops:emerald:10,bread:2"</span>
 </code></pre></div>
@@ -13000,7 +13357,7 @@ For more take a look at the <a href="../Objectives-List/#stage">stage objective<
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">setCookCookies</span><span class="p">:</span><span class="w"> </span><span class="s">"stage</span><span class="nv"> </span><span class="s">bakeCookies</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">cookCookies"</span>
 <span class="w">  </span><span class="nt">increase</span><span class="p">:</span><span class="w"> </span><span class="s">"stage</span><span class="nv"> </span><span class="s">bakeCookies</span><span class="nv"> </span><span class="s">increase"</span>
 <span class="w">  </span><span class="nt">decrease2</span><span class="p">:</span><span class="w"> </span><span class="s">"stage</span><span class="nv"> </span><span class="s">bakeCookies</span><span class="nv"> </span><span class="s">decrease</span><span class="nv"> </span><span class="s">2"</span>
@@ -13013,19 +13370,37 @@ For more take a look at the <a href="../Objectives-List/#stage">stage objective<
 Additional commands can be defined by separating them with <code>|</code> character. If you want to use a <code>|</code> character in the message use <code>\|</code>.</p>
 <p>Looking for <a href="#opsudo">execute as operator commands</a>?
 Looking for <a href="#command">execute as console commands</a>?</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">spawn</span><span class="p">:</span><span class="w"> </span><span class="s">"sudo</span><span class="nv"> </span><span class="s">spawn"</span>
 </code></pre></div>
 <h2 id="tag"><code>Tag</code><a class="headerlink" href="#tag" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-online" title="&lt;b&gt;Online&lt;/b&gt;&lt;br&gt; This action can only be executed on a player that is online."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.1 12.5 1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08zM10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11zm1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path></svg></span> <span class="twemoji account account-offline" title="&lt;b&gt;Offline&lt;/b&gt;&lt;br&gt; This action can be executed on a player that is offline."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m7.5 9C15 13 13 15 13 17.5s2 4.5 4.5 4.5 4.5-2 4.5-4.5-2-4.5-4.5-4.5M10 14c-4.42 0-8 1.79-8 4v2h9.5a6.5 6.5 0 0 1-.5-2.5 6.5 6.5 0 0 1 .95-3.36c-.63-.08-1.27-.14-1.95-.14m7.5.5c1.66 0 3 1.34 3 3 0 .56-.15 1.08-.42 1.5L16 14.92c.42-.27.94-.42 1.5-.42M14.92 16 19 20.08c-.42.27-.94.42-1.5.42-1.66 0-3-1.34-3-3 0-.56.15-1.08.42-1.5"></path></svg></span> <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>tag &lt;operation&gt; &lt;tags&gt;</code><br>
 <strong>Description</strong>: Manage the tags of the player.</p>
-<p>The first argument after action's name must be <code>add</code> or <code>delete</code>. Next goes the tag name.
-It can't contain spaces (though <code>_</code> is fine).
-Multiple tags can be added and deleted separated by commas (without spaces).</p>
 <p>The independent context is only available for the <code>delete</code> operation,
-and delete the tag for all players in the database (even if offline).</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+and deletes the tag for all players in the database (even if offline).</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>operation<br>[<abbr title="add, delete">TagOpType</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>Whether to add or delete the tags.</td>
+</tr>
+<tr>
+<td>tags<br><abbr title="A list is a sequence of values separated by commas.">List</abbr>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>A list of tag names. Tags may not contain spaces.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">addStartTags</span><span class="p">:</span><span class="w"> </span><span class="s">"tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">quest_started,new_entry"</span>
 </code></pre></div>
 <h2 id="take"><code>Take</code><a class="headerlink" href="#take" title="Permanent link">🔗</a></h2>
@@ -13046,7 +13421,7 @@ The player can drop items before selecting the option and pickup them after the 
 Validate it on the NPC’s reaction or consider the <code>fail</code> actions in addition.
 However, item movement can be prevented with the <code>conversation.block_item_transfer</code> option in the "<em>config.yml</em>".</p>
 <p>You can also specify <code>notify</code> keyword to display a simple message to the player about losing items.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">emeraldsAndSword</span><span class="p">:</span><span class="w"> </span><span class="s">"take</span><span class="nv"> </span><span class="s">emerald:120,sword"</span>
 <span class="w">  </span><span class="nt">nuggets</span><span class="p">:</span><span class="w"> </span><span class="s">"take</span><span class="nv"> </span><span class="s">nugget:6</span><span class="nv"> </span><span class="s">notify"</span>
 <span class="w">  </span><span class="nt">wand</span><span class="p">:</span><span class="w"> </span><span class="s">"take</span><span class="nv"> </span><span class="s">wand</span><span class="nv"> </span><span class="s">notify</span><span class="nv"> </span><span class="s">invOrder:Backpack"</span>
@@ -13064,21 +13439,19 @@ However, item movement can be prevented with the <code>conversation.block_item_t
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Syntax</th>
-<th>Default Value</th>
+<th>Type</th>
 <th>Explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>location</em></td>
-<td><a href="../Definition-Encyclopedia/#unified-location-format">Unified Location Formatting</a></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
+<td>location<br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
 <td>The location to which the player will be teleported.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">toCity</span><span class="p">:</span><span class="w"> </span><span class="s">"teleport</span><span class="nv"> </span><span class="s">432;121;532;world"</span><span class="w"> </span><span class="c1"># (1)!</span>
 <span class="w">  </span><span class="nt">toHell</span><span class="p">:</span><span class="w"> </span><span class="s">"teleport</span><span class="nv"> </span><span class="s">123;32;-789;world_the_nether;180;45"</span><span class="w"> </span><span class="c1"># (2)!</span>
 </code></pre></div>
@@ -13096,7 +13469,7 @@ past midnight, and so on. (0.1 hours is 6 minutes). It's possible to add or subt
 to set the time by setting no prefix.
 Additionally, you can specify the world in which the time will be changed, by adding <code>world:</code>.
 Using the <code>ticks</code> argument changes the time like the vanilla command.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">set6</span><span class="p">:</span><span class="w"> </span><span class="s">"time</span><span class="nv"> </span><span class="s">6"</span>
 <span class="w">  </span><span class="nt">increase</span><span class="p">:</span><span class="w"> </span><span class="s">"time</span><span class="nv"> </span><span class="s">+0.1"</span>
 <span class="w">  </span><span class="nt">decreaseRpgWorld</span><span class="p">:</span><span class="w"> </span><span class="s">"time</span><span class="nv"> </span><span class="s">-12</span><span class="nv"> </span><span class="s">world:rpgworld"</span>
@@ -13159,7 +13532,7 @@ To delete a variable you can use <code>""</code>.
 To store more complex values you can use <a href="../../Basics/Quoting-%26-YAML/#quoting">quoting</a>.
 Refer to the <a href="../Objectives-List/#variable"><code>variable</code> objective</a> documentation for more information about storing variables.
 This action will do nothing if the player does not already have a <code>variable</code> objective assigned to them.</p>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">goody</span><span class="p">:</span><span class="w"> </span><span class="s">"variable</span><span class="nv"> </span><span class="s">CustomVariable</span><span class="nv"> </span><span class="s">MyFirstVariable</span><span class="nv"> </span><span class="s">Goodbye!"</span>
 <span class="w">  </span><span class="nt">playerName</span><span class="p">:</span><span class="w"> </span><span class="s">"variable</span><span class="nv"> </span><span class="s">variable_objectiveID</span><span class="nv"> </span><span class="s">name</span><span class="nv"> </span><span class="s">%player%"</span>
 <span class="w">  </span><span class="nt">delete</span><span class="p">:</span><span class="w"> </span><span class="s">'variable</span><span class="nv"> </span><span class="s">other_var_obj</span><span class="nv"> </span><span class="s">desc</span><span class="nv"> </span><span class="s">""'</span>
@@ -13206,7 +13579,7 @@ Example: The positive x-axis will always point left from the perspective of the 
 <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../_media/content/Documentation/Notifications/relativeAxis.png" data-desc-position="bottom"><img alt="relativeAxis image" src="../_media/content/Documentation/Notifications/relativeAxis.png"></a>
 </div>   <p></p>
 </details>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">jumppad</span><span class="p">:</span><span class="w"> </span><span class="s">"velocity</span><span class="nv"> </span><span class="s">vector:(2;0.8;4)"</span>
 <span class="w">  </span><span class="nt">dash</span><span class="p">:</span><span class="w"> </span><span class="s">"velocity</span><span class="nv"> </span><span class="s">vector:(0;0.1;1.3)</span><span class="nv"> </span><span class="s">direction:relative_y"</span>
 <span class="w">  </span><span class="nt">individual_dash</span><span class="p">:</span><span class="w"> </span><span class="s">"velocity</span><span class="nv"> </span><span class="s">vector:%objective.customPlaceholder.dashLength%</span><span class="nv"> </span><span class="s">direction:relative_y"</span>
@@ -13216,40 +13589,35 @@ Example: The positive x-axis will always point left from the perspective of the 
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
 <strong>Syntax</strong>: <code>weather &lt;type&gt; [duration] [world]</code><br>
 <strong>Description</strong>: Manage the weather of the world.</p>
-<p>Sets the weather in the world the player is currently in. The argument is <code>sun</code> for clear, sunny weather, <code>rain</code> for pure rain,
-<code>storm</code> for storm with rain, lightning, and thunder.
+<p>Sets the weather in the world the player is currently in.
 Durations less than 1 is equal to no duration.</p>
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Syntax</th>
-<th>Default Value</th>
+<th>Type</th>
 <th>Explanation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>type</em></td>
-<td>Keyword</td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343za8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746m1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275M6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.75.75 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.75.75 0 0 1 .215-.734L6.94 8 4.97 6.03a.75.75 0 0 1 .018-1.042.75.75 0 0 1 1.042-.018"></path></svg></span></td>
-<td>The type of weather to set. Either <code>sun</code>, <code>rain</code> or <code>storm</code>.</td>
+<td>type<br>[<abbr title="sun, rain, storm">WeatherType</abbr>]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The type of weather to set.</td>
 </tr>
 <tr>
-<td><em>duration</em></td>
-<td><code>duration:number</code></td>
-<td>Minecraft decides randomly.</td>
-<td>The duration the weather will last (in seconds). <br> Is handled from minecraft afterwards.</td>
+<td>duration<br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[0]</td>
+<td>The duration the weather will last (in ticks).</td>
 </tr>
 <tr>
-<td><em>world</em></td>
-<td><code>world:worldName</code></td>
-<td>The player's current world.</td>
+<td>world<br>[<abbr title="Any concatenation of characters.">String</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr><br>[None]</td>
 <td>The world to change the weather in.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><span class="filename">Example</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">setSun</span><span class="p">:</span><span class="w"> </span><span class="s">"weather</span><span class="nv"> </span><span class="s">sun"</span>
 <span class="w">  </span><span class="nt">setShortRain</span><span class="p">:</span><span class="w"> </span><span class="s">"weather</span><span class="nv"> </span><span class="s">rain</span><span class="nv"> </span><span class="s">duration:60</span><span class="nv"> </span><span class="s">world:rpgworld"</span>
 <span class="w">  </span><span class="nt">setStorm</span><span class="p">:</span><span class="w"> </span><span class="s">"weather</span><span class="nv"> </span><span class="s">storm</span><span class="nv"> </span><span class="s">duration:%point.tribute.left:150%"</span>
