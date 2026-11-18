@@ -1035,6 +1035,30 @@ actions:
 
 *[PointOp]: ADD, SUBTRACT, SET, MULTIPLY
 
+## `Projectile`
+
+__Context__: @snippet:action-meta:independent@  
+__Syntax__: `projectile <type> <location> <direction> [speed] [gravity]`  
+__Description__: Launch a projectile entity.
+
+The projectile's shooter is automatically set to the player if the action is run in an online context.
+Setting the `speed` parameter will normalize the direction vector to the specified speed. 
+Therefore, setting the `speed` parameter to 1 won't be the same as not setting the parameter at all.
+
+| Parameter                                                                       | Type                | Explanation                                                   |
+|---------------------------------------------------------------------------------|---------------------|---------------------------------------------------------------|
+| type <br>[EntityType]                                                           | Required            | The type of the projectile. Supported types are listed below. |
+| location <br>[[Location]](./Definition-Encyclopedia.md#unified-location-format) | Required            | The location from which the projectile should be spawned.     |
+| direction <br>[Vector]                                                          | Required            | The direction in which the projectile should be launched.     |
+| speed <br>[Number]                                                              | Optional <br>[None] | Speed multiplier for the projectile.                          |
+| gravity <br>[Boolean]                                                           | Optional <br>[true] | Whether the projectile should be affected by gravity.         |
+
+```YAML title="Examples"
+actions:
+  speedArrow: "projectile ARROW 100;64;100;world (1;0;0) speed:2.0"
+  magicMissile: "projectile SHULKER_BULLET %location% (0;1;0) gravity:false"
+```
+
 ## `RemoveEntity`
 
 __Context__: @snippet:action-meta:independent@  
