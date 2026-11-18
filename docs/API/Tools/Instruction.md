@@ -68,7 +68,7 @@ public Objective parseInstruction(final Instruction instruction) throws QuestExc
 In the argument parsing step the method of converting a string into a java type is decided.
 The instruction chain may be accessed conveniently, starting directly from any `Instruction` instance.
 
-All chains, except `vector`, `location` and `world`, have the [caching](#Caching) enabled by default.
+All chains, except `vector`, `location` and `world`, have the [caching](#caching) enabled by default.
 
 | Call                                 | Description                                                                                                                                                                                            |
 |:-------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

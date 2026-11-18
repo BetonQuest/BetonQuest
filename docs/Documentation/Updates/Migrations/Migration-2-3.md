@@ -56,7 +56,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-635 - Brewery Item Type](#300-dev-635-brewery-item-type) :thunder_cloud_rain:
 - [3.0.0-DEV-673 - `auto-once` Objectives](#300-dev-673-auto-once-objectives) :sun:
 - [3.1.0-DEV-13 - Reshape burn action](#310-dev-13-reshape-burn-action) :sun:
-- [3.4.0-QUEST-1 - Rename EffectLib `particle` action to `el_particle`](#320-quest-3-rename-effectlib-particle-action-to-el_particle) :sun:
+- [3.4.0-DEV-7 - Rename EffectLib `particle` action to `el_particle`](#340-dev-7-rename-effectlib-particle-action-to-el_particle) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -1157,7 +1157,7 @@ The [burn action](../../Reference/Actions-List.md#burn) has been reshaped.
     
     </div>
 
-### 3.4.0-QUEST-1 - Rename EffectLib `particle` action to `el_particle` :sun:
+### 3.4.0-DEV-7 - Rename EffectLib `particle` action to `el_particle` :sun:
 
 ??? info "Automated Migration"
     *The migration is automated. You shouldn't have to do anything.*

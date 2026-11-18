@@ -189,7 +189,14 @@ All actions, conditions, etc. - essentially anything definable under a specific 
 
 ### Element Types
 
-_tbd_
+!!! info "Element Types"
+
+    BetonQuest scripts are built from various functional building blocks, each defined in its respective section within a package. The primary types are:
+
+    - `Action`: Executable commands that trigger effects.. They can be guarded by conditions using the `conditions:` argument.
+    - `Condition`: Logic checks that return a boolean result (`true`/`false`). Used to control the flow of actions, objectives, and conversations. Can be negated with `!`.
+    - `Objective`: Interactive goals that must be explicitly started. They track player progress and execute `actions:` upon completion, provided their `conditions:` are met. Support `persistent` and `auto-once` behavior.
+    - `Placeholder`: Dynamic variables wrapped in `%` that inject real-time values into instructions.
 
 ### Context
 
