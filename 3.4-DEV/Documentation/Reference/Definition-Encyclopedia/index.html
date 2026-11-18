@@ -9450,7 +9450,16 @@ As an example you can use the <a href="../Placeholders-List/#location"><code>%lo
 <h2 id="elements">Elements<a class="headerlink" href="#elements" title="Permanent link">🔗</a></h2>
 <p>All actions, conditions, etc. - essentially anything definable under a specific section in the script - are considered elements.</p>
 <h3 id="element-types">Element Types<a class="headerlink" href="#element-types" title="Permanent link">🔗</a></h3>
-<p><em>tbd</em></p>
+<div class="admonition info">
+<p class="admonition-title">Element Types</p>
+<p>BetonQuest scripts are built from various functional building blocks, each defined in its respective section within a package. The primary types are:</p>
+<ul>
+<li><code>Action</code>: Executable commands that trigger effects.. They can be guarded by conditions using the <code>conditions:</code> argument.</li>
+<li><code>Condition</code>: Logic checks that return a boolean result (<code>true</code>/<code>false</code>). Used to control the flow of actions, objectives, and conversations. Can be negated with <code>!</code>.</li>
+<li><code>Objective</code>: Interactive goals that must be explicitly started. They track player progress and execute <code>actions:</code> upon completion, provided their <code>conditions:</code> are met. Support <code>persistent</code> and <code>auto-once</code> behavior.</li>
+<li><code>Placeholder</code>: Dynamic variables wrapped in <code>%</code> that inject real-time values into instructions.</li>
+</ul>
+</div>
 <h3 id="context">Context<a class="headerlink" href="#context" title="Permanent link">🔗</a></h3>
 <div class="admonition info">
 <p class="admonition-title">Context</p>
