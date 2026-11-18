@@ -48,7 +48,7 @@ teleported to the spawnpoint and the `die` objective will be started again.
 The `persistent` argument prevents the objective from being completed, although it will run all its actions. To cancel such
 an objective, you need to use `objective delete` action.
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   mineDiamonds: 'block DIAMONDS -10 actions:reward'
   die: 'die cancel respawn:100;200;300;world;90;0 actions:sendRespawnMessage conditions:hasCustomTotem'
@@ -67,7 +67,7 @@ is started. With this tag, the objective will not be started again.
 These tags follow the syntax `<package>>auto-once-<id>`, where `<id>` is the objective identifier and `<package>` the package where
 the objective is located.
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   startQuestByMining: 'location 100;200;300;world 5 actions:start_quest_mine_folder {++auto-once++}'
 ```
@@ -96,7 +96,7 @@ will be completed. They check if a given in-game state is present and return `tr
 You can negate the condition (revert its output) by adding an exclamation mark (`!`) at the beginning of its name. 
 This only works in the place where conditions are used (i.e. in conversations, not in the _conditions_ section).
 If you do so, make sure to enclose the condition in quotes, otherwise YAML will give you a syntax error.
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasFullHealth: "health 20"
 actions:

@@ -19,7 +19,7 @@ actions and conditions.
 | quality <br>[Quality]    | Optional <br>[NONE]    | The quality of the brew, if not specified this will not be validated against |
 | quest-item <br>[Boolean] | Flag <br>[false, true] | Mark this item as a quest item                                               |
 
-```YAML title="Example"
+```YAML title="Examples"
 items:
   beer: 'tbp_brew beer quality:excellent'
   hotChocolate: "tbp_brew hot_choc quest-item"
@@ -46,7 +46,7 @@ __Description__: Compare players modifier with specified value
 | value <br>[Number]        | Required | The value to compare against |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   drunk50: "tbp_modifier alcohol > 50"
 ```
@@ -64,7 +64,7 @@ __Description__: Trigger a drunken event with the specified id
 | event-id <br>[String] | Required | The id of the event to run |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   puke: "tbp_event <event-key>"
 ```
@@ -85,7 +85,7 @@ Note that an aging year might change if TheBrewingProject reloads.
 | aging-years <br>[Number]     | Required | The time the brew needs to have aged (needs to be larger than 0.5) |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   cook: "tbp_age any 1"
 ```
@@ -102,7 +102,7 @@ __Description__: The player needs to have consumed a brew with given properties
 | operator <br>[Operation]   | Required | A comparison between brew quality |
 | brew-quality <br>[Quality] | Required | The brew quality to compare to    |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   consume: "tbp_consume beer > good" # Only matches against excellent brews
 ```
@@ -121,7 +121,7 @@ __Description__: The player needs to have extracted a brew from a cauldron with 
 | ingredients  <br>[Ingredients] | Required            | The ingredients added into the cauldorn           |
 | cauldron <br>[CauldronType]    | Optional <br>[NONE] | The type of the cauldron block                    |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   beerBase: "tbp_cook 8 wheat/6 cauldron:water"
   failedBase: "tbp_cook 2 wheat/6,apple/3 cauldron:lava"
@@ -138,7 +138,7 @@ __Description__: The player needs to have extracted a brew from a distillery wit
 | distill-runs <br>[Number] | Required | Tha amount of runs of the extracted brew |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   cook: "tbp_distill 6"
 ```
@@ -154,7 +154,7 @@ __Description__: The player needs to experience a drunken event with specified k
 | event-id <br>[String] | Required | The id of the event a player experienced |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   consume: "tbp_event puke"
   gsitSit: "tbp_event gsit:sit" # If there's integrations available, you can specify those
@@ -175,7 +175,7 @@ __Description__: The player needs to have extracted a brew from a cauldron with 
 | cauldron  <br>[CauldronType]  | Optional[NONE] | The type of the cauldron contents                |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   cook: "tbp_mix 2 brewery:gin/3,chorus_fruit/6 cauldron:water"
 ```
@@ -190,7 +190,7 @@ __Description__: The player needs to create a brewing structure with specified t
 |------------------------------------|----------|------------------------------------------------|
 | structure-type <br>[StructureType] | Required | The structure type the player needs to destroy |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   structureCreated: tbp_structure_create distillery
 ```
@@ -205,7 +205,7 @@ __Description__: The player needs to destroy a brewing structure with specified 
 |------------------------------------|----------|------------------------------------------------|
 | structure-type <br>[StructureType] | Required | The structure type the player needs to destroy |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   structureDestroyed: tbp_structure_destroy barrel
 ```
@@ -224,7 +224,7 @@ __Description__: The player needs to have transferred a brew with given conditio
 | operator <br>[Operation]           | Required | A comparison between brew quality                |
 | brew-quality <br>[Quality]         | Required | The brew quality to compare against              |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   extract: "tbp_transfer extract barrel beer > good" # Only excellent brews will match
   insert: "tbp_transfer insert barrel whiskey > bad" # Good and excellent brews will match

@@ -16,7 +16,7 @@ __Description__: Deposits, withdraws or multiplies money in the player's account
 | _notify_   | Keyword: `notify`   | Disabled               | Display a message to the player when their balance is changed.           |
 | _multiply_ | Keyword: `multiply` | Disabled               | Multiplies the current balance with the amount instead simply adding it. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   sellItem: "money +100"
   buyPlot: "money -10000"
@@ -36,7 +36,7 @@ __Description__: Adds or removes a permission or a group.
 | _name_    | The name of the permission. | :octicons-x-circle-16: | The name of the permission or group to add.                                                                          |
 | _world_   | The name of the world.      | Global                 | You can limit permissions to certain worlds only. If no world is set the permission will be set everywhere (global). |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   allowFly: "permission add perm essentials.fly"
   joinBandit: "permission add group bandit"
@@ -51,7 +51,7 @@ __Context__: @snippet:condition-meta:online-offline@
 __Syntax__: `money <amount>`  
 __Description__: Checks if the player has the specified amount of money.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasMoney: "money 1"
   canAffordPlot: "money 10000"
@@ -69,7 +69,7 @@ __Description__: Represents the amount of money the player has.
 Use `%money.amount%` for showing the player's balance.
 Use `%money.left:500%` for showing the difference between the player's balance and the specified amount of money.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   notifyBalance: "notify You have %money.amount%$!"
   notifyNotEnough: "notify You still need %money.left:10000%$ to buy this plot."

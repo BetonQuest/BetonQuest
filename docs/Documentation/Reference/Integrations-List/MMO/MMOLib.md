@@ -63,7 +63,7 @@ They follow a strict order of priority in their execution:
     - `OTHER`
     - `VOID`
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   damageReduction3: "mmostat add stat:DAMAGE_REDUCTION value:3"
   damageReductionRemove: "mmostat remove stat:DAMAGE_REDUCTION"
@@ -84,7 +84,7 @@ __Description__: Requires the player to activate a MythicLib skill (e.g. with MM
 | _skill_   | SKILL_ID   | :octicons-x-circle-16: | The ID of the skill.                                                                                                                                                                 |
 | _trigger_ | name:level | All trigger types.     | The [types of triggers](https://gitlab.com/phoenix-dvpmt/mythiclib/-/wikis/Skills#trigger-types) that can be used to activate the skill. If not specified, all triggers are allowed. |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   triggerSkill: "mmoskill LIFE_ENDER actions:updateStatistics"
   castSkillWithMMOCore: "mmoskill DEEP_WOUND trigger:CAST actions:completeTutorial"
@@ -103,7 +103,7 @@ Checks [stats](https://gitlab.com/phoenix-dvpmt/mythiclib/-/blob/master/plugin/s
 that combine all sorts of stats from MMOCore and MMOItems.
 You can disable this behaviour by adding the `equal` argument.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   damageReduction3: "mmostat DAMAGE_REDUCTION 3"
 ```

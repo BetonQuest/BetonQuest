@@ -35,7 +35,7 @@ Unlike other NPC actions, execution will fail if not exactly one NPC is found fo
 | _done_      | done:actions                                                          | Disabled               | List of actions fired after reaching the destination.                        |
 | _fail_      | fail:actions                                                          | Disabled               | List of actions fired if this action fails.                                  |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   showPath: "npcmove innkeeper 100;200;300;world,105;200;280;world block wait:20 done:msg_were_here,give_reward fail:msg_cant_go,give_reward"
 ```
@@ -52,7 +52,7 @@ Unlike other NPC actions, execution will fail if not exactly one NPC is found fo
 |-----------|--------|------------------------|-------------|
 | _NpcID_   | npcId  | :octicons-x-circle-16: | The NpcId.  |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   stopGuide: "npcstop guard"
 ```
@@ -79,7 +79,7 @@ __Description__: The NPC kill objective requires the player to kill a NPC.
 | _left_   | 4              | Shows the amount of times still needed to kill the NPC for the objective to be completed. |
 | _total_  | 10             | Shows the initial amount of times that the NPC needed to be killed.                       |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   killThief: "npckill thief amount:3 actions:reward notify"
 ```

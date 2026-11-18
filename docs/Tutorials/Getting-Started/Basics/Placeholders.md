@@ -32,7 +32,7 @@ In this tutorial, you will add placeholders to the quest from the previous tutor
 A placeholder starts and ends with a percent sign (`%`). The text between these signs tells BetonQuest which value
 should be inserted.
 
-``` YAML title="Example"
+``` YAML title="Examples"
 text: "Hello %player%!"
 ```
 

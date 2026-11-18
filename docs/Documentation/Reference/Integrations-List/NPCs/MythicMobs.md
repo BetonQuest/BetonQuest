@@ -19,7 +19,7 @@ __Description__: Cast a MythicMobs skill.
 | _name_    | Name    | :octicons-x-circle-16: | Name of Skill to cast.                                                                                                                                  |
 | _+[...]_  | Strings | None                   | Sets the [skill parameters](https://git.mythiccraft.io/mythiccraft/MythicMobs/-/wikis/Skills/Metaskills#skill-parameters-premium-feature) for the cast. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   castPoison: "mcast AngrySludgePoison"
   giveItem: "mcast giveNItem +amount:20 +item:gold_coin"
@@ -40,7 +40,7 @@ __Description__: Spawn a MythicMob at a specific location.
 | _private_  | Keyword                                                         | Disabled               | Will hide the mob from all other players until restart. This does not hide particles or block sound from the mob. Also see notes below. |
 | _marked_   | marked:text                                                     | None                   | Marks the mob. You can check for marked mobs in mmobkill objective.                                                                     |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   spawnBoss: "mspawnmob 100;200;300;world MegaBoss:1 1 target"
   spawnKnights: "mspawnmob 100;200;300;world SkeletalKnight:3 5"
@@ -82,7 +82,7 @@ This objective has three properties: `amount`, `left` and `total`. `amount` is t
 `left` is the amount of mythic mobs still needed to kill and `total` is the amount of mythic mobs initially required.
 `mode` gives the identification type.
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   killKnight: mmobkill SkeletalKnight amount:2 actions:reward
   killSnails: mmobkill SnekBoss,SnailBoss,SunBoss amount:10 actions:reward
@@ -102,7 +102,7 @@ __Description__: Whether the player is near a specific MythicMobs entity.
 
 The first argument is the internal name of the mob (the one defined in MythicMobs' configuration). The second argument is the distance to check, measured in block lengths in a circular radius.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   nearKnight: "mythicmobdistance SkeletalKnight 7"
 ```

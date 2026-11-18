@@ -149,7 +149,7 @@ menu_items:
 
 ### The optional `click` setting
 You can define one or multiple actions (separated by `,`) that are run whenever the item is clicked.    
-``` YAML title="Example"
+``` YAML title="Examples"
 items:
   skeletonQuestDone:
     item: "questDoneItem"

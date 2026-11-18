@@ -17,7 +17,7 @@ __Description__: Whether the player has the specified advancement.
 |------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | name<br>[String] | Required | The advancement key to check against. The namespace can be omitted for the `minecraft` default namespace. The name must be in the format as configured on your server. [List of all vanilla advancements](https://minecraft.wiki/w/Advancement#List_of_advancements). |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   killedAllMobs: "advancement adventure/kill_all_mobs"
   killedAMob: "advancement minecraft:adventure/kill_a_mob"
@@ -33,7 +33,7 @@ This means that every condition has to be met in order for conjunction to be tru
 Used only in complex alternatives, because conditions generally work as conjunction.
 Instruction string is exactly the same as in `alternative`.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasArmor: "and has_helmet,has_chestplate,has_leggings,has_boots"
 ```
@@ -68,7 +68,7 @@ __Description__: Whether the player is in the specified biome.
 
 The only argument is the [biome type](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/block/Biome.html).
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   inSavannaRock: "biome savanna_rock"
 ```
@@ -79,7 +79,7 @@ __Context__: @snippet:condition-meta:online@
 __Syntax__: `burning`  
 __Description__: Whether the player is on fire.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isOnFire: "burning"
 ```
@@ -92,7 +92,7 @@ __Description__: Allows you to specify multiple instructions in one long conjunc
 
 Each instruction must be started with `^` character and no other dividers should be used. The condition will be met if all inner conditions are met. It's not the same as `and` condition, because you can specify an instruction string, not a condition name.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   fulfillRequirements: "check ^tag beton ^item emerald:5 ^location 100;200;300;survival_nether;5 ^experience 20"
 ```
@@ -105,7 +105,7 @@ __Description__: Whether the specified items are in the specified chest.
 
 This condition works in the same way as `item` condition, but it checks the specified chest instead of a player. The first argument is a location of the chest and the second one is the list of items defined in the same way as in `item` condition. If there is no chest at specified location the condition won't be met.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   emeraldsInChest: "chestitem 100;200;300;world emerald:5,sword"
 ```
@@ -118,7 +118,7 @@ __Description__: Whether the conversation has an available starting option.
 
 If no starting option has a condition that returns true then this will return false.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isInInnkeeperConv: "conversation innkeeper"
 ```
@@ -131,7 +131,7 @@ __Description__: Whether the current day of the week is the specified one.
 
 You can specify either the english name of the day or the number of the day (1 being monday, 7 sunday,...).
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isSunday: "dayofweek sunday"
 ```
@@ -144,7 +144,7 @@ __Description__: Whether the player has the specified potion effect.
 
 There is only one argument and it takes values from this page: [potion types](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html).
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasSpeed: "effect SPEED"
 ```
@@ -157,7 +157,7 @@ __Description__: Whether the player has at least the specified amount of empty i
 
 If you want to check for a specific amount (for example for a full inventory with 0 empty slots) you can append the `equal` argument.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasFiveEmptySlots: "empty 5"
 ```
@@ -174,7 +174,7 @@ can have an additional amount suffix, for example `ZOMBIE:5,SKELETON:2` means 5 
 The location is defined as usual. The number after the location is the range around the location in which will be checked for these entities. You can also specify additional `name:` argument,
 with the name of the required entity. You can use `marked:` argument to check only for entities marked in `spawn` action.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   daemonsSpawned: "entities ZOMBIE:2 100;200;300;world 10 name:Daemon"
 ```
@@ -188,7 +188,7 @@ __Description__: Evaluate the expression and checks the resulting condition.
 This condition allows you to resolve an expression containing placeholders, and the result will then be interpreted
 again as a condition.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   simpleEval: "eval chestitem -288;64;357;World emerald:5"
   complexEval: "eval point ranking 5 %objective.settings.equal%" #(1)!
@@ -207,7 +207,7 @@ __Description__: Whether the player has the specified amount of experience level
 You can also define decimal numbers, for example `experience 1.5` will be met when the player has 1.5 or more experience levels.
 If you want to check for an absolute amount of experience points you can convert it to decimal levels.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasLevel30: "experience 30"
   hasLevel5dot5: "experience 5.5"
@@ -221,7 +221,7 @@ __Description__: Whether the player is facing the specified direction.
 
 Valid directions are `UP`, `DOWN`, `NORTH`, `EAST`, `WEST` and `SOUTH`. Up and down start at a pitch of 60°.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   lookingEast: "facing EAST"
 ```
@@ -232,7 +232,7 @@ __Context__: @snippet:condition-meta:online@
 __Syntax__: `fly`  
 __Description__: Whether the player is currently flying (Elytra type of flight).
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isFlying: "fly"
 ```
@@ -251,7 +251,7 @@ See [Value Interpretation](../Advanced/Functions.md#value-interpretation) for mo
 | function<br>[Identifier]  | Required | The function to evaluate.                      |
 | arguments<br>List[String] | Required | The list of arguments to pass to the function. |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   myFunction: "function reward %point.reputation.amount%,15,%tag.questCompleted%"
 functions:
@@ -266,7 +266,7 @@ __Description__: Whether the player is in the specified gamemode.
 
 The first argument is the game mode, i.e. survival, creative, adventure.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isInSurvival: "gamemode survival"
 ```
@@ -286,7 +286,7 @@ See also the [`point` condition](#point).
 | equal <br>[Boolean]       | Flag <br>[false, true] | Accept only exactly equal amount of points.        |
 | fallback <br>[Number]     | Flag <br>[None, 0]     | Value to check against if the category is not set. |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   has100Users: "globalpoint global_knownusers 100"
 ```
@@ -297,7 +297,7 @@ __Context__: @snippet:condition-meta:independent@
 __Syntax__: `globaltag <tag>`  
 __Description__: Whether the specified global tag is set.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   areNpcsAggressive: "globaltag global_areNPCsAggressive"
 ```
@@ -311,7 +311,7 @@ __Description__: Whether the player holds the specified quest item in the hand.
 The offhand will be checked instead of the main hand if the `offhand` keyword is added.
 Amount cannot be set here, though it may be checked with the `item` condition.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   holdSword: "hand SpecialSword"
   holdShieldOffhand: "hand QuestShield offhand"
@@ -325,7 +325,7 @@ __Description__: Whether the specified global point category has any amount.
 
 See the [`haspoint` condition](#haspoint) for argument explanation.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasBetonUsers: "hasglobalpoint beton"
 ```
@@ -340,7 +340,7 @@ This explicit checks for any set value. `0` is a set value.
 
 See also the [`hasglobalpoint` condition](#hasglobalpoint).
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasBetonPoints: "haspoint beton"
 ```
@@ -355,7 +355,7 @@ The only argument is a number (double).
 Players can have 0 to 20 health by default (there are some plugins and commands which change the maximum)
 (0 means dead, don't use that since it will only be met when the player sees the red respawn screen).
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   has5dot6Health: "health 5.6"
 ```
@@ -369,7 +369,7 @@ __Description__: Whether the player is _below_ the specified height.
 The required argument is a number or a location (for example 100;200;300;world).
 In case of location it will take the height from it and use it as regular height.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isBelow16: "height 16"
 ```
@@ -382,7 +382,7 @@ __Description__: Whether the player has at least the specified amount of hunger.
 
 If the hunger level is below 7, the player cannot sprint.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   has15orMoreHunger: "hunger 15"
 ```
@@ -397,7 +397,7 @@ __Description__: Whether the player is currently in the specified conversation.
 |----------------|---------------------|------------------------|----------------------------------------------------------------------------------------------------------|
 | _conversation_ | `conversation:name` | :octicons-x-circle-16: | Optional name of the conversation. If specified, it will only check for the conversation with this name. |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isInConversation: "inconversation"
   talksToInnkeeper: "inconversation conversation:innkeeper"
@@ -413,7 +413,7 @@ You specify items in a list separated by commas (without spaces between!).
 Each item consists of its name and amount, separated by a colon.
 Amount is optional, so if you specify just item's name the plugin will assume there should be only one item.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   emeraldsAndGold: "item emerald:5,gold:10"
 ```
@@ -429,7 +429,7 @@ Optional `relative` argument sets 0 to broken and 1 to the maximum durability th
 This condition returns false when no item is in the given slot or does not have durability, like stone or sticks.
 Available slot types: `HAND`, `OFF_HAND`, `HEAD`, `CHEST`, `LEGS`, `FEET`.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   handOver50: "itemdurability HAND 50"
   chestMoreThan50Percent: "itemdurability CHEST 0.5 relative"
@@ -443,7 +443,7 @@ __Description__: Whether the player has the specified journal entry.
 
 The only argument is name of the entry.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   journalHasWoodStarted: "journal wood_started"
 ```
@@ -454,7 +454,7 @@ __Context__: @snippet:condition-meta:online-offline@
 __Syntax__: `language <languages>`  
 __Description__: Whether the player has one of the specified languages selected.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasValidLanguage: "language en-US,de-DE,fr-FR"
 ```
@@ -467,7 +467,7 @@ __Description__: Whether the player is at the specified location within the spec
 
 Just two mandatory attributes - location and radius around it.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   netherEntrance: "location 100;200;300;survival_nether 5"
 ```
@@ -481,7 +481,7 @@ __Description__: Whether the player is looking towards the specified block at th
 You must specify either `loc:` optional (the location of the block) or `type:` optional as a `block selector`.
 You can also specify both.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   targetingStone: "looking loc:12.0;14.0;-15.0;world type:STONE"
 ```
@@ -498,7 +498,7 @@ __Description__: Whether the specified moonphase matches the one in the specifie
 | _world_     | world:name                                                                                                | player location        | The world to check for the moon phase. |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   fullMoon: "moonphase FULL_MOON"
   darkInHub: "moonphase WANING_CRESCENT,NEW_MOON,WAXING_CRESCENT world:hub"
@@ -516,7 +516,7 @@ __Description__: Whether the player is inside the specified radius of the specif
 | _Npc_      | Npc      | :octicons-x-circle-16: | The ID of the Npc    |
 | _Distance_ | Number   | :octicons-x-circle-16: | The maximum distance |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   canHearBandit: "npcdistance bandit 22"
 ```
@@ -533,7 +533,7 @@ __Description__: Whether the specified NPC is at the specified location within t
 | _Location_ | Location | :octicons-x-circle-16: | The location         |
 | _Distance_ | Number   | :octicons-x-circle-16: | The maximum distance |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   nearTarget: "npclocation merchant 4.0;14.0;-20.0;world 22"
 ```
@@ -546,7 +546,7 @@ __Description__: This condition compares two numbers.
 
 The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasMoreThan100Points: "numbercompare %ph.other_plugin:points% >= 100"
 ```
@@ -559,7 +559,7 @@ __Description__: Whether the player has the specified objective.
 
 The only argument is the name of the objective, as defined in the _objectives_ section.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasWoodObjective: "objective wood"
 ```
@@ -573,7 +573,7 @@ __Description__: The disjunction of the specified conditions.
 This means that only one of the conditions has to be met in order for alternative
 to be true. You just define one mandatory argument, condition names separated by commas. `!` prefix works as always.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasOneRequirement: "or night,rain,!has_armor"
 ```
@@ -590,7 +590,7 @@ If you have trouble understanding how this works have a look at the example.
 
 The example is true between the 1st and the 5th or on the 20th of each month, but only in the year 2017.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isEventDate: "partialdate day:1-5,20 year:2017"
 ```
@@ -610,7 +610,7 @@ Count is just a number, minimal amount of players in the party.
 Location can be used to create a party without the need of a player that is the center of the party.
 You don't have to specify all those arguments, you can use only one if you want.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   partyRequirements: "party 10 has_tag1,!has_tag2 every:some_item any:some_location,some_other_item count:5"
 ```
@@ -623,7 +623,7 @@ __Description__: Whether the player has the specified permission.
 
 The instruction string must contain permission node as the required argument.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   essentialsTpaPermissions: "permission essentials.tpa"
 ```
@@ -659,7 +659,7 @@ __Description__: This condition is met randomly using the specified chance.
 
 There is one argument: two positive numbers like `5-12`. They mean something like that: "It will be true 5 times out of 12".
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   twelfthPercent: "random 12-100"
 ```
@@ -672,7 +672,7 @@ __Description__: Whether the player wears armor which gives at least the specifi
 
 The first and only argument should be an integer. One armor point is equal to half armor icon in-game (10 means half of the bar filled).
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   armorRating10: "rating 10"
 ```
@@ -688,7 +688,7 @@ __Description__: Whether the specified time matches the current real time.
 | _Timespan_ | startTime-endTime | :octicons-x-circle-16: | Two points of time separated by dash in the 24-hour format (0 - 24). The minutes are optional (hh or hh:mm). |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   allDayReal: "realtime 6-19"
   midnightReal: "realtime 23:30-0:30"
@@ -714,7 +714,7 @@ __Description__: Whether the player is mounted on the specified [entity](https:/
 
 `any` is also a valid input and matches any entity.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   horse: "ride horse"
   anything: "ride any"
@@ -731,7 +731,7 @@ __Description__: Whether the score in the specified scoreboard objective has at 
 | _scoreboard objective_ | Objective name | :octicons-x-circle-16: | The name of the scoreboard objective      |
 | _count_                | Number         | :octicons-x-circle-16: | The minimum whole number of the objective |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasAtLeastTenKills: "score kills 10"
 ```
@@ -748,7 +748,7 @@ The kind of tags that are used by vanilla Minecraft and not the [betonquest tags
 |------------------|----------|------------------------|---------------------------------|
 | _scoreboard tag_ | Tag name | :octicons-x-circle-16: | The name of the scoreboard tag. |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasVanillaTag: "scoretag vanilla_tag"
 ```
@@ -793,7 +793,7 @@ __Description__: Whether the player is sneaking.
 
 This would probably be useful for creating traps, I'm not sure. There are no arguments for this one.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isSneaking: "sneak"
 ```
@@ -813,7 +813,7 @@ The valid operations are: `<`, `<=`, `=`, `!=`, `>=`, `>`.
 | _comparator_      | Comparator | :octicons-x-circle-16: | The comparator to use for the comparison |
 | _stage_           | Stage      | :octicons-x-circle-16: | The name of the stage to compare         |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isDeliverCookies: "stage bakeCookies = deliverCookies"
   isDeliverCookiesOrAbove: "stage bakeCookies > cookCookies"
@@ -827,7 +827,7 @@ __Description__: Whether the player has the specified tag.
 
 Together with `!` negation it is one of the most powerful tools when creating conversations. The instruction string must contain tag name.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   questCompleted: "tag quest_completed"
 ```
@@ -840,7 +840,7 @@ __Description__: Whether the block at specified location matches the specified m
 
 First argument is a location, and the second one is a `block selector`.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   stoneSet: "testforblock 100;200;300;world STONE"
 ```
@@ -857,7 +857,7 @@ __Description__: Whether the specific time matches the current time in the speci
 | _world_    | world:name        | player location        | The world to check for the time.                                                                             |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   allDay: "time 6-19"
   midnightInOverworld: "time 23:30-0:30 world:overworld"
@@ -878,7 +878,7 @@ __Description__: Whether the placeholder value matches the specified [regular ex
 | _forceSync_   | Keyword         | False                  | Forces the placeholder to be resolved on the main thread. This may be required by some third party placeholder.                                   |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   anyNumber: "variable %objective.var.price% -?\\d+" #(1)!
   isPlayer: "variable %ph.parties_members_1% %player%" #(2)!
@@ -906,7 +906,7 @@ There are three possible options: sun, rain and storm. Note that `/toggledownfal
 | _world_   | world:name | player location        | The world to check for the weather. |
 
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isSunny: "weather sun"
   weatherInPlayerWorld: "weather rain world:%ph.player_home_world%"
@@ -921,7 +921,7 @@ __Description__: Whether the player is in the specified world.
 
 The first argument is the name of a world.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isInWorld: "world world"
 ```

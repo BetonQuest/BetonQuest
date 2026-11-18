@@ -13,7 +13,7 @@ __Description__: Adds experience to the player's class.
 The amount is a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   150: "mmoclassexperience 150"
   level1: "mmoclassexperience 1 level"
@@ -28,7 +28,7 @@ __Description__: Adds experience in the specified player profession.
 The amount is a number. The `level` argument
 is optional and would convert the amount to levels instead of XP points.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   mining: "mmoprofessionexperience MINING 100"
   customProf: "mmoprofessionexperience CUSTOM_PROFESSION_NAME 1 level"
@@ -42,7 +42,7 @@ __Description__: Awards class points to the player.
 
 The amount is a number.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   give1: "mmocoreclasspoints 1"
 ```
@@ -55,7 +55,7 @@ __Description__: Awards skill points to the player.
 
 The amount is a number.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   give10: "mmocoreskillpoints 10"
 ```
@@ -68,7 +68,7 @@ __Description__: Awards attribute points to the player.
 
 The amount is a number.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   give2: "mmocoreattributepoints 2"
 ```
@@ -81,7 +81,7 @@ __Description__: Gives the player attribute reallocation points.
 
 The amount is a number.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   give1: "mmocoreattributereallocationpoints 1"
 ```
@@ -101,7 +101,7 @@ the `notify` keyword optionally with the notification interval after a colon.
 This objective has three properties: `amount`, `left` and `total`. `amount` is the amount of blocks already broken,
 `left` is the amount of blocks still left to break and `total` is the amount of blocks initially required.
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   block1: "mmocorebreakblock 5 block:1"      #A custom block's block ID
   stone: "mmocorebreakblock 64 block:STONE"  #vanilla material
@@ -114,7 +114,7 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `mmochangeclass [class]`  
 __Description__: Requires the player to change their class.
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   selectAnyClass: "mmochangeclass actions:pickedClass"
   selectMage: "mmochangeclass class:MAGE actions:startMageIntroQuest"
@@ -128,7 +128,7 @@ __Description__: Requires the player to level the given profession to the specif
 
 Use `main` to check for class level ups.
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   mining10: "mmoprofessionlevelup MINING 10"
 ```
@@ -143,7 +143,7 @@ __Description__: Whether the player has the specified attribute on the given lev
 
 You can disable this behavior by adding the `equal` argument.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   strength2: "mmoattribute strength 2"
   strength2Equal: "mmoattribute strength 2 equal"
@@ -159,7 +159,7 @@ You can check for any class that is not the default class by writing `*` instead
 If a level has been specified, the player needs to be on that level or higher to meet the condition.
 You can disable this behaviour by adding the `equal` argument.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   5: "mmoclass * 5"
   warrior: "mmoclass WARRIOR"
@@ -175,7 +175,7 @@ __Description__: Whether the player has the specified profession on the given le
 
 You can disable this behaviour by adding the `equal` argument.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   mining2: "mmoprofession mining 2"
   mining2Equal: "mmoprofession mining 2 equal"

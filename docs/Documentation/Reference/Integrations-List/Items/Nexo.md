@@ -10,7 +10,7 @@ Nexo usage is integrated to the [Items](../../../Advanced/Items.md) system and t
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML title="Example"
+```YAML title="Examples"
 items:
   forestTrident: "nexo forest_trident"
   tableLamp: "nexo table_lamp quest-item"

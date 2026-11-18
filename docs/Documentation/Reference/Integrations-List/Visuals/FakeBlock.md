@@ -16,7 +16,7 @@ __Description__: Shows or hides the block group for the player.
 The block group can be specified as a comma-separated list.
 The groups are case-sensitive. To show a group the `showgroup` argument is required. To hide a group the `hidegroup` argument is required.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   showBridge: "fakeblock showgroup bridge"
   hideCityBorder: "fakeblock hidegroup gate,wall,door"

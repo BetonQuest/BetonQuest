@@ -18,7 +18,7 @@ schematic name in the action's instruction.
 The optional `noair` keyword can be added to ignore air blocks while pasting.
 You can also rotate the schematic by adding `rotation:90` where `90` is the angle in degrees.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   pasteCastle: "paste 100;200;300;world castle noair" #(1)!
   pasteTree: "paste 100;200;300;world tree.schem noair" #(2)!

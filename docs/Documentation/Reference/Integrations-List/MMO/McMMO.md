@@ -12,7 +12,7 @@ __Description__: Add experience points in a specified skill.
 
 The first argument is the name of the skill, second one is the amount of experience to add.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   swords1500: "mcmmoexp swords 1500"
 ```
@@ -27,7 +27,7 @@ __Description__: Whether the player has high enough level in the specified skill
 
 The first argument is the name of the skill, second one is the minimum level the player needs to have to pass this condition.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   woodcutting50: "mcmmolevel woodcutting 50"
 ```

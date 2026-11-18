@@ -14,7 +14,7 @@ You can specify the mode to select the brew by either the `name` or its `id`, de
 The quality is not used for determining equality, only for generating the brew item.  
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML title="Example"
+```YAML title="Examples"
 items:
   appleLiquor: 'brew "Apple Liquor" 2'
   hotChocolate: "brew hot_choc 10 mode:id quest-item"
@@ -36,7 +36,7 @@ __Description__: Whether the player is drunk.
 
 The only argument is the minimal drunkness (0-100).
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   drunk50: "drunk 50"
 ```
@@ -49,7 +49,7 @@ __Description__: Whether the player has the given drunk quality.
 
 The only argument is the minimal drunk quality (1-10).
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   quality3: "drunkquality 3"
 ```

@@ -147,7 +147,7 @@ For mixed types the **order** can **not** be **guaranteed**.
 
 === "NONE"
 
-    ```YAML title="Example"
+    ```YAML title="Examples"
     schedules:
       sayGoodNight: 
         type: realtime-daily
@@ -163,7 +163,7 @@ For mixed types the **order** can **not** be **guaranteed**.
 
 === "ONE"
 
-    ```YAML title="Example"
+    ```YAML title="Examples"
     schedules:
       resetQuarryArea: 
         type: realtime-daily
@@ -178,7 +178,7 @@ For mixed types the **order** can **not** be **guaranteed**.
 
 === "ALL"
 
-    ```YAML title="Example"
+    ```YAML title="Examples"
     schedules:
       greedyMarchant: 
         type: realtime-daily

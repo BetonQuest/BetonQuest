@@ -349,7 +349,7 @@ To require an item to not be a Quest Item you simply use `quest-item:false`.
 
 A "Quest item" line will be added at the end of the lore when you have set the `item.quest.lore` setting in "_config.yml_" enabled.
 
-```YAML title="Example" 
+```YAML title="Examples" 
 important_sword: 'simple DIAMOND_SWORD "name:Sword for destroying  The Concrete"
   "lore:Made of pure Mithril" quest-item'
 ```

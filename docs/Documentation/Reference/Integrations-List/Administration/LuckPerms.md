@@ -32,7 +32,7 @@ If you prefer to directly add or remove permissions without triggering the LuckP
 you can utilize the `luckperms addPermission` and `luckperms removePermission` actions.
 You also have the possibility to assign groups to the player via the `group.<GroupName>` permission.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   addDefaultGroup: "luckperms addPermission permission:group.default,group.quester" #(1)!
   addNegated: "luckperms addPermission permission:tutorial.done value:false" #(2)!

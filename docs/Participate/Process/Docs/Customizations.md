@@ -6,7 +6,7 @@ We run a customized version of mkdocs-material that allows for some additional f
 
 ## toc_depth per page
 You can set the maximum depth of the table of contents per page using the `toc_depth` variable in the page's metadata.
-```YAML title="Example"
+```YAML title="Examples"
 ---
 toc_depth: 2
 ---

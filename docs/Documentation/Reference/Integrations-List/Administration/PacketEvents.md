@@ -20,7 +20,7 @@ __Context__: @snippet:action-meta:online@
 __Syntax__: `freeze <ticks>`  
 __Description__: Freeze the player for the specified number of ticks.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   freezeMe: "freeze 100" #Freezes the player for 5 seconds (20 ticks = 1 second)
 ```

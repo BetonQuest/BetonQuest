@@ -24,7 +24,7 @@ In the case of `inventory` you can specify an amount with `amount` and this will
 You can also use optional `spells:` argument, followed by a list of spells separated with a comma.
 Each spell in this list must have a minimal level defined after a colon.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   wand: "wand hand name:master spells:flare:3,missile:2"
 ```

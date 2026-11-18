@@ -16,7 +16,7 @@ __Description__: The player has to interact with the specified region.
 | _Entry_   | `entry`     | Disabled               | The player needs to enter the region  |
 | _Exit_    | `exit`      | Disabled               | The player needs to leave the region  |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   deathZone: "region deathZone entry actions:kill"
 ```
@@ -34,7 +34,7 @@ __Description__: This condition is met if the specified npc is inside the specif
 | _Npc_     | Npc         | :octicons-x-circle-16: | The ID of the NPC                    |
 | _Region_  | Region Name | :octicons-x-circle-16: | The region where the NPC needs to be |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   mayorAtSpawn: "npcregion mayor spawn"
 ```
@@ -49,7 +49,7 @@ __Description__: This condition is met if the player is inside the specified reg
 |-----------|-------------|------------------------|---------------------------------------|
 | _Region_  | Region name | :octicons-x-circle-16: | The region where the player has to be |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   inCastle: "region castle"
 ```
