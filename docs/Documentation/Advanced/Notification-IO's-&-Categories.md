@@ -286,7 +286,7 @@ You can override the settings from the `info`/`error` category for any specific 
 When you create a category with a name that matches a `notification message` name, BetonQuest then defaults to that option
 over `error`/`info`
 
-```YAML title="Example"
+```YAML title="Examples"
 notifications:
   info:
     io: actionbar

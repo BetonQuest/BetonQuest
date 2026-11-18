@@ -12,7 +12,7 @@ Cancelers also provide an easy way to clean up all the data that was created dur
 ## Setup 
 Define a `cancel` section anywhere in your quest package. This section will contain all cancelers. Each canceler has an identifier. 
 
-```YAML title="Example"
+```YAML title="Examples"
 cancel:
   woodQuest:
     name: "&2Wood for the Innkeeper" #(1)!

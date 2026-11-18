@@ -21,7 +21,7 @@ The placeholder will return `true` or `false` by default. If you add `papiMode` 
 You can translate the papiMode's result by changing the values of `condition_placeholder_met` `condition_placeholder_not_met` in 
 the *messages.yml* config.
 
-```scss title="Example"
+```scss title="Examples"
 %condition.myCondition%
 %condition.myCondition.papiMode%
 ``` 
@@ -43,7 +43,7 @@ constants:
 
 To use a `constant` placeholder, you must use `%constant.constantName%`:
 
-```scss title="Example"
+```scss title="Examples"
 %constant.village_location%
 %constant.village_name%
 ```
@@ -66,7 +66,7 @@ this means normally you write `\%` and in the next level you need to write `\\\%
 When using a cross package reference, remember to escape the `>` of a nested placeholder too. More
 on this in the [nested package paths](../Basics/Packages-&-Templates.md#nested-package-paths) article.
 
-```scss title="Example"
+```scss title="Examples"
 %eval.player.\%objective.placeholderStore.displayType\%%
 %eval.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
 %eval.player.\%OtherPackage\>objective.placeholderStore.displayType\%%
@@ -83,7 +83,7 @@ The first argument is the name of a category and the second argument is either `
 
 See also the [`point` placeholder](#point).
 
-```scss title="Example"
+```scss title="Examples"
 %globalpoint.global_knownusers.amount%
 %globalpoint.global_knownusers.left:100%
 ```
@@ -98,7 +98,7 @@ The placeholder will return true or false by default. If you add papiMode to the
 You can translate the papiMode's result by changing the values of `condition_placeholder_met` and `condition_placeholder_not_met`
 in the messages.yml config.
 
-```scss title="Example"
+```scss title="Examples"
 %globaltag.test%
 %globaltag.test.papiMode%
 ```
@@ -117,7 +117,7 @@ and `lore:x` displays the lore row with index `x` (starting with 0).
 Just use `lore` to get the whole lore lines separated with newlines, to change them use `delimiter:<yourSeparator>`.
 Both `name` and `lore` supports the `raw` subargument to get the text without formatting.
 
-```scss title="Example"
+```scss title="Examples"
 %item.stick.amount%
 %item.stick.left:32%
 %item.epic_sword.name%
@@ -137,7 +137,7 @@ from 0 to 1, where 1 is the maximum. You can specify the amount of digits with t
 where `x` is a whole number. This default is 2 digits.
 Additionally, you get the output in `percent` (inclusive the '%' symbol).
 
-```scss title="Example"
+```scss title="Examples"
 %itemdurability.HAND%
 %itemdurability.CHEST.relative%
 %itemdurability.CHEST.relative.percent%
@@ -157,7 +157,7 @@ If you just specify `%location%` the placeholders will resolve to a ULF with yaw
 You can add two options to that base, one will give back parts of the ULF and the other will set to how many decimal places 
 the placeholder will resolve. 
 
-```scss title="Example"
+```scss title="Examples"
 %location%           # -> 325;121;814;myWorldName;12;6
 %location.xyz%       # -> 325 121 814 
 %location.x%         # -> 325
@@ -203,7 +203,7 @@ When the calculation fails `0` will be returned and the reason logged.
     More on this in the [nested package paths](../Basics/Packages-&-Templates.md#nested-package-paths)
     article.
 
-```scss title="Example"
+```scss title="Examples"
 %math.calc:100*(15-point.reputation.amount)%
 %math.calc:objective.kill_zombies.left/objective.kill_zombies.total*100~2%
 %math.calc:-{ph.myplugin_stragee+placeholder}%
@@ -226,7 +226,7 @@ Arguments:
 - `location` - Return Npc location in the specified format, for details see the [location placeholder](#location).
   The general syntax is `%npc.<id>.location.<mode>.<precision>%`.
 
-```scss title="Example"
+```scss title="Examples"
 %npc.bob.name%
 %npc.bob.full_name%
 
@@ -246,7 +246,7 @@ Make sure that the player has this objective active or it will be replaced with 
 Second argument is the name of a property you want to display.
 All properties are described in "Objectives List" chapter.
 
-```scss title="Example"
+```scss title="Examples"
 %objective.kill_zombies.left%
 ```
 
@@ -259,7 +259,7 @@ __Description__: Represents the player's name in the specified format.
 The placeholder `%player%` is the same as `%player.name%` and will display the name of the player.
 `%player.display%` will use the display name used in chat and `%player.uuid%` will display the UUID of the player.
 
-```scss title="Example"
+```scss title="Examples"
 %player%
 %player.name%
 %player.display%
@@ -277,7 +277,7 @@ The first argument is the name of a category and the second argument is either `
 
 See also the [`globalpoint` placeholder](#globalpoint).
 
-```scss title="Example"
+```scss title="Examples"
 %point.reputation.amount%
 %point.reputation.left:15%
 ```
@@ -290,7 +290,7 @@ __Description__: Represents the name of the quester in the current conversation.
 
 If the player is not in a conversation, the placeholder is empty.
 
-```scss title="Example"
+```scss title="Examples"
 %quester%
 ```
 
@@ -307,7 +307,7 @@ instead of `decimal` the argument `decimal~x` where `x` is the maximal amount of
 Placeholders can be used with `{}` instead of `%%`.
 Note that the first value is returned when it is higher than the second.
 
-```scss title="Example"
+```scss title="Examples"
 %randomnumber.whole.0~10%
 %randomnumber.whole.-70~70%
 %randomnumber.decimal~3.3.112~100%
@@ -332,7 +332,7 @@ __Description__: Represents a section as a list of all its elements as identifie
 *[SectionMode]: first, last, random
 *[NoLimit]: Internally the maximum value for an integer is used, so there effectively is no limit.
 
-```scss title="Example"
+```scss title="Examples"
 %section.actions.mySection%
 %section.actions.mySection.shuffle%
 %section.objectives.mySection.select:random.limit:3%
@@ -375,7 +375,7 @@ or the page of [all statistic values](https://hub.spigotmc.org/javadocs/spigot/o
 | material<br>[[Material](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html)]          | Optional<br>[None] | The optional material for material-specific statistics.  |
 | entity<br>[[EntityType](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html)] | Optional<br>[None] | The optional entity type for entity-specific statistics. |
 
-```scss title="Example"
+```scss title="Examples"
 %statistic.jump%
 %statistic.mine_block.material:diamond_block%
 %statistic.kill_entity.entity:ZOMBIE%
@@ -391,7 +391,7 @@ Its syntax is identical to the [eval placeholder](#eval), but you should only us
 If you encapsule multiple evaluations with `sync`, all sub-evaluations will be executed on the server's main thread 
 and should be done with `eval` instead.
 
-```scss title="Example"
+```scss title="Examples"
 %sync.player.\%objective.placeholderStore.displayType\%%
 %sync.player.\%eval.objective.\\\%objective.otherStore.targetStore\\\%.displayType\%%
 ```
@@ -406,7 +406,7 @@ The placeholder will return true or false by default. If you add papiMode to the
 You can translate the papiMode's result by changing the values of `condition_placeholder_met` and `condition_placeholder_not_met`
 in the messages.yml config.
 
-```scss title="Example"
+```scss title="Examples"
 %tag.test%
 %tag.test.papiMode%
 ```
@@ -431,7 +431,7 @@ constants:
 
 To use a `translate` placeholder, you must use `%translate.translatableName%`:
 
-```scss title="Example"
+```scss title="Examples"
 %translate.village_name%
 ```
 
@@ -443,7 +443,7 @@ __Description__: Represents the version of the specified plugin.
 
 You can optionally add the name of the plugin as an argument to display version of another plugin.
 
-```scss title="Example"
+```scss title="Examples"
 %version.Citizens%
 ```
 

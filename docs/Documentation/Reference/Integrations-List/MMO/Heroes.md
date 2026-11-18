@@ -15,7 +15,7 @@ __Description__: Gives the player the specified amount of Heroes experience.
 The first argument is either `primary` or `secondary` and it 
 means player's class. Second one is the amount of experience to add.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   primary1000: "heroesexp primary 1000"
 ```
@@ -31,7 +31,7 @@ __Description__: Whether the player has the specified level of attribute.
 The first argument must be `strength`, `constitution`, `endurance`, `dexterity`, `intellect`, `wisdom`, or `charisma`.
 Second argument is the required level of the attribute. Must be greater than or equal the specified number.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   strength5: "heroesattribute strength 5"
 ```
@@ -45,7 +45,7 @@ __Description__: Whether the player has the specified class.
 The first argument must be `primary`, `secondary` or `mastered`. Second is the name of a class or `any`.
 You can optionally specify `level:` argument followed by the required level of the player.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   masteredWarrior: "heroesclass mastered warrior"
 ```
@@ -58,7 +58,7 @@ __Description__: Whether the player can use the specified skill.
 
 The first argument is the name of the skill.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   charge: "heroesskill charge"
 ```

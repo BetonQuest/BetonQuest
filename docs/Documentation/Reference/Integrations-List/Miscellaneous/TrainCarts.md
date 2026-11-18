@@ -22,7 +22,7 @@ It works similarly to the location objective, but the player must be in a TrainC
 | _exit_     | exit         | Disabled               | The player must exit (go from inside to outside) the location to complete the objective.  |
 | _name_     | name:Train1  | :octicons-x-circle-16: | The optional Name of the Train.                                                           |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   checkpoint1: "traincartslocation 100;60;100;world"
   train1: "traincartslocation name:Train1 100;60;100;world range:2"
@@ -44,7 +44,7 @@ If the conditions are not met, the time will not be counted.
 | _name_    | name:Train1 | :octicons-x-circle-16: | The optional Name of the Train.                                                  |
 | _amount_  | amount:20   | 0                      | The optional amount of time in seconds, the player has to ride a specific train. |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   rideTrain: "traincartsride"
   rideTrain1: "traincartsride name:Train1"
@@ -57,7 +57,7 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `traincartsexit [name]`  
 __Description__: This objective requires the player to exit a train.
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   exitTrain: "traincartsexit"
   exitTrain1: "traincartsexit name:Train1"
@@ -71,7 +71,7 @@ __Context__: @snippet:condition-meta:online@
 __Syntax__: `traincartsride <train>`  
 __Description__: Checks if the player is riding a specific named train.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   onTrain: "traincartsride train1"
 ```

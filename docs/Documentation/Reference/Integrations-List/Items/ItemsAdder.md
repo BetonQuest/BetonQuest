@@ -10,7 +10,7 @@ ItemsAdder usage is integrated to the [Items](../../../Advanced/Items.md) system
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML title="Example"
+```YAML title="Examples"
 items:
   ruby: "itemsAdder iasurvival:ruby"
   sword: "itemsAdder iaalchemy:mysterious_sword quest-item"
@@ -32,7 +32,7 @@ __Description__: Plays an ItemsAdder totem animation.
 |---------------|--------|------------------------|-------------------------|
 | _animationId_ | string | :octicons-x-circle-16: | Animation name to play. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   iaPlayAnimation: "itemsAdderAnimation totem1"
 ```
@@ -48,7 +48,7 @@ __Description__: Changes the block at the given position.
 | _itemId_   | string                                                          | :octicons-x-circle-16: | Identifier of the block to place.   |
 | _location_ | [ULF](../../Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to place the block at. |
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   iaSetBlock: "itemsAdderBlock itemsadder:ruby_ore 100;200;300;world"
 ```
@@ -68,7 +68,7 @@ You can add a `notify` keyword if you want to send a notification to players whe
 | _itemId_  | string        | :octicons-x-circle-16: | Identifier of the block to break. |
 | _amount_  | amount:number | 1                      | Amount of blocks to break.        |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   iaBreak: "itemsAdderBlockBreak itemsadder:ruby_ore amount:20 notify:5"
 ```
@@ -86,7 +86,7 @@ You can add a `notify` keyword if you want to send a notification to players whe
 | _itemId_  | string        | :octicons-x-circle-16: | Identifier of the block to place. |
 | _amount_  | amount:number | 1                      | Amount of blocks to place.        |
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   iaPlace: "itemsAdderBlockPlace iasurvival:restoration_table"
 ```
@@ -104,7 +104,7 @@ __Description__: Whether the ItemsAdder block is at a location.
 | _itemId_   | string                                                          | :octicons-x-circle-16: | Identifier of the block to check.   |
 | _location_ | [ULF](../../Definition-Encyclopedia.md#unified-location-format) | :octicons-x-circle-16: | The location to check the block at. |
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   iaBlock: "itemsAdderBlock itemsadder:ruby_ore 40;72;3;world"
 ```

@@ -30,7 +30,7 @@ The first argument must be the name of the quest, as defined in `name` option in
 You can optionally add `check-requirements` argument if you want the action to respect this quest's requirements
 (otherwise the quest will be forced to be started).
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   startStoneMiner: "quest stone_miner check-requirements"
 ```
@@ -46,7 +46,7 @@ __Description__: Whether the player has completed the specified quest.
 The first and only argument is the name of the quest.
 If it contains spaces you need to quote it.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   completedQuest: "quest stone_miner"
 ```

@@ -11,7 +11,7 @@ You can also use the `el_particle` action to trigger particle.
     It does contain a few magic specific settings though so please don't be confused if some stuff does not work.
     There is also a [magic editor](https://sandbox.elmakers.com/#betonquestEffectLibTemplate) with autocompletion for EffectLib.
 
-```YAML title="Example"
+```YAML title="Examples"
 effectlib: #(1)!
    farmer: #(2)!
       class: VortexEffect #(3)!
@@ -59,7 +59,7 @@ __Description__: Load an effect defined in `effects` section and display it on p
 
 When you want to fixate the effect's location to the player's start position you have to use `loc:%location%`.
 
-```YAML title="Example"
+```YAML title="Examples"
 effects:
   beton:
     class: HelixEffect

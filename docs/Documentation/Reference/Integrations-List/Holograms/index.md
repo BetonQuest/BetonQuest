@@ -19,7 +19,7 @@ If you have more than one installed, you can use the
 to set which plugin should be used.
 
 ### NPC Holograms
-```YAML title="Example"
+```YAML title="Examples"
 npc_holograms: #(7)!
   myHologram: #(8)!
     lines: #(1)!
@@ -88,7 +88,7 @@ A top line is defined with 'top:`point`;`order`;`limit`;`<formattingString>`'.
 The `limit` is just the number of entries to show.
 You can freely define the formatting of the displayed hologram and even omit the placeholders for place, player or score.
 
-```yaml title="Example"
+```yaml title="Examples"
 honorRank:
   lines:
     - Most honorable players!

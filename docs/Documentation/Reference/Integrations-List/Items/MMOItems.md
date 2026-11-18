@@ -14,7 +14,7 @@ The [`soulbound`](https://docs.phoenixdevt.fr/mmoitems/features/soulbound.html) 
 with an optional `amount`, defaulting to `1`.  
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML title="Example"
+```YAML title="Examples"
 items:
   crown: "mmoitem ARMOR SKELETON_CROWN"
   boundBoot: "mmoitem ARMOR TRAVELERS_BOOTS scale soulbound:100"
@@ -39,7 +39,7 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `mmoitemupgrade <itemType> <itemID>`  
 __Description__: The player has to upgrade the given item with an upgrade consumable.
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   sword: "mmoitemupgrade SWORD FALCON_BLADE"
 ```
@@ -50,7 +50,7 @@ __Context__: @snippet:objective-meta:online@
 __Syntax__: `mmoitemapplygem <itemType> <itemID> <gemstoneID>`  
 __Description__: The player has to apply a gemstone to an item.
 
-```YAML title="Example"
+```YAML title="Examples"
 objectives:
   sword: "mmoitemapplygem SWORD CUTLASS GEM_OF_ACCURACY"
 ```

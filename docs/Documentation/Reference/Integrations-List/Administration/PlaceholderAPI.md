@@ -14,7 +14,7 @@ The `placeholder` part is just a [BetonQuest placeholder](../../Placeholders-Lis
 Testing your placeholder is easy using this command:  
 `/papi parse <PlayerName> %betonquest_<PackageName>:<PlaceholderType>.<Property>%`
 
-```scss title="Example"
+```scss title="Examples"
 %betonquest_someGreatQuest:objective.killZombies.left%
 ```
 
@@ -28,6 +28,6 @@ __Description__: Use placeholders from another plugin via PlaceholderAPI.
 
 Insert a placeholder starting with `ph` and the second argument should be the placeholder without percentage characters.
 
-```scss title="Example"
+```scss title="Examples"
 %ph.player_item_in_hand%
 ```

@@ -86,7 +86,7 @@ __Context__: @snippet:condition-meta:online-offline@
 __Syntax__: `nujobs_hasjob <jobname>`  
 __Description__: Whether the player has this job
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   hasWoodcutter: "nujobs_hasjob Woodcutter"
 ```
@@ -103,7 +103,7 @@ __Context__: @snippet:condition-meta:online-offline@
 __Syntax__: `nujobs_joblevel <jobname> <min> <max>`  
 __Description__: Whether the player has this job, and at a level equal to or between the min/max
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   woodcutterLevel5: "nujobs_joblevel Woodcutter 5 10"
 ```

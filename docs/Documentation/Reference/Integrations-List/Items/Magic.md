@@ -14,7 +14,7 @@ Magic items are integrated to the [BetonQuest Items](index.md) system.
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML title="Example"
+```YAML title="Examples"
 items:
   crown: "magic KingsCrown"
   sword: "magic SkeletonKingSword quest-item"

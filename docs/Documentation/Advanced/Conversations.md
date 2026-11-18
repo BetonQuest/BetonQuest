@@ -99,7 +99,7 @@ understand in the future. Don't worry though, if you make some mistake in config
 
 Conversations can be assigned to [NPCs](../Reference/Integrations-List/NPCs/index.md). This is done in the `npc_conversations` section:
 
-```YAML title="Example"
+```YAML title="Examples"
 npc_conversations:
   Hans: mayorHans #(1)!
 ```

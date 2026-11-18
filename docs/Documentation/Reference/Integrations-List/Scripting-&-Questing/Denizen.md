@@ -15,7 +15,7 @@ __Description__: With this action you can fire Denizen task scripts.
 Don't confuse it with `skript` action, these are different. The first argument is the name of the script.
 Additional arguments may be used to pass definitions to the script.
 
-```YAML title="Example"
+```YAML title="Examples"
 actions:
   runDenizenScript: "script beton"
   defineAndRun: "script beton +location:%location% +source:BetonQuest"

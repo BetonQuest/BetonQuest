@@ -13,7 +13,7 @@ __Description__: Whether the player has the specified class or a child class of 
 The first argument is simply the name of a class.
 You can add `exact` argument if you want to check for that exact class, without checking child classes.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isWarrior: "fabledclass warrior"
 ```
@@ -26,7 +26,7 @@ __Description__: Whether the player has the specified or greater level than the 
 
 The first argument is class name, the second one is the required level.
 
-```YAML title="Example"
+```YAML title="Examples"
 conditions:
   isWarrior3: "fabledlevel warrior 3"
 ```

@@ -10,7 +10,7 @@ CraftEngine usage is integrated to the [Items](../../../Advanced/Items.md) syste
 
 In addition, you can also add `quest-item` argument to tag them as "QuestItem".
 
-```YAML title="Example"
+```YAML title="Examples"
 items:
   topazAxe: "craftEngine default:topaz_axe"
   amethystTorch: "craftEngine default:amethyst_torch quest-item"
