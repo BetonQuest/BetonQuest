@@ -251,6 +251,21 @@ public class DefaultInstruction implements Instruction {
     }
 
     @Override
+    public boolean hasOptional(final String argumentKey) throws QuestException {
+        return chainableInstruction.hasOptional(argumentKey);
+    }
+
+    @Override
+    public boolean hasFlag(final String argumentKey) throws QuestException {
+        return chainableInstruction.hasFlag(argumentKey);
+    }
+
+    @Override
+    public boolean hasNamed(final String argumentKey) throws QuestException {
+        return chainableInstruction.hasNamed(argumentKey);
+    }
+
+    @Override
     public <T> DecoratableChainRetriever<T> parse(final InstructionArgumentParser<T> argument) {
         return new DefaultDecoratableChainRetriever<>(this, argument, true);
     }

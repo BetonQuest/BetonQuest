@@ -8,6 +8,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] - ${maven.build.timestamp}
 ### API
 #### Added
+- `ChainableInstruction::hasOptional(String)` method to check if an optional instruction part is present
+- `ChainableInstruction::hasFlag(String)` method to check if a flag is present
+- `ChainableInstruction::hasNamed(String)` method to check if a named instruction part is present
 #### Changed
 #### Deprecated
 #### Removed
