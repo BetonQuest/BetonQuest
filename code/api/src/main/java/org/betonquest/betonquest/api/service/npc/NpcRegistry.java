@@ -29,7 +29,7 @@ public interface NpcRegistry extends FeatureTypeRegistry<NpcWrapper<?>> {
 
     /**
      * Returns the identifiers used to identify the given NPC.
-     * <br><br>
+     * <p>
      * The specified profile may influence the resolution process.
      *
      * @param npc     the NPC to get identifiers for

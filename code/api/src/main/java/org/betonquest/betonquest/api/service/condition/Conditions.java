@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.service.ServiceFeature;
 
 /**
  * Provides access to the condition service.
- * <br><br>
+ * <p>
  * Use the {@link ConditionRegistry} to register new conditions and the {@link ConditionManager} to test them.
  *
  * @since 3.0.0

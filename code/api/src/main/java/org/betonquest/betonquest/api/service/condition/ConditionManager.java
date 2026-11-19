@@ -9,10 +9,10 @@ import java.util.Collection;
 
 /**
  * The ConditionManager is responsible for evaluating conditions loaded by BetonQuest.
- * <br><br>
+ * <p>
  * Each condition is uniquely identified by a {@link ConditionIdentifier}, which consists of the user-defined name
  * in the configuration and the {@link QuestPackage} it belongs to.
- * <br><br>
+ * <p>
  * Evaluating a condition returns {@code true} if it is met and {@code false} otherwise.
  * Evaluation always involves the condition itself and any related conditions as a side effect.
  * For example, evaluating a conjunction of conditions will test each condition until the final result
@@ -24,7 +24,7 @@ public interface ConditionManager {
 
     /**
      * Evaluates a condition for the optionally specified {@link Profile}.
-     * <br><br>
+     * <p>
      * The specified profile is used to resolve placeholders in the condition's instructions and any side effects.
      * If no profile is specified, placeholders requiring one will cause the evaluation to fail.
      *
@@ -37,14 +37,14 @@ public interface ConditionManager {
 
     /**
      * Evaluates multiple conditions for the optionally specified {@link Profile} conjunctively.
-     * <br><br>
+     * <p>
      * The order of evaluation is not guaranteed, although evaluating a {@link Collection} typically retains
      * the order if one is present. The most common reason for order deviation is synchronization
      * requiring a wait for the server's main thread.
-     * <br><br>
+     * <p>
      * Since a conjunction fails as soon as a single literal is {@code false}, evaluation stops once
      * one condition evaluates to {@code false}.
-     * <br><br>
+     * <p>
      * The specified profile is used to resolve placeholders in the conditions' instructions and any side effects.
      * If no profile is specified, placeholders requiring one will cause the evaluation to fail.
      *
@@ -57,14 +57,14 @@ public interface ConditionManager {
 
     /**
      * Evaluates multiple conditions for the optionally specified {@link Profile} disjunctively.
-     * <br><br>
+     * <p>
      * The order of evaluation is not guaranteed, although evaluating a {@link Collection} typically retains
      * the order if one is present. The most common reason for order deviation is synchronization
      * requiring a wait for the server's main thread.
-     * <br><br>
+     * <p>
      * Since a disjunction succeeds as soon as a single literal is {@code true}, evaluation stops once
      * one condition evaluates to {@code true}.
-     * <br><br>
+     * <p>
      * The specified profile is used to resolve placeholders in the conditions' instructions and any side effects.
      * If no profile is specified, placeholders requiring one will cause the evaluation to fail.
      *
@@ -77,13 +77,13 @@ public interface ConditionManager {
 
     /**
      * Evaluates multiple conditions for the optionally specified {@link Profile} against a {@link TestStrategy}.
-     * <br><br>
+     * <p>
      * The order of evaluation is not guaranteed, although evaluating a {@link Collection} typically retains
      * the order if one is present. The most common reason for order deviation is synchronization
      * requiring a wait for the server's main thread.
-     * <br><br>
+     * <p>
      * Since a {@link TestStrategy} can yield a result early, not all conditions might be evaluated.
-     * <br><br>
+     * <p>
      * The specified profile is used to resolve placeholders in the conditions' instructions and any side effects.
      * If no profile is specified, placeholders requiring one will cause the evaluation to fail.
      *

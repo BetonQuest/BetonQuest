@@ -12,11 +12,11 @@ public interface TestStrategy {
 
     /**
      * Evaluates the given condition results to determine a combined result.
-     * <br><br>
+     * <p>
      * Returns a definite result as an {@link Optional} if one can be determined.
      * Once a definite result is returned, no further conditions will be evaluated.
      * If the result is still indefinite, an empty {@link Optional} is returned.
-     * <br><br>
+     * <p>
      * If {@code remaining} is {@code 0} and no definite result has been found, this method should return {@code false}.
      *
      * @param positive  the number of conditions that evaluated to {@code true}

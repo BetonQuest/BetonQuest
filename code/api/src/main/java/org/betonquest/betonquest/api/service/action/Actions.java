@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.service.ServiceFeature;
 
 /**
  * Provides access to the action service.
- * <br><br>
+ * <p>
  * Use the {@link ActionRegistry} to register new actions and the {@link ActionManager} to execute them.
  *
  * @since 3.0.0

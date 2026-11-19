@@ -11,10 +11,10 @@ import java.util.List;
 
 /**
  * The ObjectiveManager is responsible for managing objectives loaded by BetonQuest.
- * <br><br>
+ * <p>
  * Each {@link Objective} is uniquely identified by an {@link ObjectiveIdentifier}, which consists
  * of the user-defined name in the configuration and the {@link QuestPackage} it belongs to.
- * <br><br>
+ * <p>
  * A profile cannot have more than one active objective with the same {@link ObjectiveIdentifier} at a time.
  * A single {@link Objective} instance is shared among all profiles that have the same objective active.
  *
@@ -24,7 +24,7 @@ public interface ObjectiveManager {
 
     /**
      * Starts a new objective for the specified {@link Profile} using the objective's default starting state.
-     * <br><br>
+     * <p>
      * If the objective with this identifier is already running for the specified profile, this method does nothing.
      *
      * @param profile             the profile to start the objective for
@@ -35,7 +35,7 @@ public interface ObjectiveManager {
 
     /**
      * Starts a new objective for the specified {@link Profile} using the specified starting state.
-     * <br><br>
+     * <p>
      * If the objective with this identifier is already running for the specified profile, this method does nothing.
      *
      * @param profile             the profile to start the objective for
@@ -47,7 +47,7 @@ public interface ObjectiveManager {
 
     /**
      * Pauses the objective for the specified {@link Profile}.
-     * <br><br>
+     * <p>
      * If the objective with this identifier is not running for the specified profile, this method does nothing.
      *
      * @param profile             the profile to pause the objective for
@@ -58,7 +58,7 @@ public interface ObjectiveManager {
 
     /**
      * Cancels the objective for the specified {@link Profile}.
-     * <br><br>
+     * <p>
      * If the objective with this identifier is not running for the specified profile, this method does nothing.
      *
      * @param profile             the profile to cancel the objective for
@@ -69,7 +69,7 @@ public interface ObjectiveManager {
 
     /**
      * Returns a list of all active and running {@link Objective}s for the specified {@link Profile}.
-     * <br><br>
+     * <p>
      * {@link Objective} instances are shared among all profiles with the same active objective.
      *
      * @param profile the profile to retrieve the objectives for
@@ -81,7 +81,7 @@ public interface ObjectiveManager {
 
     /**
      * Returns a loaded {@link Objective} by its {@link ObjectiveIdentifier}.
-     * <br><br>
+     * <p>
      * {@link Objective} instances are shared among all profiles with the same active objective.
      *
      * @param objectiveIdentifier the identifier of the objective to retrieve

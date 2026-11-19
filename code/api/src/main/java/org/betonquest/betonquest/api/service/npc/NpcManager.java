@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * The NpcManager is responsible for handling NPCs known to BetonQuest.
- * <br><br>
+ * <p>
  * Each NPC is identified by an {@link NpcIdentifier}, which consists of the user-defined name
  * in the configuration and the {@link QuestPackage} it belongs to.
  *
@@ -24,7 +24,7 @@ public interface NpcManager {
 
     /**
      * Retrieves a single {@link Npc} by its {@link NpcIdentifier}.
-     * <br><br>
+     * <p>
      * If multiple NPCs match the identifier, a {@link QuestException} is thrown.
      * The specified {@link Profile} is used to resolve placeholders in the NPC's instruction.
      * If no profile is provided, placeholders requiring one will cause the resolution to fail.
@@ -41,7 +41,7 @@ public interface NpcManager {
 
     /**
      * Retrieves all {@link Npc}s matching the given {@link NpcIdentifier}.
-     * <br><br>
+     * <p>
      * The specified {@link Profile} is used to resolve placeholders in the NPCs' instructions.
      * If no profile is provided, placeholders requiring one will cause the resolution to fail.
      *
@@ -57,7 +57,7 @@ public interface NpcManager {
 
     /**
      * Checks if the NPC with the specified {@link NpcIdentifier} should be hidden for the given {@link OnlineProfile}.
-     * <br><br>
+     * <p>
      * This check evaluates the conditions defined in the {@code hide_npcs} section.
      * It can be used, for example, to cancel NPC spawn events.
      *
@@ -74,7 +74,7 @@ public interface NpcManager {
 
     /**
      * Checks if the specified {@link Npc} should be hidden for the given {@link Player}.
-     * <br><br>
+     * <p>
      * This check evaluates the conditions defined in the {@code hide_npcs} section.
      * It can be used, for example, to cancel NPC spawn events.
      *

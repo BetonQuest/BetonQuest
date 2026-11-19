@@ -9,10 +9,10 @@ import java.util.Collection;
 
 /**
  * The ActionManager is responsible for executing actions loaded by BetonQuest.
- * <br><br>
+ * <p>
  * Each action is uniquely identified by an {@link ActionIdentifier}, which consists of the user-defined name
  * in the configuration and the {@link QuestPackage} it belongs to.
- * <br><br>
+ * <p>
  * Executing an action runs the logic specified in the action's instruction along with any side effects.
  * For example, executing an action that defines a folder of actions will run all actions within that folder,
  * which is considered a side effect of the original action.
@@ -23,7 +23,7 @@ public interface ActionManager {
 
     /**
      * Executes an action for the optionally specified {@link Profile} if its conditions are met.
-     * <br><br>
+     * <p>
      * The specified profile is used to resolve placeholders in the action's instructions and any side effects.
      * If no profile is specified, placeholders requiring one will cause the execution to fail.
      *
@@ -38,11 +38,11 @@ public interface ActionManager {
     /**
      * Executes multiple actions for the optionally specified {@link Profile}.
      * Only actions whose conditions are met will be executed.
-     * <br><br>
+     * <p>
      * The order of execution is not guaranteed, although executing a {@link Collection} typically retains
      * the order if one is present. The most common reason for order deviation is synchronization
      * requiring a wait for the server's main thread.
-     * <br><br>
+     * <p>
      * The specified profile is used to resolve placeholders in each action's instructions and any side effects.
      * If no profile is specified, placeholders requiring one will cause the execution to fail.
      *

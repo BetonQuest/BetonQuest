@@ -7,11 +7,11 @@ import org.jetbrains.annotations.Contract;
 
 /**
  * A service feature provides access to a manager and a registry for a specific quest feature type.
- * <br><br>
+ * <p>
  * The registry is responsible for registering custom features.
  * Registries typically implement {@link CoreQuestRegistry}, {@link FeatureTypeRegistry},
  * or {@link FeatureRegistry} and provide various methods for registering custom features with their factories.
- * <br><br>
+ * <p>
  * The manager is responsible for providing access to existing and loaded feature types
  * that were previously registered with the registry.
  *

@@ -4,7 +4,7 @@ import org.betonquest.betonquest.api.service.ServiceFeature;
 
 /**
  * Provides access to the objective service.
- * <br><br>
+ * <p>
  * Use the {@link ObjectiveRegistry} to register new objective types and the {@link ObjectiveManager} to manage them.
  *
  * @since 3.0.0

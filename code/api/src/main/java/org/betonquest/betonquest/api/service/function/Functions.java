@@ -50,7 +50,7 @@ public interface Functions {
 
     /**
      * Returns the function provider for the specified quest package.
-     * <br><br>
+     * <p>
      * The quest package is used to resolve relative identifiers.
      *
      * @param questPackage the quest package for resolving relative identifiers, or {@code null}

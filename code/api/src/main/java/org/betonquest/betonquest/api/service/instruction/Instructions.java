@@ -16,12 +16,12 @@ import org.jetbrains.annotations.Contract;
 
 /**
  * The BetonQuest instructions service is responsible for the creation and resolution of instructions and arguments.
- * <br><br>
+ * <p>
  * {@link Instruction}s and {@link SectionInstruction}s allow the creation of {@link Argument}s by combining
  * different partitioning, parsing, and validation steps to decorate a reusable function.
  * The resulting {@link Argument} resolves any placeholders for the {@link Profile} provided to
  * {@link Argument#getValue(Profile)}.
- * <br><br>
+ * <p>
  * Immediately after creating an {@link Argument}, the service attempts to validate it by resolving its value,
  * throwing an exception if validation fails. Creating an instruction may also throw a {@link QuestException}
  * if tokenization fails.
@@ -33,7 +33,7 @@ public interface Instructions {
     /**
      * Obtains a new {@link InstructionChainParser} for the given argument to enable resolving its value.
      * The {@link QuestPackage} is required to resolve placeholders correctly.
-     * <br><br>
+     * <p>
      * The {@link InstructionChainParser} produced by this method will always resolve the provided argument parameter,
      * even if different calls are made during the retrieval step:
      * <ul>
@@ -45,7 +45,7 @@ public interface Instructions {
      *     <li>{@link InstructionChainRetriever#getFlag(String, Object)} resolves the {@link Argument} normally,
      *         treating it as a defined flag and ignoring the specified argument name and default value.</li>
      * </ul>
-     * <br>
+     * <p>
      * This method does not provide an {@link Instruction} because no full and valid instruction string is present.
      *
      * @param questPackage the package the argument is resolved for
@@ -60,7 +60,7 @@ public interface Instructions {
      * Obtains a new {@link InstructionChainParser} for the given argument to enable resolving its value.
      * The {@link QuestPackage} is required to resolve placeholders correctly.
      * The supplier is resolved each time the parser is called, allowing for dynamic arguments.
-     * <br><br>
+     * <p>
      * Aside from the supplier, see {@link #createForArgument(QuestPackage, String)} for more information.
      *
      * @param questPackage the package the argument is resolved for
@@ -74,7 +74,7 @@ public interface Instructions {
     /**
      * Creates a new {@link Instruction} for the given {@link Identifier} and instruction string.
      * Use {@link #create(QuestPackage, String)} if no identifier is available.
-     * <br><br>
+     * <p>
      * The tokenizer used to parse the instruction string is the same as the one used for actions, conditions, etc.
      *
      * @param identifier  the identifier of the instruction
@@ -89,9 +89,9 @@ public interface Instructions {
     /**
      * Creates a new {@link Instruction} for the given {@link QuestPackage} and instruction string.
      * Use {@link #create(Identifier, String)} to create an instruction with an identifier instead.
-     * <br><br>
+     * <p>
      * The tokenizer used to parse the instruction string is the same as the one used for actions, conditions, etc.
-     * <br><br>
+     * <p>
      * This instruction will not have a valid identifier and is intended solely for parsing the string.
      *
      * @param questPackage the package the instruction is created for
@@ -105,7 +105,7 @@ public interface Instructions {
 
     /**
      * Creates a new {@link Instruction} for the given {@link PlaceholderIdentifier} and placeholder string.
-     * <br><br>
+     * <p>
      * The tokenizer used to parse the placeholder string expects the specific format of placeholders.
      *
      * @param placeholderIdentifier the identifier of the placeholder
@@ -119,7 +119,7 @@ public interface Instructions {
 
     /**
      * Creates a new {@link SectionInstruction} for the given {@link QuestPackage} and {@link ConfigurationSection}.
-     * <br><br>
+     * <p>
      * Instead of a tokenizer partitioning a string, every element of the configuration section is treated
      * as another section, a list of strings, or a string value.
      *

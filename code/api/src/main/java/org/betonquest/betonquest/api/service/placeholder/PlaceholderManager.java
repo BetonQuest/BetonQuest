@@ -17,7 +17,7 @@ public interface PlaceholderManager {
 
     /**
      * Returns an {@link Argument} instance for the given placeholder instruction.
-     * <br><br>
+     * <p>
      * If an identical argument was previously created, it is reused.
      * The instruction must include the leading and trailing {@code %} characters.
      *
@@ -32,7 +32,7 @@ public interface PlaceholderManager {
 
     /**
      * Resolves the placeholder for the specified profile.
-     * <br><br>
+     * <p>
      * If the placeholder is not yet loaded, it is created.
      * The name must include the leading and trailing {@code %} characters.
      *
@@ -48,7 +48,7 @@ public interface PlaceholderManager {
 
     /**
      * Resolves a placeholder for the specified profile from its string representation.
-     * <br><br>
+     * <p>
      * The placeholder string must follow the {@code <package>:<placeholder>} format.
      *
      * @param placeholder the placeholder string in {@code <package>:<placeholder>} format
