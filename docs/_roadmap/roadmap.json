@@ -88,7 +88,7 @@
       "id": "3.4",
       "tiles": {
         "center": "grass",
-        "east": "grass",
+        "east": "water",
         "west": "path",
         "north-east": "grass",
         "north-west": "path",
@@ -101,6 +101,14 @@
           "offset": {
             "x": 0,
             "y": -110
+          },
+          "clip": false
+        },
+        "east": {
+          "asset": "water-breathing",
+          "offset": {
+            "x": 50,
+            "y": -50
           },
           "clip": false
         }
