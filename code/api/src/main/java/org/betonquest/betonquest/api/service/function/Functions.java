@@ -11,47 +11,49 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Grants access to loaded functions as well as subroutines and enables to evaluate them.
- * New subroutines may be registered too.
+ * Provides access to loaded functions and subroutines, allowing their evaluation
+ * and the registration of new subroutines.
  *
  * @since 3.1.0
  */
 public interface Functions {
 
     /**
-     * Registers a subroutine for a given name.
+     * Registers a new subroutine with the given name.
      *
      * @param name     the name of the subroutine
-     * @param function the subroutine
+     * @param function the function implementing the subroutine
      * @since 3.1.0
      */
     void registerSubRoutine(String name, MathFunction function);
 
     /**
-     * Get a function by its identifier.
+     * Returns a function by its identifier.
      *
-     * @param identifier the identifier of the function
-     * @return the function
+     * @param identifier the identifier of the function to retrieve
+     * @return the function instance
      * @throws QuestException if the function does not exist
      * @since 3.1.0
      */
     MathFunction getFunction(FunctionIdentifier identifier) throws QuestException;
 
     /**
-     * Evaluate a function obtained using the given identifier for the given arguments.
+     * Evaluates a function identified by the given identifier using the provided arguments.
      *
-     * @param identifier the function to evaluate
+     * @param identifier the identifier of the function to evaluate
      * @param arguments  the arguments to pass to the function
-     * @return the result of the function
-     * @throws QuestException if the function could not be evaluated
+     * @return the result of the evaluation
+     * @throws QuestException if the function cannot be evaluated
      * @since 3.1.0
      */
     FunctionAssignment evaluate(FunctionIdentifier identifier, List<FunctionAssignment> arguments) throws QuestException;
 
     /**
-     * Get the function provider for the given quest package.
+     * Returns the function provider for the specified quest package.
+     * <p>
+     * The quest package is used to resolve relative identifiers.
      *
-     * @param questPackage the quest package to get the function provider for relative identifiers
+     * @param questPackage the quest package for resolving relative identifiers, or {@code null}
      * @return the function provider for the given quest package
      * @since 3.1.0
      */

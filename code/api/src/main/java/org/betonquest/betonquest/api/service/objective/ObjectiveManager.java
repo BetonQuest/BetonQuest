@@ -11,21 +11,21 @@ import java.util.List;
 
 /**
  * The ObjectiveManager is responsible for managing objectives loaded by BetonQuest.
- * <br> <br>
- * Each {@link Objective} is uniquely identified by an {@link ObjectiveIdentifier} which consists
- * of the user-defined name in the configuration as well as the {@link QuestPackage} the {@link Objective} belongs to.
- * No profile may have more than one {@link Objective} with the same {@link ObjectiveIdentifier} at the same time.
- * There is only a single {@link Objective} instance shared among all profiles having the same {@link Objective} active.
+ * <p>
+ * Each {@link Objective} is uniquely identified by an {@link ObjectiveIdentifier}, which consists
+ * of the user-defined name in the configuration and the {@link QuestPackage} it belongs to.
+ * <p>
+ * A profile cannot have more than one active objective with the same {@link ObjectiveIdentifier} at a time.
+ * A single {@link Objective} instance is shared among all profiles that have the same objective active.
  *
  * @since 3.0.0
  */
 public interface ObjectiveManager {
 
     /**
-     * Starts a new objective by its {@link ObjectiveIdentifier} for the specified {@link Profile}
-     * with the objective's default starting state.
-     * <br> <br>
-     * If the objective to this identifier is already running for the specified profile, this method will do nothing.
+     * Starts a new objective for the specified {@link Profile} using the objective's default starting state.
+     * <p>
+     * If the objective with this identifier is already running for the specified profile, this method does nothing.
      *
      * @param profile             the profile to start the objective for
      * @param objectiveIdentifier the identifier of the objective to start
@@ -34,22 +34,21 @@ public interface ObjectiveManager {
     void start(Profile profile, ObjectiveIdentifier objectiveIdentifier);
 
     /**
-     * Starts a new objective by its {@link ObjectiveIdentifier} for the specified {@link Profile}
-     * with the specified starting state.
-     * <br> <br>
-     * If the objective to this identifier is already running for the specified profile, this method will do nothing.
+     * Starts a new objective for the specified {@link Profile} using the specified starting state.
+     * <p>
+     * If the objective with this identifier is already running for the specified profile, this method does nothing.
      *
      * @param profile             the profile to start the objective for
      * @param objectiveIdentifier the identifier of the objective to start
-     * @param startingState       the starting state of the objective
+     * @param startingState       the starting state for the objective
      * @since 3.0.0
      */
     void start(Profile profile, ObjectiveIdentifier objectiveIdentifier, String startingState);
 
     /**
-     * Pauses the objective by its {@link ObjectiveIdentifier} for the specified {@link Profile}.
-     * <br> <br>
-     * If the objective to this identifier is not running for the specified profile, this method will do nothing.
+     * Pauses the objective for the specified {@link Profile}.
+     * <p>
+     * If the objective with this identifier is not running for the specified profile, this method does nothing.
      *
      * @param profile             the profile to pause the objective for
      * @param objectiveIdentifier the identifier of the objective to pause
@@ -58,9 +57,9 @@ public interface ObjectiveManager {
     void pause(Profile profile, ObjectiveIdentifier objectiveIdentifier);
 
     /**
-     * Cancels the objective by its {@link ObjectiveIdentifier} for the specified {@link Profile}.
-     * <br> <br>
-     * If the objective to this identifier is not running for the specified profile, this method will do nothing.
+     * Cancels the objective for the specified {@link Profile}.
+     * <p>
+     * If the objective with this identifier is not running for the specified profile, this method does nothing.
      *
      * @param profile             the profile to cancel the objective for
      * @param objectiveIdentifier the identifier of the objective to cancel
@@ -69,12 +68,11 @@ public interface ObjectiveManager {
     void cancel(Profile profile, ObjectiveIdentifier objectiveIdentifier);
 
     /**
-     * Returns all active and running {@link Objective}s for the specified {@link Profile}.
-     * <br> <br>
-     * {@link Objective} instances are shared among all profiles having the same objective active
-     * and are uniquely identified by their {@link ObjectiveIdentifier}.
+     * Returns a list of all active and running {@link Objective}s for the specified {@link Profile}.
+     * <p>
+     * {@link Objective} instances are shared among all profiles with the same active objective.
      *
-     * @param profile the profile to get the objectives for
+     * @param profile the profile to retrieve the objectives for
      * @return a list of active and running objectives
      * @since 3.0.0
      */
@@ -82,13 +80,13 @@ public interface ObjectiveManager {
     List<Objective> getForProfile(Profile profile);
 
     /**
-     * Gets a loaded {@link Objective} by its {@link ObjectiveIdentifier}.
-     * <br> <br>
-     * {@link Objective} instances are shared among all profiles having the same objective active.
+     * Returns a loaded {@link Objective} by its {@link ObjectiveIdentifier}.
+     * <p>
+     * {@link Objective} instances are shared among all profiles with the same active objective.
      *
-     * @param objectiveIdentifier the identifier of the objective to get
-     * @return the objective with the specified identifier
-     * @throws QuestException if there is no objective with the given identifier
+     * @param objectiveIdentifier the identifier of the objective to retrieve
+     * @return the objective instance
+     * @throws QuestException if no objective exists with the given identifier
      * @since 3.0.0
      */
     @Contract(pure = true)

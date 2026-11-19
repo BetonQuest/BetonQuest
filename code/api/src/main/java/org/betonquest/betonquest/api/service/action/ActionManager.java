@@ -8,54 +8,48 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 
 /**
- * The ActionManager is responsible for executing actions that are loaded by BetonQuest.
- * <br> <br>
- * Each action is uniquely identified by an {@link ActionIdentifier} which consists of the user-defined name in the
- * configuration as well as the {@link QuestPackage} the action belongs to.
- * Executing an action will run anything specified in the action's instruction as well as any side effects of that.
- * For example, executing an action defining a folder of actions will run all actions in that folder,
- * which is considered a side effect of the original action itself.
+ * The ActionManager is responsible for executing actions loaded by BetonQuest.
+ * <p>
+ * Each action is uniquely identified by an {@link ActionIdentifier}, which consists of the user-defined name
+ * in the configuration and the {@link QuestPackage} it belongs to.
+ * <p>
+ * Executing an action runs the logic specified in the action's instruction along with any side effects.
+ * For example, executing an action that defines a folder of actions will run all actions within that folder,
+ * which is considered a side effect of the original action.
  *
  * @since 3.0.0
  */
 public interface ActionManager {
 
     /**
-     * Executes an action for the optionally specified {@link Profile} if its conditions were fulfilled,
-     * or it doesn't define any conditions.
-     * <br> <br>
-     * The specified profile will be used to resolve any placeholders in the action's instructions as well as in any
-     * placeholders contained in invocations of the action's side effects.
-     * <br> <br>
-     * If no profile is specified, the action will be executed without any profile and any related placeholders
-     * will be resolved without a profile.
-     * If there are placeholders requiring a profile, but none is given, the execution will fail.
+     * Executes an action for the optionally specified {@link Profile} if its conditions are met.
+     * <p>
+     * The specified profile is used to resolve placeholders in the action's instructions and any side effects.
+     * If no profile is specified, placeholders requiring one will cause the execution to fail.
      *
-     * @param profile          the profile to execute the action for or null if no profile is involved
-     * @param actionIdentifier the identifier of the action to be called
-     * @return false if the action failed to due to non-existence or unfulfilled conditions, true otherwise
+     * @param profile          the profile to execute the action for, or {@code null} if no profile is involved
+     * @param actionIdentifier the identifier of the action to execute
+     * @return {@code true} if the action was successfully executed,
+     * {@code false} if it does not exist or its conditions were not met
      * @since 3.0.0
      */
     boolean run(@Nullable Profile profile, ActionIdentifier actionIdentifier);
 
     /**
      * Executes multiple actions for the optionally specified {@link Profile}.
-     * Only executes the subset of actions whose conditions were fulfilled or aren't defined.
-     * <br> <br>
-     * The order of execution is not guaranteed, however executing a {@link Collection} <i>usually</i> retains the order
-     * if one is present.
-     * The most common reason for breaking the order is synchronization requiring to wait for the servers main thread.
-     * <br> <br>
-     * The specified profile will be used to resolve any placeholders in each action's instructions as well as in any
-     * placeholders contained in invocations of each action's side effects.
-     * <br> <br>
-     * If no profile is specified, the actions will be executed without any profile and any related placeholders
-     * will be resolved without a profile.
-     * If there are placeholders requiring a profile, but none is given, the execution will fail.
+     * Only actions whose conditions are met will be executed.
+     * <p>
+     * The order of execution is not guaranteed, although executing a {@link Collection} typically retains
+     * the order if one is present. The most common reason for order deviation is synchronization
+     * requiring a wait for the server's main thread.
+     * <p>
+     * The specified profile is used to resolve placeholders in each action's instructions and any side effects.
+     * If no profile is specified, placeholders requiring one will cause the execution to fail.
      *
-     * @param profile           the profile to execute the actions for or null if no profile is involved
-     * @param actionIdentifiers the identifiers of the actions to be called
-     * @return false if any action failed to due to non-existence or unfulfilled conditions, true otherwise
+     * @param profile           the profile to execute the actions for, or {@code null} if no profile is involved
+     * @param actionIdentifiers the identifiers of the actions to execute
+     * @return {@code true} if all actions were successfully executed,
+     * {@code false} if any action does not exist or its conditions were not met
      * @since 3.0.0
      */
     boolean run(@Nullable Profile profile, Collection<ActionIdentifier> actionIdentifiers);

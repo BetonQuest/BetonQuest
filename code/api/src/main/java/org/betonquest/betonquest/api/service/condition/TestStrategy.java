@@ -11,19 +11,18 @@ import java.util.Optional;
 public interface TestStrategy {
 
     /**
-     * Checks the given condition evaluations to determine a combined result.
-     * <br> <br>
-     * If the result is definite, an optional with the result should be returned.
-     * After that no more condition may be evaluated.
-     * <br>
-     * If the result is unclear, an empty optional should be returned.
-     * <br> <br>
-     * If {@code remaining} is {@code 0} and there is no definite result, it should return {@code false}.
+     * Evaluates the given condition results to determine a combined result.
+     * <p>
+     * Returns a definite result as an {@link Optional} if one can be determined.
+     * Once a definite result is returned, no further conditions will be evaluated.
+     * If the result is still indefinite, an empty {@link Optional} is returned.
+     * <p>
+     * If {@code remaining} is {@code 0} and no definite result has been found, this method should return {@code false}.
      *
-     * @param positive  the amount of conditions which evaluated to {@code true}
-     * @param negative  the amount of conditions which evaluated to {@code false}
-     * @param remaining the amount of conditions which have not been evaluated yet
-     * @return the definite result of the test, or an empty optional if it is indefinite
+     * @param positive  the number of conditions that evaluated to {@code true}
+     * @param negative  the number of conditions that evaluated to {@code false}
+     * @param remaining the number of conditions that have not yet been evaluated
+     * @return an {@link Optional} containing the definite result, or an empty {@link Optional} if indefinite
      * @since 3.2.0
      */
     Optional<Boolean> getResult(int positive, int negative, int remaining);

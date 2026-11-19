@@ -8,13 +8,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 
 /**
- * The ConditionManager is responsible for evaluating conditions that are loaded by BetonQuest.
- * <br> <br>
- * Each condition is uniquely identified by a {@link ConditionIdentifier} which consists of the user-defined name in the
- * configuration as well as the {@link QuestPackage} the condition belongs to.
- * Evaluating a condition will return true if the condition is met and false otherwise.
- * Evaluating a condition will always evaluate itself and all related conditions as a side effect.
- * For example, evaluating a condition defining a conjunction of conditions will run all conditions until the result
+ * The ConditionManager is responsible for evaluating conditions loaded by BetonQuest.
+ * <p>
+ * Each condition is uniquely identified by a {@link ConditionIdentifier}, which consists of the user-defined name
+ * in the configuration and the {@link QuestPackage} it belongs to.
+ * <p>
+ * Evaluating a condition returns {@code true} if it is met and {@code false} otherwise.
+ * Evaluation always involves the condition itself and any related conditions as a side effect.
+ * For example, evaluating a conjunction of conditions will test each condition until the final result
  * can be determined.
  *
  * @since 3.0.0
@@ -23,87 +24,73 @@ public interface ConditionManager {
 
     /**
      * Evaluates a condition for the optionally specified {@link Profile}.
-     * <br> <br>
-     * The specified profile will be used to resolve any placeholders in the condition's instructions as well as in any
-     * placeholders contained in evaluations of the condition's side effects.
-     * <br> <br>
-     * If no profile is specified, the condition will be evaluated without any profile and any related placeholders
-     * will be resolved without a profile.
-     * If there are placeholders requiring a profile, but none is given, the evaluation will fail.
+     * <p>
+     * The specified profile is used to resolve placeholders in the condition's instructions and any side effects.
+     * If no profile is specified, placeholders requiring one will cause the evaluation to fail.
      *
-     * @param profile             the profile to evaluate the condition for or null if no profile is involved
+     * @param profile             the profile to evaluate the condition for, or {@code null} if no profile is involved
      * @param conditionIdentifier the identifier of the condition to evaluate
-     * @return whether the condition is met
+     * @return {@code true} if the condition is met, {@code false} otherwise
      * @since 3.0.0
      */
     boolean test(@Nullable Profile profile, ConditionIdentifier conditionIdentifier);
 
     /**
      * Evaluates multiple conditions for the optionally specified {@link Profile} conjunctively.
-     * <br> <br>
-     * The order of evaluation is not guaranteed, however evaluating a {@link Collection}
-     * <i>usually</i> retains the order if one is present.
-     * The most common reason for breaking the order is synchronization requiring to wait for the servers main thread.
-     * Since a conjunction fails once a single literal is {@code false}, the evaluation will stop as soon as
+     * <p>
+     * The order of evaluation is not guaranteed, although evaluating a {@link Collection} typically retains
+     * the order if one is present. The most common reason for order deviation is synchronization
+     * requiring a wait for the server's main thread.
+     * <p>
+     * Since a conjunction fails as soon as a single literal is {@code false}, evaluation stops once
      * one condition evaluates to {@code false}.
-     * <br> <br>
-     * The specified profile will be used to resolve any placeholders in the condition's instructions as well as in any
-     * placeholders contained in evaluations of the condition's side effects.
-     * <br> <br>
-     * If no profile is specified, the conditions will be evaluated without any profile and any related placeholders
-     * will be resolved without a profile.
-     * If there are placeholders requiring a profile, but none is given, the evaluation will fail.
+     * <p>
+     * The specified profile is used to resolve placeholders in the conditions' instructions and any side effects.
+     * If no profile is specified, placeholders requiring one will cause the evaluation to fail.
      *
-     * @param profile              the profile to evaluate the conditions for or null if no profile is involved
+     * @param profile              the profile to evaluate the conditions for, or {@code null} if no profile is involved
      * @param conditionIdentifiers the identifiers of the conditions to evaluate
-     * @return whether all conditions are met
+     * @return {@code true} if all conditions are met, {@code false} otherwise
      * @since 3.0.0
      */
     boolean testAll(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers);
 
     /**
      * Evaluates multiple conditions for the optionally specified {@link Profile} disjunctively.
-     * <br> <br>
-     * The order of evaluation is not guaranteed, however evaluating a {@link Collection}
-     * <i>usually</i> retains the order if one is present.
-     * The most common reason for breaking the order is synchronization requiring to wait for the servers main thread.
-     * Since a disjunction succeeds once a single literal is {@code true}, the evaluation will stop as soon as
+     * <p>
+     * The order of evaluation is not guaranteed, although evaluating a {@link Collection} typically retains
+     * the order if one is present. The most common reason for order deviation is synchronization
+     * requiring a wait for the server's main thread.
+     * <p>
+     * Since a disjunction succeeds as soon as a single literal is {@code true}, evaluation stops once
      * one condition evaluates to {@code true}.
-     * <br> <br>
-     * The specified profile will be used to resolve any placeholders in the condition's instructions as well as in any
-     * placeholders contained in evaluations of the condition's side effects.
-     * <br> <br>
-     * If no profile is specified, the conditions will be evaluated without any profile and any related placeholders
-     * will be resolved without a profile.
-     * If there are placeholders requiring a profile, but none is given, the evaluation will fail.
+     * <p>
+     * The specified profile is used to resolve placeholders in the conditions' instructions and any side effects.
+     * If no profile is specified, placeholders requiring one will cause the evaluation to fail.
      *
-     * @param profile              the profile to evaluate the conditions for or null if no profile is involved
+     * @param profile              the profile to evaluate the conditions for, or {@code null} if no profile is involved
      * @param conditionIdentifiers the identifiers of the conditions to evaluate
-     * @return whether any condition is met
+     * @return {@code true} if any condition is met, {@code false} otherwise
      * @since 3.0.0
      */
     boolean testAny(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers);
 
     /**
      * Evaluates multiple conditions for the optionally specified {@link Profile} against a {@link TestStrategy}.
-     * <br> <br>
-     * The order of evaluation is not guaranteed, however evaluating a {@link Collection}
-     * <i>usually</i> retains the order if one is present.
-     * The most common reason for breaking the order is synchronization requiring to wait for the servers main thread.
-     * Since a {@link TestStrategy} can evaluate to a result earlier, not all conditions may have been evaluated
-     * for determination.
-     * <br> <br>
-     * The specified profile will be used to resolve any placeholders in the condition's instructions as well as in any
-     * placeholders contained in evaluations of the condition's side effects.
-     * <br>
-     * If no profile is specified, the conditions will be evaluated without any profile and any related placeholders
-     * will be resolved without a profile.
-     * If there are placeholders requiring a profile, but none is given, the evaluation will fail.
+     * <p>
+     * The order of evaluation is not guaranteed, although evaluating a {@link Collection} typically retains
+     * the order if one is present. The most common reason for order deviation is synchronization
+     * requiring a wait for the server's main thread.
+     * <p>
+     * Since a {@link TestStrategy} can yield a result early, not all conditions might be evaluated.
+     * <p>
+     * The specified profile is used to resolve placeholders in the conditions' instructions and any side effects.
+     * If no profile is specified, placeholders requiring one will cause the evaluation to fail.
      *
-     * @param profile              the profile to evaluate the conditions for or null if no profile is involved
+     * @param profile              the profile to evaluate the conditions for, or {@code null} if no profile is involved
      * @param conditionIdentifiers the identifiers of the conditions to evaluate
      * @param testStrategy         the strategy to test against
-     * @return whether the conditions match the test strategy
+     * @return {@code true} if the conditions match the test strategy, {@code false} otherwise
      * @since 3.2.0
      */
     boolean test(@Nullable Profile profile, Collection<ConditionIdentifier> conditionIdentifiers, TestStrategy testStrategy);
