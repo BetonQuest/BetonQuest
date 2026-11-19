@@ -71,6 +71,7 @@ import org.betonquest.betonquest.quest.action.point.DeleteGlobalPointActionFacto
 import org.betonquest.betonquest.quest.action.point.DeletePointActionFactory;
 import org.betonquest.betonquest.quest.action.point.GlobalPointActionFactory;
 import org.betonquest.betonquest.quest.action.point.PointActionFactory;
+import org.betonquest.betonquest.quest.action.projectile.ProjectileActionFactory;
 import org.betonquest.betonquest.quest.action.random.PickRandomActionFactory;
 import org.betonquest.betonquest.quest.action.run.RunActionFactory;
 import org.betonquest.betonquest.quest.action.run.RunForAllActionFactory;
@@ -198,6 +199,7 @@ public class ActionTypesComponent extends AbstractCoreComponent {
         actionTypes.registerCombined("pickrandom", new PickRandomActionFactory(actionManager));
         actionTypes.register("point", new PointActionFactory(loggerFactory, playerDataStorage,
                 localizations));
+        actionTypes.registerCombined("projectile", new ProjectileActionFactory());
         actionTypes.registerCombined("removeentity", new RemoveEntityActionFactory());
         actionTypes.registerCombined("run", new RunActionFactory(instructions, actionTypes));
         actionTypes.register("runForAll", new RunForAllActionFactory(profileProvider, actionManager, conditionManager));
