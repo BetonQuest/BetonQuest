@@ -153,4 +153,19 @@ public class DefaultChainableInstruction implements ChainableInstruction {
         }
         return result;
     }
+
+    @Override
+    public boolean hasOptional(final String argumentKey) throws QuestException {
+        return instructionReaderStrategy.getOptional(argumentKey) != null;
+    }
+
+    @Override
+    public boolean hasFlag(final String argumentKey) throws QuestException {
+        return instructionReaderStrategy.getFlag(argumentKey).getKey() != FlagState.ABSENT;
+    }
+
+    @Override
+    public boolean hasNamed(final String argumentKey) throws QuestException {
+        return !instructionReaderStrategy.getNamed(flag -> flag.equalsIgnoreCase(argumentKey)).isEmpty();
+    }
 }
