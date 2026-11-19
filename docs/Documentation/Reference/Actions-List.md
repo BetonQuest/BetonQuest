@@ -1253,6 +1253,27 @@ actions:
   spawnZombie: "spawn 100;200;300;world ZOMBIE name:Bolec 1 h:blue_hat c:red_vest drops:emerald:10,bread:2"
 ```
 
+## `SpawnParticles`
+
+__Context__: @snippet:action-meta:online-independent@  
+__Syntax__: `spawnparticles <identifier> [location]`  
+__Description__: Spawns particle animations defined in the `particles` section.
+
+If no location is specified and the action is called in an online context, the player's location will be used.
+If the independent context is used, a location must be specified.
+See [Particles](../Advanced/Particles.md) for more information.
+
+| Parameter                                                              | Type               | Explanation                                                                                                 |
+|------------------------------------------------------------------------|--------------------|-------------------------------------------------------------------------------------------------------------|
+| identifier<br>[[Identifier]](./Definition-Encyclopedia.md#identifiers) | Required           | The identifier of the particle animation to spawn, as defined in the particles section.                     |
+| location<br>[Location]                                                 | Optional<br>[None] | The location where the particles should be spawned. Defaults to the player's location in an online context. |
+
+```YAML title="Examples"
+actions:
+  spawnMagic: "spawnparticles magic_effect"
+  spawnAtChest: "spawnparticles portal_effect 100;200;300;world"
+```
+
 ## `Stage`
 
 __Context__: @snippet:action-meta:online-offline@  

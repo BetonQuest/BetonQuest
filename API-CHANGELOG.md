@@ -11,6 +11,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `ChainableInstruction::hasOptional(String)` method to check if an optional instruction part is present
 - `ChainableInstruction::hasFlag(String)` method to check if a flag is present
 - `ChainableInstruction::hasNamed(String)` method to check if a named instruction part is present
+- `ParticleIdentifier` to identify particle definitions in `particles` sections of quest packages
+- `ParticleAnimation` to define particle animations and allow them to be spawned at a specific location
+- `ParticleAnimationProvider` to produce particle animations for a specific profile
+- `Particles::getParticleAnimation(ParticleIdentifier)` to retrieve the particle animation provider for a particle identifier
+- `BetonQuestApi::particles` to retrieve the `ParticleAnimationProvider` instance
 #### Changed
 #### Deprecated
 #### Removed

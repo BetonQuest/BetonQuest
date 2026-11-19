@@ -38,6 +38,7 @@ import org.betonquest.betonquest.api.service.npc.Npcs;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveRegistry;
 import org.betonquest.betonquest.api.service.objective.Objectives;
+import org.betonquest.betonquest.api.service.particle.Particles;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderManager;
 import org.betonquest.betonquest.api.service.placeholder.PlaceholderRegistry;
 import org.betonquest.betonquest.api.service.placeholder.Placeholders;
@@ -284,4 +285,16 @@ public interface BetonQuestApi {
      */
     @Contract(pure = true)
     Functions functions();
+
+    /**
+     * Offers access to the particle animations system.
+     * <p>
+     * The {@link Particles} provides functionality to work with particle effects and animations in BetonQuest.
+     * This includes spawning particles and managing particle animations.
+     *
+     * @return the particles api offering functionality to access particle animations
+     * @since 3.4.0
+     */
+    @Contract(pure = true)
+    Particles particles();
 }
