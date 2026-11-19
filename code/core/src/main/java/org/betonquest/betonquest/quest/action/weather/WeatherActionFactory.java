@@ -28,24 +28,20 @@ public class WeatherActionFactory implements PlayerActionFactory, PlayerlessActi
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final PlayerAction weatherPlayerAction = parseWeatherAction(instruction);
         final PlayerAction playerAction;
-        if (requiresPlayer(instruction)) {
-            playerAction = new OnlineActionAdapter(weatherPlayerAction::execute);
-        } else {
+        if (instruction.hasOptional("world")) {
             playerAction = weatherPlayerAction;
+        } else {
+            playerAction = new OnlineActionAdapter(weatherPlayerAction::execute);
         }
         return playerAction;
     }
 
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
-        if (requiresPlayer(instruction)) {
+        if (!instruction.hasOptional("world")) {
             return new ThrowExceptionPlayerlessAction("Action requires a 'world' argument.");
         }
         return parseWeatherAction(instruction);
-    }
-
-    private boolean requiresPlayer(final Instruction instruction) throws QuestException {
-        return instruction.copy().string().get("world").isEmpty();
     }
 
     private NullableActionAdapter parseWeatherAction(final Instruction instruction) throws QuestException {
