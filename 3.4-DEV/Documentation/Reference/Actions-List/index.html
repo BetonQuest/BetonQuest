@@ -5081,6 +5081,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#projectile">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Projectile</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#removeentity">
     <span class="md-ellipsis">
 
@@ -11098,6 +11121,29 @@
     
 
 <li class="md-nav__item">
+  <a class="md-nav__link" href="#projectile">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          <code>Projectile</code>
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+    
+    
+    
+    
+
+<li class="md-nav__item">
   <a class="md-nav__link" href="#removeentity">
     <span class="md-ellipsis">
 
@@ -13067,6 +13113,53 @@ Note that only as many actions as specified can be picked and <code>amount:0</co
 <span class="w">  </span><span class="nt">loseAttitude</span><span class="p">:</span><span class="w"> </span><span class="s">"point</span><span class="nv"> </span><span class="s">npc_attitude</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">action:subtract"</span>
 <span class="w">  </span><span class="nt">resetCombo</span><span class="p">:</span><span class="w"> </span><span class="s">"point</span><span class="nv"> </span><span class="s">combo</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">action:set"</span>
 <span class="w">  </span><span class="nt">boostPoints</span><span class="p">:</span><span class="w"> </span><span class="s">"point</span><span class="nv"> </span><span class="s">points</span><span class="nv"> </span><span class="s">1.25</span><span class="nv"> </span><span class="s">action:multiply</span><span class="nv"> </span><span class="s">notify"</span>
+</code></pre></div>
+<h2 id="projectile"><code>Projectile</code><a class="headerlink" href="#projectile" title="Permanent link">🔗</a></h2>
+<p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
+<strong>Syntax</strong>: <code>projectile &lt;type&gt; &lt;location&gt; &lt;direction&gt; [speed] [gravity]</code><br>
+<strong>Description</strong>: Launch a projectile entity.</p>
+<p>The projectile's shooter is automatically set to the player if the action is run in an online context.
+Setting the <code>speed</code> parameter will normalize the direction vector to the specified speed. 
+Therefore, setting the <code>speed</code> parameter to 1 won't be the same as not setting the parameter at all.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type <br>[EntityType]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The type of the projectile. Supported types are listed below.</td>
+</tr>
+<tr>
+<td>location <br><a href="../Definition-Encyclopedia/#unified-location-format">[Location]</a></td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The location from which the projectile should be spawned.</td>
+</tr>
+<tr>
+<td>direction <br>[Vector]</td>
+<td><abbr title="A required value must be defined at the correct position and without its name. It must not be absent or undefined.">Required</abbr></td>
+<td>The direction in which the projectile should be launched.</td>
+</tr>
+<tr>
+<td>speed <br>[<abbr title="Any number representation that may also have decimal places.">Number</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[None]</td>
+<td>Speed multiplier for the projectile.</td>
+</tr>
+<tr>
+<td>gravity <br>[<abbr title="A boolean can be either true or false.">Boolean</abbr>]</td>
+<td><abbr title="An optional value can be either absent with a default value or explicitly defined with a value.">Optional</abbr> <br>[true]</td>
+<td>Whether the projectile should be affected by gravity.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><span class="filename">Examples</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">speedArrow</span><span class="p">:</span><span class="w"> </span><span class="s">"projectile</span><span class="nv"> </span><span class="s">ARROW</span><span class="nv"> </span><span class="s">100;64;100;world</span><span class="nv"> </span><span class="s">(1;0;0)</span><span class="nv"> </span><span class="s">speed:2.0"</span>
+<span class="w">  </span><span class="nt">magicMissile</span><span class="p">:</span><span class="w"> </span><span class="s">"projectile</span><span class="nv"> </span><span class="s">SHULKER_BULLET</span><span class="nv"> </span><span class="s">%location%</span><span class="nv"> </span><span class="s">(0;1;0)</span><span class="nv"> </span><span class="s">gravity:false"</span>
 </code></pre></div>
 <h2 id="removeentity"><code>RemoveEntity</code><a class="headerlink" href="#removeentity" title="Permanent link">🔗</a></h2>
 <p><strong>Context</strong>: <span class="twemoji account account-independent" title="&lt;b&gt;Independent&lt;/b&gt;&lt;br&gt; This action can be executed without any player."><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L8.07 7.25A4.004 4.004 0 0 1 12 4m.28 10 6 6L20 21.72 18.73 23l-3-3H4v-2c0-1.84 2.5-3.39 5.87-3.86L2.78 7.05l1.27-1.27zM20 18v1.18l-4.86-4.86C18 14.93 20 16.35 20 18"></path></svg></span><br>
