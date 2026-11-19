@@ -3224,6 +3224,8 @@
       
         
       
+        
+      
     
     
     
@@ -3637,6 +3639,36 @@
     
   
     Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Documentation/Advanced/Particles/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.6 9.6 9 15 7.4 9.6 2 8l5.4-1.6L9 1l1.6 5.4L16 8zm6.4 4.6 4-2.2-2.2 4 2.2 4-4-2.2-4 2.2 2.2-4-2.2-4zM10 16l-1.7 3 1.7 3-3-1.7L4 22l1.7-3L4 16l3 1.7z"></path></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    Particles
   
 
     
@@ -6528,13 +6560,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#340-dev-13-2026-11-19">
+  <a class="md-nav__link" href="#340-dev-14-2026-11-19">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.4.0-DEV-13] - 2026-11-19
+          [3.4.0-DEV-14] - 2026-11-19
         </span>
 
       
@@ -6544,7 +6576,7 @@
 
   
   
-  <nav aria-label="[3.4.0-DEV-13] - 2026-11-19" class="md-nav">
+  <nav aria-label="[3.4.0-DEV-14] - 2026-11-19" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -9425,13 +9457,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#340-dev-13-2026-11-19">
+  <a class="md-nav__link" href="#340-dev-14-2026-11-19">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.4.0-DEV-13] - 2026-11-19
+          [3.4.0-DEV-14] - 2026-11-19
         </span>
 
       
@@ -9441,7 +9473,7 @@
 
   
   
-  <nav aria-label="[3.4.0-DEV-13] - 2026-11-19" class="md-nav">
+  <nav aria-label="[3.4.0-DEV-14] - 2026-11-19" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -10472,13 +10504,18 @@
 <p>All notable changes <strong>to the API and library</strong> of this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>, and this project adheres
 to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="340-dev-13-2026-11-19">[3.4.0-DEV-13] - 2026-11-19<a class="headerlink" href="#340-dev-13-2026-11-19" title="Permanent link">🔗</a></h2>
+<h2 id="340-dev-14-2026-11-19">[3.4.0-DEV-14] - 2026-11-19<a class="headerlink" href="#340-dev-14-2026-11-19" title="Permanent link">🔗</a></h2>
 <h3 id="api">API<a class="headerlink" href="#api" title="Permanent link">🔗</a></h3>
 <h4 id="added">Added<a class="headerlink" href="#added" title="Permanent link">🔗</a></h4>
 <ul>
 <li><code>ChainableInstruction::hasOptional(String)</code> method to check if an optional instruction part is present</li>
 <li><code>ChainableInstruction::hasFlag(String)</code> method to check if a flag is present</li>
 <li><code>ChainableInstruction::hasNamed(String)</code> method to check if a named instruction part is present</li>
+<li><code>ParticleIdentifier</code> to identify particle definitions in <code>particles</code> sections of quest packages</li>
+<li><code>ParticleAnimation</code> to define particle animations and allow them to be spawned at a specific location</li>
+<li><code>ParticleAnimationProvider</code> to produce particle animations for a specific profile</li>
+<li><code>Particles::getParticleAnimation(ParticleIdentifier)</code> to retrieve the particle animation provider for a particle identifier</li>
+<li><code>BetonQuestApi::particles</code> to retrieve the <code>ParticleAnimationProvider</code> instance</li>
 </ul>
 <h4 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">🔗</a></h4>
 <h4 id="deprecated">Deprecated<a class="headerlink" href="#deprecated" title="Permanent link">🔗</a></h4>
