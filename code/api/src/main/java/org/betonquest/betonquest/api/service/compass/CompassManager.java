@@ -8,27 +8,27 @@ import org.betonquest.betonquest.api.profile.Profile;
 import java.util.Map;
 
 /**
- * The compass manager is responsible for managing the quest compasses.
+ * The CompassManager is responsible for managing quest compasses.
  *
  * @since 3.0.0
  */
 public interface CompassManager {
 
     /**
-     * Get the compass for the given identifier.
+     * Returns the compass for the given identifier.
      *
-     * @param identifier the identifier of the compass to get
+     * @param identifier the identifier of the compass to retrieve
      * @return the compass
-     * @throws QuestException if the compass could not be accessed
+     * @throws QuestException if the compass cannot be accessed
      * @since 3.0.0
      */
     QuestCompass get(CompassIdentifier identifier) throws QuestException;
 
     /**
-     * Get the active compasses for the given profile.
+     * Returns the active compasses for the given profile.
      *
-     * @param profile the profile to get the compasses for
-     * @return all active compasses for the profile
+     * @param profile the profile to retrieve the compasses for
+     * @return a map of identifiers to active compasses for the profile
      * @since 3.0.0
      */
     Map<CompassIdentifier, QuestCompass> forProfile(Profile profile);

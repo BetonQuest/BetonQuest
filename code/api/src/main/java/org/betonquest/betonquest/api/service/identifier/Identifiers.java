@@ -6,7 +6,7 @@ import org.betonquest.betonquest.api.identifier.IdentifierFactory;
 import org.jetbrains.annotations.Contract;
 
 /**
- * The registry for identifier factories.
+ * A registry for identifier factories.
  *
  * @see IdentifierFactory
  * @since 3.0.0
@@ -14,10 +14,10 @@ import org.jetbrains.annotations.Contract;
 public interface Identifiers {
 
     /**
-     * Registers a new identifier factory.
+     * Registers a new identifier factory for the specified identifier type.
      *
-     * @param identifierClazz the type of the identifier to register a factory for
-     * @param factory         the identifier factory to create the type
+     * @param identifierClazz the class of the identifier to register a factory for
+     * @param factory         the factory to create identifiers of the given type
      * @param <I>             the type of the identifier
      * @since 3.0.0
      */
@@ -25,12 +25,12 @@ public interface Identifiers {
     <I extends Identifier> void register(Class<I> identifierClazz, IdentifierFactory<I> factory);
 
     /**
-     * Fetches the stored factory for the given type.
+     * Returns the stored factory for the specified identifier type.
      *
-     * @param clazz the type to fetch the factory for
-     * @param <I>   the type
-     * @return a factory to create the type
-     * @throws QuestException when there is no stored type
+     * @param clazz the class of the identifier to retrieve the factory for
+     * @param <I>   the type of the identifier
+     * @return the factory instance
+     * @throws QuestException if no factory is registered for the given type
      * @since 3.0.0
      */
     @Contract(pure = true)

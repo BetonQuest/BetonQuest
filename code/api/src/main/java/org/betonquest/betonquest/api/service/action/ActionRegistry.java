@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.quest.action.PlayerAction;
 import org.betonquest.betonquest.api.quest.action.PlayerlessAction;
 
 /**
- * Stores the action factories.
+ * A registry for action factories.
  *
  * @since 3.0.0
  */

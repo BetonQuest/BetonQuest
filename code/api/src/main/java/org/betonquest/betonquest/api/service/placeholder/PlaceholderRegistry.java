@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerlessPlaceholder;
 
 /**
- * Stores the placeholder factories.
+ * A registry for placeholder factories.
  *
  * @since 3.0.0
  */

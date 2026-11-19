@@ -8,45 +8,53 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Resolves placeholders in strings to their values.
+ * The PlaceholderManager is responsible for resolving placeholders within strings
+ * to their corresponding values.
  *
  * @since 3.0.0
  */
 public interface PlaceholderManager {
 
     /**
-     * Generates a new instance of a {@link Argument} of type {@link String}. If a similar one was already
-     * created, it will return it instead of creating a new one.
+     * Returns an {@link Argument} instance for the given placeholder instruction.
+     * <br><br>
+     * If an identical argument was previously created, it is reused.
+     * The instruction must include the leading and trailing {@code %} characters.
      *
-     * @param pack        package in which the placeholder is defined
-     * @param instruction instruction of the placeholder, including start and end % characters.
-     * @return the placeholder instance
-     * @throws QuestException when the placeholder parsing fails
+     * @param pack        the package in which the placeholder is defined, or {@code null}
+     * @param instruction the instruction of the placeholder, including leading and trailing {@code %} characters
+     * @return the placeholder argument instance
+     * @throws QuestException if parsing the placeholder fails
      * @since 3.0.0
      */
     @Contract(pure = true, value = "_, !null -> new")
     Argument<String> create(@Nullable QuestPackage pack, String instruction) throws QuestException;
 
     /**
-     * Resolves the placeholder for the specified player. If the placeholder is not loaded, it will create it.
+     * Resolves the placeholder for the specified profile.
+     * <br><br>
+     * If the placeholder is not yet loaded, it is created.
+     * The name must include the leading and trailing {@code %} characters.
      *
      * @param pack    the {@link QuestPackage} in which the placeholder is defined
-     * @param name    name of the placeholder, including start and end % characters
-     * @param profile the {@link Profile} of the player
-     * @return the value of this placeholder for the given player
-     * @throws QuestException if the placeholder could not be created
+     * @param name    the name of the placeholder, including leading and trailing {@code %} characters
+     * @param profile the {@link Profile} of the player, or {@code null} if no profile is involved
+     * @return the resolved value of the placeholder for the given profile
+     * @throws QuestException if the placeholder cannot be created or resolved
      * @since 3.0.0
      */
     @Contract(pure = true, value = "!null, !null, _ -> new")
     String getValue(QuestPackage pack, String name, @Nullable Profile profile) throws QuestException;
 
     /**
-     * Resolves the placeholder for the specified player from string format.
+     * Resolves a placeholder for the specified profile from its string representation.
+     * <br><br>
+     * The placeholder string must follow the {@code <package>:<placeholder>} format.
      *
-     * @param placeholder the package with the placeholder, in {@code <package>:<placeholder>} format
-     * @param profile     the {@link Profile} of the player
-     * @return the value of the parsed placeholder for the given player
-     * @throws QuestException if the package cannot be parsed, is not present, or the placeholder could not be created
+     * @param placeholder the placeholder string in {@code <package>:<placeholder>} format
+     * @param profile     the {@link Profile} of the player, or {@code null} if no profile is involved
+     * @return the resolved value of the placeholder for the given profile
+     * @throws QuestException if the package cannot be parsed, is not present, or resolution fails
      * @see #getValue(QuestPackage, String, Profile)
      * @since 3.0.0
      */

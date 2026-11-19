@@ -12,27 +12,29 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 
 /**
- * Stores the npc factories and identifier.
+ * A registry for NPC factories and identifiers.
  *
  * @since 3.0.0
  */
 public interface NpcRegistry extends FeatureTypeRegistry<NpcWrapper<?>> {
 
     /**
-     * Registers a reverse-identifier to allow matching npcs to their in BQ used IDs.
+     * Registers a reverse-identifier to enable matching NPCs to their IDs used within BetonQuest.
      *
-     * @param identifier the object to register reversely used npc ids
+     * @param identifier the reverse-identifier to register
      * @since 3.0.0
      */
     @Contract(mutates = "this")
     void registerIdentifier(NpcReverseIdentifier identifier);
 
     /**
-     * Gets the IDs used to get a Npc.
+     * Returns the identifiers used to identify the given NPC.
+     * <br><br>
+     * The specified profile may influence the resolution process.
      *
-     * @param npc     the npc to get the npc ids
-     * @param profile the related profile potentially influencing resolving
-     * @return the ids used in BetonQuest to identify the Npc
+     * @param npc     the NPC to get identifiers for
+     * @param profile the profile potentially influencing the identifier resolution, or {@code null}
+     * @return a set of identifiers used in BetonQuest to identify the NPC
      * @since 3.0.0
      */
     @Contract(pure = true)

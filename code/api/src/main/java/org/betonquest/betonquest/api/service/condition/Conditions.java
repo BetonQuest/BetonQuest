@@ -3,7 +3,9 @@ package org.betonquest.betonquest.api.service.condition;
 import org.betonquest.betonquest.api.service.ServiceFeature;
 
 /**
- * Register new conditions with the {@link ConditionRegistry} or test existing ones with the {@link ConditionManager}.
+ * Provides access to the condition service.
+ * <br><br>
+ * Use the {@link ConditionRegistry} to register new conditions and the {@link ConditionManager} to test them.
  *
  * @since 3.0.0
  */

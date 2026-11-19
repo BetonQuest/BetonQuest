@@ -10,63 +10,63 @@ import org.jetbrains.annotations.Contract;
 import java.util.Set;
 
 /**
- * Stores the item factories and serializer.
+ * A registry for item factories and serializers.
  *
  * @since 3.0.0
  */
 public interface ItemRegistry extends FeatureTypeRegistry<QuestItemWrapper> {
 
     /**
-     * Registers an item factory with an additional quest item wrapper.
+     * Registers an item factory with a quest item wrapper.
      * <p>
-     * The wrapper will handle the {@code quest-item} tag and their lore configuration.
+     * The wrapper handles the {@code quest-item} tag and lore configuration.
      *
-     * @param name    the name of the type
-     * @param factory the factory to create the type
+     * @param name    the name of the item type
+     * @param factory the factory to create the item type
      * @since 3.0.0
      */
     @Override
     void register(String name, TypeFactory<QuestItemWrapper> factory);
 
     /**
-     * Registers an item factory with an additional quest item wrapper.
+     * Registers an item factory with an optional quest item wrapper.
      * <p>
-     * The wrapper will handle the {@code quest-item} tag and their lore configuration.
-     * Setting the {@param ignoreQuestTag} will not add the wrapper.
+     * The wrapper handles the {@code quest-item} tag and lore configuration.
+     * If {@code ignoreQuestTag} is true, the quest item wrapper is not added.
      *
-     * @param name           the name of the type
-     * @param factory        the factory to create the type
-     * @param ignoreQuestTag if the quest item wrapper should not be added
+     * @param name           the name of the item type
+     * @param factory        the factory to create the item type
+     * @param ignoreQuestTag whether to skip adding the quest item wrapper
      * @since 3.0.0
      */
     @Contract(mutates = "this")
     void register(String name, TypeFactory<QuestItemWrapper> factory, boolean ignoreQuestTag);
 
     /**
-     * Registers a {@link QuestItemSerializer} to allow parsing an ItemStack to instruction string.
+     * Registers a {@link QuestItemSerializer} to allow serializing an {@code ItemStack} into an instruction string.
      *
-     * @param name       the name of the type
-     * @param serializer the serializer to parse items to string
+     * @param name       the name of the item type
+     * @param serializer the serializer to parse items to strings
      * @since 3.0.0
      */
     @Contract(mutates = "this")
     void registerSerializer(String name, QuestItemSerializer serializer);
 
     /**
-     * Fetches the serializer to parse ItemStacks into String format.
+     * Returns the serializer for the specified name.
      *
-     * @param name the name of the serializer
-     * @return a factory to create the type
-     * @throws QuestException when there is no serializer with that name registered
+     * @param name the name of the serializer to retrieve
+     * @return the serializer instance
+     * @throws QuestException if no serializer is registered under the given name
      * @since 3.0.0
      */
     @Contract(pure = true)
     QuestItemSerializer getSerializer(String name) throws QuestException;
 
     /**
-     * Gets the keys of all registered serializers.
+     * Returns a set containing the keys of all registered serializers.
      *
-     * @return the actual key set
+     * @return the set of serializer keys
      * @since 3.0.0
      */
     @Contract(pure = true)

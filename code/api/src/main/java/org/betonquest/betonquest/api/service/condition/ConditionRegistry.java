@@ -5,7 +5,7 @@ import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerlessCondition;
 
 /**
- * Stores the condition factories.
+ * A registry for condition factories.
  *
  * @since 3.0.0
  */
