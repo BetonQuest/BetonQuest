@@ -64,7 +64,7 @@ public class BoostElytraAction implements OnlineAction {
     protected ItemStack createBooster(final Profile profile) throws QuestException {
         final ItemStack booster = boostItem == null ? new ItemStack(Material.FIREWORK_ROCKET) : boostItem.getValue(profile).generate(profile);
         if (booster.getType() != Material.FIREWORK_ROCKET) {
-            throw new QuestException("Invalid booster item type: " + booster.getType());
+            throw new QuestException("Invalid booster item type '%s'".formatted(booster.getType()));
         }
         if (boostLevel == null && boostItem != null) {
             return booster;

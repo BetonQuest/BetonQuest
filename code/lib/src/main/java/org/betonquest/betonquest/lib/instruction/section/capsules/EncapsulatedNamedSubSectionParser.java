@@ -53,7 +53,7 @@ public class EncapsulatedNamedSubSectionParser<T> implements InstructionArgument
     public List<T> apply(final PlaceholderManager placeholders, final QuestPackageManager packManager, final QuestPackage pack, final String path) throws QuestException {
         final ConfigurationSection sectionWithNamedSubSections = parentInstruction.getSection().getConfigurationSection(path);
         if (sectionWithNamedSubSections == null) {
-            throw new QuestException("Section with named subsections not found: %s".formatted(path));
+            throw new QuestException("Section with named subsections '%s' does not exist".formatted(path));
         }
         final Set<String> subSectionsKeys = sectionWithNamedSubSections.getKeys(false);
         final List<T> values = new ArrayList<>(subSectionsKeys.size());

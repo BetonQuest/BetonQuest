@@ -45,7 +45,7 @@ public class IdentifierTypeRegistry implements Identifiers {
     public <I extends Identifier> IdentifierFactory<I> getFactory(final Class<I> clazz) throws QuestException {
         final IdentifierFactory<I> factory = (IdentifierFactory<I>) types.get(clazz);
         if (factory == null) {
-            throw new QuestException("No registered identifier factory found for '%s' type".formatted(clazz.getSimpleName()));
+            throw new QuestException("Identifier factory for '%s' type does not exist".formatted(clazz.getSimpleName()));
         }
         return factory;
     }

@@ -71,7 +71,7 @@ public final class HologramProvider {
      */
     public static HologramProvider init(final BetonQuestApi betonQuestApi, final ConfigAccessor config, final List<HologramIntegration> integrations) throws QuestException {
         if (integrations.isEmpty()) {
-            throw new QuestException("There are no integrations to load.");
+            throw new QuestException("There are no integrations to load");
         }
         integrations.sort(Comparator.comparingInt(value -> getPriority(config, value)));
         final HologramIntegration selected = integrations.get(integrations.size() - 1);
@@ -110,7 +110,7 @@ public final class HologramProvider {
         processorDataLoader.addProcessor(new ThrowingQuestProcessor(logger, "Hologram", "holograms"));
         processorDataLoader.addProcessor(new ThrowingQuestProcessor(logger, "NPC Hologram", "npc_holograms"));
         betonQuestApi.actions().registry().register("updateHologram", (PlayerQuestFactory<PlayerAction>) instruction -> profile -> {
-            throw new QuestException("Tried to update hologram, but there is no hologram integration loaded!");
+            throw new QuestException("Tried to update hologram, but there is no hologram integration loaded");
         });
     }
 

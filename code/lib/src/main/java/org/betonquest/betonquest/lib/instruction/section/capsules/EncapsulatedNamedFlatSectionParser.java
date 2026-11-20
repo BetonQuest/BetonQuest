@@ -47,7 +47,7 @@ public class EncapsulatedNamedFlatSectionParser<T> implements InstructionArgumen
     public List<Map.Entry<String, T>> apply(final PlaceholderManager placeholders, final QuestPackageManager packManager, final QuestPackage pack, final String path) throws QuestException {
         final ConfigurationSection sectionWithNamedFlatSections = parentInstruction.getSection().getConfigurationSection(path);
         if (sectionWithNamedFlatSections == null) {
-            throw new QuestException("Section with named flat subsections not found: %s".formatted(path));
+            throw new QuestException("Section with named flat subsections '%s' does not exist".formatted(path));
         }
         final Set<String> subSectionsKeys = sectionWithNamedFlatSections.getKeys(false);
         final List<Map.Entry<String, T>> values = new ArrayList<>(subSectionsKeys.size());

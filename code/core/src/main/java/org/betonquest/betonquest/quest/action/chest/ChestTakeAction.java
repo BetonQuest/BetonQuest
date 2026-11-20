@@ -97,7 +97,7 @@ public class ChestTakeAction extends AbstractChestAction {
             }
             inventory.setContents(inventoryContents);
         } catch (final QuestException e) {
-            throw new QuestException("Trying to take items from chest. " + e.getMessage(), e);
+            throw new QuestException("Trying to take items from chest: %s".formatted(e.getMessage()), e);
         }
     }
 

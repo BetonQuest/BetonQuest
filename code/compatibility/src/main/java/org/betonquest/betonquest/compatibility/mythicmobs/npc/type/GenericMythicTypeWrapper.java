@@ -62,7 +62,7 @@ public abstract class GenericMythicTypeWrapper implements NpcWrapper<ActiveMob> 
     protected Npc<ActiveMob> getOne(final Predicate<ActiveMob> predicate, final String typeInstance) throws QuestException {
         final Set<Npc<ActiveMob>> all = getAll(predicate, typeInstance);
         if (all.size() != ONE) {
-            throw new QuestException("There exists multiple MythicMobs with %s '%s', can't determine!".formatted(type, typeInstance));
+            throw new QuestException("There exists multiple MythicMobs with %s '%s', can't determine".formatted(type, typeInstance));
         }
         return all.iterator().next();
     }
@@ -78,7 +78,7 @@ public abstract class GenericMythicTypeWrapper implements NpcWrapper<ActiveMob> 
     protected Set<Npc<ActiveMob>> getAll(final Predicate<ActiveMob> predicate, final String typeInstance) throws QuestException {
         final Collection<ActiveMob> activeMobs = mobExecutor.getActiveMobs(predicate);
         if (activeMobs.isEmpty()) {
-            throw new QuestException("There is no active mob with the %s '%s'!".formatted(type, typeInstance));
+            throw new QuestException("There is no active mob with the %s '%s'".formatted(type, typeInstance));
         }
         return activeMobs.stream()
                 .map(activeMob -> new MythicMobsNpcAdapter(activeMob, mythicHider))

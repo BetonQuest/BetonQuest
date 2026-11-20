@@ -44,7 +44,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
     public StandardConfigAccessor(@Nullable final File configurationFile, @Nullable final Plugin plugin, @Nullable final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         super(new YamlConfiguration());
         if (configurationFile == null && plugin == null && resourceFile == null) {
-            throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null. Pass either a configurationFile or a plugin and a resourceFile.");
+            throw new IllegalArgumentException("The configurationsFile, plugin and resourceFile are null, pass either a configurationFile or a plugin and a resourceFile");
         }
         loadConfig(configurationFile, plugin, resourceFile);
         this.configurationFile = configurationFile;
@@ -56,7 +56,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
         } else if (plugin != null && resourceFile != null) {
             saveFromResource(plugin, resourceFile);
         } else {
-            throw new IllegalArgumentException("Both the plugin and the resourceFile must be defined or null!");
+            throw new IllegalArgumentException("Both the plugin and the resourceFile must be defined or null");
         }
     }
 
@@ -66,7 +66,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
             this.save();
         } catch (final IOException e) {
             throw new InvalidConfigurationException(buildExceptionMessage(true, resourceFile,
-                    "could not be saved to the representing file! Reason: " + e.getMessage()), e);
+                    "could not be saved to the representing file: %s".formatted(e.getMessage())), e);
         }
     }
 
@@ -77,7 +77,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
     private void readFromResource(final Plugin plugin, final String resourceFile) throws InvalidConfigurationException, FileNotFoundException {
         try (InputStream stream = plugin.getResource(resourceFile)) {
             if (stream == null) {
-                throw new FileNotFoundException(buildExceptionMessage(true, resourceFile, "could not be found!"));
+                throw new FileNotFoundException(buildExceptionMessage(true, resourceFile, "could not be found"));
             }
             try (InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                 load(reader, true, resourceFile);
@@ -85,7 +85,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
         } catch (final FileNotFoundException e) {
             throw e;
         } catch (final IOException e) {
-            throw new InvalidConfigurationException(buildExceptionMessage(true, resourceFile, "could not be closed! Reason: " + e.getMessage()), e);
+            throw new InvalidConfigurationException(buildExceptionMessage(true, resourceFile, "could not be closed: %s".formatted(e.getMessage())), e);
         }
     }
 
@@ -95,13 +95,13 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
             loadFromObject(input, (YamlConfiguration) original);
         } catch (final FileNotFoundException e) {
             throw new FileNotFoundException(buildExceptionMessage(isResource, sourcePath,
-                    "could not be found! Reason: " + e.getMessage()));
+                    "could not be found: %s".formatted(e.getMessage())));
         } catch (final IOException e) {
             throw new InvalidConfigurationException(buildExceptionMessage(isResource, sourcePath,
-                    "could not be read! Reason: " + e.getMessage()), e);
+                    "could not be read: %s".formatted(e.getMessage())), e);
         } catch (final InvalidConfigurationException e) {
             throw new InvalidConfigurationException(buildExceptionMessage(isResource, sourcePath,
-                    "contains a YAML syntax error that needs to be fixed! \n" + e.getMessage()), e);
+                    "contains a YAML syntax error that needs to be fixed: %s".formatted(e.getMessage())), e);
         }
     }
 
@@ -131,7 +131,7 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
             return true;
         } catch (final IOException e) {
             throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
-                    "could not be saved! Reason: " + e.getMessage()), e);
+                    "could not be saved: %s".formatted(e.getMessage())), e);
         }
     }
 
@@ -145,32 +145,32 @@ public class StandardConfigAccessor extends ConfigurationSectionDecorator implem
             return true;
         } catch (final IOException e) {
             throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
-                    "could not be deleted! Reason: " + e.getMessage()), e);
+                    "could not be deleted: %s".formatted(e.getMessage())), e);
         }
     }
 
     @Override
     public void reload() throws IOException {
         if (configurationFile == null) {
-            throw new IllegalStateException("Could not reload a configuration file!");
+            throw new IllegalStateException("Could not reload a configuration file");
         }
         try {
             readFromFile(configurationFile);
         } catch (InvalidConfigurationException | FileNotFoundException e) {
             throw new IOException(buildExceptionMessage(false, configurationFile.getPath(),
-                    "could not be reloaded! Reason: " + e.getMessage()), e);
+                    "could not be reloaded: %s".formatted(e.getMessage())), e);
         }
     }
 
     @Override
     public File getConfigurationFile() {
         if (configurationFile == null) {
-            throw new IllegalStateException("The configuration file is null!");
+            throw new IllegalStateException("The configuration file is null");
         }
         return configurationFile;
     }
 
     private String buildExceptionMessage(final boolean isResource, final String sourcePath, final String message) {
-        return "The " + (isResource ? "resource" : "file") + " '" + sourcePath + "' " + message;
+        return "The %s '%s' %s".formatted(isResource ? "resource" : "file", sourcePath, message);
     }
 }

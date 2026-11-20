@@ -38,7 +38,7 @@ public class ExperienceActionFactory implements PlayerActionFactory {
             if (modification.isPresent()) {
                 experienceType = modification.get();
             } else {
-                throw new QuestException(targetAction + " is not a valid experience modification type.");
+                throw new QuestException("Experience modification type '%s' does not exist".formatted(targetAction));
             }
         }
         return new OnlineActionAdapter(new ExperienceAction(experienceType, amount));

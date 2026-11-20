@@ -58,7 +58,7 @@ public enum FontIndexFileFormat implements FontIndexReader {
             int read;
             while ((read = inputStream.read(block)) > 0) {
                 if (read != block.length) {
-                    throw new IOException("Invalid block size: " + read);
+                    throw new IOException("Invalid block size: '%s'".formatted(read));
                 }
                 final int blockValue = Ints.fromByteArray(block);
                 //int[32 bits]: [11 bits value][21 bits codepoint]

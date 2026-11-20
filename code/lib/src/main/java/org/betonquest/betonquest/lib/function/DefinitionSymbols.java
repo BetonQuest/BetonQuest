@@ -43,7 +43,7 @@ public interface DefinitionSymbols {
             .branch(scanner -> scanner.peek(DefaultTokens.KEYWORD_TRUE) || scanner.peek(DefaultTokens.KEYWORD_FALSE),
                     scanner -> new StringSourceAssignment(scanner.consume().containedValue()))
             .parse(scanner -> {
-                throw new QuestException("Unexpected token '%s' while parsing function definition.".formatted(scanner.peek().type()));
+                throw new QuestException("Unexpected token '%s' while parsing function definition".formatted(scanner.peek().type()));
             })
             .build();
 
@@ -58,7 +58,7 @@ public interface DefinitionSymbols {
                 final FunctionToken name = scanner.consume();
                 FunctionAssignment value = new DefaultFallbackAssignment();
                 if (scanner.peek(DefaultTokens.DEFINITION_PARAMETER_DEFAULT_SEPARATOR)) {
-                    scanner.consume(DefaultTokens.DEFINITION_PARAMETER_DEFAULT_SEPARATOR, "Missing default value separator for parameter.");
+                    scanner.consume(DefaultTokens.DEFINITION_PARAMETER_DEFAULT_SEPARATOR, "Missing default value separator for parameter");
                     value = VALUE.parse(scanner);
                 }
                 return Map.entry(name.containedValue(), value);
@@ -81,7 +81,7 @@ public interface DefinitionSymbols {
             final List<Map.Entry<String, FunctionAssignment>> parameters = new LinkedList<>();
             parameters.add(PARAMETER.parse(scanner));
             if (scanner.peek().type() == FunctionTokenType.OPERATOR) {
-                scanner.consume(DefaultTokens.DEFINITION_PARAMETER_LIST_SEPARATOR, "Expected separator in parameter list of function definition.");
+                scanner.consume(DefaultTokens.DEFINITION_PARAMETER_LIST_SEPARATOR, "Expected separator in parameter list of function definition");
                 parameters.addAll(PARAMETER_LIST.parse(scanner));
             }
             return parameters;
@@ -95,14 +95,14 @@ public interface DefinitionSymbols {
      */
     NonTerminalSymbol<FunctionDefinition> DEFINITION = new NonTerminalSymbolBuilder<FunctionDefinition>()
             .parse(scanner -> {
-                scanner.consume(FunctionTokenType.QUALIFIER, "Missing function name qualifier.");
-                scanner.consume(DefaultTokens.DEFINITION_OPEN_BRACKET, "Missing opening bracket for function definition.");
+                scanner.consume(FunctionTokenType.QUALIFIER, "Missing function name qualifier");
+                scanner.consume(DefaultTokens.DEFINITION_OPEN_BRACKET, "Missing opening bracket for function definition");
                 final List<Map.Entry<String, FunctionAssignment>> parameterList = PARAMETER_LIST.parse(scanner);
-                scanner.consume(DefaultTokens.DEFINITION_CLOSE_BRACKET, "Missing closing bracket for function definition.");
+                scanner.consume(DefaultTokens.DEFINITION_CLOSE_BRACKET, "Missing closing bracket for function definition");
                 return assignments -> {
                     final long requiredParameters = parameterList.stream().filter(param -> param.getValue() instanceof DefaultFallbackAssignment).count();
                     if (assignments.size() < requiredParameters) {
-                        throw new QuestException("Missing %s parameter(s) for function definition.".formatted(requiredParameters - assignments.size()));
+                        throw new QuestException("Missing '%s' parameter(s) for function definition".formatted(requiredParameters - assignments.size()));
                     }
                     final Map<String, FunctionAssignment> result = new HashMap<>(parameterList.size());
                     for (int i = 0; i < parameterList.size(); i++) {

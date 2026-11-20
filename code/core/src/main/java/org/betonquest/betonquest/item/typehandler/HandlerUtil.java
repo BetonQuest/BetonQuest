@@ -44,7 +44,7 @@ public final class HandlerUtil {
         }
         final String[] split = argument.split(splitSymbol);
         if (split.length == 0) {
-            throw new QuestException("Missing values!");
+            throw new QuestException("Missing values");
         }
         return split;
     }
@@ -61,11 +61,11 @@ public final class HandlerUtil {
         try {
             final int parsed = Integer.parseInt(number);
             if (parsed < 0) {
-                throw new QuestException(messagePart + " must be a positive integer");
+                throw new QuestException("%s must be a positive integer".formatted(messagePart));
             }
             return parsed;
         } catch (final NumberFormatException exception) {
-            throw new QuestException("Could not parse " + messagePart + ": " + number, exception);
+            throw new QuestException("Could not parse %s: '%s'".formatted(messagePart, number), exception);
         }
     }
 
@@ -170,7 +170,7 @@ public final class HandlerUtil {
         try {
             return DyeColor.valueOf(string.toUpperCase(Locale.ROOT)).getColor();
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Dye color does not exist: '%s'".formatted(string), e);
+            throw new QuestException("Dye color '%s' does not exist".formatted(string), e);
         }
     }
 }

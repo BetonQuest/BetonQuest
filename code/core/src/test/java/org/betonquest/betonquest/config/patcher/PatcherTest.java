@@ -185,7 +185,7 @@ class PatcherTest {
         new Patcher(logger, resource, registry, patch).patch(config);
         verify(logger, times(1)).info("The config file 'config.yml' gets updated from version '1.12.1-CONFIG-1'...");
         verify(logger, times(1)).info("Applying patches to update to '3.4.5-CONFIG-6'...");
-        verify(logger, times(1)).warn("There has been an issue while applying the patches: Unknown transformation type 'INVALID' used!");
+        verify(logger, times(1)).warn("There has been an issue while applying the patches: Transformation type 'INVALID' does not exist");
         verify(logger, times(1)).warn("The patching progress did not go flawlessly. However, this does not mean your configs are now corrupted. Please check the errors above to see what the patcher did. You might want to adjust your config manually depending on that information.");
         verifyNoMoreInteractions(logger);
     }

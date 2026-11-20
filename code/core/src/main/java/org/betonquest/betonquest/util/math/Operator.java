@@ -110,7 +110,7 @@ public enum Operator {
      */
     public static Operator valueOf(final char chr) throws QuestException {
         return Arrays.stream(values()).filter(operator -> operator.symbol == chr).findAny()
-                .orElseThrow(() -> new QuestException(chr + " is not a valid operator"));
+                .orElseThrow(() -> new QuestException("Operator '%s' does not exist".formatted(chr)));
     }
 
     /**

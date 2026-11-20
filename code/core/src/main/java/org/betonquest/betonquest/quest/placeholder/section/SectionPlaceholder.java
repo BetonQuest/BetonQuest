@@ -89,7 +89,7 @@ public class SectionPlaceholder implements NullablePlaceholder {
         final String path = section + pathSeparator + identifier;
         final ConfigurationSection configSection = questPackage.getConfig().getConfigurationSection(path);
         if (configSection == null) {
-            throw new QuestException("Section '%s' does not exist in package '%s'!".formatted(path, questPackage));
+            throw new QuestException("Section '%s' does not exist in package '%s'".formatted(path, questPackage));
         }
         final List<String> keys = new ArrayList<>(configSection.getKeys(true));
         keys.removeIf(configSection::isConfigurationSection);

@@ -19,7 +19,7 @@ public record BreweryKeyedParser<T extends BreweryKeyed>(
     public T apply(final String string) throws QuestException {
         final T element = registry.get(BreweryKey.parse(string));
         if (element == null) {
-            throw new QuestException("Invalid element key '%s', unknown key".formatted(string));
+            throw new QuestException("Element key '%s' does not exist".formatted(string));
         }
         return element;
     }

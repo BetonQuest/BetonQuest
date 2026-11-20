@@ -67,21 +67,21 @@ public class BannerHandler implements ItemMetaHandler<BannerMeta> {
     }
 
     private Pattern parsePattern(final String data) throws QuestException {
-        final String[] parts = HandlerUtil.getSplit(data, "Banner pattern is null!", ":");
+        final String[] parts = HandlerUtil.getSplit(data, "Banner pattern is null", ":");
         if (parts.length != PATTERN_PARTS) {
-            throw new QuestException("Wrong banner pattern format: " + data);
+            throw new QuestException("Wrong banner pattern format: '%s'".formatted(data));
         }
         final DyeColor color;
         try {
             color = DyeColor.valueOf(parts[0].toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Unknown banner pattern color: " + parts[0], e);
+            throw new QuestException("Banner pattern color '%s' does not exist".formatted(parts[0]), e);
         }
         final PatternType type;
         try {
             type = PatternType.valueOf(parts[1].toUpperCase(Locale.ROOT));
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Unknown banner pattern type: " + parts[1], e);
+            throw new QuestException("Banner pattern type '%s' does not exist".formatted(parts[1]), e);
         }
         return new Pattern(color, type);
     }

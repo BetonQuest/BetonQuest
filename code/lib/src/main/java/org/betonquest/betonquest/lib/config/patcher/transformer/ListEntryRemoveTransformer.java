@@ -37,10 +37,10 @@ public class ListEntryRemoveTransformer implements PatchTransformer {
         config.set(key, list);
 
         if (!listExists) {
-            throw new PatchException("List '" + key + "' did not exist, so an empty list was created.");
+            throw new PatchException("List '%s' did not exist, so an empty list was created".formatted(key));
         }
         if (!modified) {
-            throw new PatchException("Tried to remove '%s' but there was no such element in the list '%s'.".formatted(regex, key));
+            throw new PatchException("Tried to remove '%s' but there was no such element in the list '%s'".formatted(regex, key));
         }
     }
 }

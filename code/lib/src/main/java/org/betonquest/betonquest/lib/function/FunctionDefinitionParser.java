@@ -34,6 +34,6 @@ public class FunctionDefinitionParser {
         if (DefinitionSymbols.DEFINITION.matches(tokenScanner)) {
             return DefinitionSymbols.DEFINITION.parse(tokenScanner);
         }
-        throw new QuestException("Invalid function definition.");
+        throw new QuestException("Invalid function definition");
     }
 }

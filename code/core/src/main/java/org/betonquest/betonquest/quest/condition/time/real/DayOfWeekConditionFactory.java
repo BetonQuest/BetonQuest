@@ -37,13 +37,13 @@ public class DayOfWeekConditionFactory implements PlayerlessConditionFactory {
         try {
             dayOfWeek = DayOfWeek.of(Integer.parseInt(dayString));
         } catch (final DateTimeException e) {
-            throw new QuestException(dayString + " is not a valid day of a week", e);
+            throw new QuestException("'%s' is not a valid day of a week".formatted(dayString), e);
         } catch (final NumberFormatException e) {
             log.debug(instruction.getPackage(), "Could not parse number!", e);
             try {
                 dayOfWeek = DayOfWeek.valueOf(dayString.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException iae) {
-                throw new QuestException(dayString + " is not a valid day of a week", iae);
+                throw new QuestException("'%s' is not a valid day of a week".formatted(dayString), iae);
             }
         }
         return new DayOfWeekCondition(dayOfWeek);

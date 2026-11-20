@@ -109,13 +109,13 @@ public class Patcher {
             if (section.isConfigurationSection(key)) {
                 final ConfigurationSection nestedSection = section.getConfigurationSection(key);
                 if (nestedSection == null) {
-                    throw new InvalidConfigurationException("The patch file at '" + currentKey + "' is not a list or a section.");
+                    throw new InvalidConfigurationException("The patch file at '%s' is not a list or a section".formatted(currentKey));
                 }
                 buildVersionIndex(nestedSection, currentKey);
             } else if (currentKey.split("\\.").length == 4) {
                 collectVersion(currentKey, section.getMapList(key));
             } else {
-                throw new InvalidConfigurationException("The patch file at '" + currentKey + "' is too long or too short.");
+                throw new InvalidConfigurationException("The patch file at '%s' is too long or too short".formatted(currentKey));
             }
         }
     }
@@ -123,7 +123,7 @@ public class Patcher {
     private void collectVersion(final String currentKey, @NotNull final List<Map<?, ?>> mapList) throws InvalidConfigurationException {
         final Matcher matcher = VERSION_PATTERN.matcher(currentKey);
         if (!matcher.matches()) {
-            throw new InvalidConfigurationException("The patch file at '" + currentKey + "' has an invalid version format.");
+            throw new InvalidConfigurationException("The patch file at '%s' has an invalid version format".formatted(currentKey));
         }
         final String result = matcher.group(1) + "-CONFIG-" + matcher.group(2);
         final Version discoveredVersion = VersionParser.parse(CONFIG_VERSION_TYPE, result);
@@ -160,7 +160,7 @@ public class Patcher {
         try {
             accessor.save();
         } catch (final IOException e) {
-            throw new InvalidConfigurationException("Default values were applied to the config but could not be saved! Reason: " + e.getMessage(), e);
+            throw new InvalidConfigurationException("Default values were applied to the config but could not be saved: %s".formatted(e.getMessage()), e);
         }
     }
 
@@ -207,13 +207,13 @@ public class Patcher {
 
     private PatchTransformer getPatchTransformer(@Nullable final String transformationType) throws PatchException {
         if (transformationType == null) {
-            throw new PatchException("Missing transformation type for patcher!");
+            throw new PatchException("Missing transformation type for patcher");
         }
 
         final String transformationTypeUpperCase = transformationType.toUpperCase(Locale.ROOT);
         final PatchTransformer patchTransformer = transformerRegistry.getTransformers().get(transformationTypeUpperCase);
         if (patchTransformer == null) {
-            throw new PatchException("Unknown transformation type '" + transformationTypeUpperCase + "' used!");
+            throw new PatchException("Transformation type '%s' does not exist".formatted(transformationTypeUpperCase));
         }
         return patchTransformer;
     }

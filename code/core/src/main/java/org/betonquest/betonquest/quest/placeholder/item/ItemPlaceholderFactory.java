@@ -62,7 +62,7 @@ public class ItemPlaceholderFactory implements PlayerPlaceholderFactory, Playerl
             try {
                 amount = Integer.parseInt(substring);
             } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse item amount: " + substring, e);
+                throw new QuestException("Could not parse item amount: '%s'".formatted(substring), e);
             }
         } else if ("amount".equals(argument)) {
             type = ItemDisplayType.AMOUNT;
@@ -76,11 +76,10 @@ public class ItemPlaceholderFactory implements PlayerPlaceholderFactory, Playerl
             try {
                 amount = Integer.parseInt(substring);
             } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse line number: " + substring, e);
+                throw new QuestException("Could not parse line number: '%s'".formatted(substring), e);
             }
         } else {
-            throw new QuestException(String.format("Unknown argument type: '%s'",
-                    argument));
+            throw new QuestException("Argument type '%s' does not exist".formatted(argument));
         }
         return Pair.of(type, amount);
     }

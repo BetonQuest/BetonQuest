@@ -97,7 +97,7 @@ public final class DependencyHelper {
             final T current = queue.remove(0);
             final Set<Class<?>> missingDependencies = remainingDependencyClasses(current.requires(), currentlyLoadedDependencies);
             if (!missingDependencies.isEmpty()) {
-                throw new IllegalStateException("Node '%s' is missing dependencies: [%s]"
+                throw new IllegalStateException("Node '%s' is missing dependencies: '%s'"
                         .formatted(current.getClass().getSimpleName(), missingDependencies.stream().map(Class::getSimpleName).collect(Collectors.joining(", "))));
             }
             orderedNodes.add(current);
@@ -114,7 +114,7 @@ public final class DependencyHelper {
             final String cycleDescription = cycleNodes.stream()
                     .map(node -> node.getClass().getSimpleName())
                     .collect(Collectors.joining(" -> "));
-            throw new IllegalStateException("Cyclic dependency detected among nodes: " + cycleDescription);
+            throw new IllegalStateException("Cyclic dependency detected among nodes: '%s'".formatted(cycleDescription));
         }
         return orderedNodes;
     }

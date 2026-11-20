@@ -40,7 +40,8 @@ public class DoorActionFactory implements PlayerActionFactory, PlayerlessActionF
             case "on" -> createOpenDoorAction(location);
             case "off" -> createCloseDoorAction(location);
             case "toggle" -> createToggleDoorAction(location);
-            default -> throw new QuestException("Unknown door action (valid options are: on, off, toggle): " + action);
+            default ->
+                    throw new QuestException("Door action '%s' does not exist (valid options are: on, off, toggle)".formatted(action));
         };
         return new NullableActionAdapter(doorAction);
     }

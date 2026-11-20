@@ -25,7 +25,7 @@ public class ClampSubRoutine extends AbstractSubRoutine {
         final Number min = arguments.get("min").asNumber();
         final Number max = arguments.get("max").asNumber();
         if (min.doubleValue() > max.doubleValue()) {
-            throw new QuestException("Clamp: min value is greater than max value (%s > %s)".formatted(min, max));
+            throw new QuestException("Clamp: min value '%s' is greater than max value '%s'".formatted(min, max));
         }
         if (value.doubleValue() < min.doubleValue()) {
             return new NumberSourceAssignment(min);

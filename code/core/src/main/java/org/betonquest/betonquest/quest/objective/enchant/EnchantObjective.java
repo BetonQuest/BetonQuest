@@ -108,14 +108,14 @@ public class EnchantObjective extends CountingObjective {
             final String[] parts = string.split(":");
             final Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.ROOT));
             if (enchantment == null) {
-                throw new QuestException("Enchantment type '" + parts[0] + "' does not exist");
+                throw new QuestException("Enchantment type '%s' does not exist".formatted(parts[0]));
             }
             int level = 1;
             if (parts.length == 2) {
                 try {
                     level = Integer.parseInt(parts[1]);
                 } catch (final NumberFormatException e) {
-                    throw new QuestException("Could not parse enchantment level: " + string, e);
+                    throw new QuestException("Could not parse enchantment level '%s'".formatted(string), e);
                 }
             }
             return new EnchantmentData(enchantment, level);

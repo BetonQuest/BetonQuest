@@ -38,7 +38,7 @@ public class ConversationOptionIdentifierFactory extends DefaultIdentifierFactor
                 conversationName = null;
                 optionName = parts[0];
             }
-            default -> throw new QuestException("Invalid conversation option: " + input);
+            default -> throw new QuestException("Invalid conversation option '%s'".formatted(input));
         }
         return new DefaultConversationOptionIdentifier(entry.getKey(), entry.getValue(), conversationName, optionName);
     }

@@ -68,7 +68,7 @@ public class NpcPlaceholderFactory implements PlayerPlaceholderFactory, Playerle
             final QuesterPlaceholder questerPlaceholder = new QuesterPlaceholder(conversations);
             return profile -> {
                 if (profile == null) {
-                    throw new QuestException("Profile can't be null for conversation!");
+                    throw new QuestException("Profile can't be null for conversation");
                 }
                 return questerPlaceholder.getValue(profile);
             };

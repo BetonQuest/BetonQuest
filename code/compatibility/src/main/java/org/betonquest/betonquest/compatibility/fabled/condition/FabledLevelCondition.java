@@ -40,7 +40,7 @@ public class FabledLevelCondition implements PlayerCondition {
     public boolean check(final Profile profile) throws QuestException {
         final String className = this.className.getValue(profile);
         if (!Fabled.isClassRegistered(className)) {
-            throw new QuestException("Class '" + className + "' is not registered");
+            throw new QuestException("Class '%s' is not registered".formatted(className));
         }
 
         final int level = this.level.getValue(profile).intValue();

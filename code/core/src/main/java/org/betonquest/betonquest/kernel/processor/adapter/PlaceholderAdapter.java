@@ -43,7 +43,7 @@ public class PlaceholderAdapter extends QuestAdapter<PlayerPlaceholder, Playerle
     public String getValue(@Nullable final Profile profile) throws QuestException {
         if (player == null || profile == null) {
             if (playerless == null) {
-                throw new QuestException("Cannot resolve player-dependent placeholder '%s' without a player!".formatted(instruction.getID()));
+                throw new QuestException("Cannot resolve player-dependent placeholder '%s' without a player".formatted(instruction.getID()));
             }
             return playerless.getValue();
         }

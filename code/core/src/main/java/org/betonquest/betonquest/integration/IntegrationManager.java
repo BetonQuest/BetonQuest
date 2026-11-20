@@ -101,7 +101,7 @@ public class IntegrationManager {
         final IntegrationWrapper integrationWrapper = new IntegrationWrapper(loggerFactory.create(IntegrationWrapper.class),
                 Suppliers.memoize(integration::get), integrationProvider, policies, new AtomicBoolean(false));
         if (currentState == ManagerState.POST_ENABLED) {
-            throw new IllegalStateException("Integrations can only be registered before the server is done enabling plugins. Attempted: Plugin '%s' for '%s'"
+            throw new IllegalStateException("Integrations can only be registered before the server is done enabling plugins, attempted: Plugin '%s' for '%s'"
                     .formatted(integrationProvider.getName(), integrationWrapper.integratedPluginVersionName()));
         }
         integrations.add(integrationWrapper);

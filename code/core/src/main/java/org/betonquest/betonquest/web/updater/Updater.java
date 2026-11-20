@@ -207,7 +207,7 @@ public class Updater implements FastStatsMetricsProvider {
      */
     public String getUpdateVersion() {
         if (latest.getValue() == null) {
-            throw new IllegalStateException("There is no newer version available!");
+            throw new IllegalStateException("There is no newer version available");
         }
         return latest.getKey().toString();
     }
@@ -254,19 +254,17 @@ public class Updater implements FastStatsMetricsProvider {
     private void checkUpdateRequirements() throws QuestException {
         config.reloadFromConfig();
         if (!config.isEnabled()) {
-            throw new QuestException("The updater is disabled! Change config entry 'update.enabled' to 'true' to enable it.");
+            throw new QuestException("The updater is disabled, change config entry 'update.enabled' to 'true' to enable it");
         }
         if (searchUpdate()) {
             getUpdateNotification(config.isAutomatic());
-            throw new QuestException("Update aborted! A newer version was found. New version '"
-                    + getUpdateVersion() + "'! You can execute '/bq update' again to update.");
+            throw new QuestException("Update aborted, a newer version '%s' was found, you can execute '/bq update' again to update".formatted(getUpdateVersion()));
         }
         if (latest.getValue() == null) {
             if (updateDownloader.alreadyDownloaded(latest.getKey())) {
-                throw new QuestException("The update was already downloaded! Restart the server to update the plugin.");
+                throw new QuestException("The update was already downloaded, restart the server to update the plugin");
             }
-            throw new QuestException("The updater did not find an update!"
-                    + " This can depend on your update.strategy, check config entry 'update.strategy'.");
+            throw new QuestException("The updater did not find an update, this can depend on your update.strategy, check config entry 'update.strategy'");
         }
     }
 
@@ -275,7 +273,7 @@ public class Updater implements FastStatsMetricsProvider {
             updateDownloader.downloadToFile(latest.getKey(), new URL(latest.getValue()));
             latest = Pair.of(latest.getKey(), null);
         } catch (final MalformedURLException e) {
-            throw new QuestException("There was an error resolving the url '" + latest.getValue() + "'! Reason: " + e.getMessage(), e);
+            throw new QuestException("There was an error resolving the url '%s': %s".formatted(latest.getValue(), e.getMessage()), e);
         }
     }
 

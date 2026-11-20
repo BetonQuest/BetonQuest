@@ -33,15 +33,15 @@ public class ConstantPlaceholderFactory implements PlayerPlaceholderFactory, Pla
     private NullablePlaceholderAdapter parseConstantPlaceholder(final Instruction instruction) throws QuestException {
         final ConfigurationSection section = instruction.getPackage().getConfig().getConfigurationSection("constants");
         if (section == null) {
-            throw new QuestException("No 'constants' section found in the QuestPackage!");
+            throw new QuestException("Section 'constants' does not exist in the QuestPackage");
         }
         final String constantTarget = String.join(".", instruction.getValueParts());
         if (section.isConfigurationSection(constantTarget)) {
-            throw new QuestException("Path '" + constantTarget + "' is not a constant but a configuration section!");
+            throw new QuestException("Path '%s' is not a constant but a configuration section".formatted(constantTarget));
         }
         final String constant = section.getString(constantTarget);
         if (constant == null) {
-            throw new QuestException("No constant with the name '" + constantTarget + "' found in the 'constants' section!");
+            throw new QuestException("Constant '%s' does not exist in the 'constants' section".formatted(constantTarget));
         }
         return new NullablePlaceholderAdapter(new ConstantPlaceholder(instruction.chainForArgument(constant).string().get()));
     }

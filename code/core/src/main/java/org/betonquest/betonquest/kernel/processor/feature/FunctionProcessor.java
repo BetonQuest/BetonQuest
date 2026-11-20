@@ -114,7 +114,7 @@ public class FunctionProcessor extends QuestProcessor<FunctionIdentifier, MathFu
             @Override
             public MathFunction getSubRoutine(final String name) throws QuestException {
                 if (!subroutines.containsKey(name)) {
-                    throw new QuestException("Subroutine '%s' not found.".formatted(name));
+                    throw new QuestException("Subroutine '%s' does not exist".formatted(name));
                 }
                 return subroutines.get(name);
             }

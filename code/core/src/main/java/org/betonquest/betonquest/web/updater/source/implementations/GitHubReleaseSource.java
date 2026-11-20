@@ -36,7 +36,7 @@ public class GitHubReleaseSource implements ReleaseUpdateSource {
      */
     public static final WebContentSource.HTTPCodeHandler HTTP_CODE_HANDLER = (code) -> {
         if (code == HTTP_FORBIDDEN) {
-            throw new IOException("It looks like too many requests were made to the update server, please wait until you have been unblocked.");
+            throw new IOException("It looks like too many requests were made to the update server, please wait until you have been unblocked");
         }
     };
 

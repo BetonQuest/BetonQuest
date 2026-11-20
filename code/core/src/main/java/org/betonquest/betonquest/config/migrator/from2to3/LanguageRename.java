@@ -78,7 +78,7 @@ public class LanguageRename implements QuestMigration {
             final String newKey = String.join(".", split);
             final ConfigurationSection source = config.getSourceConfigurationSection(path);
             if (source == null) {
-                throw new InvalidConfigurationException(path + " is not a valid source");
+                throw new InvalidConfigurationException("'%s' is not a valid source".formatted(path));
             }
             config.set(newKey, value);
             config.set(key, null);

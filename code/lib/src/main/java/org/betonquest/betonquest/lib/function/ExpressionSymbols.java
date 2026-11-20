@@ -103,7 +103,7 @@ public interface ExpressionSymbols {
                 return (f, a) -> {
                     final FunctionAssignment assignment = a.get(variableName);
                     if (assignment == null) {
-                        throw new QuestException("Error while parsing function. Variable '%s' is not defined.".formatted(variableName));
+                        throw new QuestException("Error while parsing function, variable '%s' is not defined".formatted(variableName));
                     }
                     return assignment;
                 };
@@ -133,7 +133,7 @@ public interface ExpressionSymbols {
             })
             .branch(VALUE_QUALIFIER)
             .parse(scanner -> {
-                throw new QuestException("Error while parsing function. Expected grammar token 'value' but got '%s'.".formatted(scanner.peek()));
+                throw new QuestException("Error while parsing function, expected grammar token 'value' but got '%s'".formatted(scanner.peek()));
             })
             .build();
 
@@ -148,7 +148,7 @@ public interface ExpressionSymbols {
                 final List<FunctionExpression> expressions = new ArrayList<>();
                 expressions.add(expression);
                 while (scanner.peek(DefaultTokens.FUNCTION_PARAMETER_SEPARATOR)) {
-                    scanner.consume(DefaultTokens.FUNCTION_PARAMETER_SEPARATOR, "Missing comma between function parameters.");
+                    scanner.consume(DefaultTokens.FUNCTION_PARAMETER_SEPARATOR, "Missing comma between function parameters");
                     expressions.add(ExpressionSymbols.EXPRESSION.get().parse(scanner));
                 }
                 return expressions;
@@ -166,9 +166,9 @@ public interface ExpressionSymbols {
             .prefix(DefaultTokens.FUNCTION_OPEN_BRACKET)
             .parse(scanner -> {
                 final String qualifier = scanner.consume().containedValue();
-                scanner.consume(DefaultTokens.FUNCTION_OPEN_BRACKET, "Missing opening bracket for function call with qualifier '%s'.".formatted(qualifier));
+                scanner.consume(DefaultTokens.FUNCTION_OPEN_BRACKET, "Missing opening bracket for function call with qualifier '%s'".formatted(qualifier));
                 final List<FunctionExpression> expressions = EXPRESSION_LIST.parse(scanner);
-                scanner.consume(DefaultTokens.FUNCTION_CLOSE_BRACKET, "Missing closing bracket for function call with qualifier '%s'.".formatted(qualifier));
+                scanner.consume(DefaultTokens.FUNCTION_CLOSE_BRACKET, "Missing closing bracket for function call with qualifier '%s'".formatted(qualifier));
                 return (functions, assignments) -> {
                     final MathFunction mathFunction = functions.getSubRoutine(qualifier);
                     final List<FunctionAssignment> assignmentList = new ArrayList<>();
@@ -192,9 +192,9 @@ public interface ExpressionSymbols {
             .prefix(DefaultTokens.FUNCTION_OPEN_BRACKET)
             .parse(scanner -> {
                 final String identifier = scanner.consume().containedValue();
-                scanner.consume(DefaultTokens.FUNCTION_OPEN_BRACKET, "Missing opening bracket for function call with identifier '%s'.".formatted(identifier));
+                scanner.consume(DefaultTokens.FUNCTION_OPEN_BRACKET, "Missing opening bracket for function call with identifier '%s'".formatted(identifier));
                 final List<FunctionExpression> expressions = EXPRESSION_LIST.parse(scanner);
-                scanner.consume(DefaultTokens.FUNCTION_CLOSE_BRACKET, "Missing closing bracket for function call with identifier '%s'.".formatted(identifier));
+                scanner.consume(DefaultTokens.FUNCTION_CLOSE_BRACKET, "Missing closing bracket for function call with identifier '%s'".formatted(identifier));
                 return (functions, assignments) -> {
                     final MathFunction mathFunction = functions.getFunction(identifier);
                     final List<FunctionAssignment> assignmentList = new ArrayList<>();
@@ -228,7 +228,7 @@ public interface ExpressionSymbols {
             .branch(FUNCTION_CALL)
             .branch(SUBROUTINE_CALL)
             .parse(scanner -> {
-                throw new QuestException("Error while parsing function. Expected grammar token 'function-call' but got '%s'.".formatted(scanner.peek()));
+                throw new QuestException("Error while parsing function, expected grammar token 'function-call' but got '%s'".formatted(scanner.peek()));
             })
             .build();
 
@@ -240,7 +240,7 @@ public interface ExpressionSymbols {
     NonTerminalSymbol<FunctionExpression> NOT_UNARY = new NonTerminalSymbolBuilder<FunctionExpression>()
             .prefix(DefaultTokens.NOT_OPERATOR)
             .parse(scanner -> {
-                scanner.consume(DefaultTokens.NOT_OPERATOR, "Missing not operator for unary not expression.");
+                scanner.consume(DefaultTokens.NOT_OPERATOR, "Missing not operator for unary not expression");
                 final FunctionExpression expression = ExpressionSymbols.UNARY.parse(scanner);
                 return (f, a) -> new BooleanInvertedFunctionAssignment(expression.evaluate(f, a));
             })
@@ -254,7 +254,7 @@ public interface ExpressionSymbols {
     NonTerminalSymbol<FunctionExpression> MINUS_UNARY = new NonTerminalSymbolBuilder<FunctionExpression>()
             .prefix(DefaultTokens.MINUS_OPERATOR)
             .parse(scanner -> {
-                scanner.consume(DefaultTokens.MINUS_OPERATOR, "Missing minus operator for unary minus expression.");
+                scanner.consume(DefaultTokens.MINUS_OPERATOR, "Missing minus operator for unary minus expression");
                 final FunctionExpression expression = ExpressionSymbols.UNARY.parse(scanner);
                 return (f, a) -> new NumericInvertedFunctionAssignment(expression.evaluate(f, a));
             })
@@ -271,19 +271,19 @@ public interface ExpressionSymbols {
                 FunctionExpression result = ExpressionSymbols.UNARY.parse(scanner);
                 while (scanner.peek(DefaultTokens.MULTIPLY_OPERATOR) || scanner.peek(DefaultTokens.DIVIDE_OPERATOR) || scanner.peek(DefaultTokens.MODULO_OPERATOR)) {
                     if (scanner.peek(DefaultTokens.MULTIPLY_OPERATOR)) {
-                        scanner.consume(DefaultTokens.MULTIPLY_OPERATOR, "Missing multiplication operator for product expression.");
+                        scanner.consume(DefaultTokens.MULTIPLY_OPERATOR, "Missing multiplication operator for product expression");
                         final FunctionExpression first = result;
                         final FunctionExpression second = ExpressionSymbols.UNARY.parse(scanner);
                         result = (f, a) -> new NumberSourceAssignment(first.evaluate(f, a).asNumber().doubleValue() * second.evaluate(f, a).asNumber().doubleValue());
                     }
                     if (scanner.peek(DefaultTokens.DIVIDE_OPERATOR)) {
-                        scanner.consume(DefaultTokens.DIVIDE_OPERATOR, "Missing division operator for division expression.");
+                        scanner.consume(DefaultTokens.DIVIDE_OPERATOR, "Missing division operator for division expression");
                         final FunctionExpression first = result;
                         final FunctionExpression second = ExpressionSymbols.UNARY.parse(scanner);
                         result = (f, a) -> new NumberSourceAssignment(first.evaluate(f, a).asNumber().doubleValue() / second.evaluate(f, a).asNumber().doubleValue());
                     }
                     if (scanner.peek(DefaultTokens.MODULO_OPERATOR)) {
-                        scanner.consume(DefaultTokens.MODULO_OPERATOR, "Missing modulo operator for modulo expression.");
+                        scanner.consume(DefaultTokens.MODULO_OPERATOR, "Missing modulo operator for modulo expression");
                         final FunctionExpression first = result;
                         final FunctionExpression second = ExpressionSymbols.UNARY.parse(scanner);
                         result = (f, a) -> new NumberSourceAssignment(first.evaluate(f, a).asNumber().doubleValue() % second.evaluate(f, a).asNumber().doubleValue());
@@ -304,14 +304,14 @@ public interface ExpressionSymbols {
                 FunctionExpression result = PRODUCT.parse(scanner);
                 while (scanner.peek(DefaultTokens.PLUS_OPERATOR) || scanner.peek(DefaultTokens.MINUS_OPERATOR)) {
                     if (scanner.peek(DefaultTokens.PLUS_OPERATOR)) {
-                        scanner.consume(DefaultTokens.PLUS_OPERATOR, "Missing plus operator for sum expression.");
+                        scanner.consume(DefaultTokens.PLUS_OPERATOR, "Missing plus operator for sum expression");
                         final FunctionExpression first = result;
                         final FunctionExpression second = PRODUCT.parse(scanner);
                         result = (f, a) ->
                                 new NumberSourceAssignment(first.evaluate(f, a).asNumber().doubleValue() + second.evaluate(f, a).asNumber().doubleValue());
                     }
                     if (scanner.peek(DefaultTokens.MINUS_OPERATOR)) {
-                        scanner.consume(DefaultTokens.MINUS_OPERATOR, "Missing minus operator for subtraction expression.");
+                        scanner.consume(DefaultTokens.MINUS_OPERATOR, "Missing minus operator for subtraction expression");
                         final FunctionExpression first = result;
                         final FunctionExpression second = PRODUCT.parse(scanner);
                         result = (f, a) ->
@@ -333,9 +333,9 @@ public interface ExpressionSymbols {
             .parse(scanner -> {
                 final FunctionExpression conditionExpression = ExpressionSymbols.DISJUNCTION.parse(scanner);
                 if (scanner.peek(DefaultTokens.PRIMARY_TERNARY_OPERATOR)) {
-                    scanner.consume(DefaultTokens.PRIMARY_TERNARY_OPERATOR, "Missing ternary operator for ternary expression.");
+                    scanner.consume(DefaultTokens.PRIMARY_TERNARY_OPERATOR, "Missing ternary operator for ternary expression");
                     final FunctionExpression primary = EXPRESSION.get().parse(scanner);
-                    scanner.consume(DefaultTokens.SECONDARY_TERNARY_OPERATOR, "Missing colon operator for ternary expression.");
+                    scanner.consume(DefaultTokens.SECONDARY_TERNARY_OPERATOR, "Missing colon operator for ternary expression");
                     final FunctionExpression alternative = ExpressionSymbols.TERNARY.parse(scanner);
                     return (f, a) -> {
                         final FunctionAssignment ternaryCondition = conditionExpression.evaluate(f, a);
@@ -355,9 +355,9 @@ public interface ExpressionSymbols {
     NonTerminalSymbol<FunctionExpression> BRACKET = new NonTerminalSymbolBuilder<FunctionExpression>()
             .prefix(FunctionTokenType.OPEN_BRACKET)
             .parse(scanner -> {
-                scanner.consume(FunctionTokenType.OPEN_BRACKET, "Missing opening bracket for bracketed expression.");
+                scanner.consume(FunctionTokenType.OPEN_BRACKET, "Missing opening bracket for bracketed expression");
                 final FunctionExpression expression = EXPRESSION.get().parse(scanner);
-                scanner.consume(FunctionTokenType.CLOSE_BRACKET, "Missing closing bracket for bracketed expression.");
+                scanner.consume(FunctionTokenType.CLOSE_BRACKET, "Missing closing bracket for bracketed expression");
                 return expression;
             })
             .build();
@@ -375,7 +375,7 @@ public interface ExpressionSymbols {
             .branch(FUNCTION)
             .branch(VALUE)
             .parse(scanner -> {
-                throw new QuestException("Error while parsing function. Expected grammar token 'primary' but got '%s'.".formatted(scanner.peek()));
+                throw new QuestException("Error while parsing function, expected grammar token 'primary' but got '%s'".formatted(scanner.peek()));
             })
             .build();
 
@@ -410,7 +410,7 @@ public interface ExpressionSymbols {
                         case "!=" -> (f, a) ->
                                 new BooleanSourceAssignment(first.evaluate(f, a).asNumber().doubleValue() != second.evaluate(f, a).asNumber().doubleValue());
                         default ->
-                                throw new QuestException("Error while parsing function. Unknown comparison operator '%s'.".formatted(comparisonToken));
+                                throw new QuestException("Error while parsing function, unknown comparison operator '%s'".formatted(comparisonToken));
                     };
                 }
                 return first;
@@ -427,7 +427,7 @@ public interface ExpressionSymbols {
             .parse(scanner -> {
                 final FunctionExpression comparison = PRIMARY.parse(scanner);
                 if (scanner.peek(DefaultTokens.POWER_OPERATOR)) {
-                    scanner.consume(DefaultTokens.POWER_OPERATOR, "Missing power operator for exponent expression.");
+                    scanner.consume(DefaultTokens.POWER_OPERATOR, "Missing power operator for exponent expression");
                     final FunctionExpression exponent = ExpressionSymbols.EXPONENT.parse(scanner);
                     return (f, a) -> new NumberSourceAssignment(Math.pow(comparison.evaluate(f, a).asNumber().doubleValue(), exponent.evaluate(f, a).asNumber().doubleValue()));
                 }
@@ -445,7 +445,7 @@ public interface ExpressionSymbols {
             .parse(scanner -> {
                 FunctionExpression result = COMPARISON.parse(scanner);
                 while (scanner.peek(DefaultTokens.CONJUNCTION_OPERATOR)) {
-                    scanner.consume(DefaultTokens.CONJUNCTION_OPERATOR, "Missing conjunction operator in conjunction expression.");
+                    scanner.consume(DefaultTokens.CONJUNCTION_OPERATOR, "Missing conjunction operator in conjunction expression");
                     final FunctionExpression firstExpression = result;
                     final FunctionExpression secondExpression = COMPARISON.parse(scanner);
                     result = (f, a) -> new BooleanSourceAssignment(firstExpression.evaluate(f, a).asBoolean() && secondExpression.evaluate(f, a).asBoolean());
@@ -464,7 +464,7 @@ public interface ExpressionSymbols {
             .parse(scanner -> {
                 FunctionExpression result = CONJUNCTION.parse(scanner);
                 while (scanner.peek(DefaultTokens.DISJUNCTION_OPERATOR)) {
-                    scanner.consume(DefaultTokens.DISJUNCTION_OPERATOR, "Missing disjunction operator in disjunction expression.");
+                    scanner.consume(DefaultTokens.DISJUNCTION_OPERATOR, "Missing disjunction operator in disjunction expression");
                     final FunctionExpression firstExpression = result;
                     final FunctionExpression secondExpression = CONJUNCTION.parse(scanner);
                     result = (f, a) -> new BooleanSourceAssignment(firstExpression.evaluate(f, a).asBoolean() || secondExpression.evaluate(f, a).asBoolean());

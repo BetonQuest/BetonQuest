@@ -35,7 +35,7 @@ public class RealtimeDailyScheduleFactory extends BaseScheduleFactory<RealtimeDa
         try {
             localTime = LocalTime.parse(time, TIME_FORMAT);
         } catch (final DateTimeParseException e) {
-            throw new QuestException("Unable to parse time '" + time + "': " + e.getMessage(), e);
+            throw new QuestException("Unable to parse time '%s': %s".formatted(time, e.getMessage()), e);
         }
         return new RealtimeDailySchedule(scheduleID, scheduleData.actions(), scheduleData.catchup(), localTime);
     }

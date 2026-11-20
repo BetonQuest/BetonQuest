@@ -53,7 +53,7 @@ public class UpdatedTotemNotifyIO extends NotifyIO {
                 input -> {
                     final NamespacedKey key = NamespacedKey.fromString(input);
                     if (key == null) {
-                        throw new QuestException("The item-model '%s' could not be parsed!".formatted(input));
+                        throw new QuestException("The item-model '%s' could not be parsed".formatted(input));
                     }
                     return key;
                 }, true, true) : null;

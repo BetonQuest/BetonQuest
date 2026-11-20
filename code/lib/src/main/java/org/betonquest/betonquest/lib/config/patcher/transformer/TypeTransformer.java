@@ -25,7 +25,7 @@ public class TypeTransformer implements PatchTransformer {
 
         final String value = config.getString(key);
         if (value == null) {
-            throw new PatchException("Value is not set, skipping transformation.");
+            throw new PatchException("Value is not set, skipping transformation");
         }
         setValue(config, type, key, value);
     }
@@ -37,7 +37,7 @@ public class TypeTransformer implements PatchTransformer {
             case "double" -> config.set(key, Double.valueOf(valueString));
             case "float" -> config.set(key, Float.valueOf(valueString));
             case "string" -> config.set(key, valueString);
-            default -> throw new PatchException("Unknown type '" + type + "', skipping transformation.");
+            default -> throw new PatchException("Type '%s' does not exist, skipping transformation".formatted(type));
         }
     }
 }

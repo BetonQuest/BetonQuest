@@ -29,7 +29,7 @@ public class RandomChanceParser implements SimpleArgumentParser<RandomChance> {
     public RandomChance apply(final String string) throws QuestException {
         final String[] split = string.split("-");
         if (split.length != EXPECTED_ELEMENTS) {
-            throw new QuestException("Wrong randomness format. Use <chance>-<max>");
+            throw new QuestException("Wrong randomness format, use <chance>-<max>");
         }
         final Number pick = NumberParser.parse(split[0]);
         final Number rangeMax = NumberParser.parse(split[1]);

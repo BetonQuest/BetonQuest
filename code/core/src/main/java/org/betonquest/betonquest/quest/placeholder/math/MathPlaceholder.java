@@ -35,7 +35,7 @@ public class MathPlaceholder implements NullablePlaceholder {
         try {
             value = this.calculation.resolve(profile);
         } catch (final QuestException e) {
-            throw new QuestException("Error while resolving math placeholder: " + e.getMessage(), e);
+            throw new QuestException("Error while resolving math placeholder: %s".formatted(e.getMessage()), e);
         }
         if (value % 1 == 0) {
             return String.format(Locale.US, "%.0f", value);

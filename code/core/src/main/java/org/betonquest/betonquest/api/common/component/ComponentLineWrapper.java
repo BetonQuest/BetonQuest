@@ -111,7 +111,7 @@ public class ComponentLineWrapper {
 
     private List<Component> appendPrefixes(final List<Component> prefixes, final List<Component> lines) {
         if (prefixes.size() != lines.size()) {
-            throw new IllegalStateException("Prefixes and lines must have the same size.");
+            throw new IllegalStateException("Prefixes and lines must have the same size");
         }
         final List<Component> result = new ArrayList<>(lines.size());
         for (int i = 0; i < lines.size(); i++) {

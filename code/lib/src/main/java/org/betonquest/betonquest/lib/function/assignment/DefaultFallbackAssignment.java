@@ -19,17 +19,17 @@ public class DefaultFallbackAssignment implements FunctionAssignment {
 
     @Override
     public String asString() {
-        throw new UnsupportedOperationException("Function variable is not defined.");
+        throw new UnsupportedOperationException("Function variable is not defined");
     }
 
     @Override
     public Number asNumber() {
-        throw new UnsupportedOperationException("Function variable is not defined.");
+        throw new UnsupportedOperationException("Function variable is not defined");
     }
 
     @Override
     public boolean asBoolean() {
-        throw new UnsupportedOperationException("Function variable is not defined.");
+        throw new UnsupportedOperationException("Function variable is not defined");
     }
 
     @Override

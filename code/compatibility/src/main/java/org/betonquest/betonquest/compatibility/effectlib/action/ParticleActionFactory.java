@@ -35,11 +35,11 @@ public class ParticleActionFactory implements PlayerActionFactory {
         final String string = instruction.string().get().getValue(null);
         final ConfigurationSection parameters = instruction.getPackage().getConfig().getConfigurationSection("effects." + string);
         if (parameters == null) {
-            throw new QuestException("Effect '%s' does not exist!".formatted(string));
+            throw new QuestException("Effect '%s' does not exist".formatted(string));
         }
         final String rawEffectClass = parameters.getString("class");
         if (rawEffectClass == null) {
-            throw new QuestException("Effect '%s' does not have a class!".formatted(string));
+            throw new QuestException("Effect '%s' does not have a class".formatted(string));
         }
         final String effectClass = instruction.chainForArgument(rawEffectClass).string().get().getValue(null);
         final Argument<Location> loc = instruction.location().get("loc").orElse(null);

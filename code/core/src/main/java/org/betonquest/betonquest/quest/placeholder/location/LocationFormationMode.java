@@ -120,7 +120,7 @@ public enum LocationFormationMode {
                 return targetMode;
             }
         }
-        throw new QuestException("Unknown LocationPlaceholder mode '" + mode + "'!");
+        throw new QuestException("LocationPlaceholder mode '%s' does not exist".formatted(mode));
     }
 
     private static String buildFormattedLocation(final Location location, final String format, final int decimalPlaces) {

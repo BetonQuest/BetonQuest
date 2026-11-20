@@ -79,10 +79,10 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
         for (final ConfigurationSection sourceConfig : sourceConfigs) {
             final Configuration root = sourceConfig.getRoot();
             if (root == null) {
-                throw new InvalidSubConfigurationException("At least one source config does not have a root!", sourceConfig);
+                throw new InvalidSubConfigurationException("At least one source config does not have a root", sourceConfig);
             }
             if (root.options().pathSeparator() != options().pathSeparator()) {
-                throw new InvalidSubConfigurationException("At least one source config does not have valid path separator!", sourceConfig);
+                throw new InvalidSubConfigurationException("At least one source config does not have valid path separator", sourceConfig);
             }
         }
     }
@@ -331,7 +331,7 @@ public class MultiSectionConfiguration extends HandleModificationConfiguration i
     private String getReplacedPath(final String path, final ConfigurationSection config) {
         final Configuration root = config.getRoot();
         if (root == null) {
-            throw new IllegalStateException("One source config does not have a root!");
+            throw new IllegalStateException("One source config does not have a root");
         }
         return path.replaceAll(Pattern.quote(String.valueOf(options().pathSeparator())), String.valueOf(root.options().pathSeparator()));
     }

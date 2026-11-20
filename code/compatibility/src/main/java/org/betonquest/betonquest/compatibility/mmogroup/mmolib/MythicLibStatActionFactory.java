@@ -37,7 +37,7 @@ public class MythicLibStatActionFactory implements PlayerActionFactory {
         final FlagArgument<Boolean> clear = instruction.bool().getFlag("clear", true);
 
         if (add.getState() == FlagState.ABSENT && remove.getState() == FlagState.ABSENT && clear.getState() == FlagState.ABSENT) {
-            throw new QuestException("At least one of the flags 'add', 'remove' or 'clear' must be set.");
+            throw new QuestException("At least one of the flags 'add', 'remove' or 'clear' must be set");
         }
 
         if (statName.isEmpty() && clear.getState() == FlagState.ABSENT) {

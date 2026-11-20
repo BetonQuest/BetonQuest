@@ -54,6 +54,6 @@ public class QuotedWordState implements TokenizerState<QuotingTokenizerContext> 
 
     @Override
     public void parseEnd(final QuotingTokenizerContext ctx) throws TokenizerException {
-        throw new TokenizerException("Expected quoted string to end but reached end of data.");
+        throw new TokenizerException("Expected quoted string to end but reached end of data");
     }
 }

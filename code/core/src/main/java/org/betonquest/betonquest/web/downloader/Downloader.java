@@ -202,9 +202,9 @@ public class Downloader implements Callable<Boolean> {
         if (code >= BAD_REQUEST_RESPONSE_CODE) {
             throw switch (code) {
                 case 403 ->
-                        new DownloadFailedException("It looks like too many requests were made to the github api, please wait until you have been unblocked.");
-                case 404 -> new DownloadFailedException("404 Not Found - are namespace and ref name correct?");
-                default -> new DownloadFailedException("github api returned error code " + code);
+                        new DownloadFailedException("It looks like too many requests were made to the github api, please wait until you have been unblocked");
+                case 404 -> new DownloadFailedException("404 Not Found - check if namespace and ref name are correct");
+                default -> new DownloadFailedException("github api returned error code '%s'".formatted(code));
             };
         }
         try (InputStreamReader reader = new InputStreamReader(connection.getInputStream(), UTF_8)) {
@@ -264,7 +264,7 @@ public class Downloader implements Callable<Boolean> {
      */
     private Path getCacheFile() throws IOException {
         if (sha == null) {
-            throw new IOException("Can't get a file without SHA!");
+            throw new IOException("Can't get a file without SHA");
         }
         final String filename = namespace + "-" + getShortRef() + "-" + sha.substring(0, 7) + ".zip";
         return dataFolder.resolve(CACHE_DIR).resolve(filename);
@@ -294,7 +294,7 @@ public class Downloader implements Callable<Boolean> {
     private void download() throws IOException, DownloadFailedException {
         Files.createDirectories(Optional.ofNullable(getCacheFile().getParent()).orElseThrow());
         if (sha == null) {
-            throw new DownloadFailedException("There is no commit SHA!");
+            throw new DownloadFailedException("There is no commit SHA");
         }
         final URL url = new URL(GITHUB_DOWNLOAD_URL
                 .replace("{namespace}", namespace)
@@ -309,7 +309,7 @@ public class Downloader implements Callable<Boolean> {
             }
             log.debug("Repo has been saved to cache as " + getCacheFile());
         } catch (final FileNotFoundException e) {
-            throw new DownloadFailedException("The commit SHA '" + this.sha + "' does not exist!", e);
+            throw new DownloadFailedException("The commit SHA '%s' does not exist".formatted(this.sha), e);
         }
     }
 
@@ -344,7 +344,7 @@ public class Downloader implements Callable<Boolean> {
             }
         }
         if (!foundAny) {
-            throw new DownloadFailedException("repo contained no files at '" + getFullSourcePath() + "'");
+            throw new DownloadFailedException("repo contained no files at '%s'".formatted(getFullSourcePath()));
         }
     }
 
@@ -374,7 +374,7 @@ public class Downloader implements Callable<Boolean> {
                 input.transferTo(out);
                 log.debug("Extracted " + newFile);
             } catch (final FileAlreadyExistsException e) {
-                throw new DownloadFailedException("File already exists: " + e.getMessage(), e);
+                throw new DownloadFailedException("File already exists: %s".formatted(e.getMessage()), e);
             }
         }
     }
@@ -390,13 +390,13 @@ public class Downloader implements Callable<Boolean> {
      */
     private void checkSecurityRestrictions(final Path newFile) {
         if (!newFile.startsWith(dataFolder.normalize())) {
-            throw new SecurityException("'" + newFile + "' is not a child of BetonQuest data folder");
+            throw new SecurityException("'%s' is not a child of BetonQuest data folder".formatted(newFile));
         }
         if (ALLOWED_OFFSET_PATHS.stream().noneMatch(path -> newFile.startsWith(dataFolder.resolve(path).normalize()))) {
-            throw new SecurityException("'" + newFile + "' is not a valid target");
+            throw new SecurityException("'%s' is not a valid target".formatted(newFile));
         }
         if (newFile.equals(dataFolder.resolve("config.yml").normalize())) {
-            throw new SecurityException("Download tried to overwrite BetonQuest config. Aborting for security reasons!");
+            throw new SecurityException("Download tried to overwrite BetonQuest config, aborting for security reasons");
         }
     }
 
@@ -520,8 +520,7 @@ public class Downloader implements Callable<Boolean> {
                 .filter(Files::exists)
                 .findAny();
         if (existing.isPresent()) {
-            throw new DownloadFailedException("package already exists: "
-                    + dataFolder.resolve(offsetPath).relativize(existing.get()).getParent());
+            throw new DownloadFailedException("package already exists: '%s'".formatted(dataFolder.resolve(offsetPath).relativize(existing.get()).getParent()));
         }
     }
 }

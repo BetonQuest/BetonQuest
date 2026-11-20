@@ -110,7 +110,7 @@ public abstract class QuestProcessor<I extends Identifier, T> implements FastSta
     public T get(final I identifier) throws QuestException {
         final T object = values.get(identifier);
         if (object == null) {
-            throw new QuestException("No " + readable + " loaded for ID '" + identifier + "'! Check for errors on /bq reload!");
+            throw new QuestException("No %s loaded for ID '%s', check for errors on /bq reload".formatted(readable, identifier));
         }
         return object;
     }

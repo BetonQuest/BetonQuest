@@ -48,7 +48,7 @@ public class WrappingMMNpcAdapter implements Npc<ActiveMob> {
     @Override
     public ActiveMob getOriginal() {
         if (spawned == null) {
-            throw new IllegalStateException("Can't get the original of an not spawned mob!");
+            throw new IllegalStateException("Can't get the original of an not spawned mob");
         }
         return spawned.getOriginal();
     }

@@ -187,7 +187,7 @@ public class QuestMigrator {
                 try {
                     legacyMigration.migrate(quest);
                 } catch (final Exception e) {
-                    throw new InvalidConfigurationException("Unexpected error while applying legacy migration: " + e.getMessage(), e);
+                    throw new InvalidConfigurationException("Unexpected error while applying legacy migration: %s".formatted(e.getMessage()), e);
                 }
                 quest.saveAll();
             }
@@ -199,10 +199,9 @@ public class QuestMigrator {
                 return;
             }
             if (lastVersionToSet.wrappedVersion().isOlderThan(VersionComparisonStrategies.DEFAULT, otherVersion.wrappedVersion())) {
-                throw new VersionMissmatchException("The version '" + otherVersion
-                        + "' is newer than the latest known version '" + lastVersionToSet + "'!\n"
-                        + "Quests with newer versions will probably cause issues. If you know that won't be the case"
-                        + " you can change the quest version to the latest known.");
+                throw new VersionMissmatchException(("The version '%s' is newer than the latest known version '%s', "
+                        + "quests with newer versions will probably cause issues. If you know that won't be the case "
+                        + "you can change the quest version to the latest known").formatted(otherVersion, lastVersionToSet));
             }
             log.debug("  Migrating from version '" + otherVersion + "' to '" + lastVersionToSet + "'");
             actualMigrations = migrations.tailMap(otherVersion, false);
@@ -219,7 +218,7 @@ public class QuestMigrator {
             try {
                 entry.getValue().migrate(quest);
             } catch (final Exception e) {
-                throw new InvalidConfigurationException("Unexpected error while applying migration '" + entry.getKey() + "': " + e.getMessage(), e);
+                throw new InvalidConfigurationException("Unexpected error while applying migration '%s': %s".formatted(entry.getKey(), e.getMessage()), e);
             }
             entry.getKey().setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();

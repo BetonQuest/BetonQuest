@@ -33,11 +33,11 @@ public final class IdentifierUtil {
         final String identifierSection = identifier.getSection();
         final ConfigurationSection section = pack.getConfig().getConfigurationSection(identifierSection);
         if (section == null) {
-            throw new QuestException("There is no base section '%s' in pack '%s'".formatted(identifierSection, identifier.getPackage()));
+            throw new QuestException("Base section '%s' does not exist in pack '%s'".formatted(identifierSection, identifier.getPackage()));
         }
         final ConfigurationSection targetSection = section.getConfigurationSection(identifier.get());
         if (targetSection == null) {
-            throw new QuestException("Target section '%s' does not exist (in base section '%s' in pack '%s')"
+            throw new QuestException("Target section '%s' does not exist in base section '%s' in pack '%s'"
                     .formatted(identifier.get(), identifierSection, identifier.getPackage()));
         }
         final List<I> identifiers = new ArrayList<>();
