@@ -119,5 +119,38 @@
       "height": 300,
       "width": 300
     }
+  },
+  "water-breathing": {
+    "url": "https://minecraft.wiki/images/Water_Breathing_JE2_BE2.png",
+    "path": "_media/content/Roadmap/deco/water_breathing.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    }
+  },
+  "water": {
+    "url": "https://minecraft.wiki/images/Water_JE16-a1.png",
+    "path": "_media/content/Roadmap/blocks/water.png",
+    "base": "water-base",
+    "size": {
+      "height": 300,
+      "width": 300
+    },
+    "offset": {
+      "x": 0,
+      "y": -29
+    }
+  },
+  "water-base": {
+    "url": "https://minecraft.wiki/images/Sand_JE5_BE3.png",
+    "path": "_media/content/Roadmap/blocks/sand.png",
+    "size": {
+      "height": 300,
+      "width": 300
+    },
+    "offset": {
+      "x": 0,
+      "y": 79
+    }
   }
 }
