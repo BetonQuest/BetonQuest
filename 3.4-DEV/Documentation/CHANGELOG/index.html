@@ -6374,13 +6374,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#340-dev-18-2026-11-20">
+  <a class="md-nav__link" href="#340-dev-19-2026-11-20">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.4.0-DEV-18] - 2026-11-20
+          [3.4.0-DEV-19] - 2026-11-20
         </span>
 
       
@@ -6390,7 +6390,7 @@
 
   
   
-  <nav aria-label="[3.4.0-DEV-18] - 2026-11-20" class="md-nav">
+  <nav aria-label="[3.4.0-DEV-19] - 2026-11-20" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -15142,13 +15142,13 @@
     
 
 <li class="md-nav__item">
-  <a class="md-nav__link" href="#340-dev-18-2026-11-20">
+  <a class="md-nav__link" href="#340-dev-19-2026-11-20">
     <span class="md-ellipsis">
 
       
       
         <span class="md-typeset">
-          [3.4.0-DEV-18] - 2026-11-20
+          [3.4.0-DEV-19] - 2026-11-20
         </span>
 
       
@@ -15158,7 +15158,7 @@
 
   
   
-  <nav aria-label="[3.4.0-DEV-18] - 2026-11-20" class="md-nav">
+  <nav aria-label="[3.4.0-DEV-19] - 2026-11-20" class="md-nav">
     <ul class="md-nav__list">
       
       
@@ -21890,7 +21890,7 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>, and this project adheres
 to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="340-dev-18-2026-11-20">[3.4.0-DEV-18] - 2026-11-20<a class="headerlink" href="#340-dev-18-2026-11-20" title="Permanent link">🔗</a></h2>
+<h2 id="340-dev-19-2026-11-20">[3.4.0-DEV-19] - 2026-11-20<a class="headerlink" href="#340-dev-19-2026-11-20" title="Permanent link">🔗</a></h2>
 <h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">🔗</a></h3>
 <ul>
 <li><code>world</code> placeholder to get properties from a specific world</li>
@@ -21903,10 +21903,12 @@ to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <li><code>state</code> condition to check if a player is in a specific state</li>
 <li><code>rnd</code> and <code>pi</code> as inbuilt subroutines for functions</li>
 <li><code>function</code> placeholder to get a function value</li>
+<li>Package-specific cache stored in <code>.cache/packages/&lt;package&gt;.yml</code> accessible via <code>QuestPackage</code></li>
 </ul>
 <h3 id="changed">Changed<a class="headerlink" href="#changed" title="Permanent link">🔗</a></h3>
 <ul>
 <li><code>particle</code> action of EffectLib integration is now called <code>el_particle</code></li>
+<li>Schedule last execution times are now cached in each package's cache file under <code>schedules</code> instead of a single global file</li>
 </ul>
 <h3 id="deprecated">Deprecated<a class="headerlink" href="#deprecated" title="Permanent link">🔗</a></h3>
 <h3 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">🔗</a></h3>
