@@ -66,6 +66,7 @@ import org.betonquest.betonquest.quest.condition.section.SectionConditionFactory
 import org.betonquest.betonquest.quest.condition.slots.EmptySlotsConditionFactory;
 import org.betonquest.betonquest.quest.condition.sneak.SneakConditionFactory;
 import org.betonquest.betonquest.quest.condition.stage.StageConditionFactory;
+import org.betonquest.betonquest.quest.condition.state.StateConditionFactory;
 import org.betonquest.betonquest.quest.condition.tag.GlobalTagConditionFactory;
 import org.betonquest.betonquest.quest.condition.tag.TagConditionFactory;
 import org.betonquest.betonquest.quest.condition.time.ingame.TimeConditionFactory;
@@ -174,6 +175,7 @@ public class ConditionTypesComponent extends AbstractCoreComponent {
         conditionTypes.register("scoretag", new ScoreboardTagConditionFactory());
         conditionTypes.register("sneak", new SneakConditionFactory());
         conditionTypes.register("stage", new StageConditionFactory(objectiveManager));
+        conditionTypes.register("state", new StateConditionFactory());
         conditionTypes.register("tag", new TagConditionFactory(dataStorage));
         conditionTypes.registerCombined("testforblock", new BlockConditionFactory());
         conditionTypes.registerCombined("time", new TimeConditionFactory());

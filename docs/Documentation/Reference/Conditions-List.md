@@ -819,6 +819,56 @@ conditions:
   isDeliverCookiesOrAbove: "stage bakeCookies > cookCookies"
 ```
 
+## `State`
+
+__Context__: @snippet:condition-meta:online@  
+__Syntax__: `state <state>`  
+__Description__: Whether the player is in the specified state.
+
+| Parameter               | Type     | Explanation             |
+|-------------------------|----------|-------------------------|
+| state <br>[PlayerState] | Required | The state to check for. |
+
+```YAML title="Examples"
+conditions:
+  isFlying: "state FLYING"
+  isSneaking: "state SNEAKING"
+```
+
+??? "Available PlayerStates"
+
+    | State                  | Explanation                                                   |
+    |------------------------|---------------------------------------------------------------|
+    | `BLOCKING`             | Whether the player is blocking with a shield.                 |
+    | `CAN_FLY`              | Whether the player can fly.                                   |
+    | `CAN_PICKUP`           | Whether the player can pick up items.                         |
+    | `CLIMBING`             | Whether the player is currently climbing.                     |
+    | `FIRE`                 | Whether the player is currently on fire.                      |
+    | `FLYING`               | Whether the player is flying.                                 |
+    | `FROZEN`               | Whether the player is frozen.                                 |
+    | `GLIDING`              | Whether the player is gliding with an elytra.                 |
+    | `GLOWING`              | Whether the player is currently glowing.                      |
+    | `HAND_RAISED`          | Whether the player has their hand raised.                     |
+    | `HEALTH_SCALED`        | Whether the player has a health scale applied.                |
+    | `INSIDE_VEHICLE`       | Whether the player is inside a vehicle.                       |
+    | `INVISIBLE`            | Whether the player is invisible.                              |
+    | `INVULNERABLE`         | Whether the player is invulnerable.                           |
+    | `IN_BUBBLE_COLUMN`     | Whether the player is in a bubble column.                     |
+    | `IN_LAVA`              | Whether the player is in lava.                                |
+    | `IN_POWDERED_SNOW`     | Whether the player is in powdered snow.                       |
+    | `IN_RAIN`              | Whether the player is in rain.                                |
+    | `IN_WATER`             | Whether the player is in water.                               |
+    | `JUMPING`              | Whether the player is currently jumping.                      |
+    | `LEASHED`              | Whether the player is leashed.                                |
+    | `OP`                   | Whether the player is op.                                     |
+    | `PLAYER_TIME_RELATIVE` | Whether the player's time is relative to the server time.     |
+    | `RIPTIDING`            | Whether the player is currently using riptide.                |
+    | `SLEEPING`             | Whether the player is sleeping.                               |
+    | `SLEEPING_IGNORED`     | Whether the player is being ignored by the sleep requirement. |
+    | `SNEAKING`             | Whether the player is sneaking.                               |
+    | `SPRINTING`            | Whether the player is sprinting.                              |
+    | `SWIMMING`             | Whether the player is swimming.                               |
+
 ## `Tag`
 
 __Context__: @snippet:condition-meta:online-offline@  
