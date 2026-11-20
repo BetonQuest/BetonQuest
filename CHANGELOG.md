@@ -14,10 +14,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `projectile` action to spawn projectiles at a specific location with velocity
 - `particles` section to allow defining custom particle effects and animations
 - `spawnparticles` action to spawn particles at a specific location
+- `state` condition to check if a player is in a specific state
 ### Changed
 - `particle` action of EffectLib integration is now called `el_particle`
 ### Deprecated
 ### Removed
+- `burning` condition was replaced with `state FIRE`
+- `fly` condition was replaced with `state GLIDING`
+- `sneak` condition was replaced with `state SNEAKING`
 ### Fixed
 ### Security
 
