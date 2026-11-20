@@ -116,7 +116,8 @@
           "title": "Version 3.4.0",
           "features": [
             "- Element Polishing: actions, objectives, and conditions",
-            "- And new elements!"
+            "- New elements",
+            "- New particle system"
           ]
         },
         "north-west": {
@@ -138,6 +139,13 @@
           "features": [
             "- Polish all existing actions",
             "- New: particle, projectile, boostelytra"
+          ]
+        },
+        "east": {
+          "title": "Particles!",
+          "features": [
+            "- New particle system",
+            "- New spawnparticles action"
           ]
         }
       }
