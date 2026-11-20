@@ -2,8 +2,6 @@ package org.betonquest.betonquest.quest.condition.function;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.function.FunctionAssignment;
-import org.betonquest.betonquest.api.function.FunctionProvider;
-import org.betonquest.betonquest.api.function.MathFunction;
 import org.betonquest.betonquest.api.identifier.FunctionIdentifier;
 import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.Instruction;
@@ -47,15 +45,12 @@ public class FunctionConditionFactory implements PlayerConditionFactory, Playerl
     }
 
     private NullableConditionAdapter parse(final Instruction instruction) throws QuestException {
-        final Argument<MathFunction> function = instruction.identifier(FunctionIdentifier.class)
-                .map(functions::getFunction)
-                .get();
+        final Argument<FunctionIdentifier> functionIdentifier = instruction.identifier(FunctionIdentifier.class).get();
         final Argument<List<FunctionAssignment>> arguments = instruction.string()
                 .map(StringSourceAssignment::new)
                 .map(FunctionAssignment.class::cast)
                 .list()
                 .get();
-        final FunctionProvider functionProvider = functions.getFunctionProvider(instruction.getPackage());
-        return new NullableConditionAdapter(new FunctionCondition(functionProvider, function, arguments));
+        return new NullableConditionAdapter(new FunctionCondition(functions, functionIdentifier, arguments));
     }
 }
