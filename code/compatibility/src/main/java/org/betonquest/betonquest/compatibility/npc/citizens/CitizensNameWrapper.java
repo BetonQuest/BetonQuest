@@ -47,7 +47,7 @@ public class CitizensNameWrapper implements NpcWrapper<NPC> {
                 if (selectedNpc == null) {
                     selectedNpc = npc;
                 } else {
-                    throw new QuestException("Multiple Citizens NPCs with the same name: " + npcName);
+                    throw new QuestException("Multiple Citizens NPCs with the name '%s'".formatted(npcName));
                 }
             }
         }

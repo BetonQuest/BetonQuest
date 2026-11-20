@@ -93,7 +93,7 @@ public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
                     patchTransformerRegistry == null ? defaultPatchTransformerRegistry : patchTransformerRegistry,
                     patchAccessor.getConfig());
         } catch (final InvalidConfigurationException e) {
-            this.log.error("Invalid patch file! " + e.getMessage(), e);
+            this.log.error("Invalid patch file: %s.".formatted(e.getMessage()), e);
             return null;
         }
     }
@@ -108,7 +108,7 @@ public class DefaultConfigAccessorFactory implements ConfigAccessorFactory {
         if (index == -1) {
             index = resourceFile.length();
         }
-        final String resourceFilePatch = resourceFile.substring(0, index) + ".patch" + resourceFile.substring(index);
+        final String resourceFilePatch = "%s.patch%s".formatted(resourceFile.substring(0, index), resourceFile.substring(index));
         try {
             return create(null, plugin, resourceFilePatch);
         } catch (final FileNotFoundException e) {

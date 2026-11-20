@@ -275,7 +275,7 @@ public class Backpack implements Listener {
          *
          * @param page number of the page to display, starting from 1
          */
-        @SuppressWarnings({"PMD.NPathComplexity", "PMD.CognitiveComplexity"})
+        @SuppressWarnings("PMD.CognitiveComplexity")
         private BackpackPage(final int page) {
             super();
             final boolean showJournalInBackpack = config.getBoolean("journal.show_in_backpack");
@@ -320,16 +320,15 @@ public class Backpack implements Listener {
                 showCompass = false;
             }
 
-            final Inventory inv;
+            Component backpackTitle;
             try {
-                Component backpackTitle = localizations.getMessage(onlineProfile, "backpack_title");
-                backpackTitle = backpackTitle.append(Component.text(pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
-                inv = Bukkit.createInventory(null, INVENTORY_SIZE, backpackTitle);
+                backpackTitle = localizations.getMessage(onlineProfile, "backpack_title");
             } catch (final QuestException e) {
-                log.warn("Could not create backpack inventory: " + e.getMessage(), e);
-                onlineProfile.getPlayer().closeInventory();
+                log.warn("Could not get message: %s".formatted(e.getMessage()), e);
                 return;
             }
+            backpackTitle = backpackTitle.append(Component.text(pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
+            final Inventory inv = Bukkit.createInventory(null, INVENTORY_SIZE, backpackTitle);
 
             inv.setContents(content);
             onlineProfile.getPlayer().openInventory(inv);
@@ -357,7 +356,7 @@ public class Backpack implements Listener {
                 final Component name = localizations.getMessage(onlineProfile, button);
                 stack.editMeta(meta -> meta.displayName(name));
             } catch (final QuestException e) {
-                log.warn("Could not set display name for " + button + " button: " + e.getMessage(), e);
+                log.warn("Could not get message: %s".formatted(e.getMessage()), e);
             }
             return Pair.of(stack, present);
         }
@@ -473,14 +472,15 @@ public class Backpack implements Listener {
                 log.warn(onlineProfile + " has too many active quests, please"
                         + " don't allow for so many of them. It slows down your server!");
             }
-            final Inventory inv;
+
+            final Component cancelPage;
             try {
-                inv = Bukkit.createInventory(null, numberOfRows * 9, localizations.getMessage(onlineProfile, "cancel_page"));
+                cancelPage = localizations.getMessage(onlineProfile, "cancel_page");
             } catch (final QuestException e) {
-                log.warn("Could not create cancel inventory: " + e.getMessage(), e);
-                onlineProfile.getPlayer().closeInventory();
+                log.warn("Could not send message: %s".formatted(e.getMessage()), e);
                 return;
             }
+            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, cancelPage);
             final ItemStack[] content = new ItemStack[numberOfRows * 9];
             int index = 0;
             for (final QuestCanceler canceler : cancelers) {
@@ -533,14 +533,15 @@ public class Backpack implements Listener {
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
-            final Inventory inv;
+
+            final Component compassPage;
             try {
-                inv = Bukkit.createInventory(null, numberOfRows * 9, localizations.getMessage(onlineProfile, "compass_page"));
+                compassPage = localizations.getMessage(onlineProfile, "compass_page");
             } catch (final QuestException e) {
-                log.warn("Could not create compass inventory: " + e.getMessage(), e);
-                onlineProfile.getPlayer().closeInventory();
+                log.warn("Could not send message: %s".formatted(e.getMessage()), e);
                 return;
             }
+            final Inventory inv = Bukkit.createInventory(null, numberOfRows * 9, compassPage);
             inv.setContents(getContent(numberOfRows));
             onlineProfile.getPlayer().openInventory(inv);
             Bukkit.getPluginManager().registerEvents(Backpack.this, plugin);

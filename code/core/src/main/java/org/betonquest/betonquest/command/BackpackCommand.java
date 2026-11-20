@@ -1,6 +1,5 @@
 package org.betonquest.betonquest.command;
 
-import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.feature.BackpackFactory;
@@ -16,11 +15,6 @@ import org.bukkit.entity.Player;
 public class BackpackCommand implements CommandExecutor {
 
     /**
-     * Custom {@link BetonQuestLogger} instance for this class.
-     */
-    private final BetonQuestLogger log;
-
-    /**
      * The profile provider instance.
      */
     private final ProfileProvider profileProvider;
@@ -33,12 +27,10 @@ public class BackpackCommand implements CommandExecutor {
     /**
      * Creates a new executor for the /backpack command.
      *
-     * @param log             the logger that will be used for logging
      * @param profileProvider the profile provider instance
      * @param backpackFactory the factory to create backpacks
      */
-    public BackpackCommand(final BetonQuestLogger log, final ProfileProvider profileProvider, final BackpackFactory backpackFactory) {
-        this.log = log;
+    public BackpackCommand(final ProfileProvider profileProvider, final BackpackFactory backpackFactory) {
         this.profileProvider = profileProvider;
         this.backpackFactory = backpackFactory;
     }
@@ -46,10 +38,8 @@ public class BackpackCommand implements CommandExecutor {
     @Override
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if ("backpack".equalsIgnoreCase(cmd.getName())) {
-            // command sender must be a player, console can't have a backpack
             if (sender instanceof Player) {
                 final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
-                log.debug("Executing /backpack command for " + onlineProfile);
                 backpackFactory.createBackpack(onlineProfile);
             }
             return true;

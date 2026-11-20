@@ -91,8 +91,7 @@ public class QuestItemConvertListener implements Listener {
             journalTitle = localizations.getMessage(profile, "journal_title");
             journalLines = ComponentLineWrapper.splitNewLine(localizations.getMessage(profile, "journal_title"));
         } catch (final QuestException e) {
-            log.warn("Can't migrate items on player join, failed to load message for profile '" + profile + "': "
-                    + e.getMessage(), e);
+            log.warn("Could not get message: %s".formatted(e.getMessage()), e);
             return;
         }
         for (final ItemStack stack : event.getPlayer().getInventory()) {

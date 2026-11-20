@@ -37,11 +37,11 @@ public class RegistryKeyParser<T extends Keyed> implements SimpleArgumentParser<
         final NamespacedKey namespacedKey = keyString.contains(":")
                 ? NamespacedKey.fromString(keyString) : NamespacedKey.minecraft(keyString);
         if (namespacedKey == null) {
-            throw new QuestException("Invalid namespaced key: " + keyString);
+            throw new QuestException("Invalid namespaced key '%s'".formatted(keyString));
         }
         final T value = RegistryAccess.registryAccess().getRegistry(this.key).get(namespacedKey);
         if (value == null) {
-            throw new QuestException("Can't find '" + namespacedKey + "' in registry '" + key + "'");
+            throw new QuestException("Can't find '%s' in registry '%s'".formatted(namespacedKey, key));
         }
         return value;
     }

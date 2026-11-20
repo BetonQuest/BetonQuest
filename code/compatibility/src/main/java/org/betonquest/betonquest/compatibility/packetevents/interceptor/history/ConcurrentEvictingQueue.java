@@ -35,7 +35,7 @@ public class ConcurrentEvictingQueue<E> extends AbstractQueue<E> {
     public ConcurrentEvictingQueue(final int maxSize) {
         super();
         if (maxSize < 0) {
-            throw new IllegalArgumentException("maxSize must not be negative: " + maxSize);
+            throw new IllegalArgumentException("maxSize '%s' must not be negative".formatted(maxSize));
         }
         this.delegate = new ConcurrentLinkedQueue<>();
         this.maxSize = maxSize;

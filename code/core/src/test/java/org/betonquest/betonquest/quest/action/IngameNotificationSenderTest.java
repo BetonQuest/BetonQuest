@@ -60,7 +60,7 @@ class IngameNotificationSenderTest {
             doThrow(new QuestException("Test cause.")).when(notifyIO).sendNotify(any(Component.class), any());
 
             assertDoesNotThrow(() -> sender.sendNotification(profile), "Failing to send a notification should not throw an exception.");
-            verify(logger, times(1)).warn(eq(questPackage), eq("The notify system was unable to send the notification message 'message-name' in 'full.id'. Error was: 'Test cause.'"), any(QuestException.class));
+            verify(logger, times(1)).warn(eq(questPackage), eq("The notify system was unable to send the notification message 'message-name' in 'full.id': Test cause."), any(QuestException.class));
             verifyNoMoreInteractions(logger);
         }
     }

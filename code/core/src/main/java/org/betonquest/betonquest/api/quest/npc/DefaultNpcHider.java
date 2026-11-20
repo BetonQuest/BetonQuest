@@ -119,7 +119,7 @@ public class DefaultNpcHider {
                 final SectionInstruction sectionInstruction = instructionApi.createSection(pack, section);
                 loadKey(sectionInstruction, idString);
             } catch (final QuestException e) {
-                log.warn("Could not load hide_npcs '" + idString + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
+                log.warn("Could not load hide_npcs '%s' in pack '%s': %s.".formatted(idString, pack.getQuestPath(), e.getMessage()), e);
             }
         }
     }
@@ -206,7 +206,7 @@ public class DefaultNpcHider {
         try {
             npcs = npcManager.getAll(onlineProfile, npcId);
         } catch (final QuestException exception) {
-            log.warn("NPCHider could not update visibility for npc '" + npcId + "': " + exception.getMessage(), exception);
+            log.warn("NPCHider could not update visibility for npc '%s': %s.".formatted(npcId, exception.getMessage()), exception);
             return;
         }
         final List<Npc<?>> spawned = npcs.stream().filter(Npc::isSpawned).toList();

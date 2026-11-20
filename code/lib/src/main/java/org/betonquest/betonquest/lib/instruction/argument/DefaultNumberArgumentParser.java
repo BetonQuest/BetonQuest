@@ -21,7 +21,7 @@ public class DefaultNumberArgumentParser extends DecoratableArgumentParser<Numbe
     public NumberArgumentParser atLeast(final Number inclusiveMin) {
         return new DefaultNumberArgumentParser(super.validate(
                 value -> value.doubleValue() >= inclusiveMin.doubleValue(),
-                "Value must be at least '" + inclusiveMin + "', but was %s"
+                "Value must be at least '%s', but was %%s".formatted(inclusiveMin)
         ));
     }
 
@@ -29,7 +29,7 @@ public class DefaultNumberArgumentParser extends DecoratableArgumentParser<Numbe
     public NumberArgumentParser atMost(final Number inclusiveMax) {
         return new DefaultNumberArgumentParser(super.validate(
                 value -> value.doubleValue() <= inclusiveMax.doubleValue(),
-                "Value must be at most '" + inclusiveMax + "', but was %s"
+                "Value must be at most '%s', but was %%s".formatted(inclusiveMax)
         ));
     }
 
@@ -38,7 +38,7 @@ public class DefaultNumberArgumentParser extends DecoratableArgumentParser<Numbe
         return new DefaultNumberArgumentParser(super.validate(
                 value -> value.doubleValue() >= inclusiveMin.doubleValue()
                         && value.doubleValue() < exclusiveMax.doubleValue(),
-                "Value must be at least '" + inclusiveMin + "' and less than '" + exclusiveMax + "', but was %s"
+                "Value must be at least '%s' and less than '%s', but was %%s".formatted(inclusiveMin, exclusiveMax)
         ));
     }
 }

@@ -61,6 +61,6 @@ class PlaceholderExtractorTest {
     @MethodSource("invalidInstructions")
     void invalid_strings_throw_tokenizer_exception(final String instruction) {
         final Tokenizer tokenizer = new PlaceholderExtractor(PlaceholderExtractorSettings.ONLY_PLACEHOLDERS);
-        assertThrows(TokenizerException.class, () -> tokenizer.tokens(instruction), "Expected tokenizing to fail for instruction: " + instruction);
+        assertThrows(TokenizerException.class, () -> tokenizer.tokens(instruction), "Expected tokenizing to fail for instruction '%s'".formatted(instruction));
     }
 }

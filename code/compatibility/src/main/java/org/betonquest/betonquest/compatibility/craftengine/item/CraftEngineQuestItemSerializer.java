@@ -21,7 +21,7 @@ public class CraftEngineQuestItemSerializer implements QuestItemSerializer {
     public String serialize(final ItemStack itemStack) throws QuestException {
         final Object customItemId = CraftEngineItems.getCustomItemId(itemStack);
         if (customItemId == null) {
-            throw new QuestException("Item is not a CraftEngine Item!");
+            throw new QuestException("Item is not a CraftEngine Item");
         }
         return customItemId.toString();
     }

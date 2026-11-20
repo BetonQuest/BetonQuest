@@ -128,7 +128,7 @@ class MultiSectionConfigurationKeyConflictExceptionTest {
     private void createConfig(final Map<ConfigurationSection, String> configsMap, final String... configStrings) throws KeyConflictException, InvalidSubConfigurationException {
         for (int i = 0; i < configStrings.length; i++) {
             final YamlConfiguration config = new YamlConfiguration();
-            configsMap.put(config, "Config-" + (i + 1));
+            configsMap.put(config, "Config-%s".formatted(i + 1));
             try {
                 config.loadFromString(configStrings[i]);
             } catch (final InvalidConfigurationException e) {

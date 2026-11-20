@@ -172,7 +172,7 @@ public class QuestMigrator {
         final String versionString = quest.getQuestConfig().getString(QUEST_VERSION_PATH);
         final BetonQuestMigratorVersion lastVersionToSet = migrations.isEmpty() ? fallbackVersion : migrations.lastKey();
         if (versionString == null) {
-            log.debug("  No version present, just setting to '" + lastVersionToSet + "'");
+            log.debug("  No version present, just setting to '%s'.".formatted(lastVersionToSet));
             lastVersionToSet.setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();
             return;
@@ -193,21 +193,20 @@ public class QuestMigrator {
         } else {
             final BetonQuestMigratorVersion otherVersion = new BetonQuestMigratorVersion(versionString);
             if (lastVersionToSet.equals(otherVersion)) {
-                log.debug("  Version '" + otherVersion + "' is up to date");
+                log.debug("  Version '%s' is up to date".formatted(otherVersion));
                 return;
             }
             if (lastVersionToSet.wrappedVersion().isOlderThan(VersionComparisonStrategies.DEFAULT, otherVersion.wrappedVersion())) {
-                throw new VersionMissmatchException("The version '" + otherVersion
-                        + "' is newer than the latest known version '" + lastVersionToSet + "'!\n"
-                        + "Quests with newer versions will probably cause issues. If you know that won't be the case"
-                        + " you can change the quest version to the latest known.");
+                throw new VersionMissmatchException("The version '%s' is newer than the latest known version '%s'!".formatted(otherVersion, lastVersionToSet)
+                        + "\nQuests with newer versions will probably cause issues. "
+                        + "If you know that won't be the case you can change the quest version to the latest known.");
             }
-            log.debug("  Migrating from version '" + otherVersion + "' to '" + lastVersionToSet + "'");
+            log.debug("  Migrating from version '%s' to '%s'.".formatted(otherVersion, lastVersionToSet));
             actualMigrations = migrations.tailMap(otherVersion, false);
         }
 
         if (actualMigrations.isEmpty()) {
-            log.debug("  No newer migrations found, just setting version to '" + lastVersionToSet + "'");
+            log.debug("  No newer migrations found, just setting version to '%s'.".formatted(lastVersionToSet));
             lastVersionToSet.setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();
             return;
@@ -217,7 +216,7 @@ public class QuestMigrator {
             try {
                 entry.getValue().migrate(quest);
             } catch (final Exception e) {
-                throw new InvalidConfigurationException("Unexpected error while applying migration '" + entry.getKey() + "': " + e.getMessage(), e);
+                throw new InvalidConfigurationException("Unexpected error while applying migration '%s': %s".formatted(entry.getKey(), e.getMessage()), e);
             }
             entry.getKey().setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();

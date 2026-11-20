@@ -135,7 +135,7 @@ public class DownloadSubCommand extends QuestCommandPart {
                 log.debug(errSummary, e);
             } catch (final Exception e) {
                 sendMessageSync(sender, "download_failed",
-                        new VariableReplacement("error", Component.text(e.getClass().getSimpleName() + ": " + e.getMessage())));
+                        new VariableReplacement("error", Component.text("%s: %s".formatted(e.getClass().getSimpleName(), e.getMessage()))));
                 if (sender instanceof final Player player) {
                     final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, null, plugin);
                     record.setThrown(e);

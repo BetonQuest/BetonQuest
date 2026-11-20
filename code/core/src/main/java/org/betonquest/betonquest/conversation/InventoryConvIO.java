@@ -201,7 +201,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             try {
                 conv.sendMessage(localizations.getMessage(profile, "conversation_spectator"));
             } catch (final QuestException e) {
-                log.warn("Failed to get conversation_spectator message: " + e.getMessage(), e);
+                log.warn("Could not send message: %s".formatted(e.getMessage()), e);
             }
             return;
         }

@@ -27,7 +27,7 @@ public enum Type {
                 if (mob.isPresent()) {
                     return mob.get();
                 }
-                throw new QuestException("There exists no such MythicMob type: " + string);
+                throw new QuestException("MythicMob type '%s' not found".formatted(string));
             }).get();
             return new MMTypeWrapper(mobExecutor, mythicHider, mythicMob);
         }

@@ -71,7 +71,7 @@ public class InstructionPartsArray implements InstructionParts {
     @Override
     public String getPart(final int index) throws QuestException {
         if (index < 0 || index >= this.parts.length) {
-            throw new QuestException("No part at index " + index);
+            throw new QuestException("No part at index '%s'".formatted(index));
         }
         return this.parts[index];
     }

@@ -39,7 +39,7 @@ public class IASetBlockAction implements PlayerAction {
         final Location loc = location.getValue(profile);
         final CustomStack customStack = itemID.getValue(profile);
         if (!customStack.isBlock()) {
-            throw new QuestException("ItemsAdder Item is not a block: " + itemID);
+            throw new QuestException("ItemsAdder Item '%s' is not a block".formatted(itemID));
         }
         CustomBlock.place(customStack.getNamespacedID(), loc);
     }

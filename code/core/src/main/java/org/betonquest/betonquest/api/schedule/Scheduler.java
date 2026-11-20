@@ -126,7 +126,7 @@ public abstract class Scheduler<S extends Schedule, T> {
      * @param schedule a schedule that reached execution time, providing a list of actions to run
      */
     protected void executeActions(final S schedule) {
-        log.debug(schedule.getId().getPackage(), "Schedule '" + schedule.getId() + "' runs its actions...");
+        log.debug(schedule.getId().getPackage(), "Schedule '%s' runs its actions...".formatted(schedule.getId()));
         actionManager.run(null, schedule.getActions());
     }
 

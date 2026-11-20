@@ -44,7 +44,7 @@ public class ListEntryRenameTransformer implements PatchTransformer {
         config.set(key, list);
 
         if (!listExists) {
-            throw new PatchException("List '" + key + "' did not exist, so an empty list was created.");
+            throw new PatchException("List '%s' did not exist, so an empty list was created".formatted(key));
         }
         if (!match.get()) {
             throw new PatchException("Tried to rename '%s' with '%s' but there was no such element in the list '%s'."

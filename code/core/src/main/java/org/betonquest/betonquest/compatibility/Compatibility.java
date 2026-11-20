@@ -112,7 +112,7 @@ public class Compatibility implements Listener, FastStatsMetricsProvider {
 
     private Map.Entry<String, String> getPluginNameAndVersion(final Plugin plugin) {
         final List<String> authors = plugin.getDescription().getAuthors();
-        final String name = plugin.getName() + " [" + String.join(", ", authors) + "]";
+        final String name = "%s [%s]".formatted(plugin.getName(), String.join(", ", authors));
         return Map.entry(name, plugin.getDescription().getVersion());
     }
 
@@ -178,7 +178,7 @@ public class Compatibility implements Listener, FastStatsMetricsProvider {
         try {
             hologramProvider = HologramProvider.init(betonQuestApi, config, hologramIntegrations);
         } catch (final QuestException e) {
-            log.warn("Failed to load hologram provider: " + e.getMessage(), e);
+            log.warn("Failed to load hologram provider: %s".formatted(e.getMessage()), e);
         }
     }
 

@@ -91,14 +91,14 @@ public class ItemSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not serialize item: " + e.getMessage(), e);
+            log.warn("Item in hand could not be serialized: %s".formatted(e.getMessage()), e);
             return;
         }
         // save it in items.yml
-        log.debug("Saving item to configuration as " + args[1] + " (" + args[2] + ")");
-        final String path = "items." + name;
+        log.debug("Saving item to configuration as %s (%s)".formatted(args[1], args[2]));
+        final String path = "items.%s".formatted(name);
         final boolean exists = configPack.getConfig().isSet(path);
-        configPack.getConfig().set(path, args[2] + " " + instructions);
+        configPack.getConfig().set(path, "%s %s".formatted(args[2], instructions));
         try {
             if (!exists) {
                 final ConfigAccessor itemFile = configPack.getOrCreateConfigAccessor("items.yml");

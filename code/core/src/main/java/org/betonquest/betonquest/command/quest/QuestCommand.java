@@ -169,8 +169,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return false;
         }
         try {
-            log.debug("Executing /betonquest command for user " + sender.getName()
-                    + " with arguments: " + Arrays.toString(args));
+            log.debug("Executing /betonquest command for user '%s' with arguments '%s'".formatted(sender.getName(), Arrays.toString(args)));
             // if the command is empty, display help message
             if (args.length == 0) {
                 displayHelp(sender, alias);
@@ -195,7 +194,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             log.debug("Command executing done");
             return true;
         } catch (final QuestException e) {
-            log.error("Error while executing command: " + e.getMessage(), e);
+            log.error("Error while executing command: %s".formatted(e.getMessage()), e);
         }
         return false;
     }
@@ -262,8 +261,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         final OnlineProfile profile = sender instanceof final Player player ? profileProvider.getProfile(player) : null;
 
         for (final Map.Entry<String, String> entry : subCommandSyntax.entrySet()) {
-            final Component command = Component.text("/" + alias + " " + entry.getValue()).color(NamedTextColor.RED);
-            final Component hint = localizations.getMessage(profile, "command_" + entry.getKey()).color(NamedTextColor.AQUA);
+            final Component command = Component.text("/%s %s".formatted(alias, entry.getValue())).color(NamedTextColor.RED);
+            final Component hint = localizations.getMessage(profile, "command_%s".formatted(entry.getKey())).color(NamedTextColor.AQUA);
 
             builder.append(Component.newline());
             if (profile == null) {
@@ -280,8 +279,9 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             sender.sendMessage(localizations.getMessage(profile, messageName, replacements));
         } catch (final QuestException e) {
-            log.warn("Failed to send message '" + messageName + "': " + e.getMessage(), e);
-            sender.sendMessage("Failed to send message '" + messageName + "': " + e.getMessage());
+            final String message = "Could not send message: %s".formatted(e.getMessage());
+            log.warn(message, e);
+            sender.sendMessage(message);
         }
     }
 }

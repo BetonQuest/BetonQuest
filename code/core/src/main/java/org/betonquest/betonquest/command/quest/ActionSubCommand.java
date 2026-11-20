@@ -54,7 +54,7 @@ public class ActionSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find action: " + e.getMessage(), e);
+            log.warn("Action '%s' could not be parsed: %s".formatted(args[2], e.getMessage()), e);
             return;
         }
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));

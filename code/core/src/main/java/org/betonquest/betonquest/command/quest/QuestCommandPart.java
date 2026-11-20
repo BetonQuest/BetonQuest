@@ -135,8 +135,9 @@ public abstract class QuestCommandPart implements SubCommand {
         try {
             sender.sendMessage(localizations.getMessage(profile, messageName, replacements));
         } catch (final QuestException e) {
-            log.warn("Failed to send message '" + messageName + "': " + e.getMessage(), e);
-            sender.sendMessage("Failed to send message '" + messageName + "': " + e.getMessage());
+            final String message = "Could not send message: %s".formatted(e.getMessage());
+            log.warn(message, e);
+            sender.sendMessage(message);
         }
     }
 

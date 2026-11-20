@@ -104,7 +104,7 @@ public class NpcHolograms implements QuestMigration {
             } catch (final NumberFormatException e) {
                 yVector = split[1];
             }
-            subConfig.set(VECTOR, split[0] + ";" + yVector + ";" + split[2]);
+            subConfig.set(VECTOR, "%s;%s;%s".formatted(split[0], yVector, split[2]));
         }
     }
 }

@@ -55,7 +55,7 @@ public class QuestListException extends QuestException {
     public void printStackTrace(final PrintStream stream) {
         super.printStackTrace(stream);
         for (final Map.Entry<String, QuestException> entry : exceptions.entrySet()) {
-            stream.println("    " + entry.getKey() + ": ");
+            stream.printf("    %s: %n", entry.getKey());
             entry.getValue().printStackTrace(stream);
         }
     }

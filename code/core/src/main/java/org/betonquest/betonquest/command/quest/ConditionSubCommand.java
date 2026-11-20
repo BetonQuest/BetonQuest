@@ -56,7 +56,7 @@ public class ConditionSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find condition: " + e.getMessage(), e);
+            log.warn("Condition '%s' could not be parsed: %s".formatted(args[2], e.getMessage()), e);
             return;
         }
         // display message about condition

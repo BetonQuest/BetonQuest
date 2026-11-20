@@ -52,7 +52,7 @@ public enum Weather {
             case "rain", "rainy" -> RAIN;
             case "storm", "thunder" -> STORM;
             default ->
-                    throw new QuestException("Unknown weather state (valid options are: sun, clear, rain, rainy, storm, thunder): " + weatherName);
+                    throw new QuestException("Unknown weather state '%s' (valid options are: sun, clear, rain, rainy, storm, thunder)".formatted(weatherName));
         };
     }
 

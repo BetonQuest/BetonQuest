@@ -114,7 +114,7 @@ public final class DependencyHelper {
             final String cycleDescription = cycleNodes.stream()
                     .map(node -> node.getClass().getSimpleName())
                     .collect(Collectors.joining(" -> "));
-            throw new IllegalStateException("Cyclic dependency detected among nodes: " + cycleDescription);
+            throw new IllegalStateException("Cyclic dependency detected among nodes '%s'".formatted(cycleDescription));
         }
         return orderedNodes;
     }

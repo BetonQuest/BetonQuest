@@ -26,7 +26,7 @@ public class CraftEngineParser implements SimpleArgumentParser<BukkitItemDefinit
     public BukkitItemDefinition apply(final String string) throws QuestException {
         final BukkitItemDefinition bukkitItemDefinition = CraftEngineItems.byId(string);
         if (bukkitItemDefinition == null) {
-            throw new QuestException("Invalid CraftEngine Item '%s'!".formatted(string));
+            throw new QuestException("Invalid CraftEngine Item '%s'".formatted(string));
         }
         return bukkitItemDefinition;
     }

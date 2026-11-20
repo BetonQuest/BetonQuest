@@ -122,8 +122,7 @@ public class DefaultArgument<T> implements Argument<T> {
                 final Argument<String> placeholderArgument = placeholders.create(pack, replaceEscapedPercent(placeholder));
                 foundPlaceholders.put(placeholder, placeholderArgument);
             } catch (final QuestException exception) {
-                throw new QuestException("Could not create placeholder '" + placeholder + "': "
-                        + exception.getMessage(), exception);
+                throw new QuestException("Could not create placeholder '%s': %s".formatted(placeholder, exception.getMessage()), exception);
             }
         }
         return foundPlaceholders;
@@ -143,7 +142,7 @@ public class DefaultArgument<T> implements Argument<T> {
             final String placeholder = matcher.group();
             final Argument<String> resolved = foundPlaceholders.get(placeholder);
             if (resolved == null) {
-                throw new QuestException("Could not resolve placeholder '" + placeholder + "'");
+                throw new QuestException("Could not resolve placeholder '%s'".formatted(placeholder));
             }
             matcher.appendReplacement(resolvedString, Matcher.quoteReplacement(resolved.getValue(profile)));
         }

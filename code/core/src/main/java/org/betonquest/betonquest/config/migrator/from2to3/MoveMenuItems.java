@@ -36,7 +36,7 @@ public class MoveMenuItems implements QuestMigration {
     private void migrateMenu(final String key, final ConfigurationSection items, final ConfigurationSection section,
                              final MultiConfiguration config) throws InvalidConfigurationException {
         for (final String itemsKey : items.getKeys(false)) {
-            final String itemPath = "menu_items." + key + "_" + itemsKey;
+            final String itemPath = "menu_items.%s_%s".formatted(key, itemsKey);
             final ConfigurationSection item = items.getConfigurationSection(itemsKey);
             config.set(itemPath, item);
             final ConfigurationSection source = config.getSourceConfigurationSection(item.getCurrentPath());

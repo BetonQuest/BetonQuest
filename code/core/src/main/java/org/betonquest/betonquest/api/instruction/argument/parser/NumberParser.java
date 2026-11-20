@@ -46,7 +46,7 @@ public class NumberParser implements SimpleArgumentParser<Number> {
         try {
             return Double.parseDouble(value);
         } catch (final NumberFormatException e) {
-            throw new QuestException("Could not parse number: " + value, e);
+            throw new QuestException("Could not parse value '%s' to number".formatted(value), e);
         }
     }
 
@@ -54,7 +54,7 @@ public class NumberParser implements SimpleArgumentParser<Number> {
     public Number apply(final String string) throws QuestException {
         final Number parse = parse(string);
         if (!valueChecker.validate(parse)) {
-            throw new QuestException("Could not validate number: " + string);
+            throw new QuestException("Could not validate '%s' as number".formatted(string));
         }
         return parse;
     }

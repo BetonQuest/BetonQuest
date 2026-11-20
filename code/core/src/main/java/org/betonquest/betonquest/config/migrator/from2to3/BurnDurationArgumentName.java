@@ -25,7 +25,7 @@ public class BurnDurationArgumentName implements QuestMigration {
                     final int expectedSplitLength = 2;
                     if (split.length == expectedSplitLength) {
                         final String durationValue = split[1];
-                        return split[0].replace("burn ", "burn " + durationValue + " ");
+                        return split[0].replace("burn ", "burn %s ".formatted(durationValue));
                     }
                     return value;
                 });

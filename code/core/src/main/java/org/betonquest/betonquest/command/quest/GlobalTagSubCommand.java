@@ -45,7 +45,7 @@ public class GlobalTagSubCommand extends QuestCommandPart {
             globalData.tags().get().stream()
                     .filter(shouldDisplay)
                     .sorted()
-                    .forEach(tag -> sender.sendMessage("§b- " + tag));
+                    .forEach(tag -> sender.sendMessage("§b- %s".formatted(tag)));
             return;
         }
         // handle purge
@@ -69,12 +69,12 @@ public class GlobalTagSubCommand extends QuestCommandPart {
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
-                log.debug("Adding global tag " + tag);
+                log.debug("Adding global tag '%s'".formatted(tag));
                 globalData.tags().add(tag);
                 sendMessage(sender, "tag_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing global tag " + tag);
+                log.debug("Removing global tag '%s'".formatted(tag));
                 globalData.tags().remove(tag);
                 sendMessage(sender, "tag_removed");
             }

@@ -409,6 +409,6 @@ public class ConfigurationSectionDecorator implements ConfigurationSection {
     @Override
     public String toString() {
         final Configuration root = this.getRoot();
-        return this.getClass().getSimpleName() + "[path='" + this.getCurrentPath() + "', root='" + (root == null ? null : root.getClass().getSimpleName()) + "']";
+        return "%s[path='%s', root='%s']".formatted(this.getClass().getSimpleName(), this.getCurrentPath(), root == null ? null : root.getClass().getSimpleName());
     }
 }

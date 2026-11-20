@@ -77,7 +77,7 @@ public class ObjectiveSubCommand extends QuestCommandPart {
             sendMessage(sender, "player_objectives");
             objectives.filter(shouldDisplay)
                     .sorted()
-                    .forEach(objective -> sender.sendMessage("§b- " + objective));
+                    .forEach(objective -> sender.sendMessage("§b- %s".formatted(objective)));
             return;
         }
         // if there is not enough arguments, display warning
@@ -101,12 +101,12 @@ public class ObjectiveSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find objective: " + e.getMessage(), e);
+            log.warn("Objective '%s' could not be parsed: %s".formatted(args[3], e.getMessage()), e);
             return;
         }
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "start", "s", "add", "a" -> {
-                log.debug("Adding new objective " + objectiveID + " for " + profile);
+                log.debug("Adding new objective '%s' for %s.".formatted(objectiveID, profile));
                 if (isOnline) {
                     objectiveManager.start(profile, objectiveID);
                 } else {
@@ -115,13 +115,13 @@ public class ObjectiveSubCommand extends QuestCommandPart {
                 sendMessage(sender, "objective_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Deleting objective " + objectiveID + " for " + profile);
+                log.debug("Deleting objective '%s' for %s.".formatted(objectiveID, profile));
                 objectiveManager.cancel(profile, objectiveID);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
             }
             case "complete", "c" -> {
-                log.debug("Completing objective " + objectiveID + " for " + profile);
+                log.debug("Completing objective '%s' for %s.".formatted(objectiveID, profile));
                 if (isOnline) {
                     objective.getService().complete(profile);
                 } else {

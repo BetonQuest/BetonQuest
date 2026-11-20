@@ -48,7 +48,7 @@ public abstract class AbstractFallbackConfigurationSectionEmptyOriginalTest exte
     void original_is_not_modified_by_read() {
         config.getValues(true);
         final Set<String> keys = getOriginal().getKeys(true);
-        assertTrue(keys.isEmpty(), "Original was modified by read operation: " + keys);
+        assertTrue(keys.isEmpty(), "Original was modified by read operation: %s".formatted(keys));
     }
 
     @Test

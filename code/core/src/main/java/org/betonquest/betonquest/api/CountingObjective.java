@@ -78,7 +78,7 @@ public abstract class CountingObjective extends DefaultObjective {
             case "absoluteamount" -> Math.abs(countingData.getCompletedAmount());
             case "absoluteleft" -> Math.abs(countingData.getAmountLeft());
             case "absolutetotal" -> Math.abs(countingData.getTargetAmount());
-            default -> throw new QuestException("Unknown property: " + name);
+            default -> throw new QuestException("Unknown property %s".formatted(name));
         };
         return Integer.toString(data);
     }
@@ -98,7 +98,7 @@ public abstract class CountingObjective extends DefaultObjective {
         try {
             return new CountingData(data, profile, getObjectiveID());
         } catch (final QuestException e) {
-            throw new QuestException("Could not access CountingData for profile '" + profile + "': " + e.getMessage(), e);
+            throw new QuestException("Could not access CountingData for profile '%s': %s".formatted(profile, e.getMessage()), e);
         }
     }
 
@@ -228,7 +228,7 @@ public abstract class CountingObjective extends DefaultObjective {
                     lastChange = new AtomicInteger(Integer.parseInt(instructionParts[3]));
                     break;
                 default:
-                    throw new QuestException("Invalid instruction string: " + instruction);
+                    throw new QuestException("Invalid instruction string '%s'".formatted(instruction));
             }
         }
 
@@ -236,11 +236,11 @@ public abstract class CountingObjective extends DefaultObjective {
             try {
                 return Integer.parseInt(countingInstruction);
             } catch (final NumberFormatException e) {
-                log.warn(objID.getPackage(), "Loaded counting objective '" + objID + "' from database with invalid amount."
-                        + " This is probably caused by a change of the objective's implementation."
-                        + " The objective will be reset to an amount of 1."
-                        + " This is normally the previous amount and can be ignored.");
-                log.debug(objID.getPackage(), "Invalid instruction string: '" + instruction + "'");
+                log.warn(objID.getPackage(), ("Loaded counting objective '%s' from database with invalid amount. "
+                        + "This is probably caused by a change of the objective's implementation. "
+                        + "The objective will be reset to an amount of 1."
+                        + " This is normally the previous amount and can be ignored.").formatted(objID));
+                log.debug(objID.getPackage(), "Invalid instruction string '%s'.".formatted(instruction));
                 dirty.set(true);
                 return 1;
             }
@@ -398,7 +398,7 @@ public abstract class CountingObjective extends DefaultObjective {
             try {
                 service = BetonQuest.getInstance().getComponentLoader().get(ObjectiveManager.class).getObjective(objID).getService();
             } catch (final QuestException e) {
-                throw new IllegalStateException("Could not get objective service for objective '" + objID + "'", e);
+                throw new IllegalStateException("Could not get objective service for objective '%s'".formatted(objID), e);
             }
             amountLeft.accumulateAndGet(amount, Integer::sum);
             lastChange.set(amount);

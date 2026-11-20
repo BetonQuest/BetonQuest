@@ -58,8 +58,9 @@ public class MenuConversationSettings implements Migration {
             paths.forEach(path -> {
                 final YamlConfiguration config = YamlConfiguration.loadConfiguration(path.toFile());
                 if (config.contains("menu_conv_io")) {
-                    log.warn("The menu conversation settings in " + path + " are no longer used, "
-                            + "move modified settings to the config.yml file, and delete the settings from the file.");
+                    log.warn(("The menu conversation settings in '%s' are no longer used,"
+                            + " move modified settings to the config.yml file, and delete the settings from the file.")
+                            .formatted(path));
                 }
             });
         }

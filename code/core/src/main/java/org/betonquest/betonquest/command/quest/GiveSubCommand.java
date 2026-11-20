@@ -62,29 +62,29 @@ public class GiveSubCommand extends QuestCommandPart {
             sendMessage(sender, "specify_item");
             return;
         }
+        final ItemIdentifier itemID;
         try {
-            final ItemIdentifier itemID;
-            try {
-                itemID = getIdentifier(ItemIdentifier.class, args[1]);
-            } catch (final QuestException e) {
-                sendMessage(sender, "error",
-                        new VariableReplacement("error", Component.text(e.getMessage())));
-                log.warn("Could not find Item: " + e.getMessage(), e);
-                return;
-            }
-            final OnlineAction give = new GiveAction(
-                    new DefaultArgument<>(List.of(new Item(itemManager, itemID, new DefaultArgument<>(1)))),
-                    new NoNotificationSender(),
-                    new IngameNotificationSender(log, localizations, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
-                            "inventory_full_backpack", "inventory_full"),
-                    new IngameNotificationSender(log, localizations, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
-                            "inventory_full_drop", "inventory_full"),
-                    profile -> Optional.empty(), playerDataStorage);
+            itemID = getIdentifier(ItemIdentifier.class, args[1]);
+        } catch (final QuestException e) {
+            sendMessage(sender, "error",
+                    new VariableReplacement("error", Component.text(e.getMessage())));
+            log.warn("Item '%s' could not be parsed: %s".formatted(args[1], e.getMessage()), e);
+            return;
+        }
+        final OnlineAction give = new GiveAction(
+                new DefaultArgument<>(List.of(new Item(itemManager, itemID, new DefaultArgument<>(1)))),
+                new NoNotificationSender(),
+                new IngameNotificationSender(log, localizations, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
+                        "inventory_full_backpack", "inventory_full"),
+                new IngameNotificationSender(log, localizations, itemID.getPackage(), itemID.getFull(), NotificationLevel.ERROR,
+                        "inventory_full_drop", "inventory_full"),
+                profile -> Optional.empty(), playerDataStorage);
+        try {
             give.execute(profileProvider.getProfile((Player) sender));
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Error while creating an item: " + e.getMessage(), e);
+            log.warn("Item '%s' could not be given: %s".formatted(itemID, e.getMessage()), e);
         }
     }
 

@@ -39,9 +39,9 @@ public final class DefaultArguments {
      */
     public static OnlineProfile online(@Nullable final Profile profile, final String name) throws QuestException {
         if (profile == null) {
-            throw new QuestException("Can't get " + name + " for null profile");
+            throw new QuestException("Can't get %s for null profile".formatted(name));
         }
         return profile.getOnlineProfile()
-                .orElseThrow(() -> new QuestException("Can't get " + name + " for offline profile"));
+                .orElseThrow(() -> new QuestException("Can't get %s for offline profile".formatted(name)));
     }
 }

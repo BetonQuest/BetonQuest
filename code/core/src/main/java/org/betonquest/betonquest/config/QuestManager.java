@@ -128,7 +128,7 @@ public class QuestManager implements QuestPackageManager {
                 try {
                     questMigrator.migrate(quest);
                 } catch (final VersionMissmatchException e) {
-                    log.warn("QuestTemplate '" + quest.getQuestPath() + "': " + e.getMessage(), e);
+                    log.warn("QuestTemplate '%s': %s".formatted(quest.getQuestPath(), e.getMessage()), e);
                 }
                 templates.put(quest.getQuestPath(), quest);
             });
@@ -137,12 +137,12 @@ public class QuestManager implements QuestPackageManager {
                 try {
                     questMigrator.migrate(quest);
                 } catch (final VersionMissmatchException e) {
-                    log.warn("QuestPackage '" + quest.getQuestPath() + "': " + e.getMessage(), e);
+                    log.warn("QuestPackage '%s': %s".formatted(quest.getQuestPath(), e.getMessage()), e);
                 }
                 try {
                     quest.applyQuestTemplates(templates);
                 } catch (final InvalidConfigurationException e) {
-                    log.warn("Error while loading QuestPackage '" + quest.getQuestPath() + "'! Reason: " + e.getMessage(), e);
+                    log.warn("Error while loading QuestPackage '%s': %s".formatted(quest.getQuestPath(), e.getMessage()), e);
                     return;
                 }
                 if (quest.getConfig().getBoolean("package.enabled", true)) {
@@ -150,7 +150,7 @@ public class QuestManager implements QuestPackageManager {
                 }
             });
         } catch (final IOException e) {
-            log.error("Error while loading '" + packagesDir.getPath() + "'!", e);
+            log.error("Error while loading '%s': %s.".formatted(packagesDir.getPath(), e.getMessage()), e);
         }
     }
 
@@ -161,7 +161,7 @@ public class QuestManager implements QuestPackageManager {
 
     private boolean createFolderIfAbsent(final File file) {
         if (!file.exists() && !file.mkdir()) {
-            log.error("It was not possible to create the folder '" + file.getPath() + "'!");
+            log.error("It was not possible to create the folder '%s'.".formatted(file.getPath()));
             return false;
         }
         return true;
@@ -205,11 +205,11 @@ public class QuestManager implements QuestPackageManager {
 
     private File[] checkAndGetFiles(final File file) throws IOException {
         if (!file.isDirectory()) {
-            throw new IOException("File '" + file.getPath() + "' is not a directory!");
+            throw new IOException("File '%s' is not a directory!".formatted(file.getPath()));
         }
         final File[] files = file.listFiles();
         if (files == null) {
-            throw new IOException("Invalid list of files for directory '" + file.getPath() + "'!");
+            throw new IOException("Invalid list of files for directory '%s'!".formatted(file.getPath()));
         }
         return files;
     }
@@ -220,7 +220,7 @@ public class QuestManager implements QuestPackageManager {
         try {
             creator.create(questPath, relativeRoot, files);
         } catch (final InvalidConfigurationException | IOException e) {
-            log.warn(root.getParentFile().getName() + " '" + questPath + "' could not be loaded, reason: " + e.getMessage(), e);
+            log.warn("%s '%s' could not be loaded: %s.".formatted(root.getParentFile().getName(), questPath, e.getMessage()), e);
         }
     }
 

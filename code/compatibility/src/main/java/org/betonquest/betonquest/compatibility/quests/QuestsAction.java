@@ -52,7 +52,7 @@ public class QuestsAction implements PlayerAction {
             }
         }
         if (foundQuest == null) {
-            throw new QuestException("Quest '" + questName + "' is not defined");
+            throw new QuestException("Quest '%s' is not defined".formatted(questName));
         }
         quests.getQuester(profile.getProfileUUID()).takeQuest(foundQuest, override.getValue(profile).orElse(false));
     }

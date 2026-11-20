@@ -496,10 +496,8 @@ class VersionComparatorTest {
     private void assertMultipleVersions(final Comparator<Version> versionComparator, final BetonQuestUpdateStrategy strategy, final boolean updateExpected,
                                         final Version current, final Version... targets) {
         for (final Version targetVersion : targets) {
-            final String message = "UpdateStrategy: '" + strategy
-                    + "', Version: '" + current
-                    + "', with Version: '" + targetVersion.toString()
-                    + "', expected: '" + updateExpected + "'!";
+            final String message = "UpdateStrategy: '%s', Version: '%s', with Version: '%s', expected: '%s'!"
+                    .formatted(strategy, current, targetVersion.toString(), updateExpected);
             assertEquals(updateExpected, current.isOlderThan(versionComparator, targetVersion), message);
         }
     }

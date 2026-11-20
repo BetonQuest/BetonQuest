@@ -42,7 +42,7 @@ public class PointSubCommand extends QuestCommandPart {
             sendMessage(sender, "player_points");
             playerData.points().get().entrySet().stream()
                     .filter(shouldDisplay)
-                    .forEach(point -> sender.sendMessage("§b- " + point.getKey() + "§e: §a" + point.getValue()));
+                    .forEach(point -> sender.sendMessage("§b- %s§e: §a%d".formatted(point.getKey(), point.getValue())));
             return;
         }
         // if there is not enough arguments, display warning

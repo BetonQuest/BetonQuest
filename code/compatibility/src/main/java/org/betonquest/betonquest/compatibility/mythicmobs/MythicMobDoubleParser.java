@@ -31,7 +31,7 @@ public record MythicMobDoubleParser(
         }
         final Optional<MythicMob> mythicMob = mobManager.getMythicMob(parts[0]);
         if (mythicMob.isEmpty()) {
-            throw new QuestException("MythicMob type " + parts[0] + " is invalid.");
+            throw new QuestException("MythicMob type '%s' is invalid".formatted(parts[0]));
         }
         return Map.entry(mythicMob.get(), NumberParser.DEFAULT.apply(parts[1]).doubleValue());
     }

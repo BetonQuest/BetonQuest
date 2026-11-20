@@ -31,7 +31,7 @@ public class OpenShopActionFactory implements PlayerActionFactory {
                 throw new QuestException("Shopkeeper with the UUID '%s' does not exist!".formatted(string));
             }
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Could not parse UUID: '" + string + "'", e);
+            throw new QuestException("Could not parse UUID '%s'".formatted(string), e);
         }
         return new OnlineActionAdapter(new OpenShopAction(shopkeeper));
     }

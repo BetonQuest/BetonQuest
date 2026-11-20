@@ -206,7 +206,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
             final Argument<ItemWrapper> parsedValue = instructionApi.createForArgument(pack, line).item().get();
             return new ItemLine(parsedValue.getValue(null));
         } catch (final QuestException e) {
-            throw new QuestException("Error while loading item: " + e.getMessage(), e);
+            throw new QuestException("Error while loading item: %s".formatted(e.getMessage()), e);
         }
     }
 
@@ -229,7 +229,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
         final String formattingGroup = validator.group(4);
         for (final String placeholder : List.of("{place}", "{name}", "{score}")) {
             if (!formattingGroup.contains(placeholder)) {
-                log.debug(pack, "Hologram '" + name + "' in pack '" + pack + "' does not contain placeholder '" + placeholder + "'.");
+                log.debug(pack, "Hologram '%s' in pack '%s' does not contain placeholder '%s'.".formatted(name, pack, placeholder));
             }
         }
         return new TopLine(loggerFactory, connector, pointName, orderType, limit, new VariableComponent(textParser.parse(formattingGroup)));
@@ -242,7 +242,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
         if (ORDER_ASC.equalsIgnoreCase(type)) {
             return TopXObject.OrderType.ASCENDING;
         }
-        throw new QuestException("Top list order type '" + type + "' unknown! Expected 'asc' or 'desc'.");
+        throw new QuestException("Top list order type '%s' unknown! Expected 'asc' or 'desc'".formatted(type));
     }
 
     private TextLine parseTextLine(final QuestPackage pack, final String line) throws QuestException {

@@ -43,7 +43,7 @@ public class TagSubCommand extends QuestCommandPart {
             playerData.tags().get().stream()
                     .filter(shouldDisplay)
                     .sorted()
-                    .forEach(tag -> sender.sendMessage("§b- " + tag));
+                    .forEach(tag -> sender.sendMessage("§b- %s".formatted(tag)));
             return;
         }
         // if there is not enough arguments, display warning

@@ -617,7 +617,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
     @Override
     public String toString() {
         final Configuration root = this.getRoot();
-        return this.getClass().getSimpleName() + "[path='" + this.getCurrentPath() + "', root='" + (root == null ? null : root.getClass().getSimpleName()) + "']";
+        return "%s[path='%s', root='%s']".formatted(this.getClass().getSimpleName(), this.getCurrentPath(), root == null ? null : root.getClass().getSimpleName());
     }
 
     /**
@@ -732,7 +732,7 @@ public class FallbackConfigurationSection implements ConfigurationSection {
         protected ConfigurationSection getFallback() {
             if (sectionName != null) {
                 if (parent == null) {
-                    throw new IllegalArgumentException("Fallback section '" + sectionName + "' has no parent");
+                    throw new IllegalArgumentException("Fallback section '%s' has no parent".formatted(sectionName));
                 }
                 final ConfigurationSection parentFallback = parent.manager.getFallback();
                 fallback = parentFallback == null ? null : parentFallback.getConfigurationSection(sectionName);

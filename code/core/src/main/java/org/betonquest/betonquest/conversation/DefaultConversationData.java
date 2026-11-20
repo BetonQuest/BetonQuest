@@ -177,9 +177,10 @@ public class DefaultConversationData implements ConversationData {
             }
 
             if (!conv.hasOption(resolvedOption)) {
-                log.warn(getPack(), "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
-                        + sourceOption + " points to '" + targetOptionName + "' NPC option in '" + targetConv.get()
-                        + "' conversation from package '" + targetPack.getQuestPath() + "', but it does not exist.");
+                log.warn(getPack(), ("External pointer in '%s' package, '%s' conversation,"
+                        + " %s points to '%s' NPC option in '%s' conversation from package '%s', but it does not exist.")
+                        .formatted(externalPointer.sourcePack(), externalPointer.sourceConv(), sourceOption,
+                                targetOptionName, targetConv.get(), targetPack.getQuestPath()));
             }
         }
         externalPointers.clear();

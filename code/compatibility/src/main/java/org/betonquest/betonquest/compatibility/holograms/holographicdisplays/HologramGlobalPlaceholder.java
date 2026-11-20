@@ -46,7 +46,7 @@ public class HologramGlobalPlaceholder implements GlobalPlaceholder {
         try {
             return placeholders.getValue(arguments, null);
         } catch (final QuestException e) {
-            log.warn("Could not parse hologram placeholder '" + arguments + "': " + e.getMessage(), e);
+            log.warn("Could not parse hologram placeholder '%s': %s.".formatted(arguments, e.getMessage()), e);
             return arguments;
         }
     }

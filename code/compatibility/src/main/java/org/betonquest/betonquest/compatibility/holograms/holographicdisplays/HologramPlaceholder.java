@@ -58,7 +58,7 @@ public class HologramPlaceholder implements IndividualPlaceholder {
         try {
             return placeholders.getValue(arguments, profile);
         } catch (final QuestException e) {
-            log.warn("Could not parse hologram placeholder '" + arguments + "': " + e.getMessage(), e);
+            log.warn("Could not parse hologram placeholder '%s': %s.".formatted(arguments, e.getMessage()), e);
             return arguments;
         }
     }

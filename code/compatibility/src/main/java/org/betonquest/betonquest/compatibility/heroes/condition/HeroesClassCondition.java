@@ -77,7 +77,7 @@ public class HeroesClassCondition implements OnlineCondition {
         }
         final HeroClass heroClass = classManager.getClass(heroClassName);
         if (heroClass == null) {
-            throw new QuestException("Class '" + heroClassName + "' does not exist");
+            throw new QuestException("Class '%s' does not exist".formatted(heroClassName));
         }
         return heroClass;
     }

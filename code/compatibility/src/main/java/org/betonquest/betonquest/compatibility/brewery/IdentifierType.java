@@ -30,10 +30,10 @@ public enum IdentifierType {
                 try {
                     return getByDirectId(name);
                 } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                    throw new QuestException("Could not get 'getID' method for recipe: " + e.getMessage(), e);
+                    throw new QuestException("Could not get 'getID' method for recipe: %s".formatted(e.getMessage()), e);
                 }
             }
-            throw new QuestException("The recipe with the id " + name + " does not exist");
+            throw new QuestException("The recipe with id '%s' does not exist".formatted(name));
         }
 
         @SuppressWarnings("PMD.NonThreadSafeSingleton")
@@ -48,7 +48,7 @@ public enum IdentifierType {
                     return recipe;
                 }
             }
-            throw new QuestException("The recipe with the id " + name + " does not exist");
+            throw new QuestException("The recipe with id '%s' does not exist".formatted(name));
         }
     },
     /**
@@ -59,7 +59,7 @@ public enum IdentifierType {
         public BRecipe getRecipeOrThrow(final String name) throws QuestException {
             final BRecipe recipe = BRecipe.get(name);
             if (recipe == null) {
-                throw new QuestException("There is no brewing recipe with the name " + name + "!");
+                throw new QuestException("The recipe with name '%s' does not exist".formatted(name));
             }
             return recipe;
         }

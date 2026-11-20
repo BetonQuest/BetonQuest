@@ -1,5 +1,6 @@
 package org.betonquest.betonquest.quest.objective.password;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.api.DefaultObjective;
@@ -89,14 +90,15 @@ public class PasswordObjective extends DefaultObjective {
     }
 
     private boolean chatInput(final boolean fromCommand, final OnlineProfile onlineProfile, final String message) throws QuestException {
-        final String prefix;
+        final Component passwordComponent;
         try {
-            prefix = passwordPrefix == null
-                    ? LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getBetonQuestApi().localizations().getMessage(onlineProfile, "password"))
-                    : passwordPrefix;
+            passwordComponent = BetonQuest.getInstance().getBetonQuestApi().localizations().getMessage(onlineProfile, "password");
         } catch (final QuestException e) {
             throw new QuestException("Failed to get password prefix: " + e.getMessage(), e);
         }
+        final String prefix = passwordPrefix == null
+                ? LegacyComponentSerializer.legacySection().serialize(passwordComponent)
+                : passwordPrefix;
         if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;
         }

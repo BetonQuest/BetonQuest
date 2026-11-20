@@ -62,8 +62,7 @@ public class LocationParser implements SimpleArgumentParser<Location> {
     @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
     private static Location parseLocation(final String loc, final Server server) throws QuestException {
         if (!PATTERN_LOCATION.matcher(loc).find()) {
-            throw new QuestException("Incorrect location format '" + loc
-                    + "'. A location has to be in the format 'x;y;z;world[;yaw;pitch]'");
+            throw new QuestException("Incorrect location format '%s'. A location has to be in the format 'x;y;z;world[;yaw;pitch]'".formatted(loc));
         }
         final String[] parts = loc.split(";");
 
@@ -82,7 +81,7 @@ public class LocationParser implements SimpleArgumentParser<Location> {
                 pitch = Float.parseFloat(parts[5]);
             }
         } catch (final NumberFormatException e) {
-            throw new QuestException("Could not parse a number in the location. " + e.getMessage(), e);
+            throw new QuestException("Could not parse a number in the location: %s".formatted(e.getMessage()), e);
         }
         return new Location(world, locX, locY, locZ, yaw, pitch);
     }

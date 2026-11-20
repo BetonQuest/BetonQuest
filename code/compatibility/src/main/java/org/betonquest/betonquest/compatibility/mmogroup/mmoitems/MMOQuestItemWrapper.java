@@ -75,7 +75,7 @@ public class MMOQuestItemWrapper implements QuestItemWrapper {
             item = mmoPlugin.getMMOItem(type, identifier, PlayerData.get(profile.getPlayerUUID()));
         }
         if (item == null) {
-            throw new QuestException("Could not find item for type " + type + " and identifier " + identifier);
+            throw new QuestException("Could not find item for type '%s' and identifier '%s'".formatted(type, identifier));
         }
         UUID soulboundTo = null;
         if (profile != null && profile.getOnlineProfile().isPresent()) {
