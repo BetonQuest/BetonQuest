@@ -5,6 +5,7 @@ import org.betonquest.betonquest.api.dependency.DependencyProvider;
 import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.api.service.condition.ConditionManager;
 import org.betonquest.betonquest.api.service.conversation.Conversations;
+import org.betonquest.betonquest.api.service.function.Functions;
 import org.betonquest.betonquest.api.service.instruction.Instructions;
 import org.betonquest.betonquest.api.service.npc.NpcManager;
 import org.betonquest.betonquest.api.service.objective.ObjectiveManager;
@@ -16,6 +17,7 @@ import org.betonquest.betonquest.lib.dependency.component.AbstractCoreComponent;
 import org.betonquest.betonquest.quest.placeholder.condition.ConditionPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.constant.ConstantPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.eval.EvalPlaceholderFactory;
+import org.betonquest.betonquest.quest.placeholder.function.FunctionPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.item.ItemDurabilityPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.item.ItemPlaceholderFactory;
 import org.betonquest.betonquest.quest.placeholder.location.LocationPlaceholderFactory;
@@ -56,7 +58,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         return Set.of(Plugin.class, Localizations.class, GlobalData.class, PlayerDataStorage.class,
                 PlaceholderTypeRegistry.class, Conversations.class, ConditionManager.class,
                 ObjectiveManager.class, PlaceholderManager.class, NpcManager.class, Instructions.class,
-                BetonQuestLoggerFactory.class);
+                Functions.class, BetonQuestLoggerFactory.class);
     }
 
     @Override
@@ -72,11 +74,13 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         final PlaceholderManager placeholderManager = getDependency(PlaceholderManager.class);
         final NpcManager npcManager = getDependency(NpcManager.class);
         final Instructions instructions = getDependency(Instructions.class);
+        final Functions functions = getDependency(Functions.class);
         final BetonQuestLoggerFactory loggerFactory = getDependency(BetonQuestLoggerFactory.class);
 
         placeholderTypes.register("condition", new ConditionPlaceholderFactory(conditionManager, localizations));
         placeholderTypes.registerCombined("constant", new ConstantPlaceholderFactory());
         placeholderTypes.registerCombined("eval", new EvalPlaceholderFactory());
+        placeholderTypes.registerCombined("function", new FunctionPlaceholderFactory(functions));
         placeholderTypes.register("globalpoint", new GlobalPointPlaceholderFactory(globalData));
         placeholderTypes.register("globaltag", new GlobalTagPlaceholderFactory(globalData, localizations));
         placeholderTypes.registerCombined("item", new ItemPlaceholderFactory(dataStorage));
