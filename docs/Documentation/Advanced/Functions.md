@@ -290,23 +290,25 @@ subroutine(argument1,argument2)
 
 Available subroutines:
 
-| Subroutine | Parameters        | Description                                                                                                                                       | Example                                |
-|------------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
-| `abs`      | `x`               | Returns the absolute value of `x`. Negative numbers become positive, positive numbers stay unchanged.                                             | `abs(-5)` returns `5`                  |
-| `avg`      | at least 1        | Returns the average of all given numbers. Accepts any number of arguments. If no argument is given, `0` is used as the default value.             | `avg(2, 6)` returns `4`                |
-| `ceil`     | `x`               | Rounds `x` up to the next whole number.                                                                                                           | `ceil(2.1)` returns `3`                |
-| `clamp`    | `value, min, max` | Limits `value` to the range between `min` and `max`. Returns `min` if `value` is smaller, `max` if it is greater, otherwise `value`.              | `clamp(120, 0, 100)` returns `100`     |
-| `cos`      | `x`               | Returns the cosine of `x`. The value is interpreted as radians.                                                                                   | `cos(0)` returns `1`                   |
-| `exp`      | `x`               | Returns Euler's number `e` raised to the power of `x`.                                                                                            | `exp(1)` returns approximately `2.718` |
-| `floor`    | `x`               | Rounds `x` down to the previous whole number.                                                                                                     | `floor(2.9)` returns `2`               |
-| `log`      | `basis, value`    | Returns the logarithm of `value` with the given `basis`.                                                                                          | `log(10, 100)` returns `2`             |
-| `max`      | at least 1        | Returns the greatest number from all given arguments. Accepts any number of arguments. If no argument is given, `0` is used as the default value. | `max(3, 8, 2)` returns `8`             |
-| `min`      | at least 1        | Returns the smallest number from all given arguments. Accepts any number of arguments. If no argument is given, `0` is used as the default value. | `min(3, 8, 2)` returns `2`             |
-| `round`    | `x`               | Rounds `x` to the nearest whole number.                                                                                                           | `round(2.6)` returns `3`               |
-| `sin`      | `x`               | Returns the sine of `x`. The value is interpreted as radians.                                                                                     | `sin(0)` returns `0`                   |
-| `sqrt`     | `x`               | Returns the square root of `x`.                                                                                                                   | `sqrt(9)` returns `3`                  |
-| `sum`      | at least 1        | Returns the sum of all given numbers. Accepts any number of arguments. If no argument is given, `0` is used as the default value.                 | `sum(2, 4, 6)` returns `12`            |
-| `tan`      | `x`               | Returns the tangent of `x`. The value is interpreted as radians.                                                                                  | `tan(0)` returns `0`                   |
+| Subroutine | Parameters        | Description                                                                                                                                       | Example                                 |
+|------------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| `abs`      | `x`               | Returns the absolute value of `x`. Negative numbers become positive, positive numbers stay unchanged.                                             | `abs(-5)` returns `5`                   |
+| `avg`      | at least 1        | Returns the average of all given numbers. Accepts any number of arguments. If no argument is given, `0` is used as the default value.             | `avg(2, 6)` returns `4`                 |
+| `ceil`     | `x`               | Rounds `x` up to the next whole number.                                                                                                           | `ceil(2.1)` returns `3`                 |
+| `clamp`    | `value, min, max` | Limits `value` to the range between `min` and `max`. Returns `min` if `value` is smaller, `max` if it is greater, otherwise `value`.              | `clamp(120, 0, 100)` returns `100`      |
+| `cos`      | `x`               | Returns the cosine of `x`. The value is interpreted as radians.                                                                                   | `cos(0)` returns `1`                    |
+| `exp`      | `x`               | Returns Euler's number `e` raised to the power of `x`.                                                                                            | `exp(1)` returns approximately `2.718`  |
+| `floor`    | `x`               | Rounds `x` down to the previous whole number.                                                                                                     | `floor(2.9)` returns `2`                |
+| `log`      | `basis, value`    | Returns the logarithm of `value` with the given `basis`.                                                                                          | `log(10, 100)` returns `2`              |
+| `max`      | at least 1        | Returns the greatest number from all given arguments. Accepts any number of arguments. If no argument is given, `0` is used as the default value. | `max(3, 8, 2)` returns `8`              |
+| `min`      | at least 1        | Returns the smallest number from all given arguments. Accepts any number of arguments. If no argument is given, `0` is used as the default value. | `min(3, 8, 2)` returns `2`              |
+| `pi`       | `x`               | Returns `x` multiplied by the value of `pi` ($\pi$).                                                                                              | `pi(2)` returns approximately `6.283`   |
+| `rnd`      | `min, max`        | Returns a random number between `min` and `max`.                                                                                                  | `rnd(1, 10)` returns a value like `5.4` |
+| `round`    | `x`               | Rounds `x` to the nearest whole number.                                                                                                           | `round(2.6)` returns `3`                |
+| `sin`      | `x`               | Returns the sine of `x`. The value is interpreted as radians.                                                                                     | `sin(0)` returns `0`                    |
+| `sqrt`     | `x`               | Returns the square root of `x`.                                                                                                                   | `sqrt(9)` returns `3`                   |
+| `sum`      | at least 1        | Returns the sum of all given numbers. Accepts any number of arguments. If no argument is given, `0` is used as the default value.                 | `sum(2, 4, 6)` returns `12`             |
+| `tan`      | `x`               | Returns the tangent of `x`. The value is interpreted as radians.                                                                                  | `tan(0)` returns `0`                    |
 
 Subroutines can be combined with other operators:
 

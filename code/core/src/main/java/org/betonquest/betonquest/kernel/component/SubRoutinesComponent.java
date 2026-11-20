@@ -12,6 +12,8 @@ import org.betonquest.betonquest.function.subroutine.FloorSubRoutine;
 import org.betonquest.betonquest.function.subroutine.LogSubRoutine;
 import org.betonquest.betonquest.function.subroutine.MaxSubRoutine;
 import org.betonquest.betonquest.function.subroutine.MinSubRoutine;
+import org.betonquest.betonquest.function.subroutine.PiSubRoutine;
+import org.betonquest.betonquest.function.subroutine.RndSubRoutine;
 import org.betonquest.betonquest.function.subroutine.RoundSubRoutine;
 import org.betonquest.betonquest.function.subroutine.SinSubRoutine;
 import org.betonquest.betonquest.function.subroutine.SqrtSubRoutine;
@@ -51,6 +53,8 @@ public class SubRoutinesComponent extends AbstractCoreComponent {
         functions.registerSubRoutine("log", new LogSubRoutine());
         functions.registerSubRoutine("max", new MaxSubRoutine());
         functions.registerSubRoutine("min", new MinSubRoutine());
+        functions.registerSubRoutine("pi", new PiSubRoutine());
+        functions.registerSubRoutine("rnd", new RndSubRoutine());
         functions.registerSubRoutine("round", new RoundSubRoutine());
         functions.registerSubRoutine("sin", new SinSubRoutine());
         functions.registerSubRoutine("sqrt", new SqrtSubRoutine());

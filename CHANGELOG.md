@@ -15,6 +15,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `particles` section to allow defining custom particle effects and animations
 - `spawnparticles` action to spawn particles at a specific location
 - `state` condition to check if a player is in a specific state
+- `rnd` and `pi` as inbuilt subroutines for functions
 ### Changed
 - `particle` action of EffectLib integration is now called `el_particle`
 ### Deprecated
