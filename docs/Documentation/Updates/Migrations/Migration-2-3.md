@@ -57,6 +57,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.0.0-DEV-673 - `auto-once` Objectives](#300-dev-673-auto-once-objectives) :sun:
 - [3.1.0-DEV-13 - Reshape burn action](#310-dev-13-reshape-burn-action) :sun:
 - [3.4.0-DEV-7 - Rename EffectLib `particle` action to `el_particle`](#340-dev-7-rename-effectlib-particle-action-to-el_particle) :sun:
+- [3.4.0-DEV-15 - `fly`, `sneak` and `burning` conditions](#340-dev-15-fly-sneak-and-burning-conditions) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -1176,6 +1177,34 @@ The [burn action](../../Reference/Actions-List.md#burn) has been reshaped.
     ```YAML title="New Syntax"
     actions:
       playEffect: el_particle beton loc:100;200;300;world
+    ```
+    
+    </div>
+
+### 3.4.0-DEV-15 - `fly`, `sneak` and `burning` conditions :sun:
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+
+    The conditions `fly`, `sneak` and `burning` have been replaced by the `state` condition.
+    They are now fully integrated into the `state` condition, which allows for more states to be checked.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    conditions:
+      isFlying: fly
+      isSneaking: sneak
+      isBurning: burning
+    ```
+    
+    ```YAML title="New Syntax"
+    conditions:
+      isFlying: state GLIDING
+      isSneaking: state SNEAKING
+      isBurning: state FIRE
     ```
     
     </div>

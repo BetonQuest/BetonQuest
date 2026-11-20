@@ -19,6 +19,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `particle` action of EffectLib integration is now called `el_particle`
 ### Deprecated
 ### Removed
+- `burning` condition was replaced with `state FIRE`
+- `fly` condition was replaced with `state GLIDING`
+- `sneak` condition was replaced with `state SNEAKING`
 ### Fixed
 ### Security
 

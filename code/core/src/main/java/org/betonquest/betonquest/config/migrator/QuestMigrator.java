@@ -31,6 +31,7 @@ import org.betonquest.betonquest.config.migrator.from2to3.PackageSeparator;
 import org.betonquest.betonquest.config.migrator.from2to3.PickRandomPercentage;
 import org.betonquest.betonquest.config.migrator.from2to3.RemoveLegacyPointModification;
 import org.betonquest.betonquest.config.migrator.from2to3.RemoveStringList;
+import org.betonquest.betonquest.config.migrator.from2to3.StateConditionsMigrator;
 import org.betonquest.betonquest.config.migrator.from2to3.VariablesRename;
 import org.betonquest.betonquest.lib.config.patcher.migration.BetonQuestMigratorVersion;
 import org.betonquest.betonquest.lib.config.patcher.migration.QuestMigration;
@@ -136,6 +137,7 @@ public class QuestMigrator {
         migrations.put(questVersion("3.2.0", 1), new DeleteEffectAny());
         migrations.put(questVersion("3.2.0", 2), new ChestGiveDropFlag());
         migrations.put(questVersion("3.4.0", 1), new EffectLibParticleRename());
+        migrations.put(questVersion("3.4.0", 2), new StateConditionsMigrator());
         this.fallbackVersion = questVersion(pluginDescription.getVersion(), 0);
     }
 

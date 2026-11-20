@@ -73,17 +73,6 @@ conditions:
   inSavannaRock: "biome savanna_rock"
 ```
 
-## `Burning`
-
-__Context__: @snippet:condition-meta:online@  
-__Syntax__: `burning`  
-__Description__: Whether the player is on fire.
-
-```YAML title="Examples"
-conditions:
-  isOnFire: "burning"
-```
-
 ## `Check`
 
 __Context__: @snippet:condition-meta:independent@  
@@ -224,17 +213,6 @@ Valid directions are `UP`, `DOWN`, `NORTH`, `EAST`, `WEST` and `SOUTH`. Up and d
 ```YAML title="Examples"
 conditions:
   lookingEast: "facing EAST"
-```
-
-## `Fly`
-
-__Context__: @snippet:condition-meta:online@  
-__Syntax__: `fly`  
-__Description__: Whether the player is currently flying (Elytra type of flight).
-
-```YAML title="Examples"
-conditions:
-  isFlying: "fly"
 ```
 
 ## `Function`
@@ -785,19 +763,6 @@ conditions:
 1. Is equivalent to the "sectionAll" condition.
 2. Is equivalent to the "sectionAll" condition.
 
-## `Sneak`
-
-__Context__: @snippet:condition-meta:online@  
-__Syntax__: `sneak`  
-__Description__: Whether the player is sneaking.
-
-This would probably be useful for creating traps, I'm not sure. There are no arguments for this one.
-
-```YAML title="Examples"
-conditions:
-  isSneaking: "sneak"
-```
-    
 ## `Stage`
 
 __Context__: @snippet:condition-meta:online-offline@  
