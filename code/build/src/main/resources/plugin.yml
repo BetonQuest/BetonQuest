@@ -51,11 +51,6 @@ commands:
     usage: /<command>
     permission: betonquest.journal
     aliases: [ bj, bjournal, betonjournal, betonquestjournal ]
-  backpack:
-    description: Opens quest backpack
-    usage: /<command>
-    permission: betonquest.backpack
-    aliases: [ bb, bbackpack, betonbackpack, betonquestbackpack ]
   compass:
     description: Opens the compass menu
     usage: /<command>

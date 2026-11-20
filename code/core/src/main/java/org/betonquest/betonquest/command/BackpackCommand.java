@@ -1,19 +1,42 @@
 package org.betonquest.betonquest.command;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
 import org.betonquest.betonquest.api.profile.OnlineProfile;
 import org.betonquest.betonquest.api.profile.ProfileProvider;
 import org.betonquest.betonquest.feature.BackpackFactory;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * The backpack command. It opens profile's backpack.
  */
-@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
-public class BackpackCommand implements CommandExecutor {
+public class BackpackCommand {
+
+    /**
+     * The command description.
+     */
+    public static final String DESCRIPTION = "Opens quest backpack";
+
+    /**
+     * The command aliases.
+     */
+    public static final List<String> ALIASES = List.of("bb", "bbackpack", "betonbackpack", "betonquestbackpack");
+
+    /**
+     * The command label.
+     */
+    private static final String COMMAND_LABEL = "backpack";
+
+    /**
+     * The permission required to use this command.
+     */
+    private static final String PERMISSION = "betonquest.backpack";
 
     /**
      * Custom {@link BetonQuestLogger} instance for this class.
@@ -31,7 +54,7 @@ public class BackpackCommand implements CommandExecutor {
     private final BackpackFactory backpackFactory;
 
     /**
-     * Creates a new executor for the /backpack command.
+     * Creates a new /backpack command.
      *
      * @param log             the logger that will be used for logging
      * @param profileProvider the profile provider instance
@@ -43,17 +66,25 @@ public class BackpackCommand implements CommandExecutor {
         this.backpackFactory = backpackFactory;
     }
 
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
-        if ("backpack".equalsIgnoreCase(cmd.getName())) {
-            // command sender must be a player, console can't have a backpack
-            if (sender instanceof Player) {
-                final OnlineProfile onlineProfile = profileProvider.getProfile((Player) sender);
-                log.debug("Executing /backpack command for " + onlineProfile);
-                backpackFactory.createBackpack(onlineProfile);
-            }
-            return true;
+    /**
+     * Creates the Brigadier command node.
+     *
+     * @return the command node
+     */
+    public LiteralCommandNode<CommandSourceStack> createCommandNode() {
+        return Commands.literal(COMMAND_LABEL)
+                .requires(source -> source.getSender().hasPermission(PERMISSION))
+                .executes(context -> execute(context.getSource().getSender()))
+                .build();
+    }
+
+    private int execute(final CommandSender sender) {
+        // command sender must be a player, console can't have a backpack
+        if (sender instanceof final Player player) {
+            final OnlineProfile onlineProfile = profileProvider.getProfile(player);
+            log.debug("Executing /backpack command for " + onlineProfile);
+            backpackFactory.createBackpack(onlineProfile);
         }
-        return false;
+        return Command.SINGLE_SUCCESS;
     }
 }
