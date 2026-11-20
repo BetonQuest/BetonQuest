@@ -72,6 +72,35 @@ on this in the [nested package paths](../Basics/Packages-&-Templates.md#nested-p
 %eval.player.\%OtherPackage\>objective.placeholderStore.displayType\%%
 ```
 
+## `Function`
+
+__Context__: @snippet:placeholder-meta:online-offline-independent@  
+__Syntax__: `function.<identifier>.[assignments...]`  
+__Description__: Evaluates a [function](../Advanced/Functions.md) and returns its result.
+
+This placeholder resolves a function by its identifier, evaluates it with the provided assignments, and returns the 
+result as a string.  
+Parameter values are provided in order of the function's definition. If the function has default values for parameters, they will be used if no assignment is provided.
+Parameter values that contain dots (.) need to be quoted with `{` and `}` around them.
+
+| Parameter                           | Type     | Explanation                                    |
+|-------------------------------------|----------|------------------------------------------------|
+| identifier <br>[FunctionIdentifier] | Required | The identifier of the function to evaluate.    |
+| assignments <br>List[String]        | Optional | A list of assignments to pass to the function. |
+
+```scss title="Examples"
+%function.test_positive.5%
+%function.add_numbers.{-1.1}.{1.1}%
+%function.max.67.123.86.-33.44.11%
+```
+
+!!! warning "Current Limitations"
+
+    To insert a placeholder value as a function parameter, you must use the `eval` placeholder.
+    Ensure that the value is properly quoted if the resolved value contains a dot.  
+    This limitations will be resolved in a future update when quoting support is implemented for placeholders.
+    
+
 ## `GlobalPoint`
 
 __Context__: @snippet:placeholder-meta:independent@  
