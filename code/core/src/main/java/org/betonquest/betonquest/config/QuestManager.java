@@ -3,6 +3,7 @@ package org.betonquest.betonquest.config;
 import org.betonquest.betonquest.api.config.ConfigAccessor;
 import org.betonquest.betonquest.api.config.ConfigAccessorFactory;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageCache;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.api.logger.BetonQuestLogger;
@@ -10,6 +11,7 @@ import org.betonquest.betonquest.api.logger.BetonQuestLoggerFactory;
 import org.betonquest.betonquest.config.migrator.QuestMigrator;
 import org.betonquest.betonquest.lib.config.patcher.migration.VersionMissmatchException;
 import org.betonquest.betonquest.lib.config.quest.Quest;
+import org.betonquest.betonquest.lib.config.quest.QuestPackageCacheImpl;
 import org.betonquest.betonquest.lib.config.quest.QuestPackageImpl;
 import org.betonquest.betonquest.lib.config.quest.QuestTemplate;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -41,6 +43,11 @@ public class QuestManager implements QuestPackageManager {
      * Name of the folder to place {@link QuestPackage}s in.
      */
     public static final String QUEST_PACKAGES_FOLDER = "QuestPackages";
+
+    /**
+     * Name of the folder to place {@link QuestPackage} cache files in.
+     */
+    public static final String QUEST_CACHE_FOLDER = ".cache/packages";
 
     /**
      * The type name of the file that indicates a file for a quest in a quest folder.
@@ -104,6 +111,24 @@ public class QuestManager implements QuestPackageManager {
         loadPackages();
     }
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
+    private void createCacheFile(final String questPath, final File cacheFile) throws InvalidConfigurationException {
+        if (cacheFile.exists()) {
+            return;
+        }
+        final File parent = cacheFile.getParentFile();
+        if (parent != null && !parent.exists() && !parent.mkdirs()) {
+            throw new InvalidConfigurationException("Could not create cache directory for package '%s'!".formatted(questPath));
+        }
+        try {
+            if (!cacheFile.createNewFile()) {
+                throw new InvalidConfigurationException("Could not create cache file for package '%s'!".formatted(questPath));
+            }
+        } catch (final IOException e) {
+            throw new InvalidConfigurationException("Could not create cache file for package '%s': %s".formatted(questPath, e.getMessage()), e);
+        }
+    }
+
     /**
      * Reloads all {@link QuestPackage}s.
      * This will clear all previously loaded packages.
@@ -128,21 +153,22 @@ public class QuestManager implements QuestPackageManager {
                 try {
                     questMigrator.migrate(quest);
                 } catch (final VersionMissmatchException e) {
-                    log.warn("QuestTemplate '" + quest.getQuestPath() + "': " + e.getMessage(), e);
+                    log.warn("QuestTemplate '%s': %s".formatted(quest.getQuestPath(), e.getMessage()), e);
                 }
                 templates.put(quest.getQuestPath(), quest);
             });
             searchForPackages(packagesDir, packagesDir, FILE_NAME_INDICATOR, FILE_TYPE_INDICATOR, (questPath, questFile, files) -> {
-                final QuestPackageImpl quest = new QuestPackageImpl(loggerFactory.create(QuestPackageImpl.class), configAccessorFactory, questPath, questFile, files);
+                final QuestPackageCache cache = loadPackageCache(questPath);
+                final QuestPackageImpl quest = new QuestPackageImpl(loggerFactory.create(QuestPackageImpl.class), configAccessorFactory, questPath, questFile, files, cache);
                 try {
                     questMigrator.migrate(quest);
                 } catch (final VersionMissmatchException e) {
-                    log.warn("QuestPackage '" + quest.getQuestPath() + "': " + e.getMessage(), e);
+                    log.warn("QuestPackage '%s': %s".formatted(quest.getQuestPath(), e.getMessage()), e);
                 }
                 try {
                     quest.applyQuestTemplates(templates);
                 } catch (final InvalidConfigurationException e) {
-                    log.warn("Error while loading QuestPackage '" + quest.getQuestPath() + "'! Reason: " + e.getMessage(), e);
+                    log.warn("Error while loading QuestPackage '%s'! Reason: %s".formatted(quest.getQuestPath(), e.getMessage()), e);
                     return;
                 }
                 if (quest.getConfig().getBoolean("package.enabled", true)) {
@@ -150,7 +176,7 @@ public class QuestManager implements QuestPackageManager {
                 }
             });
         } catch (final IOException e) {
-            log.error("Error while loading '" + packagesDir.getPath() + "'!", e);
+            log.error("Error while loading '%s'!".formatted(packagesDir.getPath()), e);
         }
     }
 
@@ -159,9 +185,23 @@ public class QuestManager implements QuestPackageManager {
         return packages;
     }
 
+    private QuestPackageCache loadPackageCache(final String questPath) {
+        final File cacheDir = new File(root, QUEST_CACHE_FOLDER);
+        final File cacheFile = new File(cacheDir, questPath + FILE_TYPE_INDICATOR);
+        return new QuestPackageCacheImpl(loggerFactory.create(QuestPackageCache.class),
+                () -> {
+                    try {
+                        createCacheFile(questPath, cacheFile);
+                        return configAccessorFactory.create(cacheFile);
+                    } catch (final InvalidConfigurationException | IOException e) {
+                        throw new IllegalStateException("Could not load package cache for '%s'!".formatted(questPath), e);
+                    }
+                }, () -> questPath);
+    }
+
     private boolean createFolderIfAbsent(final File file) {
         if (!file.exists() && !file.mkdir()) {
-            log.error("It was not possible to create the folder '" + file.getPath() + "'!");
+            log.error("It was not possible to create the folder '%s'!".formatted(file.getPath()));
             return false;
         }
         return true;
@@ -205,11 +245,11 @@ public class QuestManager implements QuestPackageManager {
 
     private File[] checkAndGetFiles(final File file) throws IOException {
         if (!file.isDirectory()) {
-            throw new IOException("File '" + file.getPath() + "' is not a directory!");
+            throw new IOException("File '%s' is not a directory!".formatted(file.getPath()));
         }
         final File[] files = file.listFiles();
         if (files == null) {
-            throw new IOException("Invalid list of files for directory '" + file.getPath() + "'!");
+            throw new IOException("Invalid list of files for directory '%s'!".formatted(file.getPath()));
         }
         return files;
     }
@@ -220,7 +260,7 @@ public class QuestManager implements QuestPackageManager {
         try {
             creator.create(questPath, relativeRoot, files);
         } catch (final InvalidConfigurationException | IOException e) {
-            log.warn(root.getParentFile().getName() + " '" + questPath + "' could not be loaded, reason: " + e.getMessage(), e);
+            log.warn("%s '%s' could not be loaded, reason: %s".formatted(root.getParentFile().getName(), questPath, e.getMessage()), e);
         }
     }
 

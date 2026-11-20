@@ -17,8 +17,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `state` condition to check if a player is in a specific state
 - `rnd` and `pi` as inbuilt subroutines for functions
 - `function` placeholder to get a function value
+- Package-specific cache stored in `.cache/packages/<package>.yml` accessible via `QuestPackage`
 ### Changed
 - `particle` action of EffectLib integration is now called `el_particle`
+- Schedule last execution times are now cached in each package's cache file under `schedules` instead of a single global file
 ### Deprecated
 ### Removed
 - `burning` condition was replaced with `state FIRE`

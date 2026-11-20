@@ -2,6 +2,7 @@ package org.betonquest.betonquest.bstats;
 
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.config.quest.QuestPackageCache;
 import org.betonquest.betonquest.api.config.quest.QuestPackageManager;
 import org.betonquest.betonquest.api.identifier.ReadableIdentifier;
 import org.betonquest.betonquest.api.instruction.DefaultInstruction;
@@ -96,7 +97,8 @@ class BStatsMetricsTest {
         if (!packageConfigFile.createNewFile()) {
             throw new IOException("Failed to create test package main configuration file.");
         }
-        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(loggerFactory, logger), PACKAGE_PATH, packageConfigFile, Collections.emptyList());
+        return new QuestPackageImpl(logger, new DefaultConfigAccessorFactory(loggerFactory, logger), PACKAGE_PATH,
+                packageConfigFile, Collections.emptyList(), mock(QuestPackageCache.class));
     }
 
     @Test

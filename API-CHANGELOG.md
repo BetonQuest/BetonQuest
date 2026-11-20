@@ -16,11 +16,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `ParticleAnimationProvider` to produce particle animations for a specific profile
 - `Particles::getParticleAnimation(ParticleIdentifier)` to retrieve the particle animation provider for a particle identifier
 - `BetonQuestApi::particles` to retrieve the `ParticleAnimationProvider` instance
+- `QuestPackageCache` interface representing a package-specific YAML cache
+- `QuestPackage::getCache` method to access the cache of a quest package
 #### Changed
 #### Deprecated
 #### Removed
 ### Library
 #### Added
+- `QuestPackageCacheImpl` as implementation for `QuestPackageCache`
 #### Changed
 #### Deprecated
 #### Removed
