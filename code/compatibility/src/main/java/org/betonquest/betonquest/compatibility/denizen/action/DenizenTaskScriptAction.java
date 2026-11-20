@@ -48,7 +48,7 @@ public class DenizenTaskScriptAction implements PlayerAction {
             throw new QuestException("'%s' is not a Denizen task script".formatted(name), e);
         }
         if (script == null) {
-            throw new QuestException("Could not find Denizen script: '%s'".formatted(name));
+            throw new QuestException("Denizen script '%s' does not exist".formatted(name));
         }
         final BukkitScriptEntryData data = new BukkitScriptEntryData(PlayerTag.mirrorBukkitPlayer(profile.getPlayer()), null);
         final Map<String, String> resolvedDefinitions = new HashMap<>();

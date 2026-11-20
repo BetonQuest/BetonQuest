@@ -77,7 +77,7 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler.Standard {
             try {
                 return CustomModelData.parseCmd(resolvedString);
             } catch (final QuestException e) {
-                throw new QuestException("Could not parse custom-model-data '" + resolvedString + "': " + e.getMessage(), e);
+                throw new QuestException("Could not parse custom-model-data '%s': %s".formatted(resolvedString, e.getMessage()), e);
             }
         }).get("custom-model-data");
         final FlagArgument<Boolean> noData = instruction.bool().getFlag("no-custom-model-data", true);
@@ -177,7 +177,7 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler.Standard {
                         try {
                             colorList.add(Color.fromARGB(Integer.parseUnsignedInt(part, 16)));
                         } catch (final IllegalArgumentException e) {
-                            throw new QuestException("Invalid color: " + part, e);
+                            throw new QuestException("Invalid color '%s'".formatted(part), e);
                         }
                     }
                 case 3:
@@ -196,12 +196,12 @@ public class UpdatedCustomModelDataHandler implements ItemMetaHandler.Standard {
                         try {
                             floatList.add(Float.parseFloat(part));
                         } catch (final NumberFormatException e) {
-                            throw new QuestException("Could not parse number: " + part, e);
+                            throw new QuestException("Could not parse number '%s'".formatted(part), e);
                         }
                     }
                     return new CustomModelData(Existence.REQUIRED, floatList, flagList, stringList, colorList);
                 default:
-                    throw new QuestException("Invalid length: " + split.length);
+                    throw new QuestException("Invalid length '%s'".formatted(split.length));
             }
         }
 

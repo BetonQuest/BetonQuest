@@ -48,6 +48,6 @@ public class DefaultFontRegistry implements FontRegistry {
         if (fallbackFont != null) {
             return fallbackFont;
         }
-        throw new IllegalArgumentException("Font not found: " + name);
+        throw new IllegalArgumentException("Font '%s' does not exist".formatted(name));
     }
 }

@@ -95,13 +95,13 @@ class DefaultIdentifierFactoryTest {
 
             return Stream.of(
                     Arguments.of(manager, pack1, "NonExisting>testAction",
-                            "Test identifier 'NonExisting>testAction' could not be parsed: No package 'NonExisting' found!"),
+                            "Test identifier 'NonExisting>testAction' could not be parsed: Package 'NonExisting' does not exist"),
                     Arguments.of(manager, pack1Sub1, "_-_-_->testAction",
-                            "Test identifier '_-_-_->testAction' could not be parsed: Relative path '_-_-_-' goes up too many levels!"),
+                            "Test identifier '_-_-_->testAction' could not be parsed: Relative path '_-_-_-' goes up too many levels"),
                     Arguments.of(manager, pack1Sub1, "_-_->testAction",
-                            "Test identifier '_-_->testAction' could not be parsed: Relative path '_-_-' resolved to '', but this package does not exist!"),
+                            "Test identifier '_-_->testAction' could not be parsed: Relative path '_-_-' resolved to '', but this package does not exist"),
                     Arguments.of(manager, pack2, "-NonExisting>testAction",
-                            "Test identifier '-NonExisting>testAction' could not be parsed: Relative path '-NonExisting' resolved to 'Test2-NonExisting', but this package does not exist!")
+                            "Test identifier '-NonExisting>testAction' could not be parsed: Relative path '-NonExisting' resolved to 'Test2-NonExisting', but this package does not exist")
             );
         }
 

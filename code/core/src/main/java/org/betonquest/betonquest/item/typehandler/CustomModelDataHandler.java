@@ -48,7 +48,7 @@ public class CustomModelDataHandler implements ItemMetaHandler.Standard {
             try {
                 return Integer.parseInt(resolvedString);
             } catch (final NumberFormatException e) {
-                throw new QuestException("Could not parse custom model data value: " + resolvedString, e);
+                throw new QuestException("Could not parse custom model data value: '%s'".formatted(resolvedString), e);
             }
         }));
         final FlagArgument<Boolean> noModelData = instruction.bool().getFlag("no-custom-model-data", true);

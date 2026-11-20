@@ -99,9 +99,8 @@ public final class HandlerFactory {
             fileHandler.setFormatter(new LogfileFormatter());
             return fileHandler;
         } catch (final IOException e) {
-            throw new IOException("Could not create the FileHandler for the DebugLogger! "
-                    + "It was not possible to create the '" + logFile.getName() + "'. Reason: " + e.getMessage() + "\n"
-                    + "This is not a critical error, the server can still run, but it is not possible to use the '/bq debug true' command.", e);
+            throw new IOException("Could not create the FileHandler for the DebugLogger, it was not possible to create the '%s' file, this is not a critical error and the server can still run but it is not possible to use the '/bq debug true' command: %s"
+                    .formatted(logFile.getName(), e.getMessage()), e);
         }
     }
 
@@ -112,11 +111,11 @@ public final class HandlerFactory {
             try {
                 Files.move(logFile.toPath(), newFile.toPath());
             } catch (final IOException e) {
-                throw new IOException("Could not rename '" + logFile.getName() + "' file!", e);
+                throw new IOException("Could not rename '%s' file".formatted(logFile.getName()), e);
             }
         }
         if (!createFolderAndFile(logFile)) {
-            throw new IOException("Could not create new '" + logFile.getName() + "' file!");
+            throw new IOException("Could not create new '%s' file".formatted(logFile.getName()));
         }
         setFileCreationTime(logFile, instantSource.instant());
     }
@@ -127,7 +126,7 @@ public final class HandlerFactory {
             final FileTime fileTime = attr.creationTime();
             return String.format("%1$ty-%1$tm-%1$td-%1$tH-%1$tM", Date.from(fileTime.toInstant()));
         } catch (final IOException e) {
-            throw new IOException("Could not get file attributes for '" + logFile.getName() + "' file! Reason: " + e.getMessage(), e);
+            throw new IOException("Could not get file attributes for '%s' file: %s".formatted(logFile.getName(), e.getMessage()), e);
         }
     }
 

@@ -24,6 +24,6 @@ public class ThrowExceptionPlayerlessCondition implements PlayerlessCondition {
 
     @Override
     public boolean check() throws QuestException {
-        throw new QuestException("Executing in an independent context failed. %s".formatted(warning));
+        throw new QuestException("Executing in an independent context failed: %s".formatted(warning));
     }
 }

@@ -279,7 +279,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
          * @throws QuestException if the data is malformed
          */
         private CustomEffectHandler(final String custom) throws QuestException {
-            final String[] parts = HandlerUtil.getSplit(custom, "Potion is null!", ":");
+            final String[] parts = HandlerUtil.getSplit(custom, "Potion is null", ":");
             if (parts[0].startsWith("none-")) {
                 customTypeE = Existence.FORBIDDEN;
                 customType = getType(parts[0].substring("none-".length()));
@@ -308,7 +308,7 @@ public class PotionHandler implements ItemMetaHandler<PotionMeta> {
         private PotionEffectType getType(final String name) throws QuestException {
             final PotionEffectType effectType = PotionEffectType.getByName(name);
             if (effectType == null) {
-                throw new QuestException("Unknown effect type '%s'!".formatted(name));
+                throw new QuestException("Effect type '%s' does not exist".formatted(name));
             }
             return effectType;
         }

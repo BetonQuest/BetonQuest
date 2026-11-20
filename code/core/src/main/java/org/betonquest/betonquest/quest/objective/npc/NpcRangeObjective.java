@@ -124,7 +124,7 @@ public class NpcRangeObjective extends DefaultObjective {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .toList();
-        final QuestListException questListException = new QuestListException("Could not loop all online profiles:");
+        final QuestListException questListException = new QuestListException("Could not loop all online profiles");
         for (final OnlineProfile onlineProfile : profiles) {
             try {
                 for (final NpcIdentifier npcId : npcIds.getValue(onlineProfile)) {

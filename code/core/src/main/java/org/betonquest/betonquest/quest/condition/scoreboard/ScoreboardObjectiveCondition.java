@@ -40,7 +40,7 @@ public class ScoreboardObjectiveCondition implements PlayerCondition {
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective obj = board.getObjective(objective);
         if (obj == null) {
-            throw new QuestException("Scoreboard objective " + objective + " dose not exist!");
+            throw new QuestException("Scoreboard objective '%s' does not exist".formatted(objective));
         }
         final int score = obj.getScore(profile.getPlayer()).getScore();
         return score >= count.getValue(profile).intValue();

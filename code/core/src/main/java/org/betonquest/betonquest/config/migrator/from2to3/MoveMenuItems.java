@@ -41,7 +41,7 @@ public class MoveMenuItems implements QuestMigration {
             config.set(itemPath, item);
             final ConfigurationSection source = config.getSourceConfigurationSection(item.getCurrentPath());
             if (source == null) {
-                throw new InvalidConfigurationException("Cannot migrate Menu Item when it is in multiple files defined!");
+                throw new InvalidConfigurationException("Cannot migrate Menu Item when it is in multiple files defined");
             }
             config.associateWith(itemPath, source);
         }

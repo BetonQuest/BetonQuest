@@ -49,7 +49,7 @@ public class DoorAction implements NullableAction {
             action.accept((Openable) blockData);
             block.setBlockData(blockData);
         } else {
-            final String message = String.format("There is no door at x: %d y: %d z: %d in world '%s'.",
+            final String message = "There is no door at x: '%s' y: '%s' z: '%s' in world '%s'".formatted(
                     resolvedLocation.getBlockX(), resolvedLocation.getBlockY(), resolvedLocation.getBlockZ(),
                     resolvedLocation.getWorld().getName());
             throw new QuestException(message);

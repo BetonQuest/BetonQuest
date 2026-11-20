@@ -55,7 +55,7 @@ public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessAc
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createAddTagAction(tags);
             case "delete", "del" -> createDeleteTagAction(tags);
-            default -> throw new QuestException("Unknown tag action: " + action);
+            default -> throw new QuestException("Tag action '%s' does not exist".formatted(action));
         };
     }
 
@@ -64,9 +64,9 @@ public class TagPlayerActionFactory implements PlayerActionFactory, PlayerlessAc
         final String action = instruction.string().get().getValue(null);
         final Argument<List<String>> tags = instruction.packageIdentifier().list().get();
         return switch (action.toLowerCase(Locale.ROOT)) {
-            case "add" -> new ThrowExceptionPlayerlessAction("Adding tags requires a player.");
+            case "add" -> new ThrowExceptionPlayerlessAction("Adding tags requires a player");
             case "delete", "del" -> new DeleteTagPlayerlessAction(persistence, saver, profileProvider, tags);
-            default -> throw new QuestException("Unknown tag action: " + action);
+            default -> throw new QuestException("Tag action '%s' does not exist".formatted(action));
         };
     }
 

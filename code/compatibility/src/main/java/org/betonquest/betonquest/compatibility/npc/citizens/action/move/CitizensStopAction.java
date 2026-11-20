@@ -47,7 +47,7 @@ public class CitizensStopAction implements NullableAction {
     public void execute(@Nullable final Profile profile) throws QuestException {
         final Npc<?> bqNpc = npcManager.get(profile, npcId.getValue(profile));
         if (!(bqNpc.getOriginal() instanceof final NPC npc)) {
-            throw new QuestException("Can't use non Citizens NPC!");
+            throw new QuestException("Can't use non Citizens NPC");
         }
         citizensMoveController.stopNPCMoving(npc);
         npc.getNavigator().cancelNavigation();

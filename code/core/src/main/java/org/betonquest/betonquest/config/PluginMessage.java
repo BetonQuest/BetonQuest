@@ -251,7 +251,7 @@ public class PluginMessage implements Localizations {
     public Component getMessage(@Nullable final Profile profile, final String message, final VariableReplacement... replacements) throws QuestException {
         final Text component = loadedMessages.get(message);
         if (component == null) {
-            throw new IllegalArgumentException("Message not found: " + message);
+            throw new IllegalArgumentException("Message '%s' does not exist".formatted(message));
         }
         return new VariableComponent(component.asComponent(profile)).resolve(replacements);
     }

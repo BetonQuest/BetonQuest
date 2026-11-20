@@ -85,7 +85,7 @@ public class ConversationColors {
     private Component getColor(final String name) {
         final String raw = config.getString(name);
         if (raw == null) {
-            throw new IllegalStateException("Conversation color '%s' does not exist in the config!".formatted(name));
+            throw new IllegalStateException("Conversation color '%s' does not exist in the config".formatted(name));
         }
         try {
             return textParser.parse(raw);

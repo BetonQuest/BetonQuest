@@ -99,7 +99,7 @@ public class ObjectiveAction implements NullableAction {
         this.questPackage = questPackage;
         this.objectives = objectives;
         if (!Arrays.asList("start", "add", "delete", "remove", "complete", "finish").contains(action)) {
-            throw new QuestException("Invalid action: " + action);
+            throw new QuestException("Objective action '%s' does not exist".formatted(action));
         }
         this.action = action.toLowerCase(Locale.ROOT);
     }

@@ -172,7 +172,7 @@ public class FancyHologramsHologram implements BetonHologram {
 
     @Override
     public void removeLine(final int index) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet");
     }
 
     @Override

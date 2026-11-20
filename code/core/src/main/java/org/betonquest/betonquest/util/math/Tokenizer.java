@@ -120,7 +120,7 @@ public class Tokenizer {
             try {
                 nextInLine = new Variable(new DefaultArgument<>(placeholders, pack, "%" + variableName + "%", NumberParser.DEFAULT));
             } catch (final QuestException e) {
-                throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
+                throw new QuestException("invalid calculation: %s".formatted(e.getMessage()), e);
             }
         } else if (chr == '(' || chr == '[') { //tokenize parenthesis
             index = findParenthesisEnd(val2, index);
@@ -163,7 +163,7 @@ public class Tokenizer {
             try {
                 nextInLine = new Variable(new DefaultArgument<>(placeholders, pack, "%" + val2.substring(start, index--) + "%", NumberParser.DEFAULT));
             } catch (final QuestException e) {
-                throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
+                throw new QuestException("invalid calculation: %s".formatted(e.getMessage()), e);
             }
         }
 

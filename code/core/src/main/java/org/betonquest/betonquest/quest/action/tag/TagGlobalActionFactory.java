@@ -38,7 +38,7 @@ public class TagGlobalActionFactory implements PlayerActionFactory, PlayerlessAc
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createAddTagAction(tags);
             case "delete", "del" -> createDeleteTagAction(tags);
-            default -> throw new QuestException("Unknown tag action: " + action);
+            default -> throw new QuestException("Tag action '%s' does not exist".formatted(action));
         };
     }
 
@@ -49,7 +49,7 @@ public class TagGlobalActionFactory implements PlayerActionFactory, PlayerlessAc
         return switch (action.toLowerCase(Locale.ROOT)) {
             case "add" -> createPlayerlessAddTagAction(tags);
             case "delete", "del" -> createPlayerlessDeleteTagAction(tags);
-            default -> throw new QuestException("Unknown tag action: " + action);
+            default -> throw new QuestException("Tag action '%s' does not exist".formatted(action));
         };
     }
 

@@ -31,6 +31,6 @@ public class EscapeState implements TokenizerState<QuotingTokenizerContext> {
 
     @Override
     public void parseEnd(final QuotingTokenizerContext ctx) throws TokenizerException {
-        throw new TokenizerException("Expected any character for escape sequence but reached end of data.");
+        throw new TokenizerException("Expected any character for escape sequence but reached end of data");
     }
 }

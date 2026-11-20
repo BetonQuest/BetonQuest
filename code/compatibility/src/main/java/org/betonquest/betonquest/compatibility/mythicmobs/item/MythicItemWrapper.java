@@ -44,7 +44,7 @@ public record MythicItemWrapper(ItemManager itemManager, Argument<String> itemNa
             }
             return new MythicStack(adapt, predicate);
         }
-        throw new QuestException("Could not find mythic item for name " + name);
+        throw new QuestException("Mythic item '%s' does not exist".formatted(name));
     }
 
     /**

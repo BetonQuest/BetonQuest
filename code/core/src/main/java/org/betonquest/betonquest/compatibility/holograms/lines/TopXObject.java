@@ -88,7 +88,7 @@ public class TopXObject {
                     }
                     entries.add(new TopXLine(playerName == null ? "???" : playerName, resultSet.getLong("count")));
                 }
-            }, "Could not load data.");
+            }, "Could not load data");
         } catch (final IllegalStateException e) {
             log.error("Failed to load top '%s' in the category '%s'. %s".formatted(limit, category, e.getMessage()), e);
         }

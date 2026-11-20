@@ -40,7 +40,7 @@ public class StageActionFactory implements PlayerActionFactory {
             case "set" -> createSetAction(instruction, objectiveID);
             case "increase" -> createIncreaseAction(instruction, objectiveID);
             case "decrease" -> createDecreaseAction(instruction, objectiveID);
-            default -> throw new QuestException("Unknown operation '" + operation + "'");
+            default -> throw new QuestException("Operation '%s' does not exist".formatted(operation));
         };
     }
 
@@ -85,6 +85,6 @@ public class StageActionFactory implements PlayerActionFactory {
         if (objectiveManager.getObjective(objectiveID) instanceof final StageObjective stageObjective) {
             return stageObjective;
         }
-        throw new QuestException("Objective '" + objectiveID + "' is not a stage objective");
+        throw new QuestException("Objective '%s' is not a stage objective".formatted(objectiveID));
     }
 }

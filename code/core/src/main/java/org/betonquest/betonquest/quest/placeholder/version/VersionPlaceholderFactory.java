@@ -33,7 +33,7 @@ public class VersionPlaceholderFactory implements PlayerlessPlaceholderFactory {
             final String pluginName = String.join(".", instruction.getValueParts());
             plugin = Bukkit.getPluginManager().getPlugin(pluginName);
             if (plugin == null) {
-                throw new QuestException("Could not find plugin '%s'!".formatted(pluginName));
+                throw new QuestException("Plugin '%s' does not exist".formatted(pluginName));
             }
         } else {
             plugin = this.fallBackPlugin;

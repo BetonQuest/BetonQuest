@@ -46,8 +46,8 @@ public class ChestItemCondition implements NullableCondition {
         try {
             chest = (InventoryHolder) block.getState(false);
         } catch (final ClassCastException e) {
-            throw new QuestException("Trying to check items in a chest, but there's no chest! Location: X" + block.getX() + " Y"
-                    + block.getY() + " Z" + block.getZ(), e);
+            throw new QuestException("Trying to check items in a chest, but there's no chest at location X '%s' Y '%s' Z '%s'".formatted(
+                    block.getX(), block.getY(), block.getZ()), e);
         }
         int counter = 0;
         final List<ItemWrapper> resolvedItems = items.getValue(profile);

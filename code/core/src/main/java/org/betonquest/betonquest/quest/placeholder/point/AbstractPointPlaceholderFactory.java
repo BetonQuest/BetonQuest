@@ -61,7 +61,6 @@ public abstract class AbstractPointPlaceholderFactory<T> {
         if (type.toLowerCase(Locale.ROOT).startsWith("left:")) {
             return PointCalculationType.LEFT;
         }
-        throw new QuestException(String.format("Unknown placeholder type: '%s'",
-                type));
+        throw new QuestException("Placeholder type '%s' does not exist".formatted(type));
     }
 }

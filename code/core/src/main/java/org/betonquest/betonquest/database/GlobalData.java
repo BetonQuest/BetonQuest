@@ -62,14 +62,14 @@ public class GlobalData implements PersistentDataHolder {
                 this.globalTags.add(resultSet.getString("tag"));
             }
             log.debug("Loaded %d global tags from database".formatted(this.globalTags.size()));
-        }, "Could not load global tags.");
+        }, "Could not load global tags");
         connector.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS, new Arguments(), resultSet -> {
             while (resultSet.next()) {
                 final String category = resultSet.getString("category");
                 this.globalPoints.put(category, resultSet.getInt("count"));
             }
             log.debug("Loaded %d global points from database".formatted(this.globalPoints.size()));
-        }, "Could not load global points.");
+        }, "Could not load global points");
     }
 
     /**

@@ -37,7 +37,7 @@ public class StatisticPlaceholderFactory implements PlayerPlaceholderFactory {
         final Optional<Argument<EntityType>> entity = instruction.enumeration(EntityType.class).get("entity");
         final Optional<Argument<Material>> material = instruction.enumeration(Material.class).get("material");
         if (entity.isPresent() && material.isPresent()) {
-            throw new QuestException("You may only specify either 'entity' or 'material'. There is no statistic that requires both.");
+            throw new QuestException("You may only specify either 'entity' or 'material', there is no statistic that requires both");
         }
         return new StatisticPlaceholder(loggerFactory.create(StatisticPlaceholder.class), statistic,
                 entity.orElse(null), material.orElse(null));

@@ -26,7 +26,7 @@ public class KeyRenameTransformer implements PatchTransformer {
 
         final Object value = config.get(oldKey);
         if (value == null) {
-            throw new PatchException("Key '" + oldKey + "' was not set, skipping transformation to '" + newKey + "'.");
+            throw new PatchException("Key '%s' was not set, skipping transformation to '%s'".formatted(oldKey, newKey));
         }
         config.set(oldKey, null);
         if (value instanceof final ConfigurationSection section) {

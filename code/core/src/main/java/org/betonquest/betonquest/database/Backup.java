@@ -142,7 +142,7 @@ public final class Backup {
     private void backupDatabase(final File databaseBackupFile) {
         try {
             if (!databaseBackupFile.createNewFile()) {
-                throw new IllegalArgumentException("Could not create the backup file!");
+                throw new IllegalArgumentException("Could not create the backup file");
             }
             final FileConfigAccessor config = configAccessorFactory.create(databaseBackupFile);
             final String[] tables = {"objectives", "tags", "points", "journals", "player", "backpack", "global_points",
@@ -152,7 +152,7 @@ public final class Backup {
                 final String enumName = ("LOAD_ALL_" + table).toUpperCase(Locale.ROOT);
                 con.querySQL(QueryType.valueOf(enumName), new Arguments(),
                         resultSet -> writeBackup(table, resultSet, config),
-                        "Could not backup %s from database!".formatted(table));
+                        "Could not backup '%s' from database".formatted(table));
             }
             config.save();
         } catch (final IOException | InvalidConfigurationException e) {
@@ -183,7 +183,7 @@ public final class Backup {
                     final String value = resultSet.getString(columnName);
                     config.set("%s.%d.%s".formatted(table, counter, columnName), value);
                 } catch (final SQLException e) {
-                    throw new IllegalStateException("Could not read SQL: " + e.getMessage(), e);
+                    throw new IllegalStateException("Could not read SQL: %s".formatted(e.getMessage()), e);
                 }
             }
             counter++;

@@ -95,7 +95,7 @@ public class PasswordObjective extends DefaultObjective {
                     ? LegacyComponentSerializer.legacySection().serialize(BetonQuest.getInstance().getBetonQuestApi().localizations().getMessage(onlineProfile, "password"))
                     : passwordPrefix;
         } catch (final QuestException e) {
-            throw new QuestException("Failed to get password prefix: " + e.getMessage(), e);
+            throw new QuestException("Failed to get password prefix: %s".formatted(e.getMessage()), e);
         }
         if (!prefix.isEmpty() && !message.toLowerCase(Locale.ROOT).startsWith(prefix.toLowerCase(Locale.ROOT))) {
             return false;
@@ -109,7 +109,7 @@ public class PasswordObjective extends DefaultObjective {
         try {
             actionManager.run(onlineProfile, failActions.getValue(onlineProfile));
         } catch (final QuestException e) {
-            throw new QuestException("Failed to resolve fail actions: " + e.getMessage(), e);
+            throw new QuestException("Failed to resolve fail actions: %s".formatted(e.getMessage()), e);
         }
         return !prefix.isEmpty();
     }

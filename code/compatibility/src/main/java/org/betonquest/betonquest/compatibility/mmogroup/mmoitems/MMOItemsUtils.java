@@ -64,7 +64,7 @@ public final class MMOItemsUtils {
     public static Type getMMOItemType(final String itemType) throws QuestException {
         final Type type = MMOItems.plugin.getTypes().get(itemType);
         if (type == null) {
-            throw new QuestException("The item type '%s' does not exist!".formatted(itemType));
+            throw new QuestException("The item type '%s' does not exist".formatted(itemType));
         }
         return type;
     }

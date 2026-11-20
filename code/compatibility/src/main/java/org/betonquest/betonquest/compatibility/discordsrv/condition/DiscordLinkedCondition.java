@@ -21,7 +21,7 @@ public class DiscordLinkedCondition implements PlayerCondition {
     public boolean check(final Profile profile) throws QuestException {
         final AccountLinkManager linkManager = DiscordSRV.getPlugin().getAccountLinkManager();
         if (linkManager == null) {
-            throw new QuestException("The account link manager of DiscordSRV is not correctly enabled!");
+            throw new QuestException("The account link manager of DiscordSRV is not correctly enabled");
         }
         return linkManager.getDiscordId(profile.getPlayerUUID()) != null;
     }

@@ -44,7 +44,7 @@ public class HeroesAttributeCondition implements OnlineCondition {
     private AttributeType findAttribute(final String name) throws QuestException {
         final AttributeType attributeType = AttributeType.getAttribute(name);
         if (attributeType == null) {
-            throw new QuestException("Attribute '" + name + "' does not exist!");
+            throw new QuestException("Attribute '%s' does not exist".formatted(name));
         }
         return attributeType;
     }

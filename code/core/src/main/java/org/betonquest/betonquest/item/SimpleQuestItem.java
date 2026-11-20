@@ -55,7 +55,7 @@ public record SimpleQuestItem(BlockSelector selector, NameMetaHandler.ResolvedNa
         }
         final Material material = selector.getRandomMaterial();
         if (!material.isItem()) {
-            throw new QuestException(material + " is not a valid item!");
+            throw new QuestException("Material '%s' is not a valid item".formatted(material));
         }
 
         final ItemStack item = new ItemStack(material, stackSize);

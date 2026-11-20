@@ -59,7 +59,7 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
     @Override
     public void register(final CoreComponent component) {
         if (component.isLoaded()) {
-            throw new IllegalArgumentException("Cannot register already loaded component: %s - Use CoreComponentLoader.init() instead.".formatted(component.getClass().getSimpleName()));
+            throw new IllegalArgumentException("Cannot register already loaded component '%s', use CoreComponentLoader.init() instead".formatted(component.getClass().getSimpleName()));
         }
         this.components.add(component);
     }
@@ -70,14 +70,14 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
         if (initialInjections.stream().anyMatch(dependency -> dependency.match(type) || newlyAddedDependency.match(dependency.type()))) {
             final String existing = initialInjections.stream().filter(dependency -> dependency.match(type))
                     .map(LoadedDependency::type).map(Class::getSimpleName).sorted().collect(Collectors.joining(","));
-            throw new IllegalStateException("Attempted to inject an instance for an already injected dependency: new %s ~ %s".formatted(type.getSimpleName(), existing));
+            throw new IllegalStateException("Attempted to inject an instance for an already injected dependency: new '%s' ~ '%s'".formatted(type.getSimpleName(), existing));
         }
         initialInjections.add(newlyAddedDependency);
     }
 
     @Override
     public <T> T get(final Class<T> type) {
-        return getOptional(type).orElseThrow(() -> new NoSuchElementException("No dependency of type %s found".formatted(type.getSimpleName())));
+        return getOptional(type).orElseThrow(() -> new NoSuchElementException("Dependency of type '%s' does not exist".formatted(type.getSimpleName())));
     }
 
     @Override
@@ -136,7 +136,7 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
         stopWatch.stop();
         if (!expectedProvidedClasses.isEmpty()) {
             final String missing = expectedProvidedClasses.stream().map(Class::getSimpleName).sorted().collect(Collectors.joining(","));
-            throw new IllegalStateException("Component %s did not provide all expected dependencies, missing: %s".formatted(component.getClass().getSimpleName(), missing));
+            throw new IllegalStateException("Component '%s' did not provide all expected dependencies, missing: '%s'".formatted(component.getClass().getSimpleName(), missing));
         }
         log.debug("Loaded component '%s'. Took %s".formatted(component.getClass().getSimpleName(), stopWatch.formatTime()));
     }
@@ -151,11 +151,11 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
             @Override
             public <T> void take(final Class<T> type, final T dependency) {
                 if (!activeComponent.provides().contains(type)) {
-                    throw new IllegalStateException("Component %s attempted to inject a dependency that is not supposed to be provided by it: %s not in (%s)"
+                    throw new IllegalStateException("Component '%s' attempted to inject a dependency that is not supposed to be provided by it: '%s' not in '%s'"
                             .formatted(activeComponent.getClass().getSimpleName(), type.getSimpleName(), activeComponent.provides().stream().map(Class::getSimpleName).collect(Collectors.joining(","))));
                 }
                 if (loaded.stream().anyMatch(known -> known.type().isAssignableFrom(type) || type.isAssignableFrom(known.type()))) {
-                    throw new IllegalStateException("Component %s attempted to load a dependency compatible with another. This might cause non-deterministic behaviour and is therefore prevented: new %s ~ %s"
+                    throw new IllegalStateException("Component '%s' attempted to load a dependency compatible with another, this might cause non-deterministic behaviour and is therefore prevented: new '%s' ~ '%s'"
                             .formatted(activeComponent.getClass().getSimpleName(), type.getSimpleName(), dependency.getClass().getSimpleName()));
                 }
                 final LoadedDependency<T> loadedDependency = new DefaultLoadedDependency<>(type, dependency);

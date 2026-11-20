@@ -33,7 +33,7 @@ public class TimeActionFactory implements PlayerActionFactory, PlayerlessActionF
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         if (!instruction.hasOptional("world")) {
-            return new ThrowExceptionPlayerlessAction("Action requires a 'world' argument.");
+            return new ThrowExceptionPlayerlessAction("Action requires a 'world' argument");
         }
         return createTimeAction(instruction);
     }

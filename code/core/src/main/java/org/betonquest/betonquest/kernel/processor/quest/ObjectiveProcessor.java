@@ -161,7 +161,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             postCreation(identifier, parsed);
             log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
         } catch (final QuestException e) {
-            throw new QuestException("Error in '" + identifier + "' " + readable + " (" + type + "): " + e.getMessage(), e);
+            throw new QuestException("Error in '%s' %s of type '%s': %s".formatted(identifier, readable, type, e.getMessage()), e);
         }
     }
 

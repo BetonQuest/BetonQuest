@@ -26,6 +26,6 @@ public class DiscardingLogQueue implements LogRecordQueue {
 
     @Override
     public void publishNext(final Handler publishingTarget) {
-        throw new UnsupportedOperationException("A discarding log queue can't publish log records as it doesn't keep any.");
+        throw new UnsupportedOperationException("A discarding log queue can't publish log records as it doesn't keep any");
     }
 }

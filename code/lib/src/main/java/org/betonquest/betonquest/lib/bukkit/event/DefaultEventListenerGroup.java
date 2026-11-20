@@ -77,7 +77,7 @@ public class DefaultEventListenerGroup<T extends Event> implements EventListener
     public ProxyListener<T> getListener(final EventPriority priority) {
         final ProxyListener<T> listener = listeners.get(priority);
         if (listener == null) {
-            throw new IllegalStateException("Cannot find listener. No listener registered for event %s and priority %s"
+            throw new IllegalStateException("No listener registered for event '%s' and priority '%s'"
                     .formatted(eventClass.getSimpleName(), priority.name()));
         }
         return listener;
@@ -95,7 +95,7 @@ public class DefaultEventListenerGroup<T extends Event> implements EventListener
     public EventServiceSubscriber<T> subscribe(final EventPriority priority, final boolean ignoreCancelled, final EventServiceSubscriber<T> subscriber) {
         final List<EventServiceSubscriber<T>> subscriberList = subscribers.get(priority);
         if (subscriberList == null) {
-            throw new IllegalStateException("Cannot subscribe to event %s and priority %s. No listener registered."
+            throw new IllegalStateException("Cannot subscribe to event '%s' and priority '%s', no listener registered"
                     .formatted(eventClass.getSimpleName(), priority.name()));
         }
         if (ignoreCancelled) {

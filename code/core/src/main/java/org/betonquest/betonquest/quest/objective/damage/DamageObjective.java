@@ -190,7 +190,7 @@ public class DamageObjective extends DefaultObjective {
     private Amount getDamageAmount(final Profile profile) throws QuestException {
         final String stringData = getService().getData().get(profile);
         if (stringData == null) {
-            throw new QuestException("Profile should have data!");
+            throw new QuestException("Profile should have data");
         }
         final String[] split = stringData.split("/");
         final double amount;

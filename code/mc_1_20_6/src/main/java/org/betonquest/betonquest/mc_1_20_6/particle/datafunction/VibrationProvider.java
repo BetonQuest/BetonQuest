@@ -62,7 +62,7 @@ public class VibrationProvider implements ParticleDataFunctionProvider {
                 .location().map(this::getLocationDestination).getOptional();
         final Optional<Argument<Vibration.Destination>> targetEntity = instruction.read().value(vibrationSection, "entity")
                 .uuid().map(this::getEntityDestination).getOptional();
-        this.target = targetLocation.or(() -> targetEntity).orElseThrow(() -> new QuestException("No vibration target specified!"));
+        this.target = targetLocation.or(() -> targetEntity).orElseThrow(() -> new QuestException("No vibration target specified"));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class VibrationProvider implements ParticleDataFunctionProvider {
     private Vibration.Destination getEntityDestination(final UUID uuid) throws QuestException {
         final Entity entity = Bukkit.getEntity(uuid);
         if (entity == null) {
-            throw new QuestException("Entity with uuid '" + uuid + "' not found!");
+            throw new QuestException("Entity with uuid '%s' does not exist".formatted(uuid));
         }
         return new Vibration.Destination.EntityDestination(entity);
     }

@@ -42,7 +42,7 @@ public class CitizensWrapper implements NpcWrapper<NPC> {
         final int npcId = this.npcId.getValue(profile).intValue();
         final NPC npc = registry.getById(npcId);
         if (npc == null) {
-            throw new QuestException("Citizens NPC with ID '%d' not found".formatted(npcId));
+            throw new QuestException("Citizens NPC with ID '%s' does not exist".formatted(npcId));
         }
         return new CitizensAdapter(npc);
     }

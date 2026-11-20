@@ -53,7 +53,7 @@ class GitHubReleaseSourceTest {
         void throws_exception() {
             final WebContentSource.HTTPCodeHandler handler = GitHubReleaseSource.HTTP_CODE_HANDLER;
             final IOException exception = assertThrowsExactly(IOException.class, () -> handler.handle(HTTP_FORBIDDEN), "Expected IOException");
-            assertEquals("It looks like too many requests were made to the update server, please wait until you have been unblocked.", exception.getMessage(), "Exception messages are not equal");
+            assertEquals("It looks like too many requests were made to the update server, please wait until you have been unblocked", exception.getMessage(), "Exception messages are not equal");
         }
 
         @Test

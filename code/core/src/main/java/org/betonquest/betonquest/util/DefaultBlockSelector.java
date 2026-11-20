@@ -63,7 +63,7 @@ public class DefaultBlockSelector implements BlockSelector {
         states = getStates(selectorParts[2]);
 
         if (materials.isEmpty()) {
-            throw new QuestException("Invalid selector, no material found for '" + block + "'!");
+            throw new QuestException("Invalid selector, no material found for '%s'".formatted(block));
         }
     }
 
@@ -126,7 +126,7 @@ public class DefaultBlockSelector implements BlockSelector {
         try {
             state.setBlockData(getBlockData());
         } catch (final IllegalArgumentException exception) {
-            throw new QuestException("Could not place block '" + this + "'! Probably the block has an invalid block-state: " + exception.getMessage(), exception);
+            throw new QuestException("Could not place block '%s', probably the block has an invalid block-state: %s".formatted(this, exception.getMessage()), exception);
         }
 
         state.update(true, applyPhysics);
@@ -239,7 +239,7 @@ public class DefaultBlockSelector implements BlockSelector {
                     materials.addAll(tag.getValues());
                 }
             } catch (final IllegalArgumentException e) {
-                throw new QuestException("Unknown registry '%s' for tag '%s'!".formatted(registry, namespacedKey), e);
+                throw new QuestException("Registry '%s' does not exist for tag '%s'".formatted(registry, namespacedKey), e);
             }
             return materials;
         }
@@ -254,7 +254,7 @@ public class DefaultBlockSelector implements BlockSelector {
             namespacePattern = Pattern.compile(namespaceString);
             keyPattern = Pattern.compile(keyString);
         } catch (final PatternSyntaxException exception) {
-            throw new QuestException("Invalid Regex: " + exception.getMessage(), exception);
+            throw new QuestException("Invalid Regex: %s".formatted(exception.getMessage()), exception);
         }
         final List<Material> materials = new ArrayList<>();
         for (final Material material : Material.values()) {

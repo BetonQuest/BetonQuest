@@ -28,7 +28,7 @@ public class MythicQuestItemSerializer implements QuestItemSerializer {
     public String serialize(final ItemStack itemStack) throws QuestException {
         final String mythicTypeFromItem = itemManager.getMythicTypeFromItem(itemStack);
         if (mythicTypeFromItem == null) {
-            throw new QuestException("Item is not a Mythic Item!");
+            throw new QuestException("Item is not a Mythic Item");
         }
         return mythicTypeFromItem;
     }

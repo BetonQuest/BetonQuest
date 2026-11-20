@@ -24,7 +24,7 @@ public class PotionEffectTypeParser implements SimpleArgumentParser<PotionEffect
     public PotionEffectType apply(final String string) throws QuestException {
         final PotionEffectType type = PotionEffectType.getByName(string);
         if (type == null) {
-            throw new QuestException("PotionEffectType '" + string + "' does not exist");
+            throw new QuestException("PotionEffectType '%s' does not exist".formatted(string));
         }
         return type;
     }

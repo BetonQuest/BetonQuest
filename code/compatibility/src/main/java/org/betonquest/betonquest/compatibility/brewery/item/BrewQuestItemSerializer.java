@@ -20,7 +20,7 @@ public class BrewQuestItemSerializer implements QuestItemSerializer {
     public String serialize(final ItemStack itemStack) throws QuestException {
         final Brew brew = Brew.get(itemStack);
         if (brew == null) {
-            throw new QuestException("Item is not a Brew!");
+            throw new QuestException("Item is not a Brew");
         }
         return "\"" + brew.getCurrentRecipe().getRecipeName() + "\" " + brew.getQuality() + " mode:name";
     }

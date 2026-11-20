@@ -27,7 +27,7 @@ public class ValueRenameTransformer implements PatchTransformer {
 
         final String value = config.getString(key);
         if (value == null) {
-            throw new PatchException("The key '" + key + "' did not exist, skipping transformation.");
+            throw new PatchException("The key '%s' did not exist, skipping transformation".formatted(key));
         }
 
         final Pattern pattern = Pattern.compile(regex);
@@ -35,7 +35,7 @@ public class ValueRenameTransformer implements PatchTransformer {
         if (matcher.matches()) {
             config.set(key, newEntry);
         } else {
-            throw new PatchException("Value does not match the given regex '" + regex + "', skipping transformation.");
+            throw new PatchException("Value does not match the given regex '%s', skipping transformation".formatted(regex));
         }
     }
 }

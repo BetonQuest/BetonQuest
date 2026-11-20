@@ -18,7 +18,7 @@ public final class BreweryUtils {
      */
     public static void validateQualityOrThrow(final int quality) throws QuestException {
         if (quality <= 0 || quality > 10) {
-            throw new QuestException("Drunk quality can only be between 1 and 10!");
+            throw new QuestException("Drunk quality can only be between 1 and 10");
         }
     }
 }

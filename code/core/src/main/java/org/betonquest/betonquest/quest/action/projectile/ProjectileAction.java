@@ -82,7 +82,7 @@ public class ProjectileAction implements NullableAction {
         final Entity entity = loc.getWorld().spawnEntity(loc, pType);
         if (!(entity instanceof final Projectile projectile)) {
             entity.remove();
-            throw new QuestException("Entity is not a projectile: " + pType);
+            throw new QuestException("Entity is not a projectile: '%s'".formatted(pType));
         }
 
         if (source != null) {

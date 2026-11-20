@@ -125,7 +125,7 @@ public class DefaultInstruction implements Instruction {
         try {
             this.instructionParts = new InstructionPartsArray(tokenizer, instruction);
         } catch (final TokenizerException e) {
-            throw new QuestException("Could not tokenize instruction '" + instruction + "': " + e.getMessage(), e);
+            throw new QuestException("Could not tokenize instruction '%s': %s".formatted(instruction, e.getMessage()), e);
         }
         this.chainableInstruction = new DefaultChainableInstruction(placeholders, packManager, pack, new DefaultInstructionReader(instructionParts));
     }

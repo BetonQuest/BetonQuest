@@ -31,7 +31,7 @@ public final class OnlineConditionAdapter implements PlayerCondition {
      */
     public OnlineConditionAdapter(final OnlineCondition onlineCondition) {
         this(onlineCondition, profile -> {
-            throw new QuestException("Cannot check an online condition for the offline player %s".formatted(profile));
+            throw new QuestException("Cannot check an online condition for the offline player '%s'".formatted(profile));
         });
     }
 

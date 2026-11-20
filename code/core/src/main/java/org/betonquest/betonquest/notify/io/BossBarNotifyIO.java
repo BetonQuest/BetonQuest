@@ -78,7 +78,7 @@ public class BossBarNotifyIO extends NotifyIO {
                 try {
                     flags.add(BossBar.Flag.valueOf(upperCaseFlag));
                 } catch (final IllegalArgumentException exception) {
-                    throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarFlag", upperCaseFlag), exception);
+                    throw new QuestException(CATCH_MESSAGE_TYPE.formatted("BarFlag", upperCaseFlag), exception);
                 }
             }
         }
@@ -88,7 +88,7 @@ public class BossBarNotifyIO extends NotifyIO {
         try {
             color = upperCaseBarColor == null ? BossBar.Color.BLUE : BossBar.Color.valueOf(upperCaseBarColor);
         } catch (final IllegalArgumentException exception) {
-            throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarColor", upperCaseBarColor), exception);
+            throw new QuestException(CATCH_MESSAGE_TYPE.formatted("BarColor", upperCaseBarColor), exception);
         }
 
         final String styleString = data.get("style");
@@ -96,7 +96,7 @@ public class BossBarNotifyIO extends NotifyIO {
         try {
             style = styleString == null ? BossBar.Overlay.PROGRESS : BossBar.Overlay.valueOf(upperCaseBarStyle);
         } catch (final IllegalArgumentException exception) {
-            throw new QuestException(String.format(CATCH_MESSAGE_TYPE, "BarStyle", upperCaseBarStyle), exception);
+            throw new QuestException(CATCH_MESSAGE_TYPE.formatted("BarStyle", upperCaseBarStyle), exception);
         }
 
         progress = getNumberData("progress", 1);

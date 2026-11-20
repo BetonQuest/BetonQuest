@@ -98,9 +98,9 @@ public class MetaDataHandler implements MetaDataAcceptor, MetaDataProvider {
             if (configurationFile.exists() || configurationFile.createNewFile()) {
                 return configAccessorFactory.create(configurationFile);
             }
-            throw new IllegalStateException("Metadata file `%s` could not be accessed for key.".formatted(configurationFile));
+            throw new IllegalStateException("Metadata file '%s' could not be accessed for key".formatted(configurationFile));
         } catch (IOException | InvalidConfigurationException e) {
-            throw new IllegalStateException("Metadata file `%s` could not be accessed for key.".formatted(configurationFile), e);
+            throw new IllegalStateException("Metadata file '%s' could not be accessed for key".formatted(configurationFile), e);
         }
     }
 
