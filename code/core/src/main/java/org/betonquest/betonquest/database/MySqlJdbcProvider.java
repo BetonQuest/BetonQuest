@@ -78,7 +78,7 @@ public class MySqlJdbcProvider implements ConnectionProvider {
             log.warn("MySQL says: %s".formatted(e.getMessage()), e);
         }
         if (connection == null) {
-            throw new IllegalStateException("Not able to create a database connection!");
+            throw new IllegalStateException("Not able to create a database connection");
         }
         return connection;
     }

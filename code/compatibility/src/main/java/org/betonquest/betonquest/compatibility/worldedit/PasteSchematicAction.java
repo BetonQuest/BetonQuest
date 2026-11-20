@@ -83,7 +83,7 @@ public class PasteSchematicAction implements NullableAction {
                 Operations.complete(operation);
             }
         } catch (final IOException | WorldEditException e) {
-            throw new QuestException("Error while pasting a schematic: " + e.getMessage(), e);
+            throw new QuestException("Error while pasting a schematic: %s".formatted(e.getMessage()), e);
         }
     }
 

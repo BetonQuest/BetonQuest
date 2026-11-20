@@ -72,7 +72,7 @@ public class FireworkEffectHandler {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity"})
     public void set(final String string) throws QuestException {
-        final String[] parts = HandlerUtil.getSplit(string, "Effect is missing!", ":");
+        final String[] parts = HandlerUtil.getSplit(string, "Effect is missing", ":");
         if (!"?".equals(parts[0])) {
             if (parts[0].toLowerCase(Locale.ROOT).startsWith("none-")) {
                 parts[0] = parts[0].substring(5);
@@ -81,7 +81,7 @@ public class FireworkEffectHandler {
             try {
                 type = Type.valueOf(parts[0].toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {
-                throw new QuestException("Unknown firework effect type: " + parts[0], e);
+                throw new QuestException("Firework effect type '%s' does not exist".formatted(parts[0]), e);
             }
             if (typeE == Existence.FORBIDDEN) {
                 return;
@@ -89,7 +89,7 @@ public class FireworkEffectHandler {
             typeE = Existence.REQUIRED;
         }
         if (parts.length != 5) {
-            throw new QuestException("Incorrect effect format: " + string);
+            throw new QuestException("Incorrect effect format: '%s'".formatted(string));
         }
         mainE = colors(parts[1], mainColors);
         fadeE = colors(parts[2], fadeColors);

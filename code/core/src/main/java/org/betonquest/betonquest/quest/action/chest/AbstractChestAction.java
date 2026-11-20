@@ -40,8 +40,8 @@ public abstract class AbstractChestAction implements NullableAction {
         try {
             return (InventoryHolder) block.getState(false);
         } catch (final ClassCastException e) {
-            throw new QuestException("No chest found at location: X"
-                    + block.getX() + " Y" + block.getY() + " Z" + block.getZ(), e);
+            throw new QuestException("No chest found at location: X '%s' Y '%s' Z '%s'".formatted(
+                    block.getX(), block.getY(), block.getZ()), e);
         }
     }
 }

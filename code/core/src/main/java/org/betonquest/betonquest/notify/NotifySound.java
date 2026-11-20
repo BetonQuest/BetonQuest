@@ -116,7 +116,7 @@ class NotifySound {
 
         final String rawSoundString = data.get(KEY_SOUND);
         if (rawSoundString == null) {
-            throw new QuestException("Missing sound value!");
+            throw new QuestException("Missing sound value");
         }
         final Argument<Optional<Sound>> sound = getArgument(rawSoundString, this::getSound);
         final Argument<String> soundString = getArgument(rawSoundString, resolved -> resolved.toLowerCase(Locale.ROOT));
@@ -192,7 +192,7 @@ class NotifySound {
     private QuestConsumer<OnlineProfile> checkInput(final Map<String, String> data) throws QuestException {
         if (!data.containsKey(KEY_SOUND)) {
             if (Arrays.stream(SOUND_OPTIONS).anyMatch(data::containsKey)) {
-                throw new QuestException("You must specify a 'sound' if you want to use sound options!");
+                throw new QuestException("You must specify a 'sound' if you want to use sound options");
             }
             return (player) -> {
             };
@@ -215,7 +215,7 @@ class NotifySound {
             try {
                 return SoundCategory.valueOf(soundCategoryString.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException exception) {
-                throw new QuestException(String.format(NotifyIO.CATCH_MESSAGE_TYPE, KEY_SOUND_CATEGORY, soundCategoryString.toUpperCase(Locale.ROOT)), exception);
+                throw new QuestException(NotifyIO.CATCH_MESSAGE_TYPE.formatted(KEY_SOUND_CATEGORY, soundCategoryString.toUpperCase(Locale.ROOT)), exception);
             }
         });
     }
@@ -224,7 +224,7 @@ class NotifySound {
         try {
             return Optional.of(new VectorParser().apply(playerOffsetString));
         } catch (final QuestException e) {
-            throw new QuestException(String.format("%s '%s' couldn't be parsed: " + e.getMessage(), KEY_SOUND_PLAYER_OFFSET, playerOffsetString), e);
+            throw new QuestException("%s '%s' couldn't be parsed: %s".formatted(KEY_SOUND_PLAYER_OFFSET, playerOffsetString, e.getMessage()), e);
         }
     }
 

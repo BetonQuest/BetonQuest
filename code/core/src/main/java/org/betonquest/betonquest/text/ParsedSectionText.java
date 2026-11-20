@@ -54,11 +54,11 @@ public class ParsedSectionText extends ParsedText {
         if (section.isString(path)) {
             final String raw = section.getString(path);
             if (raw == null) {
-                throw new QuestException("No string value for '" + path + "'!");
+                throw new QuestException("No string value for '%s'".formatted(path));
             }
             return Map.of(languageProvider.getDefaultLanguage(), new DefaultArgument<>(placeholders, pack, raw, stringParser, true, true));
         }
-        throw new QuestException("The '" + path + "' is missing!");
+        throw new QuestException("The '%s' is missing".formatted(path));
     }
 
     @SuppressWarnings("PMD.CyclomaticComplexity")
@@ -67,7 +67,7 @@ public class ParsedSectionText extends ParsedText {
                                                               final StringParser stringParser) throws QuestException {
         final ConfigurationSection subSection = path == null ? textSection : textSection.getConfigurationSection(path);
         if (subSection == null) {
-            throw new QuestException("No configuration section for '" + path + "'!");
+            throw new QuestException("No configuration section for '%s'".formatted(path));
         }
         final Map<String, Argument<String>> texts = new HashMap<>();
         for (final String key : subSection.getKeys(false)) {
@@ -78,12 +78,12 @@ public class ParsedSectionText extends ParsedText {
             }
             final String raw = subSection.getString(key);
             if (raw == null) {
-                throw new QuestException("No string value for key '" + key + "'!");
+                throw new QuestException("No string value for key '%s'".formatted(key));
             }
             texts.put(key, new DefaultArgument<>(placeholders, pack, raw, stringParser, true, true));
         }
         if (texts.isEmpty()) {
-            throw new QuestException("No values defined!");
+            throw new QuestException("No values defined");
         }
         return texts;
     }

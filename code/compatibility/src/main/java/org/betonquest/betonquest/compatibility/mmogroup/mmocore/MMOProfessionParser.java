@@ -34,7 +34,7 @@ public class MMOProfessionParser implements SimpleArgumentParser<Profession> {
     public Profession apply(final String professionName) throws QuestException {
         final Profession profession = professionManager.get(professionName);
         if (profession == null) {
-            throw new QuestException("Profession could not be found: " + professionName);
+            throw new QuestException("Profession '%s' does not exist".formatted(professionName));
         }
         return profession;
     }

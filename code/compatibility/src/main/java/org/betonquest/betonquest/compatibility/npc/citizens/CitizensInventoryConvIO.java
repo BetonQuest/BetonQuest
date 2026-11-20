@@ -82,7 +82,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
         // this only applied to Citizens NPC conversations
         if (conv instanceof final NpcConversation<?> npcConv && npcConv.getNPC().getOriginal() instanceof final NPC npc) {
             if (Bukkit.isPrimaryThread()) {
-                throw new IllegalStateException("Must be called async!");
+                throw new IllegalStateException("Must be called async");
             }
 
             try {
@@ -100,7 +100,7 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
             } catch (InterruptedException | ExecutionException e) {
                 log.debug(conv.getPackage(), "Could not resolve a skin Texture!", e);
             } catch (final SkinFormatParseException e) {
-                log.reportException(conv.getPackage(), new IllegalStateException("Could not parse the skin metadata provided by the NPC plugin. The format may have changed."));
+                log.reportException(conv.getPackage(), new IllegalStateException("Could not parse the skin metadata provided by the NPC plugin, the format may have changed"));
             }
         }
         return super.updateSkullMeta(meta, plainTextNpcName);
@@ -118,13 +118,13 @@ public class CitizensInventoryConvIO extends InventoryConvIO {
         final String decoded = new String(Base64.getDecoder().decode(encodedTexture), StandardCharsets.UTF_8);
         final Matcher matcher = SKIN_JSON_URL_PATTERN.matcher(decoded);
         if (!matcher.find()) {
-            throw new SkinFormatParseException("Could not find the skin URL in the skin JSON!");
+            throw new SkinFormatParseException("Could not find the skin URL in the skin JSON");
         }
         final String skinUrl = matcher.group("url");
         try {
             return new URL(skinUrl);
         } catch (final MalformedURLException e) {
-            throw new SkinFormatParseException("Could not parse the skin URL!", e);
+            throw new SkinFormatParseException("Could not parse the skin URL", e);
         }
     }
 }

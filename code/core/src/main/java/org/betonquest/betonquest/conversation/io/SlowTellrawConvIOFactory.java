@@ -73,7 +73,7 @@ public class SlowTellrawConvIOFactory implements ConversationIOFactory {
         final FixedComponentLineWrapper componentLineWrapper = new FixedComponentLineWrapper(fontRegistry, 320);
         final int messageDelay = config.getInt("conversation.io.slowtellraw.message_delay", 10);
         if (messageDelay <= 0) {
-            throw new QuestException("Invalid message delay of %d for SlowTellraw Conversation IO!".formatted(messageDelay));
+            throw new QuestException("Invalid message delay of '%s' for SlowTellraw Conversation IO".formatted(messageDelay));
         }
         return new SlowTellrawConvIO(loggerFactory.create(SlowTellrawConvIO.class), config, plugin, localizations, conversation, onlineProfile, messageDelay, componentLineWrapper, colors);
     }

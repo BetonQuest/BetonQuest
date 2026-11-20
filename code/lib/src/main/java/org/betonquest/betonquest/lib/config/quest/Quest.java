@@ -129,7 +129,7 @@ public class Quest {
             exceptionOccurred = true;
         }
         if (exceptionOccurred) {
-            throw new IOException("It was not possible to save everything to files in the Quest '" + questPath + "'!");
+            throw new IOException("It was not possible to save everything to files in the Quest '%s'".formatted(questPath));
         }
         return config.needSave();
     }
@@ -156,11 +156,11 @@ public class Quest {
         final File newConfig = new File(root, relativePath);
         final File newConfigParent = newConfig.getParentFile();
         if (!newConfigParent.exists() && !newConfigParent.mkdirs()) {
-            throw new InvalidConfigurationException("It was not possible to create the folders for the file '" + newConfig.getPath() + "'!");
+            throw new InvalidConfigurationException("It was not possible to create the folders for the file '%s'".formatted(newConfig.getPath()));
         }
         try {
             if (!newConfig.createNewFile()) {
-                throw new InvalidConfigurationException("It was not possible to create the file '" + newConfig.getPath() + "'!");
+                throw new InvalidConfigurationException("It was not possible to create the file '%s'".formatted(newConfig.getPath()));
             }
         } catch (final IOException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);

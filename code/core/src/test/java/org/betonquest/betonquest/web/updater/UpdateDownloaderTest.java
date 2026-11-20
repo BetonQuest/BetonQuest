@@ -72,7 +72,7 @@ class UpdateDownloaderTest {
         final UpdateDownloader downloader = new UpdateDownloader(downloadSource, tempDir, PLUGIN_DESCRIPTION_FILE);
 
         final QuestException exception = assertThrows(QuestException.class, () -> downloader.downloadToFile(VERSION, url), "Expected QuestException");
-        assertEquals("The download was interrupted! The updater could not download the file! You can try it again, if it still does not work use a manual download. The original exception was: Test Exception", exception.getMessage(), "Expected exception message does not Match");
+        assertEquals("The download was interrupted, the updater could not download the file, you can try it again, if it still does not work use a manual download: Test Exception", exception.getMessage(), "Expected exception message does not Match");
     }
 
     @Test
@@ -84,7 +84,7 @@ class UpdateDownloaderTest {
         doReturn(false).when(updateFolder).mkdirs();
 
         final QuestException exception = assertThrows(QuestException.class, () -> downloader.downloadToFile(mock(Version.class), mock(URL.class)), "Expected QuestException");
-        assertEquals("The updater could not create the folder '" + updateFolder.getAbsolutePath() + "'!", exception.getMessage(), "Expected exception message does not Match");
+        assertEquals("The updater could not create the folder '%s'".formatted(updateFolder.getAbsolutePath()), exception.getMessage(), "Expected exception message does not Match");
     }
 
     @Test
@@ -115,7 +115,7 @@ class UpdateDownloaderTest {
             });
             countDownLatch.await();
             final QuestException exception = assertThrows(QuestException.class, () -> downloader.downloadToFile(VERSION, url), "Expected QuestException");
-            assertEquals("The updater is already downloading the update! Please wait until it is finished!", exception.getMessage(), "Expected exception message does not Match");
+            assertEquals("The updater is already downloading the update, please wait until it is finished", exception.getMessage(), "Expected exception message does not Match");
         } finally {
             semaphore.release();
             service.shutdown();

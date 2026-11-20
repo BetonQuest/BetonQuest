@@ -80,7 +80,7 @@ public class DefaultIntegrationBuilder implements IntegrationBuilder {
     @Override
     public void integrate(final Plugin integratingPlugin) {
         if (enableMethod == null && postEnableMethod == null) {
-            throw new IllegalStateException("No enable method specified.");
+            throw new IllegalStateException("No enable method specified");
         }
         register(integratingPlugin, enableMethod == null ? NOOP_CONSUMER : enableMethod,
                 postEnableMethod == null ? NOOP_CONSUMER : postEnableMethod,

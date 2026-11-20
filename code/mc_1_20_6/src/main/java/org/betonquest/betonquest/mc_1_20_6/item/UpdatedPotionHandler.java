@@ -102,7 +102,7 @@ public class UpdatedPotionHandler extends PotionHandler {
             try {
                 return PotionType.valueOf(potionType.toUpperCase(Locale.ROOT));
             } catch (final IllegalArgumentException e) {
-                throw new QuestException("Invalid potion type: " + potionType, e);
+                throw new QuestException("Potion type '%s' does not exist".formatted(potionType), e);
             }
         }
 

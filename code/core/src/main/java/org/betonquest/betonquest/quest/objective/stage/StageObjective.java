@@ -58,7 +58,7 @@ public class StageObjective extends DefaultObjective {
         if (stageMap.isValidStage(stage)) {
             return stage;
         }
-        throw new QuestException(profile + " has invalid stage '" + stage + "' for objective '" + getObjectiveID() + "'.");
+        throw new QuestException("'%s' has invalid stage '%s' for objective '%s'".formatted(profile, stage, getObjectiveID()));
     }
 
     /**
@@ -76,7 +76,7 @@ public class StageObjective extends DefaultObjective {
             }
             return;
         }
-        throw new QuestException("Invalid stage '" + stage + "' for objective '" + getObjectiveID() + "'.");
+        throw new QuestException("Invalid stage '%s' for objective '%s'".formatted(stage, getObjectiveID()));
     }
 
     /**
@@ -158,7 +158,7 @@ public class StageObjective extends DefaultObjective {
             for (int i = 0; i < stages.size(); i++) {
                 final String key = stages.get(i);
                 if (this.stages.containsKey(key)) {
-                    throw new QuestException("Duplicate stage '" + key + "'!");
+                    throw new QuestException("Duplicate stage '%s'".formatted(key));
                 }
                 this.stages.put(key, i);
             }
@@ -177,7 +177,7 @@ public class StageObjective extends DefaultObjective {
         public String getStage(final int index) throws QuestException {
             final String stage = stages.inverse().get(index);
             if (stage == null) {
-                throw new QuestException("Index '" + index + "' is not a valid index for objective '" + objectiveID + "'.");
+                throw new QuestException("Index '%s' is not a valid index for objective '%s'".formatted(index, objectiveID));
             }
             return stage;
         }
@@ -192,7 +192,7 @@ public class StageObjective extends DefaultObjective {
         public int getIndex(final String stage) throws QuestException {
             final Integer index = stages.get(stage);
             if (index == null) {
-                throw new QuestException("Stage '" + stage + "' is not a valid stage for objective '" + objectiveID + "'.");
+                throw new QuestException("Stage '%s' is not a valid stage for objective '%s'".formatted(stage, objectiveID));
             }
             return index;
         }

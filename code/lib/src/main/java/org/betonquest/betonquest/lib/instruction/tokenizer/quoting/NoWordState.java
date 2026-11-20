@@ -25,7 +25,7 @@ public class NoWordState implements TokenizerState<QuotingTokenizerContext> {
             return new QuotedWordState();
         }
         if (ctx.settings().isEndQuote(codePoint)) {
-            throw new TokenizerException("Unexpected closing quote.");
+            throw new TokenizerException("Unexpected closing quote");
         }
         ctx.appendCodePoint(codePoint);
         return new PureWordState();

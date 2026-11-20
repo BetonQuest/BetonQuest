@@ -113,7 +113,7 @@ public class TokenScanner {
      */
     public FunctionToken consume() throws QuestException {
         if (isAtEnd()) {
-            throw new QuestException("There are no more tokens to consume.");
+            throw new QuestException("There are no more tokens to consume");
         }
         return tokens.get(pointer++);
     }
@@ -131,7 +131,7 @@ public class TokenScanner {
             throw new QuestException("There are no more tokens to consume: %s".formatted(errorMessage));
         }
         if (peek().type() != expected) {
-            throw new QuestException("Error while consuming function token. Unexpected type: '%s' != '%s'. %s".formatted(peek().type(), expected, errorMessage));
+            throw new QuestException("Error while consuming function token, unexpected type '%s' != '%s': %s".formatted(peek().type(), expected, errorMessage));
         }
         pointer++;
     }
@@ -149,7 +149,7 @@ public class TokenScanner {
             throw new QuestException("There are no more tokens to consume: %s".formatted(errorMessage));
         }
         if (!peek().equals(expected)) {
-            throw new QuestException("Error while consuming function token. Unexpected type: '%s' != '%s'. %s".formatted(peek().type(), expected, errorMessage));
+            throw new QuestException("Error while consuming function token, unexpected type '%s' != '%s': %s".formatted(peek().type(), expected, errorMessage));
         }
         pointer++;
     }

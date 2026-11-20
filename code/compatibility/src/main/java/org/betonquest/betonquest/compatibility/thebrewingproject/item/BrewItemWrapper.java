@@ -27,7 +27,7 @@ public record BrewItemWrapper(TheBrewingProjectApi api, Argument<String> recipeN
         final String recipeName = recipeNameArgument.getValue(profile);
         final BrewQuality brewQuality = brewQualityArgument.getValue(profile).orElse(null);
         final Recipe<ItemStack> recipe = api.getRecipeRegistry().getRecipe(recipeName)
-                .orElseThrow(() -> new QuestException("Unknown recipe: %s".formatted(recipeName)));
+                .orElseThrow(() -> new QuestException("Recipe '%s' does not exist".formatted(recipeName)));
         return new BrewItem(recipe, recipeName, brewQuality, api.getBrewManager());
     }
 }

@@ -32,6 +32,6 @@ public class WordState implements TokenizerState<PlaceholderExtractorContext> {
 
     @Override
     public void parseEnd(final PlaceholderExtractorContext ctx) throws TokenizerException {
-        throw new TokenizerException("Expected closing bracket for placeholder but reached end of data.");
+        throw new TokenizerException("Expected closing bracket for placeholder but reached end of data");
     }
 }

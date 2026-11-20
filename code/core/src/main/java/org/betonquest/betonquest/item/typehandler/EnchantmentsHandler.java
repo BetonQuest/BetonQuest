@@ -187,7 +187,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
         private final int level;
 
         private SingleEnchantmentHandler(final String enchant) throws QuestException {
-            final String[] parts = HandlerUtil.getSplit(enchant, "Enchantment is null!", ":");
+            final String[] parts = HandlerUtil.getSplit(enchant, "Enchantment is null", ":");
             if (parts[0].startsWith("none-")) {
                 existence = Existence.FORBIDDEN;
                 type = getType(parts[0].substring("none-".length()));
@@ -209,7 +209,7 @@ public class EnchantmentsHandler implements ItemMetaHandler.Standard {
         private Enchantment getType(final String name) throws QuestException {
             final Enchantment enchantment = Enchantment.getByName(name.toUpperCase(Locale.ROOT));
             if (enchantment == null) {
-                throw new QuestException("Unknown enchantment type '%s'!".formatted(name));
+                throw new QuestException("Enchantment type '%s' does not exist".formatted(name));
             }
             return enchantment;
         }

@@ -34,7 +34,7 @@ public class PackageSection implements QuestMigration {
                 final ConfigAccessor packageFile = quest.getOrCreateConfigAccessor("package.yml");
                 config.associateWith("package.enabled", packageFile.getConfig());
             } catch (final FileNotFoundException e) {
-                throw new IllegalStateException("Could not load package file: " + e.getMessage(), e);
+                throw new IllegalStateException("Could not load package file: %s".formatted(e.getMessage()), e);
             }
             config.set(ENABLED, null);
         }

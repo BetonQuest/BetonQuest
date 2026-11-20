@@ -60,7 +60,7 @@ public class NpcPlaceholder implements NullablePlaceholder {
         this.key = key;
         this.formationMode = formationMode;
         if (key == LOCATION && formationMode == null) {
-            throw new IllegalArgumentException("The location argument requires a location placeholder!");
+            throw new IllegalArgumentException("The location argument requires a location placeholder");
         }
         this.decimalPlaces = decimalPlaces;
     }

@@ -117,7 +117,7 @@ public final class VersionComparisonStrategies {
     private static Comparator<Version> predicatedStrategy(final Predicate<VersionToken> tokenToCompare, final boolean completeIsEqual) {
         return (first, second) -> {
             if (!first.type().equals(second.type())) {
-                throw new IllegalArgumentException("Cannot compare versions of different types.");
+                throw new IllegalArgumentException("Cannot compare versions of different types");
             }
             final Map<Integer, List<VersionToken>> tokenGroups = first.type().tokenGroups();
             int versionTokenPointer = 0;

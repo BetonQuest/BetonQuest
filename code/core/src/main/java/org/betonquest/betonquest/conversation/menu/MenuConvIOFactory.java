@@ -129,7 +129,7 @@ public class MenuConvIOFactory implements ConversationIOFactory {
                     .map(s -> s.toUpperCase(Locale.ROOT))
                     .map(MenuConvIO.CONTROL::valueOf).toList();
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Invalid data for '" + name + "': " + string, e);
+            throw new QuestException("Invalid data for '%s': '%s'".formatted(name, string), e);
         }
     }
 }

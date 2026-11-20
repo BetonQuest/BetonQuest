@@ -24,7 +24,7 @@ public class EffectActionFactory implements PlayerActionFactory {
     public PlayerAction parsePlayer(final Instruction instruction) throws QuestException {
         final PotionEffectType effect = PotionEffectType.getByName(instruction.string().get().getValue(null));
         if (effect == null) {
-            throw new QuestException("Unknown effect type: " + instruction.current());
+            throw new QuestException("Effect type '%s' does not exist".formatted(instruction.current()));
         }
         try {
             final Argument<Number> duration = instruction.number().get();

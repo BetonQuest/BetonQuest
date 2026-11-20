@@ -67,7 +67,7 @@ public class RunForAllAction implements PlayerlessAction {
 
     @Override
     public void execute() throws QuestException {
-        final QuestListException questListException = new QuestListException("Could not run actions for all profiles:");
+        final QuestListException questListException = new QuestListException("Could not run actions for all profiles");
         for (final Profile profile : profileCollectionSupplier.get()) {
             try {
                 final List<ConditionIdentifier> resolvedConditions = conditions.getValue(profile);

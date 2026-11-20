@@ -38,7 +38,7 @@ public class QuestAdapter<P, L> {
      */
     public QuestAdapter(final QuestPackage pack, @Nullable final P player, @Nullable final L playerless) {
         if (player == null && playerless == null) {
-            throw new IllegalStateException("Cannot create a Wrapper without a value!");
+            throw new IllegalStateException("Cannot create a Wrapper without a value");
         }
         this.pack = pack;
         this.player = player;

@@ -45,7 +45,7 @@ public class MetaDataComponent extends AbstractCoreComponent {
 
         final File metaFolder = new File(plugin.getDataFolder(), METADATA_FOLDER_NAME);
         if (!metaFolder.exists() && !metaFolder.mkdirs()) {
-            throw new IllegalStateException("Failed to create metadata folder at '%s'.".formatted(metaFolder.getAbsolutePath()));
+            throw new IllegalStateException("Failed to create metadata folder at '%s'".formatted(metaFolder.getAbsolutePath()));
         }
 
         final MetaDataHandler metaDataHandler = new MetaDataHandler(loggerFactory.create(MetaDataHandler.class), metaFolder, configAccessorFactory);

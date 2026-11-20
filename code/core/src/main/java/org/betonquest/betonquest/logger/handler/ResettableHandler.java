@@ -94,7 +94,7 @@ public class ResettableHandler extends Handler {
 
     private void requireNotClosed() {
         if (closed) {
-            throw new IllegalStateException("Cannot publish log record: ResettableHandler was closed, it can not be reset anymore.");
+            throw new IllegalStateException("Cannot publish log record: ResettableHandler was closed, it can not be reset anymore");
         }
     }
 

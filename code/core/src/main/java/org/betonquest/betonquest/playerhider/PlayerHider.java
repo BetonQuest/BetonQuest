@@ -138,7 +138,7 @@ public class PlayerHider {
             return instructions.createForArgument(pack, rawConditions).identifier(ConditionIdentifier.class)
                     .list().get().getValue(null);
         } catch (final QuestException e) {
-            throw new QuestException("Error while loading conditions for player_hider '" + key + "' in Package '" + pack.getQuestPath() + "': " + e.getMessage(), e);
+            throw new QuestException("Error while loading conditions for player_hider '%s' in Package '%s': %s".formatted(key, pack.getQuestPath(), e.getMessage()), e);
         }
     }
 

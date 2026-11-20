@@ -21,7 +21,7 @@ public record TimeFrame(Time startTime, Time endTime) {
         final String[] parts = input.split("-");
         final int expectedLength = 2;
         if (parts.length != expectedLength) {
-            throw new QuestException("Wrong time format. Expected format: <time>-<time>");
+            throw new QuestException("Wrong time format, expected format: <time>-<time>");
         }
         return new TimeFrame(Time.parseTime(parts[0]), Time.parseTime(parts[1]));
     }

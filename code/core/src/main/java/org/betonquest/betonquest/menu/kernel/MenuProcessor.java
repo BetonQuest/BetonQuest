@@ -136,7 +136,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuIdentifier, Menu> {
                 final String rawItems = value.substring(spaceIndex + 1);
                 offset = rawOffset.isEmpty() ? new DefaultArgument<>(0) : parserFunction.apply(rawOffset).number()
                         .validate(effectiveOffset -> effectiveOffset.intValue() >= 0,
-                                "The slot '" + slot.getKey() + "' must have an offset of at least 0, but was %s").get();
+                                "The slot '%s' must have an offset of at least 0, but was '%%s'".formatted(slot.getKey())).get();
                 items = parserFunction.apply(rawItems).identifier(MenuItemIdentifier.class).list().get();
             }
             loadedSlots.add(new Slots(rpgMenu, slot.getKey(), items, offset));
@@ -147,7 +147,7 @@ public class MenuProcessor extends RPGMenuProcessor<MenuIdentifier, Menu> {
     private void createBoundCommand(final Menu menu, final String command)
             throws QuestException {
         if (!command.matches("/*[0-9A-Za-z\\-]+")) {
-            throw new QuestException("command is invalid!");
+            throw new QuestException("Command '%s' is invalid".formatted(command));
         }
         final String shortened = command.startsWith("/") ? command.substring(1) : command;
         final MenuBoundCommand boundCommand = new MenuBoundCommand(loggerFactory.create(MenuBoundCommand.class),

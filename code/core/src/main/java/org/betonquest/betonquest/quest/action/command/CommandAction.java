@@ -54,7 +54,7 @@ public class CommandAction implements NullableAction {
                 server.dispatchCommand(silentSender, command.getValue(profile));
             }
         } catch (final RuntimeException exception) {
-            throw new QuestException("Unhandled exception executing command: " + exception.getMessage(), exception);
+            throw new QuestException("Unhandled exception executing command: %s".formatted(exception.getMessage()), exception);
         }
     }
 

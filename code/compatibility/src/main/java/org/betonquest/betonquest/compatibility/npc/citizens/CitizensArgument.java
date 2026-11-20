@@ -41,7 +41,7 @@ public class CitizensArgument implements InstructionArgumentParser<NpcIdentifier
         final NpcIdentifier npcId = identifierFactory.parseIdentifier(pack, string);
         final Instruction npcInstruction = instructionApi.create(npcId, npcId.readRawInstruction());
         if (!"citizens".equals(npcInstruction.getPart(0))) {
-            throw new QuestException("Cannot use non-Citizens NPC ID!");
+            throw new QuestException("Cannot use non-Citizens NPC ID");
         }
         return npcId;
     }

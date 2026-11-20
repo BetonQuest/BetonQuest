@@ -24,12 +24,12 @@ public class ValueReplaceTransformer implements PatchTransformer {
 
         final String value = config.getString(key);
         if (value == null) {
-            throw new PatchException("The key '" + key + "' did not exist, skipping transformation.");
+            throw new PatchException("The key '%s' did not exist, skipping transformation".formatted(key));
         }
 
         final String replaced = value.replace(oldValue, newValue);
         if (replaced.equals(value)) {
-            throw new PatchException("Value does not contain the old value '" + oldValue + "', skipping transformation.");
+            throw new PatchException("Value does not contain the old value '%s', skipping transformation".formatted(oldValue));
         }
         config.set(key, replaced);
     }

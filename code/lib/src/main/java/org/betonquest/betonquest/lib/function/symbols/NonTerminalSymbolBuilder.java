@@ -160,7 +160,7 @@ public class NonTerminalSymbolBuilder<T> {
      */
     public NonTerminalSymbol<T> build() {
         if (parseDefault == null) {
-            throw new IllegalStateException("Invalid non terminal symbol definition. No parse function specified.");
+            throw new IllegalStateException("Invalid non terminal symbol definition, no parse function specified");
         }
         final QuestFunction<TokenScanner, T> parserFunction = parseDefault;
         return new NonTerminalSymbol<>() {

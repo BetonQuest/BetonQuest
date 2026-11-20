@@ -91,13 +91,13 @@ public class DefaultProxyListener<T extends Event> implements ProxyListener<T> {
             }
             return (HandlerList) getHandlerList.invoke(null);
         } catch (final NoSuchMethodException e) {
-            throw new QuestException("Could not find method `%s` of event `%s`. THIS IS FATAL."
+            throw new QuestException("Could not find method '%s' of event '%s', THIS IS FATAL"
                     .formatted(handlerRetrievalMethod, this.eventClass.getCanonicalName()), e);
         } catch (final InvocationTargetException e) {
-            throw new QuestException("Could not invoke method `%s` of event `%s`. THIS IS FATAL."
+            throw new QuestException("Could not invoke method '%s' of event '%s', THIS IS FATAL"
                     .formatted(handlerRetrievalMethod, this.eventClass.getCanonicalName()), e);
         } catch (final IllegalAccessException e) {
-            throw new QuestException("Could not access method `%s` of event `%s`. THIS IS FATAL."
+            throw new QuestException("Could not access method '%s' of event '%s', THIS IS FATAL"
                     .formatted(handlerRetrievalMethod, this.eventClass.getCanonicalName()), e);
         }
     }

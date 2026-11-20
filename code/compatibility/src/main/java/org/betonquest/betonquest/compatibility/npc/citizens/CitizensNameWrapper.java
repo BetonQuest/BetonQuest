@@ -47,12 +47,12 @@ public class CitizensNameWrapper implements NpcWrapper<NPC> {
                 if (selectedNpc == null) {
                     selectedNpc = npc;
                 } else {
-                    throw new QuestException("Multiple Citizens NPCs with the same name: " + npcName);
+                    throw new QuestException("Multiple Citizens NPCs with the same name: '%s'".formatted(npcName));
                 }
             }
         }
         if (selectedNpc == null) {
-            throw new QuestException("Citizens NPC with name '%s' not found".formatted(npcName));
+            throw new QuestException("Citizens NPC with name '%s' does not exist".formatted(npcName));
         }
         return new CitizensAdapter(selectedNpc);
     }
@@ -67,7 +67,7 @@ public class CitizensNameWrapper implements NpcWrapper<NPC> {
             }
         }
         if (npcs.isEmpty()) {
-            throw new QuestException("No Citizens NPC with name '%s' found".formatted(npcName));
+            throw new QuestException("Citizens NPC with name '%s' does not exist".formatted(npcName));
         }
         return npcs;
     }

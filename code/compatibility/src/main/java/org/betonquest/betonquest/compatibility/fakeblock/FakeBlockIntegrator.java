@@ -45,7 +45,7 @@ public class FakeBlockIntegrator implements Integration {
     private <T> RegisteredServiceProvider<T> getServiceProvider(final Class<T> service) throws QuestException {
         final RegisteredServiceProvider<T> provider = servicesManager.getRegistration(service);
         if (provider == null) {
-            throw new QuestException("Could not find service provider for " + service.getName());
+            throw new QuestException("Service provider for '%s' does not exist".formatted(service.getName()));
         }
         return provider;
     }

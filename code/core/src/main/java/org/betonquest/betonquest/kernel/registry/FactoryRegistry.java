@@ -57,15 +57,14 @@ public class FactoryRegistry<F> implements FeatureRegistry<F> {
             }
             log.debug(typeName + " '" + name + "' not found. Trying next one...");
         }
-        throw new QuestException("No registered " + typeName + " found for: " + names);
+        throw new QuestException("%s type '%s' does not exist".formatted(typeName, names));
     }
 
     @Override
     public F getFactory(final String name) throws QuestException {
         final F type = types.get(name);
         if (type == null) {
-            throw new QuestException("'" + name + "' is not loaded for type '" + typeName
-                    + "'! Check if it is spelled correctly!");
+            throw new QuestException("%s type '%s' does not exist, check if it is spelled correctly".formatted(typeName, name));
         }
         return type;
     }

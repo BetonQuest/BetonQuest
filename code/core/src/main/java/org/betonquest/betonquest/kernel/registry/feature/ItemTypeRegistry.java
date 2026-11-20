@@ -72,7 +72,7 @@ public class ItemTypeRegistry extends FactoryTypeRegistry<QuestItemWrapper> impl
     public QuestItemSerializer getSerializer(final String name) throws QuestException {
         final QuestItemSerializer serializer = serializers.get(name);
         if (serializer == null) {
-            throw new QuestException("No serializer for '" + name + "' type");
+            throw new QuestException("Serializer for type '%s' does not exist".formatted(name));
         }
         return serializer;
     }

@@ -41,7 +41,7 @@ public class NpcHolograms implements QuestMigration {
                 || config.contains("holograms.check_interval", false)) {
             final ConfigurationSection source = config.getSourceConfigurationSection("npc_holograms");
             if (source == null) {
-                throw new InvalidConfigurationException("Path is missing npc_holograms");
+                throw new InvalidConfigurationException("Path is missing 'npc_holograms'");
             }
             migrateFollow(config.getConfigurationSection(NPC_HOLOGRAMS));
             migrateCheckInterval(config.getConfigurationSection(NPC_HOLOGRAMS));

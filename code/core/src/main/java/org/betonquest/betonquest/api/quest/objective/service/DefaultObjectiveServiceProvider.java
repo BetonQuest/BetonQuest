@@ -142,7 +142,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
     public <T extends Event> void subscribe(final ObjectiveIdentifier objectiveID, final Class<T> eventClass, final NonProfileEventHandler<T> handler,
                                             final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
-            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID, eventClass.getSimpleName()));
+            throw new QuestException("Could not subscribe to event '%s' for objective '%s'".formatted(eventClass.getSimpleName(), objectiveID));
         }
         final EventServiceSubscriber<T> subscriber = subNonProfile(objectiveID, handler, ignoreConditions);
         final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
@@ -155,7 +155,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
                                             final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                             final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
-            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID.getFull(), eventClass.getSimpleName()));
+            throw new QuestException("Could not subscribe to event '%s' for objective '%s'".formatted(eventClass.getSimpleName(), objectiveID.getFull()));
         }
         final EventServiceSubscriber<T> subscriber = subOffline(objectiveID, handler, profileExtractor, ignoreConditions);
         final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
@@ -169,7 +169,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
                                             final QuestBiFunction<ProfileProvider, T, Optional<Profile>> profileExtractor,
                                             final EventPriority priority, final boolean ignoreCancelled, final boolean ignoreConditions) throws QuestException {
         if (!eventService.require(eventClass, priority)) {
-            throw new QuestException("<%s> Could not subscribe to event '%s'".formatted(objectiveID.getFull(), eventClass.getSimpleName()));
+            throw new QuestException("Could not subscribe to event '%s' for objective '%s'".formatted(eventClass.getSimpleName(), objectiveID.getFull()));
         }
         final EventServiceSubscriber<T> subscriber = subOnline(objectiveID, handler, profileExtractor, ignoreConditions);
         final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);

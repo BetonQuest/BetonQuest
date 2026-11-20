@@ -51,7 +51,7 @@ public class MMTypeWrapper extends GenericMythicTypeWrapper {
             return new WrappingMMNpcAdapter(type, mythicHider);
         }
         if (activeMobs.size() != ONE) {
-            throw new QuestException("There exists multiple MythicMobs with type '%s', can't determine!".formatted(type));
+            throw new QuestException("There exists multiple MythicMobs with type '%s', can't determine".formatted(type));
         }
         return new MythicMobsNpcAdapter(activeMobs.iterator().next(), mythicHider);
     }

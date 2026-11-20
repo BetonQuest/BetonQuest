@@ -100,7 +100,7 @@ public class LazyHandler extends Handler {
     private void requireNotClosed() {
         if (closed.get()) {
             throw new IllegalStateException(
-                    "Cannot publish log record: LazyLogHandler was closed and had not been initialized before closing."
+                    "Cannot publish log record: LazyLogHandler was closed and had not been initialized before closing"
             );
         }
     }

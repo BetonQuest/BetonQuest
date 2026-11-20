@@ -59,12 +59,12 @@ public final class VersionParser {
         }
 
         if (!isLastTokenFinite) {
-            throw new IllegalArgumentException("Version-string '%s' does not match version-type '%s'. Input ends on an illegal character, remaining tokens: '%s', parsed content: '%s'"
+            throw new IllegalArgumentException("Version-string '%s' does not match version-type '%s', input ends on an illegal character, remaining tokens: '%s', parsed content: '%s'"
                     .formatted(versionString, type, versionString.substring(versionTokenizer.getCurrentPointer()), String.join("", parsedContent)));
         }
 
         if (versionTokenizer.canConsume()) {
-            throw new IllegalArgumentException("Version-string '%s' does not match version-type '%s', its too lengthy.".formatted(versionString, type));
+            throw new IllegalArgumentException("Version-string '%s' does not match version-type '%s', its too lengthy".formatted(versionString, type));
         }
 
         return new DefaultVersion(type, parsedContent, parsedTokens);
@@ -109,7 +109,7 @@ public final class VersionParser {
                 continue;
             }
             if (!optional) {
-                throw new IllegalArgumentException("Version-string '%s' does not match version-type '%s'. Input ends on an illegal character. current group: '%s'"
+                throw new IllegalArgumentException("Version-string '%s' does not match version-type '%s', input ends on an illegal character, current group: '%s'"
                         .formatted(versionString, type, String.join("", parsedContent)));
             }
             if (token.absenceDefault() == null) {

@@ -52,7 +52,7 @@ public class ConversationActionFactory implements PlayerActionFactory {
             if (optionName != null) {
                 final String optionPath = "conversations." + conversationID.get() + ".NPC_options." + optionName;
                 if (!conversationID.getPackage().getConfig().contains(optionPath)) {
-                    throw new QuestException("NPC Option '" + optionName + "' does not exist in '" + conversationID + "'.");
+                    throw new QuestException("NPC Option '%s' does not exist in '%s'".formatted(optionName, conversationID));
                 }
             }
             return Pair.of(conversationID, optionName);

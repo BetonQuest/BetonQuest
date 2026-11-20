@@ -35,7 +35,7 @@ public class WorldParser implements SimpleArgumentParser<World> {
     public static World parse(final String value, final Server server) throws QuestException {
         final World world = server.getWorld(value);
         if (world == null) {
-            throw new QuestException("World " + value + " does not exist.");
+            throw new QuestException("World '%s' does not exist".formatted(value));
         }
         return world;
     }
