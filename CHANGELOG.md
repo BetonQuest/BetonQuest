@@ -25,6 +25,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `fly` condition was replaced with `state GLIDING`
 - `sneak` condition was replaced with `state SNEAKING`
 ### Fixed
+- `function` condition did not resolve identifiers properly
 ### Security
 
 ## [3.3.0] - 2026-11-08
