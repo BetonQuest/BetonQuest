@@ -13,18 +13,19 @@ import java.util.Optional;
 public interface QuestPackageCache {
 
     /**
-     * Created or gives the {@link ConfigurationSection} for the given key, to write values there.
+     * Provides the {@link ConfigurationSection} associated with the given key to the consumer,
+     * creating it if necessary, so the consumer can write values to it.
      *
-     * @param key          the key
-     * @param cacheSection the {@link QuestConsumer} to cache values there
+     * @param key          the key identifying the configuration section
+     * @param cacheSection the consumer that writes values to the configuration section
      */
     void write(String key, QuestConsumer<ConfigurationSection> cacheSection);
 
     /**
      * Returns the {@link ConfigurationSection} for the given key to read values from.
      *
-     * @param key the key
-     * @return the {@link ConfigurationSection} for the given key, or an empty Optional if no cached value is present.
+     * @param key the key identifying the configuration section
+     * @return the {@link ConfigurationSection} for the given key, or an empty Optional if no cached value is present
      */
     Optional<ConfigurationSection> read(String key);
 }

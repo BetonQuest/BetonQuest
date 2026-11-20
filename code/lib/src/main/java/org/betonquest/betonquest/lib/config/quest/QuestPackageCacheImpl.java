@@ -21,14 +21,14 @@ import java.util.Optional;
 public class QuestPackageCacheImpl implements QuestPackageCache {
 
     /**
-     * The supplier that provides the underlying {@link FileConfigAccessor}.
-     */
-    private final Supplier<FileConfigAccessor> accessor;
-
-    /**
      * Custom logger for this class.
      */
     private final BetonQuestLogger log;
+
+    /**
+     * The supplier that provides the underlying {@link FileConfigAccessor}.
+     */
+    private final Supplier<FileConfigAccessor> accessor;
 
     /**
      * Source the cache belongs to.
@@ -38,13 +38,13 @@ public class QuestPackageCacheImpl implements QuestPackageCache {
     /**
      * Creates a new {@link QuestPackageCacheImpl}.
      *
-     * @param accessor  the supplier for the file config accessor
      * @param log       the custom logger for this class
+     * @param accessor  the supplier for the file config accessor
      * @param logSource the source the cache belongs to.
      */
-    public QuestPackageCacheImpl(final Supplier<FileConfigAccessor> accessor, final BetonQuestLogger log, final LogSource logSource) {
-        this.accessor = Suppliers.memoize(accessor);
+    public QuestPackageCacheImpl(final BetonQuestLogger log, final Supplier<FileConfigAccessor> accessor, final LogSource logSource) {
         this.log = log;
+        this.accessor = Suppliers.memoize(accessor);
         this.logSource = logSource;
     }
 

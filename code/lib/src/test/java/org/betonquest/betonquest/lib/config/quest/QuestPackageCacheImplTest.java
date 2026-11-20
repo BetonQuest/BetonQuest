@@ -51,7 +51,7 @@ class QuestPackageCacheImplTest {
                 .thenAnswer(invocation -> config.getConfigurationSection(invocation.getArgument(0)));
         lenient().when(accessor.createSection(anyString()))
                 .thenAnswer(invocation -> config.createSection(invocation.getArgument(0)));
-        cache = new QuestPackageCacheImpl(() -> accessor, log, logSource);
+        cache = new QuestPackageCacheImpl(log, () -> accessor, logSource);
     }
 
     @Test
@@ -101,7 +101,7 @@ class QuestPackageCacheImplTest {
         final Supplier<FileConfigAccessor> supplier = mock(Supplier.class);
         when(supplier.get()).thenReturn(accessor);
 
-        final QuestPackageCacheImpl lazyCache = new QuestPackageCacheImpl(supplier, log, logSource);
+        final QuestPackageCacheImpl lazyCache = new QuestPackageCacheImpl(log, supplier, logSource);
         verify(supplier, never()).get();
 
         lazyCache.write("schedules", cacheSection -> {
@@ -135,7 +135,7 @@ class QuestPackageCacheImplTest {
 
     @Test
     void null_accessor_throws_IllegalStateException() {
-        final QuestPackageCacheImpl nullCache = new QuestPackageCacheImpl(() -> null, log, logSource);
+        final QuestPackageCacheImpl nullCache = new QuestPackageCacheImpl(log, () -> null, logSource);
         assertThrows(IllegalStateException.class, () ->
                 nullCache.write("schedules", cacheSection -> {
                 }), "Null accessor should throw IllegalStateException in cache()");

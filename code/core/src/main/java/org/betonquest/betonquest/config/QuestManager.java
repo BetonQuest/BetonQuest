@@ -188,14 +188,15 @@ public class QuestManager implements QuestPackageManager {
     private QuestPackageCache loadPackageCache(final String questPath) {
         final File cacheDir = new File(root, QUEST_CACHE_FOLDER);
         final File cacheFile = new File(cacheDir, questPath + FILE_TYPE_INDICATOR);
-        return new QuestPackageCacheImpl(() -> {
-            try {
-                createCacheFile(questPath, cacheFile);
-                return configAccessorFactory.create(cacheFile);
-            } catch (final InvalidConfigurationException | IOException e) {
-                throw new IllegalStateException("Could not load package cache for '%s'!".formatted(questPath), e);
-            }
-        }, loggerFactory.create(QuestPackageCache.class), () -> questPath);
+        return new QuestPackageCacheImpl(loggerFactory.create(QuestPackageCache.class),
+                () -> {
+                    try {
+                        createCacheFile(questPath, cacheFile);
+                        return configAccessorFactory.create(cacheFile);
+                    } catch (final InvalidConfigurationException | IOException e) {
+                        throw new IllegalStateException("Could not load package cache for '%s'!".formatted(questPath), e);
+                    }
+                }, () -> questPath);
     }
 
     private boolean createFolderIfAbsent(final File file) {
