@@ -304,7 +304,7 @@ Available subroutines:
 | `min`      | at least 1        | Returns the smallest number from all given arguments. Accepts any number of arguments. If no argument is given, `0` is used as the default value. | `min(3, 8, 2)` returns `2`              |
 | `pi`       | `x`               | Returns `x` multiplied by the value of `pi` ($\pi$).                                                                                              | `pi(2)` returns approximately `6.283`   |
 | `rnd`      | `min, max`        | Returns a random number between `min` and `max`.                                                                                                  | `rnd(1, 10)` returns a value like `5.4` |
-| `round`    | `x`               | Rounds `x` to the nearest whole number.                                                                                                           | `round(2.6)` returns `3`                |
+| `round`    | `x, precision`    | Rounds `x` to the specified number of decimal places. `precision` is optional and defaults to `0`.                                                | `round(2.567, 2)` returns `2.57`        |
 | `sin`      | `x`               | Returns the sine of `x`. The value is interpreted as radians.                                                                                     | `sin(0)` returns `0`                    |
 | `sqrt`     | `x`               | Returns the square root of `x`.                                                                                                                   | `sqrt(9)` returns `3`                   |
 | `sum`      | at least 1        | Returns the sum of all given numbers. Accepts any number of arguments. If no argument is given, `0` is used as the default value.                 | `sum(2, 4, 6)` returns `12`             |
@@ -314,7 +314,7 @@ Subroutines can be combined with other operators:
 
 ```yaml 
 functions: 
-  rounded_bonus: 'f(base, multiplier) = round(base * multiplier)' 
+  rounded_bonus: 'f(base, multiplier) = round(base * multiplier, 2)' 
   safe_value: 'f(input) = clamp(input, 0, 100)'
   distance: 'f(x, y) = sqrt(x ^ 2 + y ^ 2)'
 ```

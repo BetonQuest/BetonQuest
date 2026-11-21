@@ -21,6 +21,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 - `particle` action of EffectLib integration is now called `el_particle`
 - Schedule last execution times are now cached in each package's cache file under `schedules` instead of a single global file
+- `round` subroutine now accepts an optional `precision` parameter to control decimal places
 ### Deprecated
 ### Removed
 - `burning` condition was replaced with `state FIRE`
