@@ -9681,9 +9681,9 @@ Unlike script functions, subroutines are not referenced with curly braces. Use <
 </tr>
 <tr>
 <td><code>round</code></td>
-<td><code>x</code></td>
-<td>Rounds <code>x</code> to the nearest whole number.</td>
-<td><code>round(2.6)</code> returns <code>3</code></td>
+<td><code>x, precision</code></td>
+<td>Rounds <code>x</code> to the specified number of decimal places. <code>precision</code> is optional and defaults to <code>0</code>.</td>
+<td><code>round(2.567, 2)</code> returns <code>2.57</code></td>
 </tr>
 <tr>
 <td><code>sin</code></td>
@@ -9713,7 +9713,7 @@ Unlike script functions, subroutines are not referenced with curly braces. Use <
 </table>
 <p>Subroutines can be combined with other operators:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">functions</span><span class="p">:</span><span class="w"> </span>
-<span class="w">  </span><span class="nt">rounded_bonus</span><span class="p">:</span><span class="w"> </span><span class="s">'f(base,</span><span class="nv"> </span><span class="s">multiplier)</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">round(base</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">multiplier)'</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">rounded_bonus</span><span class="p">:</span><span class="w"> </span><span class="s">'f(base,</span><span class="nv"> </span><span class="s">multiplier)</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">round(base</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">multiplier,</span><span class="nv"> </span><span class="s">2)'</span><span class="w"> </span>
 <span class="w">  </span><span class="nt">safe_value</span><span class="p">:</span><span class="w"> </span><span class="s">'f(input)</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">clamp(input,</span><span class="nv"> </span><span class="s">0,</span><span class="nv"> </span><span class="s">100)'</span>
 <span class="w">  </span><span class="nt">distance</span><span class="p">:</span><span class="w"> </span><span class="s">'f(x,</span><span class="nv"> </span><span class="s">y)</span><span class="nv"> </span><span class="s">=</span><span class="nv"> </span><span class="s">sqrt(x</span><span class="nv"> </span><span class="s">^</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">+</span><span class="nv"> </span><span class="s">y</span><span class="nv"> </span><span class="s">^</span><span class="nv"> </span><span class="s">2)'</span>
 </code></pre></div>
