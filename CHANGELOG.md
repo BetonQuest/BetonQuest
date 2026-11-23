@@ -27,6 +27,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `burning` condition was replaced with `state FIRE`
 - `fly` condition was replaced with `state GLIDING`
 - `sneak` condition was replaced with `state SNEAKING`
+- `run` action and replaced it with implicit actions; a migrator converts existing `run` actions to implicit subsections
 ### Fixed
 - `function` condition did not resolve identifiers properly
 ### Security

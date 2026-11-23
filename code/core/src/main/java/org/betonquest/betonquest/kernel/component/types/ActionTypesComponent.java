@@ -75,7 +75,6 @@ import org.betonquest.betonquest.quest.action.point.GlobalPointActionFactory;
 import org.betonquest.betonquest.quest.action.point.PointActionFactory;
 import org.betonquest.betonquest.quest.action.projectile.ProjectileActionFactory;
 import org.betonquest.betonquest.quest.action.random.PickRandomActionFactory;
-import org.betonquest.betonquest.quest.action.run.RunActionFactory;
 import org.betonquest.betonquest.quest.action.run.RunForAllActionFactory;
 import org.betonquest.betonquest.quest.action.run.RunIndependentActionFactory;
 import org.betonquest.betonquest.quest.action.scoreboard.ScoreboardObjectiveActionFactory;
@@ -204,7 +203,6 @@ public class ActionTypesComponent extends AbstractCoreComponent {
                 localizations));
         actionTypes.registerCombined("projectile", new ProjectileActionFactory());
         actionTypes.registerCombined("removeentity", new RemoveEntityActionFactory());
-        actionTypes.registerCombined("run", new RunActionFactory(instructions, actionTypes));
         actionTypes.register("runForAll", new RunForAllActionFactory(profileProvider, actionManager, conditionManager));
         actionTypes.register("runIndependent", new RunIndependentActionFactory(actionManager));
         actionTypes.registerCombined("setblock", new SetBlockActionFactory());

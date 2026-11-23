@@ -5,12 +5,14 @@ import org.betonquest.betonquest.lib.config.quest.Quest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
  * Migrates a {@link Quest}.
  */
 @FunctionalInterface
+@SuppressWarnings("PMD.TooManyMethods")
 public interface QuestMigration {
 
     /**
@@ -129,6 +131,70 @@ public interface QuestMigration {
         if (oldPath.contains(".") && newPath.contains(".")) {
             copyParentComments(source, oldPath.substring(0, oldPath.lastIndexOf('.')), newPath.substring(0, newPath.lastIndexOf('.')));
         }
+    }
+
+    /**
+     * Expands a string value to a subsection with numbered keys.
+     * <p>
+     * Recursively scans the given section and all its subsections for keys whose string value
+     * starts with the specified prefix, removes the prefix, parses the remaining content into a
+     * list of sub-values using the provided parser function, and replaces the original key with a
+     * subsection containing numbered entries. The source configuration is preserved for
+     * all new entries.
+     * <p>
+     * If the parsed list is empty, the key is simply removed.
+     *
+     * @param config the multi-configuration to modify
+     * @param path   the section path to scan for matching keys
+     * @param prefix the string prefix that marks a key for expansion
+     * @param parser function that converts the content without the prefix into a list of sub-values
+     * @throws InvalidConfigurationException if the source configuration section cannot be found
+     */
+    default void expandToSubSection(final MultiConfiguration config, final String path,
+                                    final String prefix,
+                                    final Function<String, List<String>> parser) throws InvalidConfigurationException {
+        final ConfigurationSection section = config.getConfigurationSection(path);
+        if (section == null) {
+            return;
+        }
+        for (final String key : section.getKeys(false)) {
+            final String fullPath = path + "." + key;
+            if (section.isConfigurationSection(key)) {
+                expandToSubSection(config, fullPath, prefix, parser);
+                continue;
+            }
+            final String value = section.getString(key);
+            if (value == null || !value.startsWith(prefix)) {
+                continue;
+            }
+            replaceWithSubSection(config, fullPath, value.substring(prefix.length()).trim(), parser);
+        }
+    }
+
+    private void replaceWithSubSection(final MultiConfiguration config, final String fullPath,
+                                       final String content,
+                                       final Function<String, List<String>> parser) throws InvalidConfigurationException {
+        final List<String> subValues = parser.apply(content);
+        if (subValues.isEmpty()) {
+            config.set(fullPath, null);
+            return;
+        }
+        final ConfigurationSection source = config.getSourceConfigurationSection(fullPath);
+        if (source == null) {
+            throw new InvalidConfigurationException("Cannot expand key '" + fullPath + "' to sub-section");
+        }
+        final List<String> comments = source.getComments(fullPath);
+        final List<String> inlineComments = source.getInlineComments(fullPath);
+        config.set(fullPath, null);
+        for (int i = 0; i < subValues.size(); i++) {
+            final String subKey = String.valueOf(i + 1);
+            config.set(fullPath + "." + subKey, subValues.get(i));
+            config.setComments(fullPath + "." + subKey, null);
+            config.setInlineComments(fullPath + "." + subKey, null);
+            config.associateWith(fullPath + "." + subKey, source);
+        }
+        source.setComments(fullPath, comments);
+        source.setInlineComments(fullPath, inlineComments);
     }
 
     /**
