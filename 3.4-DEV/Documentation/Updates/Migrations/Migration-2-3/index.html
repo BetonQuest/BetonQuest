@@ -7182,6 +7182,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#340-dev-22-remove-run-action">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.4.0-DEV-22 - Remove <code>run</code> action <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:">
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -10187,6 +10210,29 @@
 </li>
       
       
+      
+      
+
+<li class="md-nav__item">
+  <a class="md-nav__link" href="#340-dev-22-remove-run-action">
+    <span class="md-ellipsis">
+
+      
+      
+        <span class="md-typeset">
+          3.4.0-DEV-22 - Remove <code>run</code> action <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:">
+        </span>
+
+      
+      
+    </span>
+  </a>
+
+  
+  
+</li>
+      
+      
     </ul>
   </nav>
   
@@ -10370,6 +10416,7 @@ to automatically migrate from "not versioned".
 <li><a href="#310-dev-13-reshape-burn-action">3.1.0-DEV-13 - Reshape burn action</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:"></li>
 <li><a href="#340-dev-7-rename-effectlib-particle-action-to-el_particle">3.4.0-DEV-7 - Rename EffectLib <code>particle</code> action to <code>el_particle</code></a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:"></li>
 <li><a href="#340-dev-15-fly-sneak-and-burning-conditions">3.4.0-DEV-15 - <code>fly</code>, <code>sneak</code> and <code>burning</code> conditions</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:"></li>
+<li><a href="#340-dev-22-remove-run-action">3.4.0-DEV-22 - Remove <code>run</code> action</a> <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:"></li>
 </ul>
 <h3 id="300-dev-58-delete-messagesyml">3.0.0-DEV-58 - Delete messages.yml <img alt="⛈" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26c8.svg" title=":thunder_cloud_rain:"><a class="headerlink" href="#300-dev-58-delete-messagesyml" title="Permanent link">🔗</a></h3>
 <p>The <code>messages.yml</code> file has been removed.
@@ -11276,6 +11323,29 @@ They are now fully integrated into the <code>state</code> condition, which allow
 <span class="w">  </span><span class="nt">isFlying</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">state GLIDING</span>
 <span class="w">  </span><span class="nt">isSneaking</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">state SNEAKING</span>
 <span class="w">  </span><span class="nt">isBurning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">state FIRE</span>
+</code></pre></div>
+</div>
+</details>
+<h3 id="340-dev-22-remove-run-action">3.4.0-DEV-22 - Remove <code>run</code> action <img alt="☀" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2600.svg" title=":sun:"><a class="headerlink" href="#340-dev-22-remove-run-action" title="Permanent link">🔗</a></h3>
+<p>The <code>run</code> action has been removed. It was deprecated in favor of <a href="../../../Basics/About-Scripting/#subsections">subsections</a>,
+which provide the same functionality natively through YAML subsections.<br>
+This will massively reduce migrations that effectively fail due to <code>run</code> actions.</p>
+<details class="info">
+<summary>Automated Migration</summary>
+<p><em>The migration is automated. You shouldn't have to do anything.</em></p>
+<hr>
+<p>All <code>run</code> actions in the <code>actions</code> section are automatically converted to implicit action sub-sections.
+The original key is preserved, and the actions that were previously chained in the <code>run</code> instruction
+are expanded into numbered sub-keys (1, 2, 3, etc.) under the same parent key.</p>
+<div class="grid" markdown="">
+<div class="highlight"><span class="filename">Old Syntax</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rewardPlayer</span><span class="p">:</span><span class="w"> </span><span class="s">"run</span><span class="nv"> </span><span class="s">^tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">done</span><span class="nv"> </span><span class="s">^give</span><span class="nv"> </span><span class="s">diamond:1</span><span class="nv"> </span><span class="s">^notify</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">won!"</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">New Syntax</span><pre><span></span><code><span class="nt">actions</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rewardPlayer</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">1</span><span class="p">:</span><span class="w"> </span><span class="s">"tag</span><span class="nv"> </span><span class="s">add</span><span class="nv"> </span><span class="s">done"</span>
+<span class="w">    </span><span class="nt">2</span><span class="p">:</span><span class="w"> </span><span class="s">"give</span><span class="nv"> </span><span class="s">diamond:1"</span>
+<span class="w">    </span><span class="nt">3</span><span class="p">:</span><span class="w"> </span><span class="s">"notify</span><span class="nv"> </span><span class="s">You</span><span class="nv"> </span><span class="s">won!"</span>
 </code></pre></div>
 </div>
 </details>
