@@ -1,7 +1,5 @@
 /**
- * {@link org.betonquest.betonquest.api.quest.action Action} implementations that run nested actions
- * for a selection of players or player independent.
- * <p>
- * These can serve as adapter from playerless to player-dependent actions and the other way around.
+ * {@link org.betonquest.betonquest.api.quest.action Action} implementations that run actions
+ * for all online players or player independent.
  */
 package org.betonquest.betonquest.quest.action.run;

@@ -58,6 +58,7 @@ This guide explains how to migrate from the latest BetonQuest 2.X version to Bet
 - [3.1.0-DEV-13 - Reshape burn action](#310-dev-13-reshape-burn-action) :sun:
 - [3.4.0-DEV-7 - Rename EffectLib `particle` action to `el_particle`](#340-dev-7-rename-effectlib-particle-action-to-el_particle) :sun:
 - [3.4.0-DEV-15 - `fly`, `sneak` and `burning` conditions](#340-dev-15-fly-sneak-and-burning-conditions) :sun:
+- [3.4.0-DEV-22 - Remove `run` action](#340-dev-22-remove-run-action) :sun:
 
 ### 3.0.0-DEV-58 - Delete messages.yml :thunder_cloud_rain:
 
@@ -1205,6 +1206,38 @@ The [burn action](../../Reference/Actions-List.md#burn) has been reshaped.
       isFlying: state GLIDING
       isSneaking: state SNEAKING
       isBurning: state FIRE
+    ```
+    
+    </div>
+
+### 3.4.0-DEV-22 - Remove `run` action :sun:
+
+The `run` action has been removed. It was deprecated in favor of [subsections](../../Basics/About-Scripting.md#subsections),
+which provide the same functionality natively through YAML subsections.  
+This will massively reduce migrations that effectively fail due to `run` actions.
+
+??? info "Automated Migration"
+    *The migration is automated. You shouldn't have to do anything.*
+    
+    -------------
+
+    All `run` actions in the `actions` section are automatically converted to implicit action sub-sections.
+    The original key is preserved, and the actions that were previously chained in the `run` instruction
+    are expanded into numbered sub-keys (1, 2, 3, etc.) under the same parent key.
+    
+    <div class="grid" markdown>
+    
+    ```YAML title="Old Syntax"
+    actions:
+      rewardPlayer: "run ^tag add done ^give diamond:1 ^notify You won!"
+    ```
+    
+    ```YAML title="New Syntax"
+    actions:
+      rewardPlayer:
+        1: "tag add done"
+        2: "give diamond:1"
+        3: "notify You won!"
     ```
     
     </div>

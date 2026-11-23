@@ -1082,33 +1082,6 @@ actions:
   clearGameArea: "removeentity ARROW,SNOWBALL,WOLF,ARMOR_STAND 100;200;300;world 50 marked:minigame"
 ```
 
-## `Run`
-
-__Context__: @snippet:action-meta:independent@  
-__Syntax__: `run <actions>`  
-__Description__: Allows you to specify multiple instructions in one long instruction.
-
-Each instruction must be started with the `^` character (it divides all the instructions).
-It's not the same as the `folder` action, because you have to specify the actual instruction, not an action name.
-Don't use conditions here, it behaves strangely.
-
-```YAML title="Examples"
-actions:
-  eliminate: "run ^tag add beton ^journal add beton ^give emerald:5 ^kill"
-```
-
-However, consider the usage of implicit actions instead of `run`.
-Here are the `eliminate` and `eliminateImplicit` actions equivalent with the important difference that the "sub actions"
-can be referenced independent and conditions work there as expected.
-
-```YAML title="As Implicit Action"
-actions:
-  eliminateImplicit:
-    addTag: "tag add beton"
-    giveEmerald: "give emerald:5"
-    kill: "kill"
-```
-
 ## `RunForAll`
 
 __Context__: @snippet:action-meta:independent@  
