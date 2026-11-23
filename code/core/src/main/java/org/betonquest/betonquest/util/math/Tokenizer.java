@@ -13,7 +13,6 @@ import org.betonquest.betonquest.util.math.tokens.Operation;
 import org.betonquest.betonquest.util.math.tokens.Parenthesis;
 import org.betonquest.betonquest.util.math.tokens.Token;
 import org.betonquest.betonquest.util.math.tokens.Variable;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,145 +68,158 @@ public class Tokenizer {
      * @throws QuestException if the expression is invalid and therefore couldn't be parsed
      */
     public Token tokenize(final String expression) throws QuestException {
-        return tokenize(null, null, expression.replaceAll("\\s", ""));
+        final String val = expression.replaceAll("\\s", "");
+        if (val.isEmpty()) {
+            throw new QuestException("missing calculation");
+        }
+        final ParsedToken parsed = tokenizeChain(val, 0, Integer.MIN_VALUE, false);
+        if (parsed.next() < val.length()) {
+            throw new QuestException("invalid calculation (unbalanced parenthesis)");
+        }
+        return parsed.token();
     }
 
     /**
-     * Internal method for recursive token parsing.
+     * Parses a chain of values and operators with the given minimal operator priority.
      * <p>
-     * The method will walk through the expression from the left side to the right side.
-     * Depending on the first character the type of the left token will be determined.
-     * Between two tokens there must always be an operator.
+     * Values of operators with a higher priority are parsed recursively, so the resulting token honours the operator
+     * priorities. Parsing stops at the end of the given string, at a closing parenthesis or bracket, or at the first
+     * operator with a lower priority than the given one.
      *
-     * @param val1     token left of the given string, or null if {@code val2} will be first token
-     * @param operator operator between the token ({@code val1}) and the string ({@code val2})
-     * @param val2     string containing the rest of the expression that still needs to be parsed
-     * @return parsed token
+     * @param val           the string containing the expression that still needs to be parsed
+     * @param start         the index of the first character of the chain
+     * @param minPriority   the minimal priority an operator needs to be part of this chain
+     * @param afterOperator whether the chain starts right after an operator
+     * @return the parsed token and the index of the first character that was not consumed
      * @throws QuestException if the expression is invalid and therefore couldn't be parsed
      */
-    @SuppressWarnings({"PMD.AssignmentInOperand", "PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition",
-            "PMD.NcssCount", "PMD.CognitiveComplexity"})
-    private Token tokenize(@Nullable final Token val1, @Nullable final Operator operator, final String val2) throws QuestException {
-        if (val2.isEmpty()) {
-            if (operator != null) {
-                throw new QuestException("invalid calculation (operator missing second value)");
+    @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+    private ParsedToken tokenizeChain(final String val, final int start, final int minPriority, final boolean afterOperator) throws QuestException {
+        final ParsedToken first = parseValue(val, start, afterOperator);
+        Token result = first.token();
+        int index = first.next();
+        while (index < val.length()) {
+            final char chr = val.charAt(index);
+            if (chr == ')' || chr == ']') {
+                break;
             }
-            throw new QuestException("missing calculation");
+            if (chr == '}') {
+                throw new QuestException("invalid calculation (unbalanced curly brace)");
+            }
+            if (!Operator.isOperator(chr)) {
+                throw new QuestException("invalid calculation (missing operator)");
+            }
+            final Operator operator = Operator.valueOf(chr);
+            if (operator.getPriority() < minPriority) {
+                break;
+            }
+            final ParsedToken operand = tokenizeChain(val, index + 1, operator.getPriority() + 1, true);
+            result = new Operation(result, operator, operand.token());
+            index = operand.next();
+        }
+        return new ParsedToken(result, index);
+    }
+
+    /**
+     * Parses the single value starting at the given index.
+     * <p>
+     * Depending on the first character the value is a number, a variable, a parenthesis, a bracket or an absolute
+     * value. A value may be preceded by a negation.
+     *
+     * @param val           the string containing the expression that still needs to be parsed
+     * @param start         the index of the first character of the value
+     * @param afterOperator whether the value starts right after an operator
+     * @return the parsed token and the index of the first character that was not consumed
+     * @throws QuestException if the expression is invalid and therefore couldn't be parsed
+     */
+    @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity",
+            "PMD.AvoidDeeplyNestedIfStmts"})
+    private ParsedToken parseValue(final String val, final int start, final boolean afterOperator) throws QuestException {
+        if (start >= val.length()) {
+            throw new QuestException("invalid calculation (operator missing second value)");
         }
 
-        //Parse next token in line (from left to right)
-        int start = 0;
+        int valueStart = start;
         int index = start;
-        char chr = val2.charAt(index++);
+        char chr = val.charAt(index++);
         boolean isNegated = false;
 
         if (chr == '-') {
-            if (val2.length() == 1) {
+            if (val.length() == index) {
                 throw new QuestException("invalid calculation (negation missing value)");
             }
-            chr = val2.charAt(index++);
+            chr = val.charAt(index++);
             isNegated = true;
-            start++;
+            valueStart++;
         }
 
-        Token nextInLine;
-        final Matcher numberMatcher;
+        final Token nextInLine;
         if (chr == '{') {
-            index = findCurlyBraceVariableEnd(val2, index);
-            final String rawVariableName = val2.substring(start + 1, index);
-            final String variableName = ESCAPE_REGEX.matcher(rawVariableName).replaceAll("$1");
-
-            try {
-                nextInLine = new Variable(new DefaultArgument<>(placeholders, pack, "%" + variableName + "%", NumberParser.DEFAULT));
-            } catch (final QuestException e) {
-                throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
-            }
-        } else if (chr == '(' || chr == '[') { //tokenize parenthesis
-            index = findParenthesisEnd(val2, index);
-
-            if (index == start + 1) {
+            index = findCurlyBraceVariableEnd(val, index);
+            final String rawVariableName = val.substring(valueStart + 1, index);
+            nextInLine = createVariable(ESCAPE_REGEX.matcher(rawVariableName).replaceAll("$1"));
+            index++;
+        } else if (chr == '(' || chr == '[') {
+            index = findParenthesisEnd(val, index);
+            if (index == valueStart + 1) {
                 throw new QuestException("invalid calculation (empty parenthesis)");
             }
-
             final char opening = chr;
-            chr = val2.charAt(index);
+            chr = val.charAt(index);
             if (opening == '(' && chr != ')' || opening == '[' && chr != ']') {
                 throw new QuestException("invalid calculation (parenthesis / brackets mismatch)");
             }
-
-            nextInLine = new Parenthesis(tokenize(null, null, val2.substring(start + 1, index)), opening, chr);
-        } else if (chr == '|') { //tokenize absolute values
-            index = findAbsoluteEnd(val2, index);
-
-            if (index == start + 1) {
+            nextInLine = new Parenthesis(tokenize(val.substring(valueStart + 1, index)), opening, chr);
+            index++;
+        } else if (chr == '|') {
+            index = findAbsoluteEnd(val, index);
+            if (index == valueStart + 1) {
                 throw new QuestException("invalid calculation (empty absolute value)");
             }
-
-            nextInLine = new AbsoluteValue(tokenize(null, null, val2.substring(start + 1, index)));
-        } else if ((numberMatcher = FP_REGEX.matcher(val2)).find()) { //tokenize numbers
-            isNegated = false;
-            index = numberMatcher.end() - 1;
-            nextInLine = new Number(Double.parseDouble(numberMatcher.group()));
-        } else if (Operator.isOperator(chr)) { //error handling
-            if (operator == null) {
-                throw new QuestException("invalid calculation (operator missing first value)");
-            }
-            throw new QuestException("invalid calculation (doubled operators)");
-        } else { //tokenize placeholders
-            for (; index < val2.length(); index++) {
-                chr = val2.charAt(index);
-                if (Operator.isOperator(chr) || "{([|])}".contains(String.valueOf(chr))) {
-                    break;
+            nextInLine = new AbsoluteValue(tokenize(val.substring(valueStart + 1, index)));
+            index++;
+        } else {
+            final Matcher numberMatcher = FP_REGEX.matcher(val);
+            numberMatcher.region(start, val.length());
+            if (numberMatcher.lookingAt()) {
+                isNegated = false;
+                index = numberMatcher.end();
+                nextInLine = new Number(Double.parseDouble(numberMatcher.group()));
+            } else if (Operator.isOperator(chr)) {
+                if (!afterOperator) {
+                    throw new QuestException("invalid calculation (operator missing first value)");
                 }
-            }
-            try {
-                nextInLine = new Variable(new DefaultArgument<>(placeholders, pack, "%" + val2.substring(start, index--) + "%", NumberParser.DEFAULT));
-            } catch (final QuestException e) {
-                throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
+                throw new QuestException("invalid calculation (doubled operators)");
+            } else {
+                for (; index < val.length(); index++) {
+                    chr = val.charAt(index);
+                    if (Operator.isOperator(chr) || "{([|])}".contains(String.valueOf(chr))) {
+                        break;
+                    }
+                }
+                nextInLine = createVariable(val.substring(valueStart, index));
             }
         }
 
         if (isNegated) {
-            nextInLine = new Negation(nextInLine);
+            return new ParsedToken(new Negation(nextInLine), index);
         }
-
-        return tokenizeFurther(val1, operator, val2, index, nextInLine);
+        return new ParsedToken(nextInLine, index);
     }
 
-    @SuppressWarnings({"PMD.AvoidLiteralsInIfCondition", "PMD.CognitiveComplexity", "PMD.CyclomaticComplexity", "NullAway", "PMD.AvoidDeeplyNestedIfStmts"})
-    private Token tokenizeFurther(@Nullable final Token val1, @Nullable final Operator operator, final String val2, final int indexx, final Token nextInLine) throws QuestException {
-        if (indexx < val2.length() - 1) {
-            int index = indexx;
-            final char chr = val2.charAt(++index);
-            if (!Operator.isOperator(chr)) {
-                if (chr == ')' || chr == ']') {
-                    throw new QuestException("invalid calculation (unbalanced parenthesis)");
-                }
-                if (chr == '}') {
-                    throw new QuestException("invalid calculation (unbalanced curly brace)");
-                }
-                throw new QuestException("invalid calculation (missing operator)");
-            }
-            final Operator nextOperator = Operator.valueOf(chr);
-            final String newVal = val2.substring(++index);
-
-            //no token left of this token, parse next
-            if (operator == null) {
-                return tokenize(nextInLine, nextOperator, newVal);
-            }
-
-            //next operation has higher priority, tokenize it first
-            if (nextOperator.getPriority() > operator.getPriority()) {
-                return new Operation(val1, operator, tokenize(nextInLine, nextOperator, newVal));
-            }
-
-            //next operation has lower priority, tokenize this first
-            return tokenize(new Operation(val1, operator, nextInLine), nextOperator, newVal);
+    /**
+     * Creates a variable token for the given placeholder name.
+     *
+     * @param variableName the name of the placeholder without the surrounding percentage signs
+     * @return the created variable token
+     * @throws QuestException if the variable couldn't be created
+     */
+    private Token createVariable(final String variableName) throws QuestException {
+        try {
+            return new Variable(new DefaultArgument<>(placeholders, pack, "%" + variableName + "%", NumberParser.DEFAULT));
+        } catch (final QuestException e) {
+            throw new QuestException("invalid calculation (" + e.getMessage() + ")", e);
         }
-        if (operator == null) {
-            return nextInLine;
-        }
-        return new Operation(val1, operator, nextInLine);
     }
 
     private int findAbsoluteEnd(final String val, final int startIndex) throws QuestException {
@@ -270,5 +282,15 @@ public class Tokenizer {
             }
         }
         throw new QuestException("invalid calculation (unbalanced curly brace)");
+    }
+
+    /**
+     * A parsed part of an expression together with the index of the first character that was not consumed.
+     *
+     * @param token the parsed token
+     * @param next  the index of the first character that was not consumed
+     */
+    private record ParsedToken(Token token, int next) {
+
     }
 }

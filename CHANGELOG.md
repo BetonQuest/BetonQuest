@@ -29,6 +29,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `sneak` condition was replaced with `state SNEAKING`
 ### Fixed
 - `function` condition did not resolve identifiers properly
+- `math` placeholder grouped trailing operators of lower priority into the preceding operation, so an expression like `10-2*3-4` resolved to 8 instead of 0
 ### Security
 
 ## [3.3.0] - 2026-11-08

@@ -266,6 +266,26 @@ class TokenizerTest {
     }
 
     @Test
+    void tokenize_dot_rule_multiply_then_subtraction() throws QuestException {
+        final Tokenizer tokenizer = new Tokenizer(placeholders, TEST_PACK);
+        final String calculation = "10-2*3-4";
+        final double expectedResult = 0;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a multiplication between two subtractions should not group the trailing subtraction into the multiplication");
+    }
+
+    @Test
+    void tokenize_dot_rule_divide_then_subtraction() throws QuestException {
+        final Tokenizer tokenizer = new Tokenizer(placeholders, TEST_PACK);
+        final String calculation = "10-4/2-3";
+        final double expectedResult = 5;
+
+        final Token result = tokenizer.tokenize(calculation);
+        assertEquals(expectedResult, result.resolve(TEST_PLAYER_PROFILE), REQUIRED_DOUBLE_PRECISION, "tokenizing a string with a division between two subtractions should not group the trailing subtraction into the division");
+    }
+
+    @Test
     void tokenize_dot_rule_modulo() throws QuestException {
         final Tokenizer tokenizer = new Tokenizer(placeholders, TEST_PACK);
         final String calculation = "5+13%7-2";
