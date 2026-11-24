@@ -30,7 +30,7 @@ public class GlobalTagPlaceholderFactory extends AbstractTagPlaceholderFactory<G
 
     @Override
     public PlayerlessPlaceholder parsePlayerless(final Instruction instruction) throws QuestException {
-        return new GlobalTagPlaceholder(localizations, dataHolder, instruction.nextElement(), instruction.getPackage(),
+        return new GlobalTagPlaceholder(localizations, dataHolder, instruction.string().get(), instruction.getPackage(),
                 instruction.bool().getFlag("papiMode", true));
     }
 }

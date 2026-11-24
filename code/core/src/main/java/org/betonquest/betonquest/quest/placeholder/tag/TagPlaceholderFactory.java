@@ -30,7 +30,7 @@ public class TagPlaceholderFactory extends AbstractTagPlaceholderFactory<PlayerD
 
     @Override
     public PlayerPlaceholder parsePlayer(final Instruction instruction) throws QuestException {
-        return new TagPlaceholder(localizations, dataHolder, instruction.nextElement(), instruction.getPackage(),
+        return new TagPlaceholder(localizations, dataHolder, instruction.string().get(), instruction.getPackage(),
                 instruction.bool().getFlag("papiMode", true));
     }
 }
