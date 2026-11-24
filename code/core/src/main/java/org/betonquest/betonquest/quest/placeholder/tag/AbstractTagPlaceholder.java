@@ -4,6 +4,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.instruction.argument.parser.PackageIdentifierParser;
 import org.betonquest.betonquest.api.profile.Profile;
@@ -27,7 +28,7 @@ public abstract class AbstractTagPlaceholder<T> {
     /**
      * The tag to check for.
      */
-    protected final String tagName;
+    protected final Argument<String> tagName;
 
     /**
      * The quest package to check for the tag.
@@ -53,7 +54,7 @@ public abstract class AbstractTagPlaceholder<T> {
      * @param questPackage  the quest package to check for the tag
      * @param papiMode      whether to return true/false or the configured messages
      */
-    public AbstractTagPlaceholder(final Localizations localizations, final T data, final String tagName,
+    public AbstractTagPlaceholder(final Localizations localizations, final T data, final Argument<String> tagName,
                                   final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
         this.localizations = localizations;
         this.data = data;
@@ -72,7 +73,7 @@ public abstract class AbstractTagPlaceholder<T> {
      */
     public String getValueFor(@Nullable final Profile profile, final Set<String> tags) throws QuestException {
         final boolean papiMode = this.papiMode.getValue(profile).orElse(false);
-        if (tags.contains(PackageIdentifierParser.INSTANCE.apply(questPackage, tagName))) {
+        if (tags.contains(PackageIdentifierParser.INSTANCE.apply(questPackage, tagName.getValue(profile)))) {
             return papiMode ? LegacyComponentSerializer.legacySection().serialize(localizations.getMessage(profile, "condition_placeholder_met")) : "true";
         }
         return papiMode ? LegacyComponentSerializer.legacySection().serialize(localizations.getMessage(profile, "condition_placeholder_not_met")) : "false";

@@ -3,6 +3,7 @@ package org.betonquest.betonquest.quest.placeholder.tag;
 import org.betonquest.betonquest.api.QuestException;
 import org.betonquest.betonquest.api.config.Localizations;
 import org.betonquest.betonquest.api.config.quest.QuestPackage;
+import org.betonquest.betonquest.api.instruction.Argument;
 import org.betonquest.betonquest.api.instruction.FlagArgument;
 import org.betonquest.betonquest.api.profile.Profile;
 import org.betonquest.betonquest.api.quest.placeholder.PlayerPlaceholder;
@@ -23,7 +24,7 @@ public class TagPlaceholder extends AbstractTagPlaceholder<PlayerDataStorage> im
      * @param questPackage  the quest package
      * @param papiMode      whether PAPI mode is enabled
      */
-    public TagPlaceholder(final Localizations localizations, final PlayerDataStorage data, final String tagName,
+    public TagPlaceholder(final Localizations localizations, final PlayerDataStorage data, final Argument<String> tagName,
                           final QuestPackage questPackage, final FlagArgument<Boolean> papiMode) {
         super(localizations, data, tagName, questPackage, papiMode);
     }
