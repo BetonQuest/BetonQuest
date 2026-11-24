@@ -98,7 +98,7 @@ public class PlaceholderTypeComponent extends AbstractCoreComponent {
         placeholderTypes.registerCombined("sync", new SyncPlaceholderFactory());
         placeholderTypes.register("tag", new TagPlaceholderFactory(dataStorage, localizations));
         placeholderTypes.registerCombined("translate", new TranslatePlaceholderFactory(instructions));
-        placeholderTypes.register("version", new VersionPlaceholderFactory(plugin));
+        placeholderTypes.registerCombined("version", new VersionPlaceholderFactory(plugin));
         placeholderTypes.registerCombined("world", new WorldPlaceholderFactory());
     }
 }
