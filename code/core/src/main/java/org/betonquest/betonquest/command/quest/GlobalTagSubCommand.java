@@ -39,7 +39,7 @@ public class GlobalTagSubCommand extends QuestCommandPart {
     public void handle(final CommandSender sender, final String... args) throws QuestException {
         // if there are no arguments then list all global tags
         if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
-            log.debug("Listing global tags");
+            log.debug("Listing global tags.");
             final Predicate<String> shouldDisplay = createListFilter(args, 2, Function.identity());
             sendMessage(sender, "global_tags");
             globalData.tags().get().stream()
@@ -50,14 +50,14 @@ public class GlobalTagSubCommand extends QuestCommandPart {
         }
         // handle purge
         if ("purge".equalsIgnoreCase(args[1])) {
-            log.debug("Purging all global tags");
+            log.debug("Purging all global tags.");
             globalData.purgeTags();
             sendMessage(sender, "global_tags_purged");
             return;
         }
         // if there is not enough arguments, display warning
         if (args.length < 3) {
-            log.debug("Missing tag name");
+            log.debug("Missing tag name.");
             sendMessage(sender, "specify_tag");
             return;
         }
@@ -69,17 +69,17 @@ public class GlobalTagSubCommand extends QuestCommandPart {
         // if there are arguments, handle them
         switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
-                log.debug("Adding global tag " + tag);
+                log.debug("Adding global tag '%s'.".formatted(tag));
                 globalData.tags().add(tag);
                 sendMessage(sender, "tag_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing global tag " + tag);
+                log.debug("Removing global tag '%s'.".formatted(tag));
                 globalData.tags().remove(tag);
                 sendMessage(sender, "tag_removed");
             }
             default -> {
-                log.debug("The argument was unknown");
+                log.debug("The argument was unknown.");
                 sendMessage(sender, "unknown_argument");
             }
         }

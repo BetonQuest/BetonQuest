@@ -70,7 +70,7 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
         }
 
         if (args.length == 2) {
-            log.debug("Missing objective instruction string");
+            log.debug("Missing objective instruction string.");
             sendMessage(sender, "specify_objective");
             return;
         }
@@ -84,15 +84,15 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find objective: " + e.getMessage(), e);
+            log.warn("Could not find objective '%s': %s".formatted(args[2], e.getMessage()), e);
             return;
         }
         if (!(tmp instanceof final VariableObjective variableObjective)) {
-            log.debug(tmp.getObjectiveID().getFull() + " is not a variable objective");
+            log.debug(objectiveID.getPackage(), "'%s' is not a variable objective.".formatted(tmp.getObjectiveID().getFull()));
             sendMessage(sender, "specify_objective");
             return;
         }
-        log.debug("Using variable objective " + variableObjective.getObjectiveID().getFull());
+        log.debug(objectiveID.getPackage(), "Using variable objective '%s'.".formatted(variableObjective.getObjectiveID().getFull()));
 
         final boolean isOnline = profile.getOnlineProfile().isPresent();
         final VariableObjective.VariableData data;
@@ -102,7 +102,7 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
             final PlayerData offline = playerDataStorage.get(profile);
             final String instruction = offline.getRawObjectives().get(variableObjective.getObjectiveID().getFull());
             if (instruction == null) {
-                log.debug("There is no data for that objective for that player!");
+                log.debug(objectiveID.getPackage(), "There is no data for that objective for that player!");
                 sendMessage(sender, "error",
                         new VariableReplacement("error", Component.text("There is no data for that objective!")));
                 return;
@@ -114,19 +114,19 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
         switch (subCommand) {
             case "list", "l" -> {
                 if (data != null) {
-                    log.debug("Can't list variable data on offline player");
+                    log.debug(objectiveID.getPackage(), "Can't list variable data on offline player.");
                     sendMessage(sender, "offline_invalid");
                     return;
                 }
                 // check for actual values
                 final Map<String, String> properties = variableObjective.getProperties(profile);
                 if (properties == null) {
-                    log.debug("No property for profile");
+                    log.debug(objectiveID.getPackage(), "No property for profile.");
                     sendMessage(sender, "player_no_property");
                     return;
                 }
                 // display variable objective keys and values
-                log.debug("Listing keys and values");
+                log.debug(objectiveID.getPackage(), "Listing keys and values.");
                 final Predicate<String> shouldDisplay = createListFilter(args, 4, Function.identity());
                 sendMessage(sender, "player_variables",
                         new VariableReplacement("objective", Component.text(variableObjective.getObjectiveID().getFull())));
@@ -137,12 +137,13 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
             }
             case "set", "s" -> {
                 if (args.length < 6) {
-                    log.debug("Missing amount");
+                    log.debug(objectiveID.getPackage(), "Missing amount.");
                     sendMessage(sender, "arguments");
                     return;
                 }
                 final String value = String.join(" ", Arrays.copyOfRange(args, 5, args.length));
-                log.debug("Setting value " + value + " for key " + args[4] + " for " + profile + " in " + variableObjective.getObjectiveID().getFull());
+                log.debug(objectiveID.getPackage(), "Setting value '%s' for key '%s' for %s in '%s'."
+                        .formatted(value, args[4], profile, variableObjective.getObjectiveID().getFull()));
                 if (data == null) {
                     variableObjective.store(profile, args[4], value);
                 } else {
@@ -154,11 +155,12 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
             }
             case "del", "d" -> {
                 if (args.length < 5) {
-                    log.debug("Missing amount");
+                    log.debug(objectiveID.getPackage(), "Missing amount.");
                     sendMessage(sender, "arguments");
                     return;
                 }
-                log.debug("Removing key " + args[4] + " for " + profile + " in " + variableObjective.getObjectiveID().getFull());
+                log.debug(objectiveID.getPackage(), "Removing key '%s' for %s in '%s'."
+                        .formatted(args[4], profile, variableObjective.getObjectiveID().getFull()));
                 if (data == null) {
                     variableObjective.store(profile, args[4], null);
                 } else {
@@ -168,7 +170,7 @@ public class VariableObjectiveSubCommand extends QuestCommandPart {
                         new VariableReplacement("key", Component.text(args[4])));
             }
             default -> {
-                log.debug("The argument was unknown");
+                log.debug(objectiveID.getPackage(), "The argument was unknown.");
                 sendMessage(sender, "unknown_argument");
             }
         }

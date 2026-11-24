@@ -46,7 +46,8 @@ public record ConversationPublicData(ConversationIdentifier conversationID, Text
         try {
             return quester.asComponent(profile);
         } catch (final QuestException e) {
-            log.warn("Could not get Quester's name! Using 'Quester' instead, reason: " + e.getMessage(), e);
+            log.warn(conversationID.getPackage(), "Could not get Quester's name in conversation '%s', using 'Quester' instead: %s"
+                    .formatted(conversationID, e.getMessage()), e);
             return Component.text("Quester");
         }
     }

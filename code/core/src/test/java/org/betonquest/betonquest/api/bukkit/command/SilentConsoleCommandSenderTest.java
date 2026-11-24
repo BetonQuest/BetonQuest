@@ -71,7 +71,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     void send_raw_message() {
         silentSender.sendRawMessage("test1");
         verify(sender, never()).sendRawMessage("test1");
-        verify(logger, times(1)).debug("Silently sending message to console: test1");
+        verify(logger, times(1)).debug("Silently sending message to console: 'test1'.");
         verifyNoMoreInteractions(logger);
     }
 
@@ -80,7 +80,7 @@ class SilentConsoleCommandSenderTest extends SilentCommandSenderTest {
     void send_raw_message_sender() {
         silentSender.sendRawMessage(null, "test3");
         verify(sender, never()).sendRawMessage(any(UUID.class), anyString());
-        verify(logger, times(1)).debug("Silently sending message to console: test3");
+        verify(logger, times(1)).debug("Silently sending message to console: 'test3'.");
         verifyNoMoreInteractions(logger);
     }
 }

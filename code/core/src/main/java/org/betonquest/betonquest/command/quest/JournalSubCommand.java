@@ -56,7 +56,7 @@ public class JournalSubCommand extends QuestCommandPart {
         final Journal journal = playerData.getJournal();
         // if there are no arguments then list player's pointers
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            log.debug("Listing journal pointers");
+            log.debug("Listing journal pointers.");
             final Predicate<Pointer> shouldDisplay = createListFilter(args, 3, pointer -> pointer.pointer().getFull());
             sendMessage(sender, "player_journal");
             journal.getPointers().stream()
@@ -72,7 +72,7 @@ public class JournalSubCommand extends QuestCommandPart {
         }
         // if there is not enough arguments, display warning
         if (args.length < 4) {
-            log.debug("Missing pointer");
+            log.debug("Missing pointer.");
             sendMessage(sender, "specify_pointer");
             return;
         }
@@ -85,7 +85,7 @@ public class JournalSubCommand extends QuestCommandPart {
             case "add", "a" -> add(sender, args, pointerName, journal);
             case "remove", "delete", "del", "r", "d" -> remove(sender, pointerName, journal);
             default -> {
-                log.debug("The argument was unknown");
+                log.debug("The argument was unknown.");
                 sendMessage(sender, "unknown_argument");
             }
         }
@@ -98,24 +98,24 @@ public class JournalSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("The journal entry'" + pointerName + "' does not exist!");
-            log.debug("Tried to add non existing journal entry: " + e.getMessage(), e);
+            log.warn("The journal entry '%s' does not exist!".formatted(pointerName));
+            log.debug("Tried to add non existing journal entry: %s".formatted(e.getMessage()), e);
             return;
         }
         final Pointer pointer;
         if (args.length < 5) {
             final long timestamp = System.currentTimeMillis();
-            log.debug("Adding pointer with current date: " + timestamp);
+            log.debug(entryID.getPackage(), "Adding pointer with current date '%s'.".formatted(timestamp));
             pointer = new Pointer(entryID, timestamp);
         } else {
-            log.debug("Adding pointer with date " + args[4].replaceAll("_", " "));
+            log.debug(entryID.getPackage(), "Adding pointer with date '%s'.".formatted(args[4].replaceAll("_", " ")));
             try {
                 pointer = new Pointer(entryID,
                         new SimpleDateFormat(config.getString("date_format", ""), Locale.ROOT)
                                 .parse(args[4].replaceAll("_", " ")).getTime());
             } catch (final ParseException e) {
                 sendMessage(sender, "specify_date");
-                log.warn("Could not parse date: " + e.getMessage(), e);
+                log.warn(entryID.getPackage(), "Could not parse date: %s".formatted(e.getMessage()), e);
                 return;
             }
         }
@@ -125,15 +125,15 @@ public class JournalSubCommand extends QuestCommandPart {
     }
 
     private void remove(final CommandSender sender, final String pointerName, final Journal journal) {
-        log.debug("Removing pointer");
+        log.debug("Removing pointer.");
         final JournalEntryIdentifier entryID;
         try {
             entryID = getIdentifier(JournalEntryIdentifier.class, pointerName);
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("The journal entry'" + pointerName + "' does not exist!");
-            log.debug("Tried to remove non existing journal entry: " + e.getMessage(), e);
+            log.warn("The journal entry '%s' does not exist!".formatted(pointerName));
+            log.debug("Tried to remove non existing journal entry: %s".formatted(e.getMessage()), e);
             return;
         }
         journal.removePointer(entryID);

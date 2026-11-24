@@ -89,7 +89,7 @@ public class LazyHandler extends Handler {
             }
         } catch (final IOException e) {
             failedInitialization = true;
-            log.error("Could not initialize internal handler: " + e.getMessage() + "\n", e);
+            log.error("Could not initialize internal handler: %s".formatted(e.getMessage()), e);
             return false;
         } finally {
             lock.unlock();

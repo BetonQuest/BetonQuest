@@ -148,7 +148,7 @@ public class Compatibility implements Listener, FastStatsMetricsProvider {
                 .map(IntegrationData::integratedPluginVersionName)
                 .collect(Collectors.joining(", "));
         if (!hooks.isEmpty()) {
-            log.info("Enabled compatibility%sfor %s!".formatted(name, hooks));
+            log.info("Enabled compatibility%sfor '%s'!".formatted(name, hooks));
         }
         dataList.stream()
                 .map(IntegrationData::getIntegration)
@@ -178,7 +178,7 @@ public class Compatibility implements Listener, FastStatsMetricsProvider {
         try {
             hologramProvider = HologramProvider.init(betonQuestApi, config, hologramIntegrations);
         } catch (final QuestException e) {
-            log.warn("Failed to load hologram provider: " + e.getMessage(), e);
+            log.warn("Failed to load hologram provider: %s".formatted(e.getMessage()), e);
         }
     }
 

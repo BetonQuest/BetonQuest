@@ -42,7 +42,7 @@ public class HikariProvider implements ConnectionProvider {
             throw new IllegalArgumentException("Invalid number of arguments '%s' != '%s' for driver '%s'"
                     .formatted(args.length, driver.getRequiredArgs(), driver.name()));
         }
-        log.debug("Initializing HikariCP pool for driver '%s'".formatted(driver.name()));
+        log.debug("Initializing HikariCP pool for driver '%s'.".formatted(driver.name()));
         final HikariConfig config = driver.getConfig(args);
         this.dataSource = new HikariDataSource(config);
         log.debug("HikariCP pool initialized successfully.");

@@ -37,7 +37,7 @@ public class PointSubCommand extends QuestCommandPart {
         }
         // if there are no arguments then list player's points
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            log.debug("Listing points");
+            log.debug("Listing points.");
             final Predicate<Map.Entry<String, Integer>> shouldDisplay = createListFilter(args, 3, Map.Entry::getKey);
             sendMessage(sender, "player_points");
             playerData.points().get().entrySet().stream()
@@ -47,7 +47,7 @@ public class PointSubCommand extends QuestCommandPart {
         }
         // if there is not enough arguments, display warning
         if (args.length < 4) {
-            log.debug("Missing category");
+            log.debug("Missing category.");
             sendMessage(sender, "specify_category");
             return;
         }
@@ -61,21 +61,21 @@ public class PointSubCommand extends QuestCommandPart {
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
                 if (args.length < 5 || !args[4].matches("-?\\d+")) {
-                    log.debug("Missing amount");
+                    log.debug("Missing amount.");
                     sendMessage(sender, "specify_amount");
                     return;
                 }
-                log.debug("Adding points");
+                log.debug("Adding points.");
                 playerData.points().add(category, Integer.parseInt(args[4]));
                 sendMessage(sender, "points_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing points");
+                log.debug("Removing points.");
                 playerData.points().remove(category);
                 sendMessage(sender, "points_removed");
             }
             default -> {
-                log.debug("The argument was unknown");
+                log.debug("The argument was unknown.");
                 sendMessage(sender, "unknown_argument");
             }
         }

@@ -36,7 +36,7 @@ public class IdentifierTypeRegistry implements Identifiers {
 
     @Override
     public <I extends Identifier> void register(final Class<I> identifierClazz, final IdentifierFactory<I> factory) {
-        log.debug("Registering identifier factory '%s' for '%s' type".formatted(factory.getClass().getSimpleName(), identifierClazz.getSimpleName()));
+        log.debug("Registering identifier factory '%s' for '%s' type.".formatted(factory.getClass().getSimpleName(), identifierClazz.getSimpleName()));
         types.put(identifierClazz, factory);
     }
 

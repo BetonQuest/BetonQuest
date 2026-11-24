@@ -54,11 +54,6 @@ import static org.betonquest.betonquest.conversation.ConversationOptionType.PLAY
 public class Conversation {
 
     /**
-     * Common log message identifier separator.
-     */
-    private static final String FOR = "' for '";
-
-    /**
      * The plugin instance.
      */
     private final Plugin plugin;
@@ -321,7 +316,7 @@ public class Conversation {
             try {
                 inOut.addPlayerOption(data.getText(onlineProfile, option), data.getProperties(onlineProfile, option));
             } catch (final QuestException e) {
-                log.warn(pack, "Error while adding option '" + option.name() + "': " + e.getMessage(), e);
+                log.warn(pack, "Error while adding option '%s': %s".formatted(option.name(), e.getMessage()), e);
             }
         }
         new BukkitRunnable() {
@@ -368,12 +363,12 @@ public class Conversation {
             }
             state = ConversationState.ENDED;
 
-            log.debug(pack, "Ending conversation '" + identifier + FOR + onlineProfile + "'.");
+            log.debug(pack, "Ending conversation '%s' for %s.".formatted(identifier, onlineProfile));
             inOut.end(() -> {
                 try {
                     actionManager.run(onlineProfile, data.getPublicData().finalActions().getValue(onlineProfile));
                 } catch (final QuestException e) {
-                    log.warn(pack, "Error while firing final actions: " + e.getMessage(), e);
+                    log.warn(pack, "Error while firing final actions: %s".formatted(e.getMessage()), e);
                 }
 
                 if (onlineProfile.getOnlineProfile().isPresent()) {
@@ -399,7 +394,7 @@ public class Conversation {
             final long delay = data.getPublicData().interceptorDelay().getValue(onlineProfile).longValue();
             conversationProcessor.getInterceptorManager().scheduleInterceptorEnd(onlineProfile, interceptor, delay);
         } catch (final QuestException e) {
-            log.warn(pack, "Error while ending conversation: " + e.getMessage(), e);
+            log.warn(pack, "Error while ending conversation: %s".formatted(e.getMessage()), e);
             conversationProcessor.getInterceptorManager().endPendingInterceptor(onlineProfile, interceptor);
         }
     }
@@ -440,7 +435,7 @@ public class Conversation {
         try {
             return data.getPublicData().blockMovement().getValue(onlineProfile);
         } catch (final QuestException e) {
-            log.warn(pack, "Error resolving if movement should be blocked: " + e.getMessage(), e);
+            log.warn(pack, "Error resolving if movement should be blocked: %s".formatted(e.getMessage()), e);
             return false;
         }
     }
@@ -454,7 +449,7 @@ public class Conversation {
         try {
             return data.getPublicData().blockItemTransfer().getValue(onlineProfile);
         } catch (final QuestException e) {
-            log.warn(pack, "Error resolving if item transfer should be blocked: " + e.getMessage(), e);
+            log.warn(pack, "Error resolving if item transfer should be blocked: %s".formatted(e.getMessage()), e);
             return true;
         }
     }
@@ -638,7 +633,7 @@ public class Conversation {
 
                 conversation.selectOption(resolveOptions(startingOptions), force);
                 if (!conversation.hasNextNPCOption()) {
-                    conversation.log.debug(conversation.pack, "No starting option found for conversation '%s', aborting start".formatted(conversation.identifier));
+                    conversation.log.debug(conversation.pack, "No starting option found for conversation '%s', aborting start.".formatted(conversation.identifier));
                     conversation.nothingToStartSender.sendNotification(onlineProfile, new VariableReplacement("npc",
                             conversation.data.getPublicData().getQuester(conversation.log, onlineProfile)));
                     conversation.endCallable.run();

@@ -64,7 +64,7 @@ public class VariableCondition implements NullableCondition {
         try {
             return content.matches(regex);
         } catch (final PatternSyntaxException e) {
-            log.warn("Invalid regular expression '%s' used in variable condition '%s'. Error: %s"
+            log.warn("Invalid regular expression '%s' used in variable condition '%s': %s"
                     .formatted(e.getPattern(), instructionId, e.getMessage()), e);
             return false;
         }

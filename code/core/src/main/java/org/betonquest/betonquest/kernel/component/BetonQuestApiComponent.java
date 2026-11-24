@@ -87,7 +87,7 @@ public class BetonQuestApiComponent extends AbstractCoreComponent {
 
         final BetonQuestLogger serviceLogger = loggerFactory.create(BetonQuestApiService.class);
         final Function<Plugin, BetonQuestApi> defaultBetonQuestApiGenerator = callerPlugin -> {
-            serviceLogger.debug("Loading API for plugin %s version %s".formatted(callerPlugin.getName(), callerPlugin.getDescription().getVersion()));
+            serviceLogger.debug("Loading API for plugin '%s' version '%s'.".formatted(callerPlugin.getName(), callerPlugin.getDescription().getVersion()));
             final BukkitManager bukkitManager = new DefaultBukkitManager(callerPlugin);
             return new DefaultBetonQuestApi(callerPlugin, profileProvider, packManager, loggerFactory, instructions,
                     actions, conditions, objectives, placeholders, items, npcs, conversations, identifiers,

@@ -63,20 +63,20 @@ public class ActionReward extends BukkitCustomReward {
     public void giveReward(final UUID uuid, final Map<String, Object> dataMap) {
         final Object object = dataMap.get("Action");
         if (object == null) {
-            log.warn("Error while checking quest requirement - Missing Action Object");
+            log.warn("Error while running quest reward - Missing Action Object.");
             return;
         }
         final String string = object.toString();
         try {
             final Player player = Bukkit.getPlayer(uuid);
             if (player == null) {
-                log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
+                log.warn("Error while running quest reward - Player with UUID '%s' not found.".formatted(uuid));
                 return;
             }
             final ActionIdentifier action = identifierFactory.parseIdentifier(null, string);
             actionManager.run(profileProvider.getProfile(player), action);
         } catch (final QuestException e) {
-            log.warn("Error while running quest reward - BetonQuest action '" + string + "' not found: " + e.getMessage(), e);
+            log.warn("Error while running quest reward - BetonQuest action '%s' not found: %s".formatted(string, e.getMessage()), e);
         }
     }
 }

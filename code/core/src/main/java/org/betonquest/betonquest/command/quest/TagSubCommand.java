@@ -37,7 +37,7 @@ public class TagSubCommand extends QuestCommandPart {
         }
         // if there are no arguments then list player's tags
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
-            log.debug("Listing tags");
+            log.debug("Listing tags.");
             final Predicate<String> shouldDisplay = createListFilter(args, 3, Function.identity());
             sendMessage(sender, "player_tags");
             playerData.tags().get().stream()
@@ -48,7 +48,7 @@ public class TagSubCommand extends QuestCommandPart {
         }
         // if there is not enough arguments, display warning
         if (args.length < 4) {
-            log.debug("Missing tag name");
+            log.debug("Missing tag name.");
             sendMessage(sender, "specify_tag");
             return;
         }
@@ -60,17 +60,17 @@ public class TagSubCommand extends QuestCommandPart {
         // if there are arguments, handle them
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
-                log.debug("Adding tag");
+                log.debug("Adding tag.");
                 playerData.tags().add(tag);
                 sendMessage(sender, "tag_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing tag");
+                log.debug("Removing tag.");
                 playerData.tags().remove(tag);
                 sendMessage(sender, "tag_removed");
             }
             default -> {
-                log.debug("The argument was unknown");
+                log.debug("The argument was unknown.");
                 sendMessage(sender, "unknown_argument");
             }
         }

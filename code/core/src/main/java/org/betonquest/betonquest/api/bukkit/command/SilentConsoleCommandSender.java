@@ -62,11 +62,11 @@ public class SilentConsoleCommandSender extends SilentCommandSender implements C
 
     @Override
     public void sendRawMessage(final String message) {
-        log.debug("Silently sending message to console: " + message);
+        log.debug("Silently sending message to console: '%s'.".formatted(message));
     }
 
     @Override
     public void sendRawMessage(@Nullable final UUID sender, final String message) {
-        log.debug("Silently sending message to console: " + message);
+        log.debug("Silently sending message to console: '%s'.".formatted(message));
     }
 }

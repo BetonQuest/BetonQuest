@@ -42,7 +42,7 @@ public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Sched
     @Override
     protected Map.Entry<ScheduleIdentifier, Schedule> loadSection(final String sectionName, final SectionInstruction instruction) throws QuestException {
         final ScheduleIdentifier scheduleID = getIdentifier(instruction.getPackage(), sectionName);
-        log.debug(instruction.getPackage(), "Parse schedule '" + scheduleID + "'...");
+        log.debug(instruction.getPackage(), "Parse schedule '%s'...".formatted(scheduleID));
         final ScheduleType<?, ?> scheduleType = instruction.read().value("type").parse(scheduleTypes::getFactory).get().getValue(null);
         final Schedule scheduleInstance = scheduleType.createAndScheduleNewInstance(scheduleID, instruction);
         return Map.entry(scheduleID, scheduleInstance);
@@ -59,7 +59,7 @@ public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Sched
             try {
                 type.scheduler.start();
             } catch (final Exception e) {
-                log.error("Error while enabling " + type.scheduler + ": " + e.getMessage(), e);
+                log.error("Error while enabling '%s': %s".formatted(type.scheduler, e.getMessage()), e);
             }
         }
     }
@@ -72,7 +72,7 @@ public class ActionScheduling extends SectionProcessor<ScheduleIdentifier, Sched
             try {
                 type.scheduler.stop();
             } catch (final Exception e) {
-                log.error("Error while stopping " + type.scheduler + ": " + e.getMessage(), e);
+                log.error("Error while stopping '%s': %s".formatted(type.scheduler, e.getMessage()), e);
             }
         }
         super.clear();

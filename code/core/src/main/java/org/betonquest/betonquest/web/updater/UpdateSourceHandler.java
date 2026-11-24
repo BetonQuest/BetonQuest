@@ -87,9 +87,9 @@ public class UpdateSourceHandler {
                     }
                 }
             } catch (final UnknownHostException e) {
-                log.warn("Could not fetch version updates. Probably the host is currently not available: " + e.getMessage());
+                log.warn("Could not fetch version updates. Probably the host is currently not available: %s".formatted(e.getMessage()));
             } catch (final IOException e) {
-                log.warn("Could not fetch version updates from a source: " + e.getMessage(), e);
+                log.warn("Could not fetch version updates from a source: %s".formatted(e.getMessage()), e);
             }
         }
         return currentLatest;

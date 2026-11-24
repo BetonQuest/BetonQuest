@@ -51,7 +51,7 @@ public abstract class SectionProcessor<I extends Identifier, T> extends QuestPro
             final List<Map.Entry<I, T>> entries = sections.getValue(null);
             entries.forEach(entry -> {
                 values.put(entry.getKey(), entry.getValue());
-                log.debug(pack, "%s '%s' loaded".formatted(readable, entry.getKey()));
+                log.debug(pack, "%s '%s' loaded.".formatted(readable, entry.getKey()));
             });
         } catch (final QuestException e) {
             log.error(pack, "Could not load %ss: %s".formatted(readable, e.getMessage()), e);

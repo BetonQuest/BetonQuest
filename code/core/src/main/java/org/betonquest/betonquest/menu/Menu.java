@@ -86,12 +86,12 @@ public class Menu {
         try {
             resolved = data.openConditions.getValue(profile);
         } catch (final QuestException exception) {
-            log.warn(menuID.getPackage(), "Error while resolving open_conditions in menu '" + menuID + "': " + exception.getMessage(), exception);
+            log.warn(menuID.getPackage(), "Error while resolving open_conditions in menu '%s': %s".formatted(menuID, exception.getMessage()), exception);
             return false;
         }
         final boolean allowOpen = conditionManager.testAll(profile, resolved);
         if (!allowOpen) {
-            log.debug(menuID.getPackage(), "Denied opening of " + menuID);
+            log.debug(menuID.getPackage(), "Denied opening of '%s'.".formatted(menuID));
         }
         return allowOpen;
     }
@@ -115,16 +115,16 @@ public class Menu {
     }
 
     private void executeActions(final Argument<List<ActionIdentifier>> actions, final OnlineProfile profile, final String type) {
-        log.debug(menuID.getPackage(), "Menu " + menuID + ": Running " + type + " actions");
+        log.debug(menuID.getPackage(), "Menu '%s': Running %s actions.".formatted(menuID, type));
         final List<ActionIdentifier> resolved;
         try {
             resolved = actions.getValue(profile);
         } catch (final QuestException exception) {
-            log.warn(menuID.getPackage(), "Error while resolving " + type + " actions in menu item '" + menuID + "': "
-                    + exception.getMessage(), exception);
+            log.warn(menuID.getPackage(), "Error while resolving %s actions in menu item '%s': %s"
+                    .formatted(type, menuID, exception.getMessage()), exception);
             return;
         }
-        log.debug(menuID.getPackage(), "Menu " + menuID + ": Run actions");
+        log.debug(menuID.getPackage(), "Menu '%s': Run actions.".formatted(menuID));
         actionManager.run(profile, resolved);
     }
 
@@ -201,7 +201,7 @@ public class Menu {
                 try {
                     return slots.getItem(profile, slot);
                 } catch (final QuestException e) {
-                    log.warn("Could not get Item for slot '" + slots + "': " + e.getMessage(), e);
+                    log.warn(menuID.getPackage(), "Could not get Item for slot '%s': %s".formatted(slots, e.getMessage()), e);
                     return null;
                 }
             }

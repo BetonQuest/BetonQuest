@@ -71,11 +71,11 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
         if (player == null || profile == null) {
             return handleNullProfile();
         }
-        log.debug(getPackage(), "Action '%s'will be fired for %s profile.".formatted(identifier,
+        log.debug(getPackage(), "Action '%s' will be fired for %s profile.".formatted(identifier,
                 profile.getOnlineProfile().isPresent() ? "online" : "offline"));
 
         if (!conditionManager.testAll(profile, conditions.getValue(profile))) {
-            log.debug(getPackage(), "Action conditions were not met for " + profile);
+            log.debug(getPackage(), "Action conditions were not met for %s.".formatted(profile));
             return false;
         }
         player.execute(profile);
@@ -89,7 +89,7 @@ public class ActionAdapter extends QuestAdapter<PlayerAction, PlayerlessAction> 
         }
         log.debug(getPackage(), "Player-independent action will be fired without a profile.");
         if (!conditionManager.testAll(null, conditions.getValue(null))) {
-            log.debug(getPackage(), "Action conditions were not met");
+            log.debug(getPackage(), "Action conditions were not met.");
             return false;
         }
         playerless.execute();

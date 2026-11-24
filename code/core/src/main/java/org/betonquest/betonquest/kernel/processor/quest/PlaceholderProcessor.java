@@ -105,7 +105,7 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
         final TypeFactory<PlaceholderAdapter> placeholderFactory = types.getFactory(instructionVar.current());
         final PlaceholderAdapter placeholder = placeholderFactory.parseInstruction(instructionVar);
         values.put(placeholderID, placeholder);
-        log.debug(placeholder.getPackage(), "Placeholder " + placeholderID + " loaded");
+        log.debug(placeholder.getPackage(), "Placeholder '%s' loaded.".formatted(placeholderID));
         return placeholder;
     }
 
@@ -142,7 +142,7 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
         try {
             return scheduler.callSyncMethod(plugin, () -> value(profile, placeholderString, placeholder)).get();
         } catch (final InterruptedException | ExecutionException e) {
-            log.reportException(e);
+            log.reportException(placeholder.getPackage(), e);
             throw new QuestException(e);
         }
     }

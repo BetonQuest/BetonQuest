@@ -39,12 +39,12 @@ public class ActionSubCommand extends QuestCommandPart {
     @Override
     public void handle(final CommandSender sender, final String... args) throws QuestException {
         if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
-            log.debug("Player's name is missing or he's offline");
+            log.debug("Player's name is missing or he's offline.");
             sendMessage(sender, "specify_player");
             return;
         }
         if (args.length < 3) {
-            log.debug("Actions's ID is missing");
+            log.debug("Actions's ID is missing.");
             sendMessage(sender, "specify_action");
             return;
         }
@@ -54,7 +54,7 @@ public class ActionSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find action: " + e.getMessage(), e);
+            log.warn("Could not find action '%s': %s".formatted(args[2], e.getMessage()), e);
             return;
         }
         final Profile profile = "-".equals(args[1]) ? null : profileProvider.getProfile(Bukkit.getOfflinePlayer(args[1]));

@@ -71,12 +71,12 @@ public class MetaDataHandler implements MetaDataAcceptor, MetaDataProvider {
         try {
             value.accept(section);
         } catch (final QuestException e) {
-            logger.warn("Failed to set metadata for key '%s', an unexpected error happend: %s".formatted(key, e.getMessage()), e);
+            logger.warn("Failed to set metadata for key '%s': %s".formatted(key, e.getMessage()), e);
         }
         try {
             accessor.save();
         } catch (final IOException e) {
-            logger.warn("Failed to save metadata for key: %s".formatted(key), e);
+            logger.warn("Failed to save metadata for key '%s': %s".formatted(key, e.getMessage()), e);
         }
     }
 

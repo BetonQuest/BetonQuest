@@ -156,15 +156,15 @@ public class QuestCanceler {
     public void cancel(final OnlineProfile onlineProfile, final boolean bypass) {
         try {
             if (!bypass && !isCancelable(onlineProfile)) {
-                log.debug(pack, "Attempted to cancel the quest " + cancelerID + " for " + onlineProfile
-                        + ", but the conditions are note met");
+                log.debug(pack, "Attempted to cancel the quest '%s' for %s, but the conditions are not met."
+                        .formatted(cancelerID, onlineProfile));
                 return;
             }
         } catch (final QuestException e) {
-            log.warn(pack, "Could not check conditions for canceling the quest " + cancelerID + " for " + onlineProfile, e);
+            log.warn(pack, "Could not check conditions for canceling the quest '%s' for %s.".formatted(cancelerID, onlineProfile), e);
             return;
         }
-        log.debug(pack, "Canceling the quest " + cancelerID + " for " + onlineProfile);
+        log.debug(pack, "Canceling the quest '%s' for %s.".formatted(cancelerID, onlineProfile));
         final PlayerData playerData = playerStorage.get(onlineProfile);
         removeSimple(onlineProfile, data.tags, "tag", playerData.tags()::remove);
         removeSimple(onlineProfile, data.points, "point", playerData.points()::remove);
@@ -172,7 +172,7 @@ public class QuestCanceler {
         removeEntries(onlineProfile, playerData);
         executeActions(onlineProfile);
         teleport(onlineProfile);
-        log.debug("Quest removed!");
+        log.debug(pack, "Quest removed!");
         final Component questName = getName(onlineProfile);
         notificationSender.sendNotification(onlineProfile, new VariableReplacement("name", questName));
     }
@@ -181,23 +181,23 @@ public class QuestCanceler {
                               final Consumer<String> action) {
         try {
             for (final String entry : toRemove.getValue(profile)) {
-                log.debug(pack, "  Removing " + logIdentifier + " " + entry);
+                log.debug(pack, "  Removing %s '%s'.".formatted(logIdentifier, entry));
                 action.accept(PackageIdentifierParser.INSTANCE.apply(pack, entry));
             }
         } catch (final QuestException e) {
-            log.warn(pack, "Cannot remove " + logIdentifier + " in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+            log.warn(pack, "Cannot remove %s in QuestCanceler '%s': %s".formatted(logIdentifier, cancelerID, e.getMessage()), e);
         }
     }
 
     private void cancelObjectives(final Profile profile, final PlayerData playerData) {
         try {
             for (final ObjectiveIdentifier objectiveID : data.objectives.getValue(profile)) {
-                log.debug(objectiveID.getPackage(), "  Removing objective " + objectiveID);
+                log.debug(objectiveID.getPackage(), "  Removing objective '%s'.".formatted(objectiveID));
                 objectiveManager.cancel(profile, objectiveID);
                 playerData.removeRawObjective(objectiveID);
             }
         } catch (final QuestException e) {
-            log.warn(pack, "Cannot cancel objectives in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+            log.warn(pack, "Cannot cancel objectives in QuestCanceler '%s': %s".formatted(cancelerID, e.getMessage()), e);
         }
     }
 
@@ -205,12 +205,12 @@ public class QuestCanceler {
         try {
             final Journal journal = playerData.getJournal();
             for (final JournalEntryIdentifier entry : data.journal.getValue(profile)) {
-                log.debug(pack, "  Removing journal entry " + entry);
+                log.debug(pack, "  Removing journal entry '%s'.".formatted(entry));
                 journal.removePointer(entry);
             }
             journal.update();
         } catch (final QuestException e) {
-            log.warn(pack, "Cannot remove journal entries in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+            log.warn(pack, "Cannot remove journal entries in QuestCanceler '%s': %s".formatted(cancelerID, e.getMessage()), e);
         }
     }
 
@@ -218,7 +218,7 @@ public class QuestCanceler {
         try {
             actionManager.run(onlineProfile, data.actions.getValue(onlineProfile));
         } catch (final QuestException e) {
-            log.warn(pack, "Cannot execute actions in QuestCanceler " + cancelerID + ": " + e.getMessage(), e);
+            log.warn(pack, "Cannot execute actions in QuestCanceler '%s': %s".formatted(cancelerID, e.getMessage()), e);
         }
     }
 
@@ -227,10 +227,10 @@ public class QuestCanceler {
             return;
         }
         try {
-            log.debug(pack, "  Teleporting to new location");
+            log.debug(pack, "  Teleporting to new location.");
             onlineProfile.getPlayer().teleport(data.location.getValue(onlineProfile));
         } catch (final QuestException e) {
-            log.warn(pack, "Could not teleport to " + data.location, e);
+            log.warn(pack, "Could not teleport to '%s'.".formatted(data.location), e);
         }
     }
 
@@ -246,7 +246,7 @@ public class QuestCanceler {
         try {
             return names.asComponent(profile);
         } catch (final QuestException e) {
-            log.warn(pack, "Could not resolve Quest name in canceler '" + cancelerID + "': " + e.getMessage(), e);
+            log.warn(pack, "Could not resolve Quest name in canceler '%s': %s".formatted(cancelerID, e.getMessage()), e);
             return Component.text("Quest");
         }
     }
@@ -263,7 +263,7 @@ public class QuestCanceler {
             try {
                 stack = itemManager.getItem(profile, item).generate(1);
             } catch (final QuestException e) {
-                log.warn(pack, "Could not load cancel button: " + e.getMessage(), e);
+                log.warn(pack, "Could not load cancel button: %s".formatted(e.getMessage()), e);
             }
         }
         stack.editMeta(meta -> meta.displayName(getName(profile)));

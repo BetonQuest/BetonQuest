@@ -133,12 +133,12 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
     public boolean test(@Nullable final Profile profile, final ConditionIdentifier conditionID) {
         final ConditionAdapter condition = values.get(conditionID);
         if (condition == null) {
-            log.warn(conditionID.getPackage(), "The condition " + conditionID + " is not defined!");
+            log.warn(conditionID.getPackage(), "The condition '%s' is not defined!".formatted(conditionID));
             return false;
         }
         if (profile == null && !condition.allowsPlayerless()) {
             log.warn(conditionID.getPackage(),
-                    "Cannot check player-dependent condition '%s' without a player, returning false".formatted(conditionID));
+                    "Cannot check player-dependent condition '%s' without a player, returning false.".formatted(conditionID));
             return false;
         }
         if (condition.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
@@ -151,7 +151,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         try {
             return scheduler.callSyncMethod(plugin, () -> checkOutcome(profile, conditionID, condition)).get();
         } catch (final InterruptedException | ExecutionException e) {
-            log.reportException(e);
+            log.reportException(conditionID.getPackage(), e);
             return false;
         }
     }
@@ -161,13 +161,13 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         try {
             outcome = condition.check(profile);
         } catch (final QuestException e) {
-            log.warn(conditionID.getPackage(), "Error while checking '" + conditionID + "' condition: " + e.getMessage(), e);
+            log.warn(conditionID.getPackage(), "Error while checking '%s' condition: %s".formatted(conditionID, e.getMessage()), e);
             return false;
         }
         final boolean isMet = outcome != conditionID.isInverted();
         log.debug(conditionID.getPackage(),
-                (isMet ? "TRUE" : "FALSE") + ": " + (conditionID.isInverted() ? "inverted" : "") + " condition "
-                        + conditionID + " for " + profile);
+                "%s: %s condition '%s' for %s.".formatted(isMet ? "TRUE" : "FALSE",
+                        conditionID.isInverted() ? "inverted" : "", conditionID, profile));
         return isMet;
     }
 
@@ -179,7 +179,7 @@ public class ConditionProcessor extends TypedQuestProcessor<ConditionIdentifier,
         for (final ConditionIdentifier identifier : conditionIdentifiers) {
             final ConditionAdapter adapter = values.get(identifier);
             if (adapter == null) {
-                log.warn(identifier.getPackage(), "The condition " + identifier + " is not defined!");
+                log.warn(identifier.getPackage(), "The condition '%s' is not defined!".formatted(identifier));
                 return false;
             }
             (adapter.isPrimaryThreadEnforced() ? sync : async).put(identifier, adapter);

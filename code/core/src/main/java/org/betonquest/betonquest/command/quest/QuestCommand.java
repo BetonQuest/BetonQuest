@@ -169,8 +169,8 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             return false;
         }
         try {
-            log.debug("Executing /betonquest command for user " + sender.getName()
-                    + " with arguments: " + Arrays.toString(args));
+            log.debug("Executing /betonquest command for user '%s' with arguments '%s'.".formatted(sender.getName(),
+                    Arrays.toString(args)));
             // if the command is empty, display help message
             if (args.length == 0) {
                 displayHelp(sender, alias);
@@ -182,7 +182,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
             final SubCommand subCommand = subCommands.get(lowerCase);
             if (subCommand != null) {
                 subCommand.handle(sender, args);
-                log.debug("Command executing done");
+                log.debug("Command executing done.");
                 return true;
             }
             switch (lowerCase) {
@@ -192,10 +192,10 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
                 case "backup" -> handleBackup(sender);
                 default -> sendMessage(sender, "unknown_argument");
             }
-            log.debug("Command executing done");
+            log.debug("Command executing done.");
             return true;
         } catch (final QuestException e) {
-            log.error("Error while executing command: " + e.getMessage(), e);
+            log.error("Error while executing command: %s".formatted(e.getMessage()), e);
         }
         return false;
     }
@@ -280,7 +280,7 @@ public class QuestCommand implements CommandExecutor, SimpleTabCompleter {
         try {
             sender.sendMessage(localizations.getMessage(profile, messageName, replacements));
         } catch (final QuestException e) {
-            log.warn("Failed to send message '" + messageName + "': " + e.getMessage(), e);
+            log.warn("Failed to send message '%s': %s".formatted(messageName, e.getMessage()), e);
             sender.sendMessage("Failed to send message '" + messageName + "': " + e.getMessage());
         }
     }

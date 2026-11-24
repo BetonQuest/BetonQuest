@@ -84,11 +84,12 @@ public class MenuItemListener implements Listener {
                     continue;
                 }
             } catch (final QuestException e) {
-                log.warn(menu.getMenuID().getPackage(), "Exception while getting Menu Interaction Item: " + e.getMessage(), e);
+                log.warn(menu.getMenuID().getPackage(), "Exception while getting Menu Interaction Item for menu '%s': %s"
+                        .formatted(menu.getMenuID(), e.getMessage()), e);
                 continue;
             }
             menuID = menu.getMenuID();
-            log.debug(menuID.getPackage(), profile + " used bound item of menu " + menuID);
+            log.debug(menuID.getPackage(), "%s used bound item of menu '%s'.".formatted(profile, menuID));
             if (menu.mayOpen(profile)) {
                 denied = false;
                 break;
@@ -106,7 +107,7 @@ public class MenuItemListener implements Listener {
         try {
             rpgMenu.openMenu(profile, menuID);
         } catch (final QuestException e) {
-            log.error(menuID.getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
+            log.error(menuID.getPackage(), "Could not open menu '%s': %s".formatted(menuID, e.getMessage()), e);
         }
     }
 

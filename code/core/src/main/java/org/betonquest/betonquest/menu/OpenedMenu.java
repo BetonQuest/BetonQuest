@@ -200,7 +200,7 @@ public class OpenedMenu implements Listener {
         for (int i = 0; i < items.length; i++) {
             content[i] = (items[i] == null) ? new ItemStack(Material.AIR) : items[i].generateItem(onlineProfile);
         }
-        log.debug(getId().getPackage(), "updated contents of menu " + getId() + " for " + onlineProfile);
+        log.debug(getId().getPackage(), "Updated contents of menu '%s' for %s.".formatted(getId(), onlineProfile));
         inventory.setContents(content);
     }
 
@@ -248,10 +248,11 @@ public class OpenedMenu implements Listener {
     }
 
     private void clickLogic(final InventoryClickEvent event, final MenuItem item) {
-        log.debug(getId().getPackage(), onlineProfile + " clicked on slot " + event.getSlot() + " with item " + item.getId() + " in menu " + getId());
+        log.debug(getId().getPackage(), "%s clicked on slot '%s' with item '%s' in menu '%s'."
+                .formatted(onlineProfile, event.getSlot(), item.getId(), getId()));
         final MenuClickEvent clickEvent = new MenuClickEvent(onlineProfile, getId(), event.getSlot(), item.getId(), event.getClick());
         if (!clickEvent.callEvent()) {
-            log.debug(getId().getPackage(), "click of " + onlineProfile + " in menu " + getId() + " was cancelled by a bukkit event listener");
+            log.debug(getId().getPackage(), "Click of %s in menu '%s' was cancelled by a bukkit event listener.".formatted(onlineProfile, getId()));
             return;
         }
         //done if already closed by a 3rd party listener
@@ -287,7 +288,7 @@ public class OpenedMenu implements Listener {
         }
 
         new MenuCloseEvent(onlineProfile, getId()).callEvent();
-        log.debug(getId().getPackage(), onlineProfile + " closed menu " + getId());
+        log.debug(getId().getPackage(), "%s closed menu '%s'.".formatted(onlineProfile, getId()));
 
         HandlerList.unregisterAll(this);
         OPENED_MENUS.remove(onlineProfile.getProfileUUID());

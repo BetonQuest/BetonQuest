@@ -42,7 +42,7 @@ public class MigratorComponent extends AbstractCoreComponent {
             migrator.migrate();
             dependencyProvider.take(Migrator.class, migrator);
         } catch (final IOException e) {
-            log.error("There was an exception while migrating from a previous version! Reason: " + e.getMessage(), e);
+            log.error("There was an exception while migrating from a previous version: %s".formatted(e.getMessage()), e);
         }
     }
 }

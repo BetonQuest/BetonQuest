@@ -138,7 +138,7 @@ public class DefaultConversationData implements ConversationData {
         validateNpcOptions();
         validatePlayerOptions();
 
-        log.debug(getPack(), String.format("Conversation loaded: %d NPC options and %d player options", npcOptions.size(),
+        log.debug(getPack(), "Conversation loaded: '%s' NPC options and '%s' player options.".formatted(npcOptions.size(),
                 playerOptions.size()));
     }
 
@@ -163,23 +163,25 @@ public class DefaultConversationData implements ConversationData {
             if (externalPointer.sourceOption() == null) {
                 sourceOption = "starting option";
             } else {
-                sourceOption = "'" + externalPointer.sourceOption() + "' option";
+                sourceOption = "'%s' option".formatted(externalPointer.sourceOption());
             }
 
             final DefaultConversationData conv;
             try {
                 conv = conversationProcessor.getData(targetConv);
             } catch (final QuestException e) {
-                log.warn(getPack(), "Cross-conversation pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
-                        + sourceOption + " points to the '" + targetConv.get()
-                        + "' conversation in the package '" + targetPack.getQuestPath() + "' but that conversation does not exist. Check your spelling!", e);
+                log.warn(getPack(), ("Cross-conversation pointer in '%s' package, '%s' conversation, %s points to the '%s' conversation"
+                        + " in the package '%s' but that conversation does not exist. Check your spelling!")
+                        .formatted(externalPointer.sourcePack(), externalPointer.sourceConv(), sourceOption, targetConv.get(),
+                                targetPack.getQuestPath()), e);
                 continue;
             }
 
             if (!conv.hasOption(resolvedOption)) {
-                log.warn(getPack(), "External pointer in '" + externalPointer.sourcePack() + "' package, '" + externalPointer.sourceConv() + "' conversation, "
-                        + sourceOption + " points to '" + targetOptionName + "' NPC option in '" + targetConv.get()
-                        + "' conversation from package '" + targetPack.getQuestPath() + "', but it does not exist.");
+                log.warn(getPack(), ("External pointer in '%s' package, '%s' conversation, %s points to '%s' NPC option"
+                        + " in '%s' conversation from package '%s', but it does not exist.")
+                        .formatted(externalPointer.sourcePack(), externalPointer.sourceConv(), sourceOption, targetOptionName,
+                                targetConv.get(), targetPack.getQuestPath()));
             }
         }
         externalPointers.clear();
@@ -572,13 +574,13 @@ public class DefaultConversationData implements ConversationData {
 
         private Component getFormattedText(@Nullable final Profile profile) {
             if (text == null) {
-                log.warn(getPack(), "No text in conversation '" + publicData.conversationID() + "'!");
+                log.warn(getPack(), "No text in conversation '%s'!".formatted(publicData.conversationID()));
                 return Component.empty();
             }
             try {
                 return text.asComponent(profile);
             } catch (final QuestException e) {
-                log.warn(getPack(), "Could not resolve message in conversation '" + publicData.conversationID() + "': " + e.getMessage(), e);
+                log.warn(getPack(), "Could not resolve message in conversation '%s': %s".formatted(publicData.conversationID(), e.getMessage()), e);
                 return Component.empty();
             }
         }

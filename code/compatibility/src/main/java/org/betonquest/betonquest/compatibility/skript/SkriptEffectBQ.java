@@ -81,7 +81,7 @@ public class SkriptEffectBQ extends Effect {
                     betonQuestApi.actions().manager().run(single == null ? null : profileProvider.getProfile(single),
                             actionIdentifierFactory.parseIdentifier(null, actionID));
                 } catch (final QuestException e) {
-                    log.warn("Error when running Skript event - could not load '" + actionID + "' action: " + e.getMessage(), e);
+                    log.warn("Error when running Skript event - could not load '%s' action: %s".formatted(actionID, e.getMessage()), e);
                 }
             }
         }.runTask(BetonQuest.getInstance());

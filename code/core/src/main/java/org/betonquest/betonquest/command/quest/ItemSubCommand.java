@@ -51,17 +51,17 @@ public class ItemSubCommand extends QuestCommandPart {
     public void handle(final CommandSender sender, final String... args) {
         // sender must be a player
         if (!(sender instanceof final Player player)) {
-            log.debug("Cannot continue, sender must be player");
+            log.debug("Cannot continue, sender must be player.");
             return;
         }
         // and the item name must be specified
         if (args.length < 2) {
-            log.debug("Cannot continue, item's name must be supplied");
+            log.debug("Cannot continue, item's name must be supplied.");
             sendMessage(sender, "specify_item");
             return;
         }
         if (args.length < 3) {
-            log.debug("Cannot continue, item's serializer must be supplied");
+            log.debug("Cannot continue, item's serializer must be supplied.");
             sendMessage(sender, "specify_key");
             return;
         }
@@ -80,7 +80,7 @@ public class ItemSubCommand extends QuestCommandPart {
         // define parts of the final string
         final QuestPackage configPack = questPackageManager.getPackages().get(pack);
         if (configPack == null) {
-            log.debug("Cannot continue, package does not exist");
+            log.debug("Cannot continue, package does not exist.");
             sendMessage(sender, "specify_package");
             return;
         }
@@ -91,11 +91,11 @@ public class ItemSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not serialize item: " + e.getMessage(), e);
+            log.warn(configPack, "Could not serialize item '%s': %s".formatted(args[1], e.getMessage()), e);
             return;
         }
         // save it in items.yml
-        log.debug("Saving item to configuration as " + args[1] + " (" + args[2] + ")");
+        log.debug(configPack, "Saving item to configuration as '%s' ('%s').".formatted(args[1], args[2]));
         final String path = "items." + name;
         final boolean exists = configPack.getConfig().isSet(path);
         configPack.getConfig().set(path, args[2] + " " + instructions);
@@ -106,7 +106,7 @@ public class ItemSubCommand extends QuestCommandPart {
             }
             configPack.saveAll();
         } catch (final IOException | InvalidConfigurationException e) {
-            log.warn(configPack, e.getMessage(), e);
+            log.warn(configPack, "Could not save item '%s': %s".formatted(args[1], e.getMessage()), e);
             return;
         }
         // done

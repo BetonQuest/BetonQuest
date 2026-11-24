@@ -117,7 +117,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
             try {
                 sender.sendMessage(localizations.getMessage(onlineProfile, "language_missing"));
             } catch (final QuestException e) {
-                log.warn("Failed to get language missing message: " + e.getMessage(), e);
+                log.warn("Failed to get language missing message: %s".formatted(e.getMessage()), e);
             }
             return true;
         }
@@ -134,7 +134,7 @@ public class LangCommand implements CommandExecutor, SimpleTabCompleter {
                 sender.sendMessage(localizations.getMessage(onlineProfile, "language_not_exist",
                         new VariableReplacement("languages", Component.text(finalMessage))));
             } catch (final QuestException e) {
-                log.warn("Failed to get language_not_exist: " + e.getMessage(), e);
+                log.warn("Failed to get language_not_exist: %s".formatted(e.getMessage()), e);
             }
             return true;
         }

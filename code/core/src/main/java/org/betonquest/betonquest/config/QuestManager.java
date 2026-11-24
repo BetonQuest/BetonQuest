@@ -163,12 +163,12 @@ public class QuestManager implements QuestPackageManager {
                 try {
                     questMigrator.migrate(quest);
                 } catch (final VersionMissmatchException e) {
-                    log.warn("QuestPackage '%s': %s".formatted(quest.getQuestPath(), e.getMessage()), e);
+                    log.warn(quest, "QuestPackage '%s': %s".formatted(quest.getQuestPath(), e.getMessage()), e);
                 }
                 try {
                     quest.applyQuestTemplates(templates);
                 } catch (final InvalidConfigurationException e) {
-                    log.warn("Error while loading QuestPackage '%s'! Reason: %s".formatted(quest.getQuestPath(), e.getMessage()), e);
+                    log.warn(quest, "Error while loading QuestPackage '%s': %s".formatted(quest.getQuestPath(), e.getMessage()), e);
                     return;
                 }
                 if (quest.getConfig().getBoolean("package.enabled", true)) {
@@ -227,7 +227,7 @@ public class QuestManager implements QuestPackageManager {
                 try {
                     files.addAll(searchForPackages(root, subFile, fileNameIndicator, fileTypeIndicator, creator));
                 } catch (final IOException e) {
-                    log.warn(e.getMessage(), e);
+                    log.warn("Could not search for quests in directory '%s': %s".formatted(subFile.getPath(), e.getMessage()), e);
                 }
             } else {
                 if (!subFile.getName().endsWith(fileTypeIndicator)) {
@@ -260,7 +260,7 @@ public class QuestManager implements QuestPackageManager {
         try {
             creator.create(questPath, relativeRoot, files);
         } catch (final InvalidConfigurationException | IOException e) {
-            log.warn("%s '%s' could not be loaded, reason: %s".formatted(root.getParentFile().getName(), questPath, e.getMessage()), e);
+            log.warn("%s '%s' could not be loaded: %s".formatted(root.getParentFile().getName(), questPath, e.getMessage()), e);
         }
     }
 

@@ -172,11 +172,11 @@ public class QuestMigrator {
      */
     @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.AvoidCatchingGenericException", "PMD.CognitiveComplexity"})
     public void migrate(final Quest quest) throws IOException, InvalidConfigurationException, VersionMissmatchException {
-        log.debug("Attempting to migrate package '" + quest.getQuestPath() + "'");
+        log.debug("Attempting to migrate package '%s'.".formatted(quest.getQuestPath()));
         final String versionString = quest.getQuestConfig().getString(QUEST_VERSION_PATH);
         final BetonQuestMigratorVersion lastVersionToSet = migrations.isEmpty() ? fallbackVersion : migrations.lastKey();
         if (versionString == null) {
-            log.debug("  No version present, just setting to '" + lastVersionToSet + "'");
+            log.debug("  No version present, just setting to '%s'.".formatted(lastVersionToSet));
             lastVersionToSet.setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();
             return;
@@ -184,7 +184,7 @@ public class QuestMigrator {
 
         final Map<BetonQuestMigratorVersion, QuestMigration> actualMigrations;
         if (LEGACY.equalsIgnoreCase(versionString)) {
-            log.debug("  Legacy identifier set, applying legacy and versioned migrations");
+            log.debug("  Legacy identifier set, applying legacy and versioned migrations.");
             for (final QuestMigration legacyMigration : legacyMigrations) {
                 try {
                     legacyMigration.migrate(quest);
@@ -197,7 +197,7 @@ public class QuestMigrator {
         } else {
             final BetonQuestMigratorVersion otherVersion = new BetonQuestMigratorVersion(versionString);
             if (lastVersionToSet.equals(otherVersion)) {
-                log.debug("  Version '" + otherVersion + "' is up to date");
+                log.debug("  Version '%s' is up to date.".formatted(otherVersion));
                 return;
             }
             if (lastVersionToSet.wrappedVersion().isOlderThan(VersionComparisonStrategies.DEFAULT, otherVersion.wrappedVersion())) {
@@ -205,12 +205,12 @@ public class QuestMigrator {
                         + "quests with newer versions will probably cause issues. If you know that won't be the case "
                         + "you can change the quest version to the latest known").formatted(otherVersion, lastVersionToSet));
             }
-            log.debug("  Migrating from version '" + otherVersion + "' to '" + lastVersionToSet + "'");
+            log.debug("  Migrating from version '%s' to '%s'.".formatted(otherVersion, lastVersionToSet));
             actualMigrations = migrations.tailMap(otherVersion, false);
         }
 
         if (actualMigrations.isEmpty()) {
-            log.debug("  No newer migrations found, just setting version to '" + lastVersionToSet + "'");
+            log.debug("  No newer migrations found, just setting version to '%s'.".formatted(lastVersionToSet));
             lastVersionToSet.setVersion(quest, QUEST_VERSION_PATH);
             quest.saveAll();
             return;

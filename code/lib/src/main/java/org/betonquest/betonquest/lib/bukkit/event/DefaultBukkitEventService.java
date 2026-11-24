@@ -54,11 +54,11 @@ public class DefaultBukkitEventService implements BukkitEventService {
             try {
                 group.bake(plugin);
             } catch (final QuestException e) {
-                logger.error("Failed to register event listener for event '" + event.getSimpleName() + "'", e);
+                logger.error("Failed to register event listener for event '%s': %s".formatted(event.getSimpleName(), e.getMessage()), e);
                 return Optional.empty();
             }
             listeners.put(event, group);
-            logger.debug("New listener for '" + event.getSimpleName() + "'");
+            logger.debug("New listener for '%s'.".formatted(event.getSimpleName()));
         }
         return Optional.of((EventListenerGroup<T>) listeners.get(event));
     }

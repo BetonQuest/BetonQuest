@@ -129,7 +129,7 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
             try {
                 conv.sendMessage(localizations.getMessage(onlineProfile, "pullback"));
             } catch (final QuestException e) {
-                log.warn("Failed to get pullback message: " + e.getMessage(), e);
+                log.warn(conv.getPackage(), "Failed to get pullback message: %s".formatted(e.getMessage()), e);
             }
         }
     }
@@ -155,9 +155,9 @@ public abstract class ChatConvIO implements ConversationIO, Listener {
                 event.setCancelled(true);
                 return;
             }
-            log.debug("Invalid answer from player: " + message);
+            log.debug(conv.getPackage(), "Invalid answer from player: '%s'.".formatted(message));
         } catch (final NumberFormatException e) {
-            log.debug("Invalid answer from player: " + message, e);
+            log.debug(conv.getPackage(), "Invalid answer from player: '%s'.".formatted(message), e);
         }
         new BukkitRunnable() {
             @Override

@@ -77,7 +77,8 @@ public class SkriptConditionBQ extends Condition {
             return betonQuestApi.conditions().manager().test(single == null ? null : profileProvider.getProfile(single),
                     conditionIdentifierFactory.parseIdentifier(null, conditionID));
         } catch (final QuestException e) {
-            log.warn("Error while checking Skript condition - could not load condition with ID '" + conditionID + "': " + e.getMessage(), e);
+            log.warn("Error while checking Skript condition - could not load condition with ID '%s': %s"
+                    .formatted(conditionID, e.getMessage()), e);
             return false;
         }
     }

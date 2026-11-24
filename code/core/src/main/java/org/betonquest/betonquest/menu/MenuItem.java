@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * An Item which Is displayed as option in a menu and has some actions that are fired when item is clicked.
  */
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class MenuItem {
 
     /**
@@ -125,15 +124,15 @@ public class MenuItem {
         try {
             resolved = actions.getValue(profile);
         } catch (final QuestException exception) {
-            log.warn(itemId.getPackage(), "Error while resolving actions in menu item '" + itemId + "': " + exception.getMessage(), exception);
+            log.warn(itemId.getPackage(), "Error while resolving actions in menu item '%s': %s".formatted(itemId, exception.getMessage()), exception);
             return false;
         }
-        log.debug(itemId.getPackage(), "Item " + itemId + ": Run actions");
+        log.debug(itemId.getPackage(), "Item '%s': Run actions.".formatted(itemId));
         actionManager.run(profile, resolved);
         try {
             return this.close.getValue(profile);
         } catch (final QuestException e) {
-            log.warn(itemId.getPackage(), "Error resolving close for '" + itemId + "': " + e.getMessage(), e);
+            log.warn(itemId.getPackage(), "Error resolving close for '%s': %s".formatted(itemId, e.getMessage()), e);
             return true;
         }
     }
@@ -147,10 +146,10 @@ public class MenuItem {
     public boolean display(final Profile profile) {
         try {
             final boolean result = conditionManager.testAll(profile, this.conditions.getValue(profile));
-            log.debug(itemId.getPackage(), "Item '" + itemId + "' display check for profile '" + profile + "': " + result);
+            log.debug(itemId.getPackage(), "Item '%s' display check for profile %s: '%s'.".formatted(itemId, profile, result));
             return result;
         } catch (final QuestException exception) {
-            log.warn(itemId.getPackage(), "Error while resolving condition in menu item '" + itemId + "': " + exception.getMessage(), exception);
+            log.warn(itemId.getPackage(), "Error while resolving condition in menu item '%s': %s".formatted(itemId, exception.getMessage()), exception);
             return false;
         }
     }
@@ -186,7 +185,7 @@ public class MenuItem {
             }
             return item;
         } catch (final QuestException e) {
-            log.error(itemId.getPackage(), "QuestException while creating '" + itemId + "': " + e.getMessage());
+            log.error(itemId.getPackage(), "QuestException while creating '%s': %s".formatted(itemId, e.getMessage()));
             return new ItemStack(Material.AIR);
         }
     }

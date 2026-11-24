@@ -138,13 +138,13 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
                 continue;
             }
             if (key.contains(" ")) {
-                log.warn(pack, readable + " name cannot contain spaces: '" + key + "' in pack '" + pack.getQuestPath() + "'");
+                log.warn(pack, "%s name cannot contain spaces: '%s' in pack '%s'.".formatted(readable, key, pack.getQuestPath()));
                 continue;
             }
             try {
                 loadKey(key, pack);
             } catch (final QuestException e) {
-                log.warn(pack, "Error while loading " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
+                log.warn(pack, "Error while loading %s '%s' in pack '%s': %s".formatted(readable, key, pack.getQuestPath(), e.getMessage()), e);
             }
         }
     }
@@ -159,7 +159,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             final Objective parsed = factory.parseInstruction(instruction, service);
             values.put(identifier, parsed);
             postCreation(identifier, parsed);
-            log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
+            log.debug(pack, "  %s '%s' loaded.".formatted(readable, identifier));
         } catch (final QuestException e) {
             throw new QuestException("Error in '%s' %s of type '%s': %s".formatted(identifier, readable, type, e.getMessage()), e);
         }
@@ -182,7 +182,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             closeObjective(objective);
             if (objective instanceof Listener) {
                 HandlerList.unregisterAll((Listener) objective);
-                log.warn("'%s': Deprecated feature usage. Objectives will no longer support listeners in future versions. Use the objective service instead."
+                log.warn(objective.getPackage(), "'%s': Deprecated feature usage. Objectives will no longer support listeners in future versions. Use the objective service instead."
                         .formatted(objective.getObjectiveID()));
             }
         }
@@ -195,14 +195,14 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             autoOnce = instructionApi.create(identifier, identifier.readRawInstruction()).bool()
                     .getFlag("auto-once", true).getValue(null).orElse(false);
         } catch (final QuestException e) {
-            log.error("Error while loading auto-once flag for objective " + identifier, e);
+            log.error(identifier.getPackage(), "Error while loading auto-once flag for objective '%s': %s".formatted(identifier, e.getMessage()), e);
         }
         if (autoOnce) {
             autoOnceObjectiveIds.add(identifier);
         }
         if (objective instanceof Listener) {
             pluginManager.registerEvents((Listener) objective, plugin);
-            log.warn("'%s': Deprecated feature usage. Objectives will no longer support listeners in future versions. Use the objective service instead."
+            log.warn(identifier.getPackage(), "'%s': Deprecated feature usage. Objectives will no longer support listeners in future versions. Use the objective service instead."
                     .formatted(objective.getObjectiveID()));
         }
     }
@@ -214,7 +214,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
             objectiveService.start(objective.getObjectiveID(), profile, defaultInstruction, ObjectiveState.NEW);
             playerDataStorage.get().get(profile).addObjToDB(objectiveID, defaultInstruction);
         } catch (final QuestException e) {
-            log.warn("Could not create new objective '%s' for profile '%s': The objective instruction could not be resolved: %s"
+            log.warn(objectiveID.getPackage(), "Could not create new objective '%s' for profile %s. The objective instruction could not be resolved: %s"
                     .formatted(objectiveID, profile, e.getMessage()), e);
         }
     }
@@ -223,17 +223,17 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
     public void cancel(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
-            log.error("Objective '%s' could not be cancelled - not found.".formatted(objectiveID));
+            log.error(objectiveID.getPackage(), "Objective '%s' could not be cancelled - not found.".formatted(objectiveID));
             return;
         }
         if (!objective.getService().containsProfile(profile)) {
-            log.debug("Objective '%s' could not be cancelled - profile '%s' does not have it.".formatted(objectiveID, profile));
+            log.debug(objectiveID.getPackage(), "Objective '%s' could not be cancelled - profile %s does not have it.".formatted(objectiveID, profile));
             return;
         }
         try {
             objectiveService.stop(objective.getObjectiveID(), profile, ObjectiveState.CANCELED);
         } catch (final QuestException e) {
-            log.error("Could not cancel objective '%s'".formatted(objectiveID), e);
+            log.error(objectiveID.getPackage(), "Could not cancel objective '%s': %s".formatted(objectiveID, e.getMessage()), e);
         }
     }
 
@@ -246,17 +246,17 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
     public void pause(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
-            log.error("Objective '%s' could not be paused - not found.".formatted(objectiveID));
+            log.error(objectiveID.getPackage(), "Objective '%s' could not be paused - not found.".formatted(objectiveID));
             return;
         }
         if (!objective.getService().containsProfile(profile)) {
-            log.debug("Objective '%s' could not be paused - profile '%s' does not have it.".formatted(objectiveID, profile));
+            log.debug(objectiveID.getPackage(), "Objective '%s' could not be paused - profile %s does not have it.".formatted(objectiveID, profile));
             return;
         }
         try {
             objectiveService.stop(objective.getObjectiveID(), profile, ObjectiveState.PAUSED);
         } catch (final QuestException e) {
-            log.error("Could not pause objective '%s'".formatted(objectiveID), e);
+            log.error(objectiveID.getPackage(), "Could not pause objective '%s': %s".formatted(objectiveID, e.getMessage()), e);
         }
     }
 
@@ -264,11 +264,11 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
     public void start(final Profile profile, final ObjectiveIdentifier objectiveID) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
-            log.error("Tried to start objective '%s' but it is not loaded! Check for errors on /bq reload!".formatted(objectiveID));
+            log.error(objectiveID.getPackage(), "Tried to start objective '%s' but it is not loaded! Check for errors on /bq reload!".formatted(objectiveID));
             return;
         }
         if (objective.getService().containsProfile(profile)) {
-            log.debug(objectiveID.getPackage(), "'%s' already has the '%s' objective. Request to start the objective discarded.".formatted(profile, objectiveID));
+            log.debug(objectiveID.getPackage(), "%s already has the '%s' objective. Request to start the objective discarded.".formatted(profile, objectiveID));
             return;
         }
         newPlayer(profile, objectiveID);
@@ -278,17 +278,17 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
     public void start(final Profile profile, final ObjectiveIdentifier objectiveID, final String instruction) {
         final Objective objective = values.get(objectiveID);
         if (objective == null) {
-            log.warn(objectiveID.getPackage(), "Objective '%s' does not exist".formatted(objectiveID));
+            log.warn(objectiveID.getPackage(), "Objective '%s' does not exist.".formatted(objectiveID));
             return;
         }
         if (objective.getService().containsProfile(profile)) {
-            log.debug(objectiveID.getPackage(), "'%s' already has the '%s' objective!".formatted(profile, objectiveID));
+            log.debug(objectiveID.getPackage(), "%s already has the '%s' objective!".formatted(profile, objectiveID));
             return;
         }
         try {
             objectiveService.start(objective.getObjectiveID(), profile, instruction, ObjectiveState.ACTIVE);
         } catch (final QuestException e) {
-            log.error("Could not resume objective '%s'".formatted(objectiveID), e);
+            log.error(objectiveID.getPackage(), "Could not resume objective '%s': %s".formatted(objectiveID, e.getMessage()), e);
         }
     }
 
@@ -334,7 +334,7 @@ public class ObjectiveProcessor extends QuestProcessor<ObjectiveIdentifier, Obje
                 continue;
             }
             if (objective.getService().containsProfile(profile)) {
-                log.debug(id.getPackage(), "Profile '%s' already has objective '%s', adding tag...".formatted(profile, id));
+                log.debug(id.getPackage(), "Profile %s already has objective '%s', adding tag...".formatted(profile, id));
             } else {
                 newPlayer(profile, id);
             }

@@ -75,7 +75,7 @@ public final class Zipper {
         if (node.isDirectory()) {
             final File[] subNote = node.listFiles();
             if (subNote == null) {
-                log.warn("Directory '" + node.getPath() + "' could not be read!");
+                log.warn("Directory '%s' could not be read!".formatted(node.getPath()));
             } else {
                 for (final File filename : subNote) {
                     fileList.addAll(generateFileList(filename));
@@ -116,7 +116,7 @@ public final class Zipper {
             }
             zos.closeEntry();
         } catch (final IOException e) {
-            log.warn("Couldn't zip the files in directory '" + source.getPath() + "'!", e);
+            log.warn("Couldn't zip the files in directory '%s'!".formatted(source.getPath()), e);
         }
     }
 

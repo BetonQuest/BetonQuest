@@ -286,7 +286,7 @@ public class Backpack implements Listener {
                 try {
                     backpackItems.add(0, playerData.getJournal().getAsItem());
                 } catch (final QuestException e) {
-                    log.warn("Could not add journal to backpack: " + e.getMessage(), e);
+                    log.warn("Could not add journal to backpack: %s".formatted(e.getMessage()), e);
                 }
             }
             this.pages = (int) Math.ceil(backpackItems.size() / 45F);
@@ -326,7 +326,7 @@ public class Backpack implements Listener {
                 backpackTitle = backpackTitle.append(Component.text(pages == 0 || pages == 1 ? "" : " (" + page + "/" + pages + ")"));
                 inv = Bukkit.createInventory(null, INVENTORY_SIZE, backpackTitle);
             } catch (final QuestException e) {
-                log.warn("Could not create backpack inventory: " + e.getMessage(), e);
+                log.warn("Could not create backpack inventory: %s".formatted(e.getMessage()), e);
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
@@ -347,7 +347,7 @@ public class Backpack implements Listener {
                     final ItemIdentifier itemIdentifier = identifierFactory.parseIdentifier(null, buttonString);
                     stack = itemManager.getItem(onlineProfile, itemIdentifier).generate(1);
                 } catch (final QuestException e) {
-                    log.warn("Could not load " + button + " button: " + e.getMessage(), e);
+                    log.warn("Could not load '%s' button: %s".formatted(button, e.getMessage()), e);
                 }
             }
             if (stack == null) {
@@ -357,7 +357,7 @@ public class Backpack implements Listener {
                 final Component name = localizations.getMessage(onlineProfile, button);
                 stack.editMeta(meta -> meta.displayName(name));
             } catch (final QuestException e) {
-                log.warn("Could not set display name for " + button + " button: " + e.getMessage(), e);
+                log.warn("Could not set display name for '%s' button: %s".formatted(button, e.getMessage()), e);
             }
             return Pair.of(stack, present);
         }
@@ -463,21 +463,22 @@ public class Backpack implements Listener {
                         cancelers.add(entry.getValue());
                     }
                 } catch (final QuestException e) {
-                    log.warn(entry.getKey().getPackage(), "Could not check if canceler is cancelable, don't show it in the GUI: " + e.getMessage(), e);
+                    log.warn(entry.getKey().getPackage(), "Could not check if canceler '%s' is cancelable, don't show it in the GUI: %s"
+                            .formatted(entry.getKey(), e.getMessage()), e);
                 }
             }
             final int size = cancelers.size();
             int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > MAXIMUM_ROWS) {
                 numberOfRows = MAXIMUM_ROWS;
-                log.warn(onlineProfile + " has too many active quests, please"
-                        + " don't allow for so many of them. It slows down your server!");
+                log.warn("%s has too many active quests, please don't allow for so many of them. It slows down your server!"
+                        .formatted(onlineProfile));
             }
             final Inventory inv;
             try {
                 inv = Bukkit.createInventory(null, numberOfRows * 9, localizations.getMessage(onlineProfile, "cancel_page"));
             } catch (final QuestException e) {
-                log.warn("Could not create cancel inventory: " + e.getMessage(), e);
+                log.warn("Could not create cancel inventory: %s".formatted(e.getMessage()), e);
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
@@ -528,8 +529,8 @@ public class Backpack implements Listener {
             final int size = compasses.size();
             final int numberOfRows = (size - size % 9) / 9 + 1;
             if (numberOfRows > MAXIMUM_ROWS) {
-                log.warn(onlineProfile + " has too many compass pointers, please"
-                        + " don't allow for so many of them. It slows down your server!");
+                log.warn("%s has too many compass pointers, please don't allow for so many of them. It slows down your server!"
+                        .formatted(onlineProfile));
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
@@ -537,7 +538,7 @@ public class Backpack implements Listener {
             try {
                 inv = Bukkit.createInventory(null, numberOfRows * 9, localizations.getMessage(onlineProfile, "compass_page"));
             } catch (final QuestException e) {
-                log.warn("Could not create compass inventory: " + e.getMessage(), e);
+                log.warn("Could not create compass inventory: %s".formatted(e.getMessage()), e);
                 onlineProfile.getPlayer().closeInventory();
                 return;
             }
@@ -560,14 +561,14 @@ public class Backpack implements Listener {
                 try {
                     compass = itemManager.getItem(onlineProfile, item).generate(1);
                 } catch (final QuestException e) {
-                    log.warn("Could not find item: " + e.getMessage(), e);
+                    log.warn(item.getPackage(), "Could not find item '%s': %s".formatted(item, e.getMessage()), e);
                     compass = new ItemStack(Material.COMPASS);
                 }
                 final Component name;
                 try {
                     name = comp.name().asComponent(onlineProfile);
                 } catch (final QuestException e) {
-                    log.warn("Could not get name for compass '" + entry.getKey() + "', skipping it: " + e.getMessage(), e);
+                    log.warn("Could not get name for compass '%s', skipping it: %s".formatted(entry.getKey(), e.getMessage()), e);
                     continue;
                 }
                 final ItemMeta meta = compass.getItemMeta();
@@ -589,7 +590,7 @@ public class Backpack implements Listener {
             try {
                 loc = compass.location().getValue(onlineProfile);
             } catch (final QuestException e) {
-                log.warn("Could not resolve compass location for '" + compass + "': " + e.getMessage(), e);
+                log.warn("Could not resolve compass location for '%s': %s".formatted(compass, e.getMessage()), e);
                 return;
             }
 

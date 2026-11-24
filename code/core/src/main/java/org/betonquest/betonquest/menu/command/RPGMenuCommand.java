@@ -166,7 +166,7 @@ public class RPGMenuCommand extends SimpleCommand {
                     sendMessage(sender, "command_open_successful", new VariableReplacement("menu", Component.text(menu.toString())));
                     return true;
                 } catch (final QuestException e) {
-                    log.error(menu.getPackage(), "Could not open menu '" + menu + "': " + e.getMessage(), e);
+                    log.error(menu.getPackage(), "Could not open menu '%s': %s".formatted(menu, e.getMessage()), e);
                     return false;
                 }
             default:

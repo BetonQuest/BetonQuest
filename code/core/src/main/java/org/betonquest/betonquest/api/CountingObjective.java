@@ -236,11 +236,11 @@ public abstract class CountingObjective extends DefaultObjective {
             try {
                 return Integer.parseInt(countingInstruction);
             } catch (final NumberFormatException e) {
-                log.warn(objID.getPackage(), "Loaded counting objective '" + objID + "' from database with invalid amount."
+                log.warn(objID.getPackage(), ("Loaded counting objective '%s' from database with invalid amount."
                         + " This is probably caused by a change of the objective's implementation."
                         + " The objective will be reset to an amount of 1."
-                        + " This is normally the previous amount and can be ignored.");
-                log.debug(objID.getPackage(), "Invalid instruction string: '" + instruction + "'");
+                        + " This is normally the previous amount and can be ignored.").formatted(objID));
+                log.debug(objID.getPackage(), "Invalid instruction string '%s'.".formatted(instruction));
                 dirty.set(true);
                 return 1;
             }

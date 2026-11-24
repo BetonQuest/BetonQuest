@@ -95,13 +95,13 @@ public class DownloadSubCommand extends QuestCommandPart {
         final String githubNamespace = args[1];
         final String ref = args[2];
         final String offsetPath = args[3];
-        final String errSummary = String.format("Download from %s ref %s of %s at %s to %s failed:",
+        final String errSummary = "Download from '%s' ref '%s' of '%s' at '%s' to '%s' failed".formatted(
                 githubNamespace, ref, offsetPath, sourcePath, targetPath);
 
         //Check offset paths
         if (!Downloader.ALLOWED_OFFSET_PATHS.contains(offsetPath)) {
             sendMessage(sender, "download_failed_offset");
-            log.debug(errSummary, new IllegalArgumentException(offsetPath));
+            log.debug("%s.".formatted(errSummary), new IllegalArgumentException(offsetPath));
             return;
         }
 
@@ -109,14 +109,14 @@ public class DownloadSubCommand extends QuestCommandPart {
         final List<String> whitelist = config.getStringList("downloader.repo_whitelist");
         if (whitelist.stream().map(String::trim).noneMatch(githubNamespace::equals)) {
             sendMessage(sender, "download_failed_whitelist");
-            log.debug(errSummary, new IllegalArgumentException(githubNamespace));
+            log.debug("%s.".formatted(errSummary), new IllegalArgumentException(githubNamespace));
             return;
         }
 
         //check if ref is valid
         if (ref.toLowerCase(Locale.ROOT).startsWith("refs/pull/") && !config.getBoolean("downloader.pull_request", false)) {
             sendMessage(sender, "download_failed_pr");
-            log.debug(errSummary, new IllegalArgumentException(ref));
+            log.debug("%s.".formatted(errSummary), new IllegalArgumentException(ref));
             return;
         }
 
@@ -132,7 +132,7 @@ public class DownloadSubCommand extends QuestCommandPart {
                 final String message = e.getMessage();
                 sendMessageSync(sender, "download_failed",
                         new VariableReplacement("error", Component.text(message == null ? e.getClass().getSimpleName() : message)));
-                log.debug(errSummary, e);
+                log.debug("%s: %s".formatted(errSummary, message), e);
             } catch (final Exception e) {
                 sendMessageSync(sender, "download_failed",
                         new VariableReplacement("error", Component.text(e.getClass().getSimpleName() + ": " + e.getMessage())));
@@ -140,9 +140,9 @@ public class DownloadSubCommand extends QuestCommandPart {
                     final BetonQuestLogRecord record = new BetonQuestLogRecord(Level.FINE, null, plugin);
                     record.setThrown(e);
                     player.sendMessage(new ChatFormatter().formatTextComponent(record));
-                    log.debug(errSummary, e);
+                    log.debug("%s: %s".formatted(errSummary, e.getMessage()), e);
                 } else {
-                    log.error(errSummary, e);
+                    log.error("%s: %s".formatted(errSummary, e.getMessage()), e);
                 }
             }
         });

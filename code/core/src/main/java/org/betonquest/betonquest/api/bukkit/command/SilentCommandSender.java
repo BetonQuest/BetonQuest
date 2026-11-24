@@ -42,22 +42,22 @@ public class SilentCommandSender implements CommandSender {
 
     @Override
     public void sendMessage(final String message) {
-        log.debug("Silently sending message to console: " + message);
+        log.debug("Silently sending message to console: '%s'.".formatted(message));
     }
 
     @Override
     public void sendMessage(final String... messages) {
-        log.debug("Silently sending messages to console: " + String.join(", ", messages));
+        log.debug("Silently sending messages to console: '%s'.".formatted(String.join(", ", messages)));
     }
 
     @Override
     public void sendMessage(@Nullable final UUID sender, final String message) {
-        log.debug("Silently sending message to console: " + message);
+        log.debug("Silently sending message to console: '%s'.".formatted(message));
     }
 
     @Override
     public void sendMessage(@Nullable final UUID sender, final String... messages) {
-        log.debug("Silently sending messages to console: " + String.join(", ", messages));
+        log.debug("Silently sending messages to console: '%s'.".formatted(String.join(", ", messages)));
     }
 
     @Override

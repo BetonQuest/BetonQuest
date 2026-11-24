@@ -79,7 +79,7 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
         }
         for (final String key : section.getKeys(true)) {
             if (key.contains(" ")) {
-                log.warn(pack, readable + " name cannot contain spaces: '" + key + "' in pack '" + pack.getQuestPath() + "'");
+                log.warn(pack, "%s name cannot contain spaces: '%s' in pack '%s'.".formatted(readable, key, pack.getQuestPath()));
                 continue;
             }
             try {
@@ -89,7 +89,7 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
                     loadKey(key, pack);
                 }
             } catch (final QuestException e) {
-                log.warn(pack, "Error while loading " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
+                log.warn(pack, "Error while loading %s '%s' in pack '%s': %s".formatted(readable, key, pack.getQuestPath(), e.getMessage()), e);
             }
         }
     }
@@ -103,7 +103,7 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
             final T parsed = factory.parseInstruction(instruction);
             values.put(identifier, parsed);
             postCreation(identifier, parsed);
-            log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
+            log.debug(pack, "  %s '%s' loaded.".formatted(readable, identifier));
         } catch (final QuestException e) {
             throw new QuestException("Error in '%s' %s of type '%s': %s".formatted(identifier, readable, type, e.getMessage()), e);
         }
@@ -119,7 +119,7 @@ public abstract class TypedQuestProcessor<I extends ReadableIdentifier, T> exten
             final T parsed = sectionFactory.fromSection(identifier);
             values.put(identifier, parsed);
             postCreation(identifier, parsed);
-            log.debug(pack, "  " + readable + " '" + identifier + "' loaded");
+            log.debug(pack, "  %s '%s' loaded.".formatted(readable, identifier));
         } catch (final QuestException e) {
             throw new QuestException("Error in '%s' %s (implicit section): %s".formatted(identifier, readable, e.getMessage()), e);
         }

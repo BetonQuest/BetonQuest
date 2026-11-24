@@ -118,16 +118,16 @@ public class JoinQuitListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void playerPreLogin(final AsyncPlayerPreLoginEvent event) {
-        log.debug(ASYNC_JOIN_EVENT, "Player '%s' with uuid '%s' has login result '%s'".formatted(event.getName(), event.getUniqueId(), event.getLoginResult()));
+        log.debug(ASYNC_JOIN_EVENT, "Player '%s' with uuid '%s' has login result '%s'.".formatted(event.getName(), event.getUniqueId(), event.getLoginResult()));
         if (event.getLoginResult() != Result.ALLOWED) {
             return;
         }
         final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(event.getUniqueId());
-        log.debug(ASYNC_JOIN_EVENT, "Retrieve profile for offline player '%s'".formatted(offlinePlayer));
+        log.debug(ASYNC_JOIN_EVENT, "Retrieve profile for offline player '%s'.".formatted(offlinePlayer));
         final Profile profile = profileProvider.getProfile(offlinePlayer);
-        log.debug(ASYNC_JOIN_EVENT, "Initializing player data async during pre-login for '%s'".formatted(profile));
+        log.debug(ASYNC_JOIN_EVENT, "Initializing player data async during pre-login for %s.".formatted(profile));
         playerDataStorage.init(profile);
-        log.debug(ASYNC_JOIN_EVENT, "Player data async initialization completed for '%s'".formatted(profile));
+        log.debug(ASYNC_JOIN_EVENT, "Player data async initialization completed for %s.".formatted(profile));
     }
 
     /**
@@ -140,22 +140,22 @@ public class JoinQuitListener implements Listener {
         final Player player = event.getPlayer();
         log.debug("Player '%s' with uuid '%s' joined sync; initializing...".formatted(player.getName(), player.getUniqueId()));
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
-        log.debug("Profile '%s' obtained for player '%s' (online: %s)".formatted(onlineProfile.getProfileUUID(), player.getName(), onlineProfile.getOnlineProfile().isPresent()));
+        log.debug("Profile '%s' obtained for player '%s' (online: '%s').".formatted(onlineProfile.getProfileUUID(), player.getName(), onlineProfile.getOnlineProfile().isPresent()));
         final PlayerData playerData = playerDataStorage.get(onlineProfile);
-        log.debug("PlayerData obtained for player '%s'".formatted(player.getName()));
+        log.debug("PlayerData obtained for player '%s'.".formatted(player.getName()));
         questTypeApi.startAll(onlineProfile, playerDataStorage);
         checkResourcepack(player, onlineProfile);
 
         if (Journal.hasJournal(onlineProfile)) {
             playerData.getJournal().update();
-            log.debug("Journal updated for player '%s'".formatted(player.getName()));
+            log.debug("Journal updated for player '%s'.".formatted(player.getName()));
         }
         if (player.hasPermission("betonquest.admin")) {
             updater.sendUpdateNotification(player);
         }
         if (playerData.getActiveConversation() != null) {
             new ConversationResumer(config, conversations, onlineProfile, playerData.getActiveConversation());
-            log.debug("Conversation resumed for player '%s'".formatted(player.getName()));
+            log.debug("Conversation resumed for player '%s'.".formatted(player.getName()));
         }
     }
 

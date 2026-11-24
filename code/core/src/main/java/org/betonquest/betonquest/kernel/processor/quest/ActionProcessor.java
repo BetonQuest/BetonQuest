@@ -107,13 +107,13 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
     public boolean run(@Nullable final Profile profile, final ActionIdentifier actionID) {
         final ActionAdapter action = values.get(actionID);
         if (action == null) {
-            log.warn(actionID.getPackage(), "Action " + actionID + " is not defined");
+            log.warn(actionID.getPackage(), "Action '%s' is not defined.".formatted(actionID));
             return false;
         }
         if (profile == null) {
-            log.debug(actionID.getPackage(), "Firing action " + actionID + " player independent");
+            log.debug(actionID.getPackage(), "Firing action '%s' player independent.".formatted(actionID));
         } else {
-            log.debug(actionID.getPackage(), "Firing action " + actionID + " for " + profile);
+            log.debug(actionID.getPackage(), "Firing action '%s' for %s.".formatted(actionID, profile));
         }
         if (action.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
             return callActionSync(profile, actionID, action);
@@ -125,7 +125,7 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
         try {
             return scheduler.callSyncMethod(plugin, () -> callAction(profile, actionID, action)).get();
         } catch (final InterruptedException | ExecutionException e) {
-            log.reportException(e);
+            log.reportException(actionID.getPackage(), e);
             return true;
         }
     }
@@ -134,7 +134,7 @@ public class ActionProcessor extends TypedQuestProcessor<ActionIdentifier, Actio
         try {
             return action.fire(profile);
         } catch (final QuestException e) {
-            log.warn(actionID.getPackage(), "Error while firing '" + actionID + "' action: " + e.getMessage(), e);
+            log.warn(actionID.getPackage(), "Error while firing '%s' action: %s".formatted(actionID, e.getMessage()), e);
             return true;
         }
     }

@@ -139,21 +139,21 @@ public class Patcher {
     public void patch(final FileConfigAccessor accessor) throws InvalidConfigurationException {
         final Configuration config = accessor.getConfig();
         final String configVersionString = config.getString(CONFIG_VERSION_PATH);
-        final String logPrefix = String.format("The config file '%s' ", accessor.getConfigurationFile().getName());
+        final String logPrefix = "The config file '%s'".formatted(accessor.getConfigurationFile().getName());
         config.setDefaults(resourceAccessor.getConfig());
         if (patches.isEmpty()) {
-            log.debug(logPrefix + "has no patches to apply, setting zero version.");
+            log.debug("%s has no patches to apply, setting zero version.".formatted(logPrefix));
             setConfigVersion(config, ZERO_VERSION);
         } else if (configVersionString != null && configVersionString.isEmpty()) {
-            log.debug(logPrefix + "gets the latest version '" + patches.lastKey() + "' set.");
+            log.debug("%s gets the latest version '%s' set.".formatted(logPrefix, patches.lastKey()));
             setConfigVersion(config, patches.lastKey());
         } else {
             final Version version = getConfigVersion(configVersionString);
             if (version != null && !version.isOlderThan(VersionComparisonStrategies.DEFAULT, patches.lastEntry().getKey())) {
-                log.debug(logPrefix + "is already up to date.");
+                log.debug("%s is already up to date.".formatted(logPrefix));
             } else {
-                final String displayVersion = version == null ? "'legacy' version" : "version '" + version + "'";
-                log.info(logPrefix + "gets updated from " + displayVersion + "...");
+                final String displayVersion = version == null ? "'legacy' version" : "version '%s'".formatted(version);
+                log.info("%s gets updated from %s...".formatted(logPrefix, displayVersion));
                 patch(version, config);
             }
         }
@@ -168,7 +168,7 @@ public class Patcher {
         boolean noErrors = true;
         final NavigableMap<Version, List<Map<?, ?>>> actualPatches = version == null ? patches : patches.tailMap(version, false);
         for (final Map.Entry<Version, List<Map<?, ?>>> patch : actualPatches.entrySet()) {
-            log.info("Applying patches to update to '" + patch.getKey() + "'...");
+            log.info("Applying patches to update to '%s'...".formatted(patch.getKey()));
             setConfigVersion(config, patch.getKey());
             if (!applyPatch(config, patch.getValue())) {
                 noErrors = false;
@@ -199,7 +199,7 @@ public class Patcher {
                 getPatchTransformer(patcherOptions.getString("type")).transform(patcherOptions, config);
             } catch (final PatchException e) {
                 noErrors = false;
-                log.warn("There has been an issue while applying the patches: " + e.getMessage());
+                log.warn("There has been an issue while applying the patches: %s".formatted(e.getMessage()));
             }
         }
         return noErrors;

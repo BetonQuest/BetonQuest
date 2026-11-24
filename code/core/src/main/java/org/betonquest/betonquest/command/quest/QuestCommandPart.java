@@ -109,7 +109,7 @@ public abstract class QuestCommandPart implements SubCommand {
     @Nullable
     Profile getTargetProfile(final CommandSender sender, final String... args) {
         if (args.length < 2) {
-            log.debug("Player's name is missing");
+            log.debug("Player's name is missing.");
             sendMessage(sender, "specify_player");
             return null;
         }
@@ -124,7 +124,7 @@ public abstract class QuestCommandPart implements SubCommand {
             return null;
         }
         if (profile.getOnlineProfile().isEmpty()) {
-            log.debug("Profile is offline, loading his data");
+            log.debug("Profile is offline, loading his data.");
         }
         return playerDataStorage.get(profile);
     }
@@ -135,7 +135,7 @@ public abstract class QuestCommandPart implements SubCommand {
         try {
             sender.sendMessage(localizations.getMessage(profile, messageName, replacements));
         } catch (final QuestException e) {
-            log.warn("Failed to send message '" + messageName + "': " + e.getMessage(), e);
+            log.warn("Failed to send message '%s': %s".formatted(messageName, e.getMessage()), e);
             sender.sendMessage("Failed to send message '" + messageName + "': " + e.getMessage());
         }
     }

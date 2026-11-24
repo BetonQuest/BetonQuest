@@ -213,7 +213,7 @@ class UpdaterTest {
 
         verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be downloaded and automatically installed on the next restart!");
         verify(logger, times(1)).info("Started update to version '2.0.0-DEV-5'...");
-        verify(logger, times(1)).info("There was an error resolving the url 'betonquest': no protocol: betonquest");
+        verify(logger, times(1)).info("Could not perform the update: There was an error resolving the url 'betonquest': no protocol: betonquest");
         verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }
@@ -248,7 +248,7 @@ class UpdaterTest {
         }
 
         verify(logger, times(1)).info("Found newer version '2.0.0-DEV-5', it will be installed, if you execute '/bq update'!");
-        verify(logger, times(1)).info("Update aborted, a newer version '2.0.0-DEV-6' was found, you can execute '/bq update' again to update");
+        verify(logger, times(1)).info("Could not perform the update: Update aborted, a newer version '2.0.0-DEV-6' was found, you can execute '/bq update' again to update");
         verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }
@@ -279,7 +279,7 @@ class UpdaterTest {
             assertThrows(IllegalStateException.class, updater::getUpdateVersion, "Expected no update version");
         }
 
-        verify(logger, times(1)).info("The updater did not find an update, this can depend on your update.strategy, check config entry 'update.strategy'");
+        verify(logger, times(1)).info("Could not perform the update: The updater did not find an update, this can depend on your update.strategy, check config entry 'update.strategy'");
         verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }
@@ -311,7 +311,7 @@ class UpdaterTest {
             assertThrows(IllegalStateException.class, updater::getUpdateVersion, "Expected no update version");
         }
 
-        verify(logger, times(1)).info("The update was already downloaded, restart the server to update the plugin");
+        verify(logger, times(1)).info("Could not perform the update: The update was already downloaded, restart the server to update the plugin");
         verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }
@@ -339,7 +339,7 @@ class UpdaterTest {
             assertThrows(IllegalStateException.class, updater::getUpdateVersion, "Expected no update version");
         }
 
-        verify(logger, times(1)).info("The updater is disabled, change config entry 'update.enabled' to 'true' to enable it");
+        verify(logger, times(1)).info("Could not perform the update: The updater is disabled, change config entry 'update.enabled' to 'true' to enable it");
         verify(logger, times(1)).debug(eq("Error while performing update!"), any(QuestException.class));
         verifyNoMoreInteractions(logger);
     }

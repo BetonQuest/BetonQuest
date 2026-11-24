@@ -229,7 +229,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
         final String formattingGroup = validator.group(4);
         for (final String placeholder : List.of("{place}", "{name}", "{score}")) {
             if (!formattingGroup.contains(placeholder)) {
-                log.debug(pack, "Hologram '" + name + "' in pack '" + pack + "' does not contain placeholder '" + placeholder + "'.");
+                log.debug(pack, "Hologram '%s' in pack '%s' does not contain placeholder '%s'.".formatted(name, pack.getQuestPath(), placeholder));
             }
         }
         return new TopLine(loggerFactory, connector, pointName, orderType, limit, new VariableComponent(textParser.parse(formattingGroup)));

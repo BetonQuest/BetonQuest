@@ -142,7 +142,7 @@ public class ObjectiveAction implements NullableAction {
             switch (action.toLowerCase(Locale.ROOT)) {
                 case "start", "add" -> playerData.addNewRawObjective(objectiveID);
                 case "complete", "finish" ->
-                        log.warn(questPackage, "Cannot complete objective for " + profile + ", because he is offline!");
+                        log.warn(questPackage, "Cannot complete objective for %s, because he is offline!".formatted(profile));
                 default -> playerData.removeRawObjective(objectiveID);
             }
         });

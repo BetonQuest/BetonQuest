@@ -58,7 +58,7 @@ public class DatabaseComponent extends AbstractCoreComponent {
         final boolean hikariEnabled = config.getBoolean("mysql.hikari_pooling", true);
         Database database = null;
         if (mySQLEnabled) {
-            log.debug("Connecting to MySQL database");
+            log.debug("Connecting to MySQL database...");
             final String host = config.getString("mysql.host", "");
             final String port = config.getString("mysql.port", "");
             final String base = config.getString("mysql.base", "");
@@ -73,7 +73,7 @@ public class DatabaseComponent extends AbstractCoreComponent {
                 database = mySql;
                 log.info("Successfully connected to MySQL database!");
             } catch (final IllegalStateException | SQLException e) {
-                log.warn("MySQL: " + e.getMessage(), e);
+                log.warn("Could not connect to MySQL database: %s".formatted(e.getMessage()), e);
             }
         }
         if (database == null) {

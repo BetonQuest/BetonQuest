@@ -38,17 +38,17 @@ public class DefaultReloader implements Reloader {
     @Override
     public void register(final ReloadPhase reloadPhase, final Runnable reloadable) {
         reloadableMap.computeIfAbsent(reloadPhase, phase -> new HashSet<>()).add(reloadable);
-        log.debug("Registered reloadable for phase " + reloadPhase);
+        log.debug("Registered reloadable for phase '%s'.".formatted(reloadPhase));
     }
 
     @Override
     public void reload() {
-        log.debug("Reloading %s registered reload-runnables".formatted(reloadableMap.values().stream().mapToInt(Collection::size).sum()));
+        log.debug("Reloading '%s' registered reload-runnables...".formatted(reloadableMap.values().stream().mapToInt(Collection::size).sum()));
         for (final ReloadPhase phase : ReloadPhase.values()) {
             final Collection<Runnable> runnables = reloadableMap.getOrDefault(phase, Collections.emptyList());
-            log.debug("Running %s functions for phase %s".formatted(runnables.size(), phase));
+            log.debug("Running '%s' functions for phase '%s'...".formatted(runnables.size(), phase));
             runnables.forEach(Runnable::run);
         }
-        log.debug("Reload finished");
+        log.debug("Reload finished.");
     }
 }
