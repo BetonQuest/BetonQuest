@@ -165,7 +165,7 @@ public class ChestPutObjective extends DefaultObjective {
         if (!(block.getState(false) instanceof InventoryHolder)) {
             final World world = targetChestLocation.getWorld();
             throw new QuestException(
-                    "Block at location x:'%d' y:'%d' z:'%d' in world '%s' isn't a chest".formatted(
+                    "Block at location x:'%s' y:'%s' z:'%s' in world '%s' isn't a chest".formatted(
                             targetChestLocation.getBlockX(),
                             targetChestLocation.getBlockY(),
                             targetChestLocation.getBlockZ(),

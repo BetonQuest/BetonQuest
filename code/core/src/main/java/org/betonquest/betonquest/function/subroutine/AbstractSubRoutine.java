@@ -64,7 +64,7 @@ public abstract class AbstractSubRoutine implements MathFunction {
         return arguments -> {
             final long requiredParameters = parameters.stream().filter(param -> param.defValue() instanceof DefaultFallbackAssignment).count();
             if (arguments.size() < requiredParameters) {
-                throw new QuestException("Missing '%s' parameter(s) for subroutine definition".formatted(requiredParameters - arguments.size()));
+                throw new QuestException("Missing %s parameter(s) for subroutine definition".formatted(requiredParameters - arguments.size()));
             }
             final Map<String, FunctionAssignment> assignments = new HashMap<>();
             for (int i = 0; i < parameters.size(); i++) {

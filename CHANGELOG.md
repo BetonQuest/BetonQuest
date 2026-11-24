@@ -22,7 +22,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `particle` action of EffectLib integration is now called `el_particle`
 - Schedule last execution times are now cached in each package's cache file under `schedules` instead of a single global file
 - `round` subroutine now accepts an optional `precision` parameter to control decimal places
-- exception messages were unified to a consistent format, so error messages in logs and script errors are easier to read
+- exception messages to a unified, consistent format, so error messages in logs and script errors are easier to read
 ### Deprecated
 ### Removed
 - `burning` condition was replaced with `state FIRE`
