@@ -6,6 +6,7 @@ import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerState;
 /**
  * The state of a quoted word. Escaping with backslashes is possible.
  * A double quote at the end of the string is required.
+ * Placeholders inside the quoted word are handled by the {@link PlaceholderWordState}.
  */
 public class QuotedWordState implements TokenizerState<QuotingTokenizerContext> {
 
@@ -38,7 +39,7 @@ public class QuotedWordState implements TokenizerState<QuotingTokenizerContext> 
     @Override
     public TokenizerState<QuotingTokenizerContext> parseNext(final QuotingTokenizerContext ctx, final int codePoint) {
         if (ctx.settings().isEscape(codePoint)) {
-            return new EscapeState(this);
+            return new EscapeState(this, codePoint);
         }
         if (ctx.settings().isEndQuote(codePoint)) {
             ctx.endWord();
@@ -49,6 +50,9 @@ public class QuotedWordState implements TokenizerState<QuotingTokenizerContext> 
             return new QuotedWordState(quotingLevel + 1);
         }
         ctx.appendCodePoint(codePoint);
+        if (ctx.settings().isPlaceholderMarker(codePoint)) {
+            return new PlaceholderWordState(this, 0);
+        }
         return this;
     }
 

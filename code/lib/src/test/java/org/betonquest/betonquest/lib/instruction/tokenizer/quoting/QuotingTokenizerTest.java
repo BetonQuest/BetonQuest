@@ -45,7 +45,20 @@ class QuotingTokenizerTest {
                 Arguments.of("string\"", new String[]{"string\""}),
                 Arguments.of("str\"ing", new String[]{"str\"ing"}),
                 Arguments.of("\\", new String[]{"\\"}),
-                Arguments.of("trailing escape\\", new String[]{"trailing", "escape\\"})
+                Arguments.of("trailing escape\\", new String[]{"trailing", "escape\\"}),
+                Arguments.of("\"adjacent\"\"quotes\"", new String[]{"adjacent", "quotes"}),
+                Arguments.of("\"escaped \\\\ backslash\"", new String[]{"escaped \\ backslash"}),
+                Arguments.of("\"esc\\aped\"", new String[]{"escaped"}),
+                Arguments.of("with.dot", new String[]{"with.dot"}),
+                Arguments.of("\"quoted.dot\"", new String[]{"quoted.dot"}),
+                Arguments.of("{curly}", new String[]{"{curly}"}),
+                Arguments.of("in{curly}between", new String[]{"in{curly}between"}),
+                Arguments.of("\"{curly} quoted\"", new String[]{"{curly} quoted"}),
+                Arguments.of("{not quoted}", new String[]{"{not", "quoted}"}),
+                Arguments.of("%ph.value%", new String[]{"%ph.value%"}),
+                Arguments.of("\"%ph.{a b}%\"", new String[]{"%ph.{a b}%"}),
+                Arguments.of("\"escaped \\% marker\"", new String[]{"escaped % marker"}),
+                Arguments.of("unquoted\\%", new String[]{"unquoted\\%"})
         );
     }
 
@@ -54,7 +67,10 @@ class QuotingTokenizerTest {
                 "\"",
                 "\"string",
                 "my \"string",
-                "inner \"quo\"te"
+                "inner \"quo\"te",
+                "\"quoted\"tail",
+                "\"trailing escape\\",
+                "\"open\"\""
         );
     }
 
