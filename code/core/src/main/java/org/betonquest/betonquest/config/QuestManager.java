@@ -118,11 +118,11 @@ public class QuestManager implements QuestPackageManager {
         }
         final File parent = cacheFile.getParentFile();
         if (parent != null && !parent.exists() && !parent.mkdirs()) {
-            throw new InvalidConfigurationException("Could not create cache directory for package '%s'!".formatted(questPath));
+            throw new InvalidConfigurationException("Could not create cache directory for package '%s'".formatted(questPath));
         }
         try {
             if (!cacheFile.createNewFile()) {
-                throw new InvalidConfigurationException("Could not create cache file for package '%s'!".formatted(questPath));
+                throw new InvalidConfigurationException("Could not create cache file for package '%s'".formatted(questPath));
             }
         } catch (final IOException e) {
             throw new InvalidConfigurationException("Could not create cache file for package '%s': %s".formatted(questPath, e.getMessage()), e);
@@ -194,7 +194,7 @@ public class QuestManager implements QuestPackageManager {
                         createCacheFile(questPath, cacheFile);
                         return configAccessorFactory.create(cacheFile);
                     } catch (final InvalidConfigurationException | IOException e) {
-                        throw new IllegalStateException("Could not load package cache for '%s'!".formatted(questPath), e);
+                        throw new IllegalStateException("Could not load package cache for '%s'".formatted(questPath), e);
                     }
                 }, () -> questPath);
     }
@@ -245,11 +245,11 @@ public class QuestManager implements QuestPackageManager {
 
     private File[] checkAndGetFiles(final File file) throws IOException {
         if (!file.isDirectory()) {
-            throw new IOException("File '%s' is not a directory!".formatted(file.getPath()));
+            throw new IOException("File '%s' is not a directory".formatted(file.getPath()));
         }
         final File[] files = file.listFiles();
         if (files == null) {
-            throw new IOException("Invalid list of files for directory '%s'!".formatted(file.getPath()));
+            throw new IOException("Invalid list of files for directory '%s'".formatted(file.getPath()));
         }
         return files;
     }

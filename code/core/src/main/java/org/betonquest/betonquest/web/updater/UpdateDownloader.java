@@ -65,13 +65,11 @@ public class UpdateDownloader {
         try {
             final boolean runningDownload = currentlyDownloading.compareAndSet(false, true);
             if (!runningDownload) {
-                throw new QuestException("The updater is already downloading the update! Please wait until it is finished!");
+                throw new QuestException("The updater is already downloading the update, please wait until it is finished");
             }
             downloadSource.get(url, getUpdateFile(version));
         } catch (final IOException e) {
-            throw new QuestException("The download was interrupted! The updater could not download the file!"
-                    + " You can try it again, if it still does not work use a manual download."
-                    + " The original exception was: " + e.getMessage(), e);
+            throw new QuestException("The download was interrupted, the updater could not download the file, you can try it again, if it still does not work use a manual download: %s".formatted(e.getMessage()), e);
         } finally {
             currentlyDownloading.set(false);
         }
@@ -89,7 +87,7 @@ public class UpdateDownloader {
 
     private void checkAndCreateFolder(final File file) throws QuestException {
         if (!file.exists() && !file.mkdirs()) {
-            throw new QuestException("The updater could not create the folder '" + file.getAbsolutePath() + "'!");
+            throw new QuestException("The updater could not create the folder '%s'".formatted(file.getAbsolutePath()));
         }
     }
 

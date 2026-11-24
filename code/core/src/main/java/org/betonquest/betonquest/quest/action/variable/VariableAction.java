@@ -54,13 +54,13 @@ public class VariableAction implements PlayerAction {
         final ObjectiveIdentifier resolved = this.objectiveID.getValue(profile);
         final Objective obj = objectiveManager.getObjective(resolved);
         if (!(obj instanceof final VariableObjective objective)) {
-            throw new QuestException(resolved + " is not a variable objective");
+            throw new QuestException("Objective '%s' is not a variable objective".formatted(resolved));
         }
         final String keyReplaced = key.getValue(profile);
         final String valueReplaced = value.getValue(profile);
         if (!objective.store(profile, keyReplaced, valueReplaced)) {
-            throw new QuestException("Player " + profile.getProfileName() + " does not have '"
-                    + resolved + "' objective, cannot store a variable.");
+            throw new QuestException("Player '%s' does not have '%s' objective, cannot store a variable".formatted(
+                    profile.getProfileName(), resolved));
         }
     }
 }

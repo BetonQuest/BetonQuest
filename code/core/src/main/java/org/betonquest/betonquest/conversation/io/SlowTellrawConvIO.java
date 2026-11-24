@@ -93,7 +93,7 @@ public class SlowTellrawConvIO extends TellrawConvIO {
                 });
                 return;
             }
-            throw new IllegalStateException("NPC text must be set before displaying options.");
+            throw new IllegalStateException("NPC text must be set before displaying options");
         }
         canReply.set(false);
 

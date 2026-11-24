@@ -53,7 +53,7 @@ public class ParsedText implements Text {
         this.dataStorage = dataStorage;
         this.languageProvider = languageProvider;
         if (!texts.containsKey(languageProvider.getDefaultLanguage())) {
-            throw new QuestException("No text in default language defined.");
+            throw new QuestException("No text in default language defined");
         }
     }
 
@@ -70,7 +70,7 @@ public class ParsedText implements Text {
             text = texts.get(language);
         }
         if (text == null) {
-            throw new QuestException("No text in language " + language + " defined.");
+            throw new QuestException("No text in language '%s' defined".formatted(language));
         }
         return text.getValue(profile);
     }

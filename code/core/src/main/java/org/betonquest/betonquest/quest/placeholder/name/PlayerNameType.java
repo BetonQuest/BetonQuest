@@ -17,7 +17,7 @@ public enum PlayerNameType {
      */
     DISPLAY(profile -> profile.getOnlineProfile()
             .map(online -> online.getPlayer().getDisplayName())
-            .orElseThrow(() -> new QuestException(profile.getPlayer().getName() + " is offline, cannot get display name."))),
+            .orElseThrow(() -> new QuestException("'%s' is offline, cannot get display name".formatted(profile.getPlayer().getName())))),
     /**
      * The player's UUID.
      */

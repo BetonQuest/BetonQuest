@@ -25,7 +25,7 @@ public class JobParser implements SimpleArgumentParser<Job> {
     public Job apply(final String string) throws QuestException {
         final Job job = Jobs.getJob(string);
         if (job == null) {
-            throw new QuestException("Jobs Reborn job '%s' does not exist!".formatted(string));
+            throw new QuestException("Jobs Reborn job '%s' does not exist".formatted(string));
         }
         return job;
     }

@@ -23,6 +23,6 @@ public class MaxSubRoutine extends AbstractSubRoutine {
     @Override
     public FunctionAssignment evaluateSubroutine(final FunctionProvider functionProvider, final Map<String, FunctionAssignment> arguments) throws QuestException {
         final Optional<Number> maxNumber = arguments.values().stream().map(FunctionAssignment::asNumber).reduce((a, b) -> a.doubleValue() >= b.doubleValue() ? a : b);
-        return new NumberSourceAssignment(maxNumber.orElseThrow(() -> new QuestException("Max: No value found. Did you pass any arguments?")));
+        return new NumberSourceAssignment(maxNumber.orElseThrow(() -> new QuestException("Max: No value found, did you pass any arguments")));
     }
 }

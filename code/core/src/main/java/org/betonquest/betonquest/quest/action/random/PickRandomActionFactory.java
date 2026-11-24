@@ -54,7 +54,7 @@ public class PickRandomActionFactory implements PlayerActionFactory, PlayerlessA
         final Argument<List<RandomAction>> actions = instruction.parse(string -> {
             final Matcher matcher = ACTION_WEIGHT.matcher(string);
             if (!matcher.matches()) {
-                throw new QuestException("Weight must be specified correctly: " + string);
+                throw new QuestException("Weight must be specified correctly: '%s'".formatted(string));
             }
 
             final String weightString = matcher.group("weight");

@@ -28,7 +28,7 @@ public class DefaultPlaceholderIdentifier extends DefaultIdentifier implements P
 
     @Override
     public String getSection() {
-        throw new UnsupportedOperationException("Placeholders do not have sections.");
+        throw new UnsupportedOperationException("Placeholders do not have sections");
     }
 
     @Override

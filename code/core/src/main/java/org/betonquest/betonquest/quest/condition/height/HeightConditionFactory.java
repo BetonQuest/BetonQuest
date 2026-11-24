@@ -33,7 +33,7 @@ public class HeightConditionFactory implements PlayerConditionFactory {
             }
             return new LocationParser(Bukkit.getServer()).apply(value).getY();
         } catch (final NumberFormatException e) {
-            throw new QuestException("Could not parse number: " + value, e);
+            throw new QuestException("Could not parse number '%s'".formatted(value), e);
         }
     }
 }

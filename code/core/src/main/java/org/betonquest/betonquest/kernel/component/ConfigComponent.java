@@ -60,7 +60,7 @@ public class ConfigComponent extends AbstractCoreComponent {
             dependencyProvider.take(ConfigMetrics.class, new ConfigMetrics(config));
             reloader.register(ReloadPhase.CONFIG, () -> reload(config));
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            throw new IllegalStateException("Could not load the %s file!".formatted(CONFIG_FILE), e);
+            throw new IllegalStateException("Could not load the '%s' file".formatted(CONFIG_FILE), e);
         }
     }
 
@@ -68,7 +68,7 @@ public class ConfigComponent extends AbstractCoreComponent {
         try {
             config.reload();
         } catch (final IOException e) {
-            throw new IllegalStateException("Failed to reload the %s file!".formatted(CONFIG_FILE), e);
+            throw new IllegalStateException("Failed to reload the '%s' file".formatted(CONFIG_FILE), e);
         }
     }
 

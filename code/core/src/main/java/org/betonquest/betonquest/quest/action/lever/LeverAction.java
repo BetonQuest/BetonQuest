@@ -44,8 +44,8 @@ public class LeverAction implements NullableAction {
         final Block block = location.getValue(profile).getBlock();
 
         if (block.getType() != Material.LEVER) {
-            throw new QuestException("There is no lever at x: " + block.getX() + " y: " + block.getY() + " z: "
-                    + block.getZ() + " in world '" + block.getWorld().getName() + "'");
+            throw new QuestException("There is no lever at x: '%s' y: '%s' z: '%s' in world '%s'".formatted(
+                    block.getX(), block.getY(), block.getZ(), block.getWorld().getName()));
         }
 
         final Switch lever = (Switch) block.getBlockData();

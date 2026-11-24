@@ -38,6 +38,6 @@ public class TagTextParserDecider implements TextParserDecider {
             final String textContent = matcher.group("text");
             return new Result(parser == null ? defaultParser : parser, textContent);
         }
-        throw new QuestException("Could not match tag in text: " + text);
+        throw new QuestException("Could not match tag in text: '%s'".formatted(text));
     }
 }

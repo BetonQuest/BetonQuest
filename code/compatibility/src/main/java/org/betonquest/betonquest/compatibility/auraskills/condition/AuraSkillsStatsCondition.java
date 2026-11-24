@@ -61,7 +61,7 @@ public class AuraSkillsStatsCondition implements PlayerCondition {
         final NamespacedId namespacedId = NamespacedId.fromDefault(name.getValue(profile));
         final Stat stat = auraSkillsApi.getGlobalRegistry().getStat(namespacedId);
         if (stat == null) {
-            throw new QuestException("Stat '%s' does not exist!".formatted(namespacedId));
+            throw new QuestException("Stat '%s' does not exist".formatted(namespacedId));
         }
         final double actualLevel = user.getStatLevel(stat);
         final double targetLevel = this.targetLevel.getValue(profile).doubleValue();

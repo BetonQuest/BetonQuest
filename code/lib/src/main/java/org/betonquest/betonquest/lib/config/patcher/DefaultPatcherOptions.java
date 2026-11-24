@@ -34,7 +34,7 @@ public class DefaultPatcherOptions implements PatcherOptions {
     public Object get(final String key) throws PatchException {
         final Object object = options.get(key);
         if (object == null) {
-            throw new PatchException("Key '" + key + "' does not exist in options.");
+            throw new PatchException("Key '%s' does not exist in options".formatted(key));
         }
         return object;
     }

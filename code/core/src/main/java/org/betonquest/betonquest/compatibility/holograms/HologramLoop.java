@@ -206,14 +206,14 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
             final Argument<ItemWrapper> parsedValue = instructionApi.createForArgument(pack, line).item().get();
             return new ItemLine(parsedValue.getValue(null));
         } catch (final QuestException e) {
-            throw new QuestException("Error while loading item: " + e.getMessage(), e);
+            throw new QuestException("Error while loading item: %s".formatted(e.getMessage()), e);
         }
     }
 
     private TopLine parseTopLine(final QuestPackage pack, final String line, final String name) throws QuestException {
         final Matcher validator = TOP_LINE_VALIDATOR.matcher(line);
         if (!validator.matches()) {
-            throw new QuestException("Malformed top line in hologram! Expected format: 'top:<point>;<order>;<limit>;<formattingString>'.");
+            throw new QuestException("Malformed top line in hologram, expected format: 'top:<point>;<order>;<limit>;<formattingString>'");
         }
 
         final String pointName = PackageIdentifierParser.INSTANCE.apply(pack, validator.group(1));
@@ -223,7 +223,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
         try {
             limit = Integer.parseInt(validator.group(3));
         } catch (final NumberFormatException e) {
-            throw new QuestException("Top list limit must be numeric! Expected format: 'top:<point>;<order>;<limit>;<formattingString>'.", e);
+            throw new QuestException("Top list limit must be numeric, expected format: 'top:<point>;<order>;<limit>;<formattingString>'", e);
         }
 
         final String formattingGroup = validator.group(4);
@@ -242,7 +242,7 @@ public abstract class HologramLoop extends SectionProcessor<HologramIdentifier, 
         if (ORDER_ASC.equalsIgnoreCase(type)) {
             return TopXObject.OrderType.ASCENDING;
         }
-        throw new QuestException("Top list order type '" + type + "' unknown! Expected 'asc' or 'desc'.");
+        throw new QuestException("Top list order type '%s' does not exist, expected 'asc' or 'desc'".formatted(type));
     }
 
     private TextLine parseTextLine(final QuestPackage pack, final String line) throws QuestException {

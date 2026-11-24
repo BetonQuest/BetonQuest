@@ -33,7 +33,7 @@ public class QuoteEndState implements TokenizerState<QuotingTokenizerContext> {
         }
         if (ctx.settings().isEndQuote(codePoint)) {
             if (quotingLevel == QuotedWordState.INITIAL_QUOTING_LEVEL) {
-                throw new TokenizerException("Unexpected closing quote.");
+                throw new TokenizerException("Unexpected closing quote");
             }
             ctx.endWord();
             return new QuoteEndState(quotingLevel - 1);
@@ -48,7 +48,7 @@ public class QuoteEndState implements TokenizerState<QuotingTokenizerContext> {
     @Override
     public void parseEnd(final QuotingTokenizerContext ctx) throws TokenizerException {
         if (quotingLevel > QuotedWordState.INITIAL_QUOTING_LEVEL) {
-            throw new TokenizerException("Expected quoted string to end but reached end of data.");
+            throw new TokenizerException("Expected quoted string to end but reached end of data");
         }
     }
 }

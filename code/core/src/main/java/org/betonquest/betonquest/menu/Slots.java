@@ -67,7 +67,7 @@ public class Slots {
             this.start = Integer.parseInt(slots.substring(0, index));
             this.end = Integer.parseInt(slots.substring(index + 1));
             if (this.end < this.start) {
-                throw new IllegalArgumentException(slots + ": slot " + end + " must be after " + start);
+                throw new IllegalArgumentException("Slots '%s': slot '%s' must be after '%s'".formatted(slots, end, start));
             }
         } else if (slots.matches("\\d+\\*\\d+")) {
             this.type = Type.RECTANGLE;
@@ -75,13 +75,13 @@ public class Slots {
             this.start = Integer.parseInt(slots.substring(0, index));
             this.end = Integer.parseInt(slots.substring(index + 1));
             if (this.end < this.start) {
-                throw new IllegalArgumentException(slots + ": slot " + end + " must be after " + start);
+                throw new IllegalArgumentException("Slots '%s': slot '%s' must be after '%s'".formatted(slots, end, start));
             }
             if ((start % 9) > (end % 9)) {
-                throw new IllegalArgumentException(slots + ": invalid rectangle ");
+                throw new IllegalArgumentException("Slots '%s': invalid rectangle".formatted(slots));
             }
         } else {
-            throw new IllegalArgumentException(slots + " is not a valid slot identifier");
+            throw new IllegalArgumentException("'%s' is not a valid slot identifier".formatted(slots));
         }
         this.items = items;
         this.offset = offset;
@@ -101,11 +101,11 @@ public class Slots {
             for (final int slot : slots.getSlots()) {
                 try {
                     if (contained[slot]) {
-                        throw new QuestException("Slots '" + slots + "': slot " + slot + " was already specified");
+                        throw new QuestException("Slots '%s': slot '%s' was already specified".formatted(slots, slot));
                     }
                     contained[slot] = true;
                 } catch (final IndexOutOfBoundsException e) {
-                    throw new QuestException("Slots '" + slots + "': slot " + slot + " exceeds inventory size", e);
+                    throw new QuestException("Slots '%s': slot '%s' exceeds inventory size".formatted(slots, slot), e);
                 }
             }
         }
@@ -219,7 +219,7 @@ public class Slots {
     public MenuItem getItem(final Profile profile, final int slot) throws QuestException {
         final int index = this.getIndex(slot);
         if (index == -1) {
-            throw new IllegalStateException("Invalid slot for Slots '" + this + "': " + slot);
+            throw new IllegalStateException("Invalid slot for Slots '%s': '%s'".formatted(this, slot));
         }
         try {
             return this.getItems(profile).get(index);

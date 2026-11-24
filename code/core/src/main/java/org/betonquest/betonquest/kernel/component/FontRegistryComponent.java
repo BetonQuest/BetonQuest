@@ -53,7 +53,7 @@ public class FontRegistryComponent extends AbstractCoreComponent {
         fonts.forEach(pair -> fontRegistry.registerFont(pair.getKey(), pair.getValue()));
         log.info("Loaded " + fonts.size() + " font index files.");
         if (fonts.isEmpty()) {
-            throw new IllegalStateException("Could not load fonts!");
+            throw new IllegalStateException("Could not load fonts");
         }
 
         dependencyProvider.take(DefaultFontRegistry.class, fontRegistry);

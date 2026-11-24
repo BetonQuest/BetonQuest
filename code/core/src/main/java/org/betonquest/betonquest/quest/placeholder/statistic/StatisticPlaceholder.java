@@ -24,12 +24,12 @@ public class StatisticPlaceholder implements PlayerPlaceholder {
     /**
      * The error message to throw when a statistic placeholder is not given an argument.
      */
-    private static final String ERROR_MESSAGE = "Statistic placeholder for '%s' requires %s given.";
+    private static final String ERROR_MESSAGE = "Statistic placeholder for '%s' requires %s given";
 
     /**
      * The error message to throw when a statistic placeholder is given an invalid argument.
      */
-    private static final String MISMATCH_MESSAGE = "Statistic placeholder for '%s' requires %s but has '%s' given.";
+    private static final String MISMATCH_MESSAGE = "Statistic placeholder for '%s' requires %s but has '%s' given";
 
     /**
      * The block material fill-in to use.

@@ -56,7 +56,7 @@ public enum Operation {
             case "!=" -> NOT_EQUAL;
             case ">=" -> GREATER_EQUAL;
             case ">" -> GREATER;
-            default -> throw new QuestException("Unknown operation: " + symbol);
+            default -> throw new QuestException("Operation '%s' does not exist".formatted(symbol));
         };
     }
 

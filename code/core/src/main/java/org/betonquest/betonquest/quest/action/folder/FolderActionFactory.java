@@ -100,7 +100,7 @@ public class FolderActionFactory implements PlayerActionFactory, PlayerlessActio
             case "seconds" -> TimeUnit.SECONDS;
             case "minutes" -> TimeUnit.MINUTES;
             default ->
-                    throw new QuestException("Invalid time unit: " + input + ". Valid units are: ticks, seconds, minutes.");
+                    throw new QuestException("Time unit '%s' does not exist, valid units are: ticks, seconds, minutes".formatted(input));
         };
     }
 }

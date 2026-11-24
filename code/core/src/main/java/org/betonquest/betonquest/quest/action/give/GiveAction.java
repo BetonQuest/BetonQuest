@@ -94,7 +94,7 @@ public class GiveAction implements OnlineAction {
             final ItemStack itemStackTemplate = questItem.generate(1, profile);
             final int stackSize = Math.min(amount, itemStackTemplate.getMaxStackSize());
             if (stackSize <= 0) {
-                throw new QuestException("Item stack size is 0 or less!");
+                throw new QuestException("Item stack size is 0 or less");
             }
             boolean fullInventory = false;
             ItemStack itemStack = itemStackTemplate.clone();

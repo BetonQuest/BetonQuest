@@ -72,7 +72,7 @@ public class SQliteJdbcProvider implements ConnectionProvider {
             log.error("There was an exception with creating the Sqlite connection.", e);
         }
         if (connection == null) {
-            throw new IllegalStateException("Not able to create a database connection!");
+            throw new IllegalStateException("Not able to create a database connection");
         }
         return connection;
     }

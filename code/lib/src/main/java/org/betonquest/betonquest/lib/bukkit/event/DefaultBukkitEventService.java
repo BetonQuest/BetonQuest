@@ -75,7 +75,7 @@ public class DefaultBukkitEventService implements BukkitEventService {
                                                                  final boolean ignoreCancelled, final EventServiceSubscriber<T> subscriber) throws QuestException {
         return require(event)
                 .map(group -> group.subscribe(priority, ignoreCancelled, subscriber))
-                .orElseThrow(() -> new QuestException("Could subscribe to event '" + event.getSimpleName() + "'"));
+                .orElseThrow(() -> new QuestException("Could not subscribe to event '%s'".formatted(event.getSimpleName())));
     }
 
     @Override

@@ -22,7 +22,7 @@ public class RemoveTransformer implements PatchTransformer {
         if (config.isSet(key)) {
             config.set(key, null);
         } else {
-            throw new PatchException("Key '" + key + "' did not exist, so it was not deleted.");
+            throw new PatchException("Key '%s' did not exist, so it was not deleted".formatted(key));
         }
     }
 }

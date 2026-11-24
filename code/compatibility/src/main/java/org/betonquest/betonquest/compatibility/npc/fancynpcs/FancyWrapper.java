@@ -64,7 +64,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
             for (final Npc aNpc : npcManager.getAllNpcs()) {
                 if (npcId.equals(aNpc.getData().getName())) {
                     if (npc != null) {
-                        throw new QuestException("Multiple Fancy Npcs with the same name: " + npcId);
+                        throw new QuestException("Multiple Fancy Npcs with the same name: '%s'".formatted(npcId));
                     }
                     npc = aNpc;
                 }
@@ -73,7 +73,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
             npc = npcManager.getNpcById(npcId);
         }
         if (npc == null) {
-            throw new QuestException("Fancy Npc with %s %s not found".formatted(byName ? "name" : "id", npcId));
+            throw new QuestException("Fancy Npc with %s '%s' does not exist".formatted(byName ? "name" : "id", npcId));
         }
         return new FancyAdapter(plugin, npc);
     }
@@ -96,7 +96,7 @@ public class FancyWrapper implements NpcWrapper<Npc> {
             }
         }
         if (npcs.isEmpty()) {
-            throw new QuestException("No Fancy Npc with %s %s found".formatted(byName ? "name" : "id", npcId));
+            throw new QuestException("Fancy Npc with %s '%s' does not exist".formatted(byName ? "name" : "id", npcId));
         }
         return npcs.stream().map(npc -> new FancyAdapter(plugin, npc)).collect(Collectors.toSet());
     }

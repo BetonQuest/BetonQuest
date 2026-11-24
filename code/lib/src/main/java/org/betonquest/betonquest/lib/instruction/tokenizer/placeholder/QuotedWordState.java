@@ -54,6 +54,6 @@ public class QuotedWordState implements TokenizerState<PlaceholderExtractorConte
 
     @Override
     public void parseEnd(final PlaceholderExtractorContext ctx) throws TokenizerException {
-        throw new TokenizerException("Expected closing of quoted placeholder part but reached end of data. (quoting level: %s)".formatted(quoteLevel));
+        throw new TokenizerException("Expected closing of quoted placeholder part but reached end of data, quoting level: '%s'".formatted(quoteLevel));
     }
 }

@@ -217,8 +217,7 @@ public class DefaultConversationData implements ConversationData {
                     externalPointers.add(resolvePointer(option.getName(), NPC, pointer));
                 } else if (!npcOptions.containsKey(pointer)) {
                     throw new QuestException(
-                            String.format("Player option %s points to %s NPC option, but it does not exist",
-                                    option.getName(), pointer));
+                            "Player option '%s' points to NPC option '%s', but it does not exist".formatted(option.getName(), pointer));
                 }
             }
             validateExtends(option, PLAYER);
@@ -237,7 +236,7 @@ public class DefaultConversationData implements ConversationData {
                 externalPointers.add(resolvePointer(option.getName(), optionType, extend));
             } else {
                 if (!optionMap.containsKey(extend)) {
-                    throw new QuestException(String.format("%s %s extends %s, but it does not exist",
+                    throw new QuestException("%s '%s' extends '%s', but it does not exist".formatted(
                             optionType.getReadable(), option.getName(), extend));
                 }
             }
@@ -251,8 +250,7 @@ public class DefaultConversationData implements ConversationData {
                     externalPointers.add(resolvePointer(option.getName(), PLAYER, pointer));
                 } else if (!playerOptions.containsKey(pointer)) {
                     throw new QuestException(
-                            String.format("NPC option %s points to %s player option, but it does not exist",
-                                    option.getName(), pointer));
+                            "NPC option '%s' points to player option '%s', but it does not exist".formatted(option.getName(), pointer));
                 }
             }
             validateExtends(option, NPC);
@@ -270,14 +268,14 @@ public class DefaultConversationData implements ConversationData {
         try {
             startingOptions = instruction.read().value("first").string().list().notEmpty().get().getValue(null);
         } catch (final QuestException e) {
-            throw new QuestException("Could not load starting options: " + e.getMessage(), e);
+            throw new QuestException("Could not load starting options: %s".formatted(e.getMessage()), e);
         }
 
         for (final String startingOption : startingOptions) {
             if (startingOption.contains(".")) {
                 externalPointers.add(resolvePointer(null, NPC, startingOption));
             } else if (!npcOptions.containsKey(startingOption)) {
-                throw new QuestException("Starting option " + startingOption + " does not exist");
+                throw new QuestException("Starting option '%s' does not exist".formatted(startingOption));
             }
         }
         return startingOptions;
@@ -527,7 +525,7 @@ public class DefaultConversationData implements ConversationData {
             try {
                 text = textCreator.parseFromSection(getPack(), conv, "text");
             } catch (final QuestException e) {
-                throw new QuestException("Could not load text for " + optionName + " " + type.getReadable() + ": " + e.getMessage(), e);
+                throw new QuestException("Could not load text for %s '%s': %s".formatted(type.getReadable(), optionName, e.getMessage()), e);
             }
             return text;
         }
@@ -654,7 +652,7 @@ public class DefaultConversationData implements ConversationData {
                         resolvedExtend = resolveOption(identifier, type);
                     } catch (final QuestException e) {
                         log.reportException(getPack(), e);
-                        throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers.", e);
+                        throw new IllegalStateException("Cannot ensure a valid conversation flow with unresolvable pointers", e);
                     }
 
                     final DefaultConversationData targetConvData = resolvedExtend.conversationData();

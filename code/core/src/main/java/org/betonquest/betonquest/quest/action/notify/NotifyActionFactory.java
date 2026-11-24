@@ -109,7 +109,7 @@ public class NotifyActionFactory implements PlayerActionFactory {
             localizations.put(defaultLanguageKey, instruction.chainForArgument(text).string().get());
         }
         if (!localizations.containsKey(defaultLanguageKey)) {
-            throw new QuestException("No text defined for default language '" + defaultLanguageKey + "'!");
+            throw new QuestException("No text defined for default language '%s'".formatted(defaultLanguageKey));
         }
         return new ParsedText(textParser, localizations, playerDataStorage, languageProvider);
     }

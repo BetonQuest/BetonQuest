@@ -28,7 +28,7 @@ class MultiSectionConfigurationInvalidSubConfigurationExceptionTest {
             new MultiSectionConfiguration(List.of(configuration));
         } catch (final InvalidSubConfigurationException e) {
             assertEquals(configuration, e.getSubConfiguration());
-            assertEquals("At least one source config does not have valid path separator!", e.getMessage());
+            assertEquals("At least one source config does not have valid path separator", e.getMessage());
             return;
         } catch (final KeyConflictException e) {
             fail(e);
@@ -42,7 +42,7 @@ class MultiSectionConfigurationInvalidSubConfigurationExceptionTest {
         try {
             new MultiSectionConfiguration(List.of(Mockito.mock(ConfigurationSection.class)));
         } catch (final InvalidSubConfigurationException e) {
-            assertEquals("At least one source config does not have a root!", e.getMessage());
+            assertEquals("At least one source config does not have a root", e.getMessage());
             return;
         } catch (final InvalidConfigurationException e) {
             fail(e);

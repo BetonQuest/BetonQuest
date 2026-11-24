@@ -32,7 +32,7 @@ public class EnumParser<T extends Enum<T>> implements SimpleArgumentParser<T> {
         try {
             return Enum.valueOf(enumType, upperValue);
         } catch (final IllegalArgumentException e) {
-            throw new QuestException("Invalid enum value '" + upperValue + "' for type '" + enumType.getSimpleName() + "'", e);
+            throw new QuestException("Invalid enum value '%s' for type '%s'".formatted(upperValue, enumType.getSimpleName()), e);
         }
     }
 }

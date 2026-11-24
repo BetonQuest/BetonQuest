@@ -217,10 +217,10 @@ public class VersionTypeBuilder {
     @Contract(mutates = "this", value = "-> this")
     public VersionTypeBuilder opt() {
         if (tokens.isEmpty()) {
-            throw new IllegalStateException("Cannot mark the first token as optional.");
+            throw new IllegalStateException("Cannot mark the first token as optional");
         }
         if (optionalFlag) {
-            throw new IllegalStateException("Cannot close an optional group without elements.");
+            throw new IllegalStateException("Cannot close an optional group without elements");
         }
         optionalFlag = true;
         return endGroup();
@@ -234,7 +234,7 @@ public class VersionTypeBuilder {
     @Contract(mutates = "this", value = "-> this")
     public VersionTypeBuilder finite() {
         if (finiteFlag) {
-            throw new IllegalStateException("Cannot mark a token as finite twice.");
+            throw new IllegalStateException("Cannot mark a token as finite twice");
         }
         finiteFlag = true;
         return this;
@@ -248,10 +248,10 @@ public class VersionTypeBuilder {
     @Contract(mutates = "this", value = "-> new")
     public DefaultVersionType build() {
         if (tokens.isEmpty()) {
-            throw new IllegalStateException("Cannot build an empty version type.");
+            throw new IllegalStateException("Cannot build an empty version type");
         }
         if (!tokens.get(tokens.size() - 1).finite()) {
-            throw new IllegalStateException("Last token group is not closed. Last token '%s' is not finite.".formatted(tokens.get(tokens.size() - 1).name()));
+            throw new IllegalStateException("Last token group is not closed, last token '%s' is not finite".formatted(tokens.get(tokens.size() - 1).name()));
         }
         return new DefaultVersionType(tokens);
     }
@@ -294,12 +294,12 @@ public class VersionTypeBuilder {
      */
     private VersionTypeBuilder endGroup() {
         if (tokens.isEmpty()) {
-            throw new IllegalStateException("Cannot create a new group without tokens.");
+            throw new IllegalStateException("Cannot create a new group without tokens");
         }
         final VersionToken lastToken = tokens.get(tokens.size() - 1);
         if (lastToken.group() < currentGroup) {
             if (!lastToken.finite()) {
-                throw new IllegalStateException("Cannot close a group that is not closed.");
+                throw new IllegalStateException("Cannot close a group that is not closed");
             }
             return this;
         }

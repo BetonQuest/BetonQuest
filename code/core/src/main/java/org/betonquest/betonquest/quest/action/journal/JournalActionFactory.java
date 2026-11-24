@@ -83,7 +83,7 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
             case "update" -> createJournalUpdateAction();
             case "add" -> createJournalAddAction(instruction);
             case "delete" -> createJournalDeleteAction(instruction);
-            default -> throw new QuestException("Unknown journal operation: " + operation);
+            default -> throw new QuestException("Journal operation '%s' does not exist".formatted(operation));
         };
     }
 
@@ -92,9 +92,9 @@ public class JournalActionFactory implements PlayerActionFactory, PlayerlessActi
         final String operation = instruction.string().get().getValue(null);
         return switch (operation.toLowerCase(Locale.ROOT)) {
             case "update", "add" ->
-                    new ThrowExceptionPlayerlessAction("Operation '%s' requires a player.".formatted(operation));
+                    new ThrowExceptionPlayerlessAction("Operation '%s' requires a player".formatted(operation));
             case "delete" -> createStaticJournalDeleteAction(instruction);
-            default -> throw new QuestException("Unknown journal operation: " + operation);
+            default -> throw new QuestException("Journal operation '%s' does not exist".formatted(operation));
         };
     }
 

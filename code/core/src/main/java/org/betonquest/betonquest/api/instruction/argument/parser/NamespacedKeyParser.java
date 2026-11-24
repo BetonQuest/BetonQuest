@@ -25,7 +25,7 @@ public class NamespacedKeyParser implements SimpleArgumentParser<NamespacedKey> 
     public static NamespacedKey parse(final String string) throws QuestException {
         final NamespacedKey key = NamespacedKey.fromString(string);
         if (key == null) {
-            throw new QuestException("Invalid NamespacedKey '%s'!".formatted(string));
+            throw new QuestException("Invalid NamespacedKey '%s'".formatted(string));
         }
         return key;
     }

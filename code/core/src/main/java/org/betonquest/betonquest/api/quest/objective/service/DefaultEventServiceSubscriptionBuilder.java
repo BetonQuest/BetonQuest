@@ -118,7 +118,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     @Override
     public EventServiceSubscriptionBuilder<T> handler(final NonProfileEventHandler<T> handler) {
         if (checkHandlerAlreadySet()) {
-            throw new IllegalStateException("Cannot set more than one handler!");
+            throw new IllegalStateException("Cannot set more than one handler");
         }
         this.nonProfileHandler = handler;
         return this;
@@ -127,7 +127,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     @Override
     public EventServiceSubscriptionBuilder<T> handler(final ProfileEventHandler<T> handler) {
         if (checkHandlerAlreadySet()) {
-            throw new IllegalStateException("Cannot set more than one handler!");
+            throw new IllegalStateException("Cannot set more than one handler");
         }
         this.profileHandler = handler;
         return this;
@@ -136,7 +136,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     @Override
     public EventServiceSubscriptionBuilder<T> onlineHandler(final OnlineProfileEventHandler<T> handler) {
         if (checkHandlerAlreadySet()) {
-            throw new IllegalStateException("Cannot set more than one handler!");
+            throw new IllegalStateException("Cannot set more than one handler");
         }
         this.onlineProfileHandler = handler;
         return this;
@@ -145,7 +145,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     @Override
     public EventServiceSubscriptionBuilder<T> uuid(final QuestFunction<T, UUID> extractor) {
         if (this.profileExtractor != null) {
-            throw new IllegalStateException("Cannot set more than one extractor!");
+            throw new IllegalStateException("Cannot set more than one extractor");
         }
         this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event)).map(provider::getProfile);
         return this;
@@ -154,7 +154,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     @Override
     public EventServiceSubscriptionBuilder<T> offlinePlayer(final QuestFunction<T, OfflinePlayer> extractor) {
         if (this.profileExtractor != null) {
-            throw new IllegalStateException("Cannot set more than one extractor!");
+            throw new IllegalStateException("Cannot set more than one extractor");
         }
         this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event)).map(provider::getProfile);
         return this;
@@ -163,7 +163,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     @Override
     public EventServiceSubscriptionBuilder<T> player(final QuestFunction<T, Player> extractor) {
         if (this.profileExtractor != null) {
-            throw new IllegalStateException("Cannot set more than one extractor!");
+            throw new IllegalStateException("Cannot set more than one extractor");
         }
         this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event)).map(provider::getProfile);
         return this;
@@ -172,7 +172,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     @Override
     public EventServiceSubscriptionBuilder<T> entity(final QuestFunction<T, Entity> extractor) {
         if (this.profileExtractor != null) {
-            throw new IllegalStateException("Cannot set more than one extractor!");
+            throw new IllegalStateException("Cannot set more than one extractor");
         }
         this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event))
                 .map(entity -> entity instanceof final Player player ? provider.getProfile(player) : null);
@@ -182,7 +182,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
     @Override
     public EventServiceSubscriptionBuilder<T> profile(final QuestFunction<T, Profile> extractor) {
         if (this.profileExtractor != null) {
-            throw new IllegalStateException("Cannot set more than one extractor!");
+            throw new IllegalStateException("Cannot set more than one extractor");
         }
         this.profileExtractor = (provider, event) -> Optional.ofNullable(extractor.apply(event));
         return this;
@@ -202,14 +202,14 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
 
     private void subscribe() throws QuestException {
         if (this.objectiveID == null) {
-            throw new IllegalStateException("No objective ID specified!");
+            throw new IllegalStateException("No objective ID specified");
         }
         if (this.nonProfileHandler != null) {
             eventService.subscribe(objectiveID, eventClass, nonProfileHandler, eventPriority, ignoreCancelled, conditionsIgnore);
             return;
         }
         if (profileExtractor == null) {
-            throw new IllegalStateException("No valid extractor specified!");
+            throw new IllegalStateException("No valid extractor specified");
         }
         if (onlineProfileHandler != null) {
             eventService.subscribe(objectiveID, eventClass, onlineProfileHandler, profileExtractor, eventPriority, ignoreCancelled, conditionsIgnore);
@@ -219,7 +219,7 @@ public class DefaultEventServiceSubscriptionBuilder<T extends Event> implements 
             eventService.subscribe(objectiveID, eventClass, profileHandler, profileExtractor, eventPriority, ignoreCancelled, conditionsIgnore);
             return;
         }
-        throw new IllegalStateException("No valid handler specified!");
+        throw new IllegalStateException("No valid handler specified");
     }
 
     private boolean checkHandlerAlreadySet() {

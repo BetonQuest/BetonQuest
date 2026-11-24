@@ -29,13 +29,13 @@ public class WorldPlaceholderFactory implements PlayerlessPlaceholderFactory, Pl
         final Argument<WorldPlaceholderProperty> worldResolver = instruction.enumeration(WorldPlaceholderProperty.class).get();
         final Optional<Argument<World>> worldByName = instruction.world().get("name");
         final Optional<Argument<World>> worldByUuid = instruction.uuid()
-                .validate(uuid -> Bukkit.getWorld(uuid) != null, "There is no world by that uuid: %s")
+                .validate(uuid -> Bukkit.getWorld(uuid) != null, "World with uuid '%s' does not exist")
                 .map(Bukkit::getWorld).get("uuid");
         if (worldByName.isEmpty() && worldByUuid.isEmpty()) {
             return new NullablePlaceholderAdapter(new WorldPlaceholder(worldResolver, DefaultArguments.PLAYER_WORLD));
         }
         if (worldByName.isPresent() && worldByUuid.isPresent()) {
-            throw new QuestException("You may only specify either a 'name' or 'uuid' argument for the world placeholder in an player-independent context.");
+            throw new QuestException("You may only specify either a 'name' or 'uuid' argument for the world placeholder in an player-independent context");
         }
         final Argument<World> world = worldByName.or(() -> worldByUuid).get();
         return new NullablePlaceholderAdapter(new WorldPlaceholder(worldResolver, world));

@@ -119,7 +119,7 @@ public class PersistentDataContainerHandler implements ItemMetaHandler.Standard 
             final String last = split[split.length - 1];
             final String[] lastSplit = last.split(String.valueOf(SPLIT_CHAR));
             if (lastSplit.length != LENGTH) {
-                throw new QuestException("Invalid key;type;value format: " + last);
+                throw new QuestException("Invalid key;type;value format: '%s'".formatted(last));
             }
             final NamespacedKey key = NamespacedKeyParser.parse(lastSplit[0]);
             try {
@@ -162,7 +162,7 @@ public class PersistentDataContainerHandler implements ItemMetaHandler.Standard 
                     type = PersistentDataType.STRING;
                     value = valueString;
                 }
-                default -> throw new QuestException("unknown persistent data type: " + typeString);
+                default -> throw new QuestException("Persistent data type '%s' does not exist".formatted(typeString));
             }
             return new PdcPath(path, key, type, value);
         }

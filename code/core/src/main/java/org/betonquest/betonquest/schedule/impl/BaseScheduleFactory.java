@@ -38,7 +38,7 @@ public abstract class BaseScheduleFactory<S extends Schedule> implements Schedul
         try {
             actions = instruction.read().value("actions").identifier(ActionIdentifier.class).list().get().getValue(null);
         } catch (final QuestException e) {
-            throw new QuestException("Error while loading actions: " + e.getMessage(), e);
+            throw new QuestException("Error while loading actions: %s".formatted(e.getMessage()), e);
         }
 
         final String catchupString = instruction.getSection().getString("catchup");

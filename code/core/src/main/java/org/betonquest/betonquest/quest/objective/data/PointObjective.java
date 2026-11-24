@@ -128,7 +128,7 @@ public class PointObjective extends DefaultObjective {
     private int getPoints(final Profile profile) throws QuestException {
         final String data = getService().getData().get(profile);
         if (data == null) {
-            throw new QuestException("Profile should have data!");
+            throw new QuestException("Profile should have data");
         }
         return NumberParser.DEFAULT.apply(data).intValue();
     }

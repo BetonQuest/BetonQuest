@@ -51,13 +51,13 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
         final MultiConfiguration config = resolvedIdentifier.getPackage().getConfig();
         final String path = section + config.options().pathSeparator() + resolvedIdentifier.get();
         if (!config.contains(path)) {
-            throw new QuestException("%s '%s' is not defined in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
+            throw new QuestException("%s '%s' is not defined in section '%s'".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
         }
         if (needsSection && !config.isConfigurationSection(path)) {
             throw new QuestException("%s '%s' does not define a section under section '%s'".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
         }
         if (needsString && !config.isString(path)) {
-            throw new QuestException("%s '%s' does not define a string in section '%s'!".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
+            throw new QuestException("%s '%s' does not define a string in section '%s'".formatted(readableTypeName, resolvedIdentifier.getFull(), section));
         }
         return resolvedIdentifier;
     }
@@ -113,7 +113,7 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
         final RawIdentifier rawIdentifier = splitIdentifier(input);
         if (rawIdentifier.pack() == null) {
             if (sourcePackage == null) {
-                throw new QuestException("%s identifier '%s' has no package specified!".formatted(readableTypeName, input));
+                throw new QuestException("%s identifier '%s' has no package specified".formatted(readableTypeName, input));
             }
             return Map.entry(sourcePackage, rawIdentifier.identifier());
         }
@@ -127,14 +127,14 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
 
     private RawIdentifier splitIdentifier(final String rawIdentifier) throws QuestException {
         if (rawIdentifier.isEmpty()) {
-            throw new QuestException("%s identifier is empty!".formatted(readableTypeName));
+            throw new QuestException("%s identifier is empty".formatted(readableTypeName));
         }
         final Matcher matcher = SEPARATOR_PATTERN.matcher(rawIdentifier);
         if (matcher.matches()) {
             final String pack = matcher.group("package").replace("\\" + SEPARATOR, SEPARATOR);
             final String identifier = matcher.group("identifier").replace("\\" + SEPARATOR, SEPARATOR);
             if (identifier.isEmpty()) {
-                throw new QuestException("%s identifier '%s' has no identifier after the package name!".formatted(readableTypeName, rawIdentifier));
+                throw new QuestException("%s identifier '%s' has no identifier after the package name".formatted(readableTypeName, rawIdentifier));
             }
             return new RawIdentifier(pack, identifier);
         }
@@ -153,7 +153,7 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
         }
         final QuestPackage packFromPath = packManager.getPackage(packPath);
         if (packFromPath == null) {
-            throw new QuestException("No package '%s' found!".formatted(packPath));
+            throw new QuestException("Package '%s' does not exist".formatted(packPath));
         }
         return packFromPath;
     }
@@ -165,7 +165,7 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
         final String resolvedPackPath = resolvePackagePath(root, path, levelsUp);
         final QuestPackage resolvedPack = packManager.getPackage(resolvedPackPath);
         if (resolvedPack == null) {
-            throw new QuestException("Relative path '%s' resolved to '%s', but this package does not exist!"
+            throw new QuestException("Relative path '%s' resolved to '%s', but this package does not exist"
                     .formatted(packPath, resolvedPackPath));
         }
         return resolvedPack;
@@ -177,7 +177,7 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
             levelsUp++;
         }
         if (levelsUp > root.length) {
-            throw new QuestException("Relative path '%s' goes up too many levels!".formatted(packPath));
+            throw new QuestException("Relative path '%s' goes up too many levels".formatted(packPath));
         }
         return levelsUp;
     }
@@ -201,7 +201,7 @@ public abstract class DefaultIdentifierFactory<I extends Identifier> implements 
 
         final QuestPackage resolvedPack = packManager.getPackage(resolvedPackPath);
         if (resolvedPack == null) {
-            throw new QuestException("Relative path '%s' resolved to '%s', but this package does not exist!"
+            throw new QuestException("Relative path '%s' resolved to '%s', but this package does not exist"
                     .formatted(packPath, resolvedPackPath));
         }
         return resolvedPack;

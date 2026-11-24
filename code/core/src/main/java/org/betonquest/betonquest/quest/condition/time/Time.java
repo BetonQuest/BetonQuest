@@ -28,7 +28,7 @@ public record Time(int hour, int minute) {
                 minute = Integer.parseInt(parts[1]);
             }
         } catch (final NumberFormatException e) {
-            throw new QuestException("Invalid time format. Expected hh or hh:mm", e);
+            throw new QuestException("Invalid time format, expected hh or hh:mm", e);
         }
         checkForValidHour(hour, minute);
         checkForValidMinute(minute);

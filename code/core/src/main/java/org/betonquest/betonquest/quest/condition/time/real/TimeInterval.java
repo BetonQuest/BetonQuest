@@ -35,13 +35,13 @@ public class TimeInterval {
         this.start = start;
         this.end = end;
         if (end < start) {
-            throw new QuestException(type + " " + end + " is before " + start);
+            throw new QuestException("%s '%s' is before '%s'".formatted(type, end, start));
         }
         if (type.isInvalid(start)) {
-            throw new QuestException(start + " is not a valid " + type);
+            throw new QuestException("'%s' is not a valid %s".formatted(start, type));
         }
         if (type.isInvalid(end)) {
-            throw new QuestException(end + " is not a valid " + type);
+            throw new QuestException("'%s' is not a valid %s".formatted(end, type));
         }
     }
 
@@ -69,7 +69,7 @@ public class TimeInterval {
      */
     public static List<TimeInterval> parseFromString(final String string, final PartialDate type) throws QuestException {
         if (!string.matches("\\d+(-\\d+)?(,\\d+(-\\d+)?)*")) {
-            throw new QuestException("could not parse " + type + " from '" + string + "'" + " (invalid format)");
+            throw new QuestException("Could not parse %s from '%s': invalid format".formatted(type, string));
         }
         final List<TimeInterval> intervals = new ArrayList<>();
         final String[] args = string.split(",");
@@ -84,8 +84,7 @@ public class TimeInterval {
                     intervals.add(new TimeInterval(Integer.parseInt(arg), type));
                 }
             } catch (final QuestException e) {
-                throw new QuestException("could not parse " + type + " from '" + string + "'"
-                        + " (" + e.getMessage() + ")", e);
+                throw new QuestException("Could not parse %s from '%s': %s".formatted(type, string, e.getMessage()), e);
             }
         }
         return intervals;

@@ -21,11 +21,11 @@ public class MMOQuestItemSerializer implements QuestItemSerializer {
         final NBTItem realItemNBT = NBTItem.get(itemStack);
         final String realItemType = realItemNBT.getString("MMOITEMS_ITEM_TYPE");
         if (realItemType == null) {
-            throw new QuestException("Item does not have MMOITEMS_ITEM_TYPE!");
+            throw new QuestException("Item does not have MMOITEMS_ITEM_TYPE");
         }
         final String realItemID = realItemNBT.getString("MMOITEMS_ITEM_ID");
         if (realItemID == null) {
-            throw new QuestException("Item does not have MMOITEMS_ITEM_ID NBT data!");
+            throw new QuestException("Item does not have MMOITEMS_ITEM_ID NBT data");
         }
         return realItemType + " " + realItemID;
     }

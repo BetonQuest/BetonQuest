@@ -35,7 +35,7 @@ public class ConditionAdapter extends QuestAdapter<PlayerCondition, PlayerlessCo
     public boolean check(@Nullable final Profile profile) throws QuestException {
         if (player == null || profile == null) {
             if (playerless == null) {
-                throw new QuestException("Cannot check player-dependent condition without a player!");
+                throw new QuestException("Cannot check player-dependent condition without a player");
             }
             return playerless.check();
         }

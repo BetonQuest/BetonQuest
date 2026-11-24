@@ -34,7 +34,7 @@ public class TempFileDownloadSource implements DownloadSource {
         try {
             Files.move(tempFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (final IOException e) {
-            throw new IOException("Could not move temporary file to target file '" + file.getAbsolutePath() + "'", e);
+            throw new IOException("Could not move temporary file to target file '%s'".formatted(file.getAbsolutePath()), e);
         }
     }
 }

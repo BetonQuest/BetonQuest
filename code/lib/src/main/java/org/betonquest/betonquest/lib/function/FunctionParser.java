@@ -47,16 +47,16 @@ public class FunctionParser {
     public MathFunction parseMathFunction(final List<FunctionToken> functionTokens) throws QuestException {
         final int separatorIndex = functionTokens.indexOf(DefaultTokens.DEFINITION_EXPRESSION_SEPARATOR);
         if (separatorIndex == -1) {
-            throw new QuestException("Function definition separator not found.");
+            throw new QuestException("Function definition separator not found");
         }
         final List<FunctionToken> definitionTokens = functionTokens.subList(0, separatorIndex);
         final List<FunctionToken> expressionTokens = functionTokens.subList(separatorIndex + 1, functionTokens.size());
 
         if (definitionTokens.isEmpty()) {
-            throw new QuestException("Function definition cannot be empty.");
+            throw new QuestException("Function definition cannot be empty");
         }
         if (expressionTokens.isEmpty()) {
-            throw new QuestException("Function expression cannot be empty.");
+            throw new QuestException("Function expression cannot be empty");
         }
 
         final FunctionDefinition definition = definitionParser.parseDefinition(definitionTokens);

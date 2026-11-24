@@ -98,7 +98,7 @@ public class ItemPlaceholder implements NullablePlaceholder {
     @SuppressWarnings("PMD.CyclomaticComplexity")
     private int itemAmount(final QuestItem questItem, @Nullable final Profile profile) throws QuestException {
         if (profile == null || profile.getOnlineProfile().isEmpty()) {
-            throw new QuestException("ItemPlaceholder with type " + type + " can't be used without an online profile.");
+            throw new QuestException("ItemPlaceholder with type '%s' can't be used without an online profile".formatted(type));
         }
         final OnlineProfile onlineProfile = profile.getOnlineProfile().get();
         final Player player = onlineProfile.getPlayer();

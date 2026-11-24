@@ -120,7 +120,7 @@ class DemoFunctionsFixture {
                     List.of(new BooleanSourceAssignment(false), new BooleanSourceAssignment(true)),
                     List.of(new BooleanSourceAssignment(false), new BooleanSourceAssignment(false)));
         }
-        throw new IllegalArgumentException("Invalid number of arguments: %d".formatted(arguments));
+        throw new IllegalArgumentException("Invalid number of arguments: %s".formatted(arguments));
     }
 
     private static List<List<FunctionAssignment>> generateAssignments(final int arguments) {
@@ -148,7 +148,7 @@ class DemoFunctionsFixture {
             }
             return assignments;
         }
-        throw new IllegalArgumentException("Invalid number of arguments: %d".formatted(arguments));
+        throw new IllegalArgumentException("Invalid number of arguments: %s".formatted(arguments));
     }
 
     private static void valid(final String input, final List<FunctionToken> tokens, final Function<List<FunctionAssignment>, FunctionAssignment> function, final int arguments) {

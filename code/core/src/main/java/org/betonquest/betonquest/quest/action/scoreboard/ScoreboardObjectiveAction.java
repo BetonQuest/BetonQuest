@@ -49,7 +49,7 @@ public class ScoreboardObjectiveAction implements PlayerAction {
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective obj = board.getObjective(objective);
         if (obj == null) {
-            throw new QuestException("Scoreboard objective " + objective + " does not exist!");
+            throw new QuestException("Scoreboard objective '%s' does not exist".formatted(objective));
         }
         final Score score = obj.getScore(profile.getPlayer());
         score.setScore(modification.modify(score.getScore(), count.getValue(profile).doubleValue()));

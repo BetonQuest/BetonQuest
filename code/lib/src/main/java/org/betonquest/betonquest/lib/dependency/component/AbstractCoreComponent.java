@@ -46,7 +46,7 @@ public abstract class AbstractCoreComponent implements CoreComponent {
     @Override
     public final void loadComponent(final DependencyProvider dependencyProvider) {
         if (isLoaded() || !DependencyHelper.remainingDependencies(requires(), injectedDependencies).isEmpty()) {
-            throw new IllegalStateException("Cannot load component providing (%s) because it still requires %s".formatted(
+            throw new IllegalStateException("Cannot load component providing '%s' because it still requires '%s'".formatted(
                     provides().stream().map(Class::getSimpleName).collect(Collectors.joining(",")),
                     DependencyHelper.remainingDependencies(requires(), injectedDependencies).stream().map(Class::getSimpleName).collect(Collectors.joining(","))));
         }

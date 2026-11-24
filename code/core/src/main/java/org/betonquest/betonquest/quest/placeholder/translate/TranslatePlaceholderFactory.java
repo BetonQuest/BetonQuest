@@ -44,7 +44,7 @@ public class TranslatePlaceholderFactory implements PlayerPlaceholderFactory, Pl
     private NullablePlaceholderAdapter parseConstantPlaceholder(final Instruction instruction) throws QuestException {
         final ConfigurationSection section = instruction.getPackage().getConfig().getConfigurationSection("constants");
         if (section == null) {
-            throw new QuestException("No 'constants' section found in the QuestPackage!");
+            throw new QuestException("Section 'constants' does not exist in the QuestPackage");
         }
         final String translateTarget = String.join(".", instruction.getValueParts());
         final Argument<Text> textArgument = instructions.createSection(instruction.getPackage(), section).read().value(translateTarget).translationSection().get();

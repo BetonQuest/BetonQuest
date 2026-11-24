@@ -315,7 +315,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
     @SuppressWarnings("deprecation")
     protected SkullMeta updateSkullMeta(final SkullMeta meta, final String plainTextNpcName) {
         if (Bukkit.isPrimaryThread()) {
-            throw new IllegalStateException("Must be called async!");
+            throw new IllegalStateException("Must be called async");
         }
         if (!Bukkit.createProfile(plainTextNpcName).complete()) {
             return meta;

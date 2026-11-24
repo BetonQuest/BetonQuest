@@ -25,7 +25,7 @@ public class ItemsAdderParser implements SimpleArgumentParser<CustomStack> {
     public CustomStack apply(final String string) throws QuestException {
         final CustomStack stack = CustomStack.getInstance(string);
         if (stack == null) {
-            throw new QuestException("Invalid ItemsAdder Item '%s'!".formatted(string));
+            throw new QuestException("ItemsAdder Item '%s' does not exist".formatted(string));
         }
         return stack;
     }

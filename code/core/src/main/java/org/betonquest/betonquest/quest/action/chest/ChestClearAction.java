@@ -27,7 +27,7 @@ public class ChestClearAction extends AbstractChestAction {
             final InventoryHolder chest = getChest(profile);
             chest.getInventory().clear();
         } catch (final QuestException e) {
-            throw new QuestException("Trying to clear chest. " + e.getMessage(), e);
+            throw new QuestException("Trying to clear chest: %s".formatted(e.getMessage()), e);
         }
     }
 

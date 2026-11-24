@@ -46,7 +46,7 @@ public class SpawnParticlesActionFactory implements PlayerActionFactory, Playerl
     @Override
     public PlayerlessAction parsePlayerless(final Instruction instruction) throws QuestException {
         if (!instruction.hasOptional("loc")) {
-            return new ThrowExceptionPlayerlessAction("SpawnParticles action requires 'loc' argument in an independent context.");
+            return new ThrowExceptionPlayerlessAction("SpawnParticles action requires 'loc' argument in an independent context");
         }
         return createAction(instruction);
     }

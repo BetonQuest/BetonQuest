@@ -26,11 +26,11 @@ public record ModifierCondition(TheBrewingProjectApi api,
     public boolean check(final Profile profile) throws QuestException {
         final String modifierName = modifierNameArgument.getValue(profile);
         final DrunkenModifier modifier = api.getModifierManager().getModifier(modifierName)
-                .orElseThrow(() -> new QuestException("Unknown modifier %s".formatted(modifierName)));
+                .orElseThrow(() -> new QuestException("Modifier '%s' does not exist".formatted(modifierName)));
         final Operation operation = modifierConditionTypeArgument.getValue(profile);
         final double modifierValue = modifierValueArgument.getValue(profile).doubleValue();
         if (modifierValue < modifier.minValue() || modifierValue > modifier.maxValue()) {
-            throw new QuestException("%s level can only be between %s and %s".formatted(modifier.name(), modifier.minValue(), modifier.maxValue()));
+            throw new QuestException("'%s' level can only be between '%s' and '%s'".formatted(modifier.name(), modifier.minValue(), modifier.maxValue()));
         }
         final DrunkState drunkState = api.getDrunksManager().getDrunkState(profile.getPlayerUUID());
         final double actualValue;

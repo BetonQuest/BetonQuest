@@ -38,7 +38,7 @@ public abstract class QuestAdapterFactory<P, L, A> implements TypeFactory<A> {
     public QuestAdapterFactory(@Nullable final PlayerQuestFactory<P> playerFactory,
                                @Nullable final PlayerlessQuestFactory<L> playerlessFactory) {
         if (playerFactory == null && playerlessFactory == null) {
-            throw new IllegalArgumentException("Either the player or playerless factory must be present!");
+            throw new IllegalArgumentException("Either the player or playerless factory must be present");
         }
         this.playerFactory = playerFactory;
         this.playerlessFactory = playerlessFactory;

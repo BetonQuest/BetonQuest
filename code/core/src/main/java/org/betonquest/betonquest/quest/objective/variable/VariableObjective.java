@@ -214,7 +214,7 @@ public class VariableObjective extends DefaultObjective {
             try {
                 service = BetonQuest.getInstance().getBetonQuestApi().objectives().manager().getObjective(objID).getService();
             } catch (final QuestException e) {
-                throw new IllegalStateException("Could not get objective service for objective '" + objID + "'", e);
+                throw new IllegalStateException("Could not get objective service for objective '%s'".formatted(objID), e);
             }
             if (value == null || value.isEmpty()) {
                 variables.remove(key.toLowerCase(Locale.ROOT));

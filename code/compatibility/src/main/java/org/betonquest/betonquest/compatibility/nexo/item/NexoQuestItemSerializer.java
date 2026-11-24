@@ -21,7 +21,7 @@ public class NexoQuestItemSerializer implements QuestItemSerializer {
     public String serialize(final ItemStack itemStack) throws QuestException {
         final String itemBuilder = NexoItems.idFromItem(itemStack);
         if (itemBuilder == null) {
-            throw new QuestException("Item is not a Nexo Item!");
+            throw new QuestException("Item is not a Nexo Item");
         }
         return itemBuilder;
     }

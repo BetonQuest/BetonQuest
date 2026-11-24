@@ -95,7 +95,7 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
         try {
             placeholderID = getIdentifier(pack, instruction);
         } catch (final QuestException e) {
-            throw new QuestException("Could not load placeholder: " + e.getMessage(), e);
+            throw new QuestException("Could not load placeholder: %s".formatted(e.getMessage()), e);
         }
         final PlaceholderAdapter existingPlaceholder = values.get(placeholderID);
         if (existingPlaceholder != null) {
@@ -115,7 +115,7 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
         try {
             placeholder = create(pack, name);
         } catch (final QuestException e) {
-            throw new QuestException("Could not create placeholder '" + name + "': " + e.getMessage(), e);
+            throw new QuestException("Could not create placeholder '%s': %s".formatted(name, e.getMessage()), e);
         }
         if (placeholder.isPrimaryThreadEnforced() && !Bukkit.isPrimaryThread()) {
             return valueSync(profile, name, placeholder);
@@ -127,12 +127,12 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
     public String getValue(final String placeholder, @Nullable final Profile profile) throws QuestException {
         final int index = placeholder.indexOf(':');
         if (index == -1) {
-            throw new QuestException("Placeholder without explicit package '" + placeholder + "'! Expected format '<package>:<placeholder>'");
+            throw new QuestException("Placeholder without explicit package '%s', expected format '<package>:<placeholder>'".formatted(placeholder));
         }
         final String packString = placeholder.substring(0, index);
         final QuestPackage pack = packManager.getPackage(packString);
         if (pack == null) {
-            throw new QuestException("The placeholder '" + placeholder + "' reference the non-existent package '" + packString + "' !");
+            throw new QuestException("The placeholder '%s' references the non-existent package '%s'".formatted(placeholder, packString));
         }
         final String value = placeholder.substring(index + 1);
         return getValue(pack, '%' + value + '%', profile);
@@ -151,7 +151,7 @@ public class PlaceholderProcessor extends TypedQuestProcessor<PlaceholderIdentif
         try {
             return placeholder.getValue(profile);
         } catch (final QuestException e) {
-            throw new QuestException("Error while resolving '" + placeholderString + "' placeholder: " + e.getMessage(), e);
+            throw new QuestException("Error while resolving '%s' placeholder: %s".formatted(placeholderString, e.getMessage()), e);
         }
     }
 }

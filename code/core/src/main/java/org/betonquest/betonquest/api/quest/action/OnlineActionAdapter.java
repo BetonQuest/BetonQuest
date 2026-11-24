@@ -30,7 +30,7 @@ public final class OnlineActionAdapter implements PlayerAction {
      */
     public OnlineActionAdapter(final OnlineAction onlineAction) {
         this(onlineAction, profile -> {
-            throw new QuestException("Cannot fire an online action for the offline player %s".formatted(profile));
+            throw new QuestException("Cannot fire an online action for the offline player '%s'".formatted(profile));
         });
     }
 

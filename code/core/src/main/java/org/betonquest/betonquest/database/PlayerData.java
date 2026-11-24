@@ -180,31 +180,31 @@ public class PlayerData implements PersistentDataHolder {
                 objectives.put(resultSet.getString("objective"), resultSet.getString("instructions"));
             }
             log.debug("Loaded %d raw objectives for %s".formatted(objectives.size(), profile));
-        }, "Could not load objectives.");
+        }, "Could not load objectives");
         connector.querySQL(QueryType.SELECT_TAGS, args, resultSet -> {
             while (resultSet.next()) {
                 allTags.add(resultSet.getString("tag"));
             }
             log.debug("Loaded %d tags for %s".formatted(allTags.size(), profile));
-        }, "Could not load tags.");
+        }, "Could not load tags");
         connector.querySQL(QueryType.SELECT_JOURNAL, args, resultSet -> {
             while (resultSet.next()) {
                 loadJournalPointer(resultSet.getString("pointer"), resultSet.getTimestamp("date").getTime());
             }
-        }, "Could not load journal entries.");
+        }, "Could not load journal entries");
         connector.querySQL(QueryType.SELECT_POINTS, args, resultSet -> {
             while (resultSet.next()) {
                 final String category = resultSet.getString("category");
                 allPoints.put(category, resultSet.getInt("count"));
             }
             log.debug("Loaded %d points for %s".formatted(allPoints.size(), profile));
-        }, "Could not load points.");
+        }, "Could not load points");
         connector.querySQL(QueryType.SELECT_BACKPACK, args, resultSet -> {
             while (resultSet.next()) {
                 addItemToBackpack(resultSet);
             }
             log.debug("Loaded %d backpack items for %s".formatted(backpack.size(), profile));
-        }, "Could not load backpack.");
+        }, "Could not load backpack");
         connector.querySQL(QueryType.SELECT_PLAYER, args, resultSet -> {
             if (resultSet.next()) {
                 profileLanguage = resultSet.getString("language");
@@ -214,7 +214,7 @@ public class PlayerData implements PersistentDataHolder {
             } else {
                 setupProfile();
             }
-        }, "Could not load player data.");
+        }, "Could not load player data");
 
         log.debug("Loading player data of %s completed.".formatted(profile));
     }

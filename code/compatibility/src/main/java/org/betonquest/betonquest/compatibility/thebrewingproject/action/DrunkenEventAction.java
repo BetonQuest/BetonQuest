@@ -25,7 +25,7 @@ public record DrunkenEventAction(TheBrewingProjectApi api,
                 .stream()
                 .filter(event -> event.key().equals(eventKey))
                 .findFirst()
-                .orElseThrow(() -> new QuestException("Unknown drunken event: %s".formatted(drunkenEventName)));
+                .orElseThrow(() -> new QuestException("Drunken event '%s' does not exist".formatted(drunkenEventName)));
         api.getDrunkenEventManager().runEvent(profile.getPlayerUUID(), drunkEvent);
     }
 }

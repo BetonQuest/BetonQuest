@@ -192,7 +192,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         final Argument<ConversationIOFactory> conversationIO = instruction.chainForArgument(rawConvIO).string().list().map(convIORegistry::getFactory).get();
         final Argument<InterceptorFactory> interceptor = instruction.chainForArgument(rawInterceptor).string().list().map(interceptorRegistry::getFactory).get();
         final Argument<Number> interceptorDelay = instruction.chainForArgument(rawInterceptorDelay).number()
-                .validate(delay -> delay.doubleValue() >= 0, "Expected a non-negative number for 'interceptor_delay', got '%s' instead.").get();
+                .validate(delay -> delay.doubleValue() >= 0, "Expected a non-negative number for 'interceptor_delay', got '%s' instead").get();
 
         final ConversationPublicData publicData = new ConversationPublicData(identifier, quester, stop, blockTransfer, finalActions, conversationIO, interceptor, interceptorDelay, invincible);
         final DefaultConversationData conversationData = new DefaultConversationData(loggerFactory.create(DefaultConversationData.class), questPackageManager,
