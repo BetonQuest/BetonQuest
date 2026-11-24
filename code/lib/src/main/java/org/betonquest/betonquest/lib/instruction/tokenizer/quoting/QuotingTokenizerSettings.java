@@ -60,6 +60,21 @@ public interface QuotingTokenizerSettings {
         public boolean ignoreEmptyQuotedWords() {
             return true;
         }
+
+        @Override
+        public boolean isEscapingInUnquotedWords() {
+            return true;
+        }
+
+        @Override
+        public boolean isQuotingInUnquotedWordsAllowed() {
+            return false;
+        }
+
+        @Override
+        public boolean isPlaceholderMarker(final int codePoint) {
+            return codePoint == '%';
+        }
     };
 
     /**
@@ -100,6 +115,38 @@ public interface QuotingTokenizerSettings {
      * @return true if empty words should be ignored, false otherwise
      */
     default boolean ignoreEmptyQuotedWords() {
+        return false;
+    }
+
+    /**
+     * If true, escape characters are also processed in unquoted words.
+     * Otherwise, they are treated as regular characters.
+     *
+     * @return true if escaping is processed in unquoted words, false otherwise
+     */
+    default boolean isEscapingInUnquotedWords() {
+        return false;
+    }
+
+    /**
+     * If true, unescaped quote characters are allowed inside unquoted words and are treated as regular characters.
+     * Otherwise, quotes have to enclose the whole word.
+     *
+     * @return true if quote characters are allowed in unquoted words, false otherwise
+     */
+    default boolean isQuotingInUnquotedWordsAllowed() {
+        return true;
+    }
+
+    /**
+     * Check if the given code point marks the start or end of a placeholder inside a quoted word.
+     * Quote and escape characters inside such a placeholder are kept as they are,
+     * so the placeholder keeps its own syntax when it is resolved later.
+     *
+     * @param codePoint the code point to check
+     * @return true if the code point is a placeholder marker, false otherwise
+     */
+    default boolean isPlaceholderMarker(final int codePoint) {
         return false;
     }
 }

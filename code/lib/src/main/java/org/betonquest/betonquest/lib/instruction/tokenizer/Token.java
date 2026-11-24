@@ -1,6 +1,6 @@
 package org.betonquest.betonquest.lib.instruction.tokenizer;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public record Token(@Nullable Token parent, @Nullable String value, List<Token> 
      * @return the value of the token
      */
     public String resolveValue() {
-        return value == null ? children.stream().map(Token::value).collect(Collectors.joining("")) : value;
+        return value == null ? children.stream().map(Token::resolveValue).collect(Collectors.joining("")) : value;
     }
 
     /**

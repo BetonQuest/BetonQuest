@@ -4,7 +4,8 @@ import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerException;
 import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerState;
 
 /**
- * The state of a just finished quoted word. A whitespace character is expected.
+ * The state of a just finished quoted word. A separator is expected on the top level,
+ * while any character continues the enclosing quoted word on nested levels.
  */
 public class QuoteEndState implements TokenizerState<QuotingTokenizerContext> {
 
@@ -24,7 +25,7 @@ public class QuoteEndState implements TokenizerState<QuotingTokenizerContext> {
 
     @Override
     public TokenizerState<QuotingTokenizerContext> parseNext(final QuotingTokenizerContext ctx, final int codePoint) throws TokenizerException {
-        if (ctx.settings().isSeparator(codePoint)) {
+        if (quotingLevel == QuotedWordState.INITIAL_QUOTING_LEVEL && ctx.settings().isSeparator(codePoint)) {
             return new NoWordState();
         }
         if (ctx.settings().isBeginQuote(codePoint)) {
@@ -39,8 +40,7 @@ public class QuoteEndState implements TokenizerState<QuotingTokenizerContext> {
             return new QuoteEndState(quotingLevel - 1);
         }
         if (quotingLevel > QuotedWordState.INITIAL_QUOTING_LEVEL) {
-            ctx.appendCodePoint(codePoint);
-            return new QuotedWordState(quotingLevel - 1);
+            return new QuotedWordState(quotingLevel - 1).parseNext(ctx, codePoint);
         }
         throw new TokenizerException("Expected separator or nothing but got: '%s'".formatted(Character.toString(codePoint)));
     }
