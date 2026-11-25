@@ -327,7 +327,7 @@ public class Downloader implements Callable<Boolean> {
         ignoredPackages.forEach(packages::remove);
         if (!ignoredPackages.isEmpty()) {
             log.debug("Ignoring the following sub packages:");
-            ignoredPackages.stream().map("    '%s'."::formatted).forEach(log::debug);
+            ignoredPackages.stream().map(s -> "    " + s).forEach(log::debug);
         }
         checkAnyPackageOverwritten(packages);
         boolean foundAny = false;

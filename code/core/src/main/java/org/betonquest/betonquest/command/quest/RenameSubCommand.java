@@ -190,7 +190,7 @@ public class RenameSubCommand extends QuestCommandPart {
         if (newPackage == null) {
             final String message = "You can't rename into non-existent package!";
             sendMessage(sender, "error", new VariableReplacement("error", Component.text(message)));
-            log.error(() -> newPackName, message);
+            log.error(message);
             return true;
         }
 

@@ -126,7 +126,7 @@ public final class Backup {
             log.warn("Could not delete database backup file!");
         }
 
-        log.debug("Done in '%s' ms.".formatted(System.currentTimeMillis() - time));
+        log.debug("Done in %s ms.".formatted(System.currentTimeMillis() - time));
         log.info("Done, you can find the backup in 'Backups' directory.");
     }
 

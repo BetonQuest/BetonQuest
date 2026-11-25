@@ -113,7 +113,7 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
         final StopWatch stopWatch = StopWatch.createStarted();
         orderedComponents.forEach(this::loadComponent);
         stopWatch.stop();
-        log.debug("Loaded '%s' components, took '%s'.".formatted(components.size(), stopWatch.formatTime()));
+        log.debug("Loaded '%s' components, took %s.".formatted(components.size(), stopWatch.formatTime()));
         log.info("All '%s' components successfully loaded.".formatted(components.size()));
     }
 
@@ -138,7 +138,7 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
             final String missing = expectedProvidedClasses.stream().map(Class::getSimpleName).sorted().collect(Collectors.joining(","));
             throw new IllegalStateException("Component '%s' did not provide all expected dependencies, missing: '%s'".formatted(component.getClass().getSimpleName(), missing));
         }
-        log.debug("Loaded component '%s', took '%s'.".formatted(component.getClass().getSimpleName(), stopWatch.formatTime()));
+        log.debug("Loaded component '%s', took %s.".formatted(component.getClass().getSimpleName(), stopWatch.formatTime()));
     }
 
     private void injectToAll(final LoadedDependency<?> loadedDependency) {

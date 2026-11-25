@@ -122,7 +122,7 @@ public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Sc
     @Override
     public void stop() {
         if (isRunning()) {
-            log.debug("Stopping %s scheduler."
+            log.debug("Stopping '%s' scheduler."
                     .formatted(getClass().getSimpleName().toLowerCase(Locale.ROOT).replace("scheduler", "")));
             executor.shutdownNow();
             try {

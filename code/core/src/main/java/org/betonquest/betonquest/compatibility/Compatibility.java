@@ -148,7 +148,7 @@ public class Compatibility implements Listener, FastStatsMetricsProvider {
                 .map(IntegrationData::integratedPluginVersionName)
                 .collect(Collectors.joining(", "));
         if (!hooks.isEmpty()) {
-            log.info("Enabled compatibility%sfor '%s'!".formatted(name, hooks));
+            log.info("Enabled compatibility %s for '%s'!".formatted(name, hooks));
         }
         dataList.stream()
                 .map(IntegrationData::getIntegration)

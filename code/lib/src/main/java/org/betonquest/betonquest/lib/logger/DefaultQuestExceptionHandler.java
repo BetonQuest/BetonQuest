@@ -92,7 +92,7 @@ public class DefaultQuestExceptionHandler implements QuestExceptionHandler {
     private void handleException(final QuestException exception) {
         if (System.currentTimeMillis() - last >= errorRateLimit) {
             last = System.currentTimeMillis();
-            logger.warn(source, "%sError while handling: %s".formatted(sourceDetails, exception.getMessage()), exception);
+            logger.warn(source, "%s Error while handling: %s".formatted(sourceDetails, exception.getMessage()), exception);
         }
     }
 }

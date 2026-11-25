@@ -101,7 +101,7 @@ public class DownloadSubCommand extends QuestCommandPart {
         //Check offset paths
         if (!Downloader.ALLOWED_OFFSET_PATHS.contains(offsetPath)) {
             sendMessage(sender, "download_failed_offset");
-            log.debug("%s.".formatted(errSummary), new IllegalArgumentException(offsetPath));
+            log.debug("%s, illegal argument: %s".formatted(errSummary, offsetPath), new IllegalArgumentException(offsetPath));
             return;
         }
 
@@ -109,14 +109,14 @@ public class DownloadSubCommand extends QuestCommandPart {
         final List<String> whitelist = config.getStringList("downloader.repo_whitelist");
         if (whitelist.stream().map(String::trim).noneMatch(githubNamespace::equals)) {
             sendMessage(sender, "download_failed_whitelist");
-            log.debug("%s.".formatted(errSummary), new IllegalArgumentException(githubNamespace));
+            log.debug("%s, illegal argument: %s".formatted(errSummary, githubNamespace), new IllegalArgumentException(githubNamespace));
             return;
         }
 
         //check if ref is valid
         if (ref.toLowerCase(Locale.ROOT).startsWith("refs/pull/") && !config.getBoolean("downloader.pull_request", false)) {
             sendMessage(sender, "download_failed_pr");
-            log.debug("%s.".formatted(errSummary), new IllegalArgumentException(ref));
+            log.debug("%s, illegal argument: %s".formatted(errSummary, ref), new IllegalArgumentException(ref));
             return;
         }
 

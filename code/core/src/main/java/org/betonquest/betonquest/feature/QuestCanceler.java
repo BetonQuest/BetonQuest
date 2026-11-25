@@ -185,7 +185,7 @@ public class QuestCanceler {
                 action.accept(PackageIdentifierParser.INSTANCE.apply(pack, entry));
             }
         } catch (final QuestException e) {
-            log.warn(pack, "Cannot remove %s in QuestCanceler '%s': %s".formatted(logIdentifier, cancelerID, e.getMessage()), e);
+            log.warn(pack, "Cannot remove '%s' in QuestCanceler '%s': %s".formatted(logIdentifier, cancelerID, e.getMessage()), e);
         }
     }
 
