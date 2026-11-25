@@ -2,10 +2,18 @@ package org.betonquest.betonquest.lib.config.patcher.migration;
 
 import org.betonquest.betonquest.api.config.section.multi.MultiConfiguration;
 import org.betonquest.betonquest.lib.config.quest.Quest;
+import org.betonquest.betonquest.lib.instruction.tokenizer.Token;
+import org.betonquest.betonquest.lib.instruction.tokenizer.TokenizerException;
+import org.betonquest.betonquest.lib.instruction.tokenizer.placeholder.PlaceholderExtractor;
+import org.betonquest.betonquest.lib.instruction.tokenizer.placeholder.PlaceholderExtractorSettings;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -83,6 +91,103 @@ public interface QuestMigration {
                 section.set(key, operation.apply(value));
             }
         }
+    }
+
+    /**
+     * Replaces placeholders with names that start with the given prefix in all values of the quest config.
+     * <p>
+     * The operation receives the complete placeholder, including its surrounding percent characters.
+     * The prefix is matched against the placeholder name without those characters.
+     *
+     * @param config            the multi-configuration to modify
+     * @param placeholderPrefix the prefix of placeholder names to replace
+     * @param operation         the operation to apply to matching placeholders
+     */
+    default void replacePlaceholders(final MultiConfiguration config, final String placeholderPrefix,
+                                     final Function<String, String> operation) {
+        final PlaceholderExtractor extractor = new PlaceholderExtractor(PlaceholderExtractorSettings.ONLY_PLACEHOLDERS);
+        replacePlaceholders(config, placeholderPrefix, operation, extractor);
+    }
+
+    private void replacePlaceholders(final ConfigurationSection section, final String placeholderPrefix,
+                                     final Function<String, String> operation, final PlaceholderExtractor extractor) {
+        for (final String key : section.getKeys(false)) {
+            if (section.isConfigurationSection(key)) {
+                final ConfigurationSection subsection = section.getConfigurationSection(key);
+                if (subsection != null) {
+                    replacePlaceholders(subsection, placeholderPrefix, operation, extractor);
+                }
+                continue;
+            }
+            final Object value = section.get(key);
+            if (value == null) {
+                continue;
+            }
+            final Object replacement = replacePlaceholdersInValue(value, placeholderPrefix, operation, extractor);
+            if (!Objects.equals(replacement, value)) {
+                section.set(key, replacement);
+            }
+        }
+    }
+
+    private Object replacePlaceholdersInValue(final Object value, final String placeholderPrefix,
+                                              final Function<String, String> operation, final PlaceholderExtractor extractor) {
+        if (value instanceof final String string) {
+            return replacePlaceholdersInString(string, placeholderPrefix, operation, extractor);
+        }
+        if (value instanceof final List<?> list) {
+            final List<Object> replacement = new ArrayList<>(list.size());
+            boolean changed = false;
+            for (final Object entry : list) {
+                final Object replacedEntry = replacePlaceholdersInValue(entry, placeholderPrefix, operation, extractor);
+                replacement.add(replacedEntry);
+                changed |= !Objects.equals(replacedEntry, entry);
+            }
+            return changed ? replacement : value;
+        }
+        if (value instanceof final Map<?, ?> map) {
+            final Map<Object, Object> replacement = new LinkedHashMap<>();
+            boolean changed = false;
+            for (final Map.Entry<?, ?> entry : map.entrySet()) {
+                final Object replacedEntry = replacePlaceholdersInValue(entry.getValue(), placeholderPrefix, operation, extractor);
+                replacement.put(entry.getKey(), replacedEntry);
+                changed |= !Objects.equals(replacedEntry, entry.getValue());
+            }
+            return changed ? replacement : value;
+        }
+        return value;
+    }
+
+    private String replacePlaceholdersInString(final String value, final String placeholderPrefix,
+                                               final Function<String, String> operation, final PlaceholderExtractor extractor) {
+        final Token[] placeholders;
+        try {
+            placeholders = extractor.tokens(value);
+        } catch (final TokenizerException ignored) {
+            return value;
+        }
+        final StringBuilder replacement = new StringBuilder(value.length());
+        int previousEnd = 0;
+        boolean changed = false;
+        for (final Token token : placeholders) {
+            final String placeholder = token.value();
+            if (placeholder == null) {
+                continue;
+            }
+            final int start = value.indexOf(placeholder, previousEnd);
+            if (start < 0) {
+                continue;
+            }
+            replacement.append(value, previousEnd, start);
+            if (placeholder.length() > 1 && placeholder.substring(1, placeholder.length() - 1).startsWith(placeholderPrefix)) {
+                replacement.append(operation.apply(placeholder));
+                changed = true;
+            } else {
+                replacement.append(placeholder);
+            }
+            previousEnd = start + placeholder.length();
+        }
+        return changed ? replacement.append(value.substring(previousEnd)).toString() : value;
     }
 
     /**
