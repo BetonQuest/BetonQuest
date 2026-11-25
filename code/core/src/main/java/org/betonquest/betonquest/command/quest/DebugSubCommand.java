@@ -74,7 +74,7 @@ public class DebugSubCommand extends QuestCommandPart {
 
     private void handleIngame(final CommandSender sender, final String... args) {
         if (!(sender instanceof Player)) {
-            log.debug("Cannot continue, sender must be player");
+            log.debug("Cannot continue, sender must be player.");
             return;
         }
         final UUID uuid = ((Player) sender).getUniqueId();
@@ -124,10 +124,10 @@ public class DebugSubCommand extends QuestCommandPart {
             }
         } catch (final IOException e) {
             sender.sendMessage("Could not save new debugging state to configuration file!");
-            log.warn("Could not save new debugging state to configuration file! " + e.getMessage(), e);
+            log.warn("Could not save new debugging state to configuration file: %s".formatted(e.getMessage()), e);
         }
         sender.sendMessage("§2Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
-        log.info("Debugging mode was " + (debuggingController.isLogging() ? "enabled" : "disabled") + '!');
+        log.info("Debugging mode was %s!".formatted(debuggingController.isLogging() ? "enabled" : "disabled"));
     }
 
     private Level getLogLevel(@Nullable final String arg) {

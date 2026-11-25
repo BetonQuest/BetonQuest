@@ -41,9 +41,9 @@ public class AsyncSaver implements Saver {
     }
 
     private void process(final Record rec) {
-        log.debug("Processing record: '%s' with arguments '%s'".formatted(rec.type(), Arrays.toString(rec.args())));
+        log.debug("Processing record: '%s' with arguments '%s'.".formatted(rec.type(), Arrays.toString(rec.args())));
         con.updateSQL(rec.type(), new Arguments(rec.args()));
-        log.debug("Processing record done: '%s' with arguments '%s'".formatted(rec.type(), Arrays.toString(rec.args())));
+        log.debug("Processing record done: '%s' with arguments '%s'.".formatted(rec.type(), Arrays.toString(rec.args())));
     }
 
     @Override

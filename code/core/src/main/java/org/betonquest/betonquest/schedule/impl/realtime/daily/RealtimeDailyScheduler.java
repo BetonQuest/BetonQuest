@@ -84,7 +84,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
     private void catchupMissedSchedules(final Instant now) {
         log.debug("Collecting missed schedules...");
         final List<RealtimeDailySchedule> missedSchedules = listMissedSchedules(now);
-        log.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
+        log.debug("Found '%s' missed schedule runs that will be caught up.".formatted(missedSchedules.size()));
         if (!missedSchedules.isEmpty()) {
             log.debug("Running missed schedules to catch up...");
             for (final RealtimeDailySchedule schedule : missedSchedules) {
@@ -125,7 +125,7 @@ public class RealtimeDailyScheduler extends ExecutorServiceScheduler<RealtimeDai
             final MissedRun earliest = missedRuns.poll();
             missed.add(earliest.schedule);
             log.debug(earliest.schedule.getId().getPackage(),
-                    "Schedule '" + earliest.schedule.getId() + "' run missed at " + earliest.runTime);
+                    "Schedule '%s' run missed at '%s'.".formatted(earliest.schedule.getId(), earliest.runTime));
             if (earliest.schedule.getCatchup() == CatchupStrategy.ALL) {
                 final Instant nextExecution = earliest.runTime.plus(1, ChronoUnit.DAYS);
                 if (nextExecution.isBefore(now)) {

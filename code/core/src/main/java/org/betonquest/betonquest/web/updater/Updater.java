@@ -141,14 +141,14 @@ public class Updater implements FastStatsMetricsProvider {
     }
 
     private String getUpdateNotification(final boolean automaticDownload) {
-        final String version = "Found newer version '" + latest.getKey() + "', ";
+        final String version = "Found newer version '%s', %s";
         final String automatic = " automatically installed on the next restart!";
         final String automaticProgress = "it will be downloaded and" + automatic;
         final String automaticDone = "it was downloaded and will be " + automatic;
         final String command = "it will be installed, if you execute '/bq update'!";
 
-        updateNotification = version + (automaticDownload ? automaticDone : command);
-        return version + (automaticDownload ? automaticProgress : command);
+        updateNotification = version.formatted(latest.getKey(), automaticDownload ? automaticDone : command);
+        return version.formatted(latest.getKey(), automaticDownload ? automaticProgress : command);
     }
 
     /**
@@ -239,13 +239,14 @@ public class Updater implements FastStatsMetricsProvider {
             try {
                 checkUpdateRequirements();
 
-                sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '" + latest.getKey() + "'...");
+                sendMessage(sender, ChatColor.DARK_GREEN + "Started update to version '%s'...".formatted(latest.getKey()));
                 executeUpdate();
                 sendMessage(sender, ChatColor.DARK_GREEN + "...download finished. Restart the server to update the plugin.");
                 updateNotification = "Update was downloaded! Restart the server to update the plugin.";
                 updateMetric.set(1);
             } catch (final QuestException e) {
-                sendMessage(sender, ChatColor.RED + e.getMessage());
+                log.info("Could not perform the update: %s".formatted(e.getMessage()));
+                sendToSender(sender, ChatColor.RED + e.getMessage());
                 log.debug("Error while performing update!", e);
             }
         });
@@ -279,6 +280,10 @@ public class Updater implements FastStatsMetricsProvider {
 
     private void sendMessage(@Nullable final CommandSender sender, final String message) {
         log.info(ChatColor.stripColor(message));
+        sendToSender(sender, message);
+    }
+
+    private void sendToSender(@Nullable final CommandSender sender, final String message) {
         if (sender != null && !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(PLUGIN_TAG + message);
         }

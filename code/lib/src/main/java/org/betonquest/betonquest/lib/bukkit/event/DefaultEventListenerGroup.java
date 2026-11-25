@@ -116,7 +116,7 @@ public class DefaultEventListenerGroup<T extends Event> implements EventListener
     public void unsubscribe(final EventPriority priority, final EventServiceSubscriber<?> subscriber) {
         final List<EventServiceSubscriber<T>> list = subscribers.get(priority);
         if (list == null || !list.remove(subscriber)) {
-            this.log.warn("Subscriber %s not found for event %s and priority %s yet has been attempted to be unsubscribed."
+            this.log.warn("Subscriber '%s' not found for event '%s' and priority '%s' yet has been attempted to be unsubscribed."
                     .formatted(subscriber, eventClass.getSimpleName(), priority.name()));
         }
     }
@@ -125,7 +125,7 @@ public class DefaultEventListenerGroup<T extends Event> implements EventListener
     public boolean require(final EventPriority priority) {
         final ProxyListener<T> listener = listeners.get(priority);
         if (listener == null) {
-            this.log.error("No listener registered for event %s and priority %s"
+            this.log.error("No listener registered for event '%s' and priority '%s'."
                     .formatted(eventClass.getSimpleName(), priority.name()));
             return false;
         }
@@ -140,7 +140,7 @@ public class DefaultEventListenerGroup<T extends Event> implements EventListener
     public void disable(final EventPriority priority) {
         final ProxyListener<T> listener = listeners.get(priority);
         if (listener == null) {
-            this.log.error("Disabling failed. No listener registered for event %s and priority %s"
+            this.log.error("Disabling failed. No listener registered for event '%s' and priority '%s'."
                     .formatted(eventClass.getSimpleName(), priority.name()));
             return;
         }

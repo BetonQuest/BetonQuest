@@ -51,7 +51,7 @@ public class FontRegistryComponent extends AbstractCoreComponent {
         plugin.saveResource("fonts/default.font.bin", true);
         final List<Pair<Key, Font>> fonts = fontRetriever.loadFonts(fontFolder.toPath());
         fonts.forEach(pair -> fontRegistry.registerFont(pair.getKey(), pair.getValue()));
-        log.info("Loaded " + fonts.size() + " font index files.");
+        log.info("Loaded '%s' font index files.".formatted(fonts.size()));
         if (fonts.isEmpty()) {
             throw new IllegalStateException("Could not load fonts");
         }

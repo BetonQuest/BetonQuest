@@ -104,7 +104,7 @@ public class BetonQuest extends JavaPlugin {
             final Logger coreLogger = (Logger) LogManager.getRootLogger();
             coreLogger.addFilter(new AnswerFilter());
         } catch (final ClassNotFoundException | NoClassDefFoundError e) {
-            log.warn("Could not disable /betonquestanswer logging", e);
+            log.warn("Could not disable /betonquestanswer logging.", e);
         }
 
         log.info("BetonQuest successfully enabled!");

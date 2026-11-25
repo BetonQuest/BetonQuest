@@ -65,11 +65,11 @@ public abstract class QuestProcessor<I extends Identifier, T> implements FastSta
             @Override
             public T put(final I key, final T value) {
                 if (key == null) {
-                    log.error("Key of %s with value '%s' may not be null".formatted(readable, value));
+                    log.error("Key of %s with value '%s' may not be null.".formatted(readable, value));
                     return null;
                 }
                 if (value == null) {
-                    log.error("Value of %s with key '%s' may not be null".formatted(readable, key));
+                    log.error(key.getPackage(), "Value of %s with key '%s' may not be null.".formatted(readable, key));
                     return null;
                 }
                 return super.put(key, value);

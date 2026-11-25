@@ -84,13 +84,13 @@ public class TopXObject {
                     final UUID uuid = UUID.fromString(resultSet.getString("playerID"));
                     final String playerName = Bukkit.getOfflinePlayer(uuid).getName();
                     if (playerName == null) {
-                        log.debug("No player name found for '" + uuid + "' in top line for '" + category + "'");
+                        log.debug("No player name found for '%s' in top line for '%s'.".formatted(uuid, category));
                     }
                     entries.add(new TopXLine(playerName == null ? "???" : playerName, resultSet.getLong("count")));
                 }
             }, "Could not load data");
         } catch (final IllegalStateException e) {
-            log.error("Failed to load top '%s' in the category '%s'. %s".formatted(limit, category, e.getMessage()), e);
+            log.error("Failed to load top '%s' in the category '%s': %s".formatted(limit, category, e.getMessage()), e);
         }
     }
 

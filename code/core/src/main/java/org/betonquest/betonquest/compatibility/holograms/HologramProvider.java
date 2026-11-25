@@ -183,7 +183,7 @@ public final class HologramProvider {
         @Override
         public void load(final QuestPackage pack) {
             if (pack.getConfig().isConfigurationSection(internal)) {
-                log.warn("Tried to load section '%s' in pack '%s', but there is no hologram integration loaded!"
+                log.warn(pack, "Tried to load section '%s' in pack '%s', but there is no hologram integration loaded!"
                         .formatted(internal, pack.getQuestPath()));
             }
         }

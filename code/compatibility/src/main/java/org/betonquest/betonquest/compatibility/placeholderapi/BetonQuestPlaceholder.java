@@ -91,7 +91,7 @@ public class BetonQuestPlaceholder extends PlaceholderExpansion {
         try {
             return placeholders.getValue(identifier, profile);
         } catch (final QuestException e) {
-            log.warn("Could not parse PlaceholderAPI placeholder '%s': '%s'".formatted(identifier, e.getMessage()), e);
+            log.warn("Could not parse PlaceholderAPI placeholder '%s': %s".formatted(identifier, e.getMessage()), e);
             return "";
         }
     }

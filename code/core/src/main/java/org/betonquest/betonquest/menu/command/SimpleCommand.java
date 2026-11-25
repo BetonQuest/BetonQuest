@@ -146,9 +146,9 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
     public final void register() {
         this.commandMap = Bukkit.getCommandMap();
         if (!this.commandMap.register("betonquest", this)) {
-            log.info("Command " + getName() + " is already in command map, using fallback!");
+            log.info("Command '%s' is already in command map, using fallback!".formatted(getName()));
         }
-        log.debug("Registered command " + getName() + "!");
+        log.debug("Registered command '%s'!".formatted(getName()));
     }
 
     /**
@@ -163,10 +163,10 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             count++;
         }
         if (count == 0) {
-            log.error("Could not unregister command '" + getName() + "' from command map");
+            log.error("Could not unregister command '%s' from command map.".formatted(getName()));
             return;
         }
-        log.debug("Unregistered command " + getName() + " " + count + " times!");
+        log.debug("Unregistered command '%s' '%s' times!".formatted(getName(), count));
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
             final Method method = craftServer.getDeclaredMethod("syncCommands");
             method.invoke(Bukkit.getServer());
         } catch (final Exception e) {
-            log.error("Could not sync commands: " + e.getMessage(), e);
+            log.error("Could not sync commands: %s".formatted(e.getMessage()), e);
         }
     }
 
@@ -214,7 +214,7 @@ public abstract class SimpleCommand extends Command implements PluginIdentifiabl
         try {
             return localizations.getMessage(profile, "menu." + message, replacements);
         } catch (final QuestException e) {
-            log.warn("Failed to get message '" + message + "': " + e.getMessage(), e);
+            log.warn("Failed to get message '%s': %s".formatted(message, e.getMessage()), e);
             return Component.text("Failed to get message '" + message + "': " + e.getMessage());
         }
     }

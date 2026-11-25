@@ -63,20 +63,20 @@ public class ConditionRequirement extends BukkitCustomRequirement {
     public boolean testRequirement(final UUID uuid, final Map<String, Object> dataMap) {
         final Object object = dataMap.get("Condition");
         if (object == null) {
-            log.warn("Error while checking quest requirement - Missing Condition Object");
+            log.warn("Error while checking quest requirement - Missing Condition Object.");
             return false;
         }
         final String string = object.toString();
         try {
             final Player player = Bukkit.getPlayer(uuid);
             if (player == null) {
-                log.warn("Error while running quest reward - Player with UUID '" + uuid + "' not found.");
+                log.warn("Error while checking quest requirement - Player with UUID '%s' not found.".formatted(uuid));
                 return false;
             }
             final ConditionIdentifier condition = identifierFactory.parseIdentifier(null, string);
             return conditionManager.test(profileProvider.getProfile(player), condition);
         } catch (final QuestException e) {
-            log.warn("Error while checking quest requirement - BetonQuest condition '" + string + "' not found: " + e.getMessage(), e);
+            log.warn("Error while checking quest requirement - BetonQuest condition '%s' not found: %s".formatted(string, e.getMessage()), e);
             return false;
         }
     }

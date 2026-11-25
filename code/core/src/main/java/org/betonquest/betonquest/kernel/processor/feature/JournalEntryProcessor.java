@@ -45,7 +45,7 @@ public class JournalEntryProcessor extends QuestProcessor<JournalEntryIdentifier
             try {
                 values.put(getIdentifier(pack, key), textCreator.parseFromSection(pack, section, key));
             } catch (final QuestException e) {
-                log.warn("Could not load " + readable + " '" + key + "' in pack '" + pack.getQuestPath() + "': " + e.getMessage(), e);
+                log.warn(pack, "Could not load %s '%s' in pack '%s': %s".formatted(readable, key, pack.getQuestPath(), e.getMessage()), e);
             }
         }
     }

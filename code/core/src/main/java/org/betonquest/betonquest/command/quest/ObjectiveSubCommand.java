@@ -57,13 +57,13 @@ public class ObjectiveSubCommand extends QuestCommandPart {
         }
         final boolean isOnline = profile.getOnlineProfile().isPresent();
         if (!isOnline) {
-            log.debug("Profile is offline, loading his data");
+            log.debug("Profile is offline, loading his data.");
         }
         final PlayerData playerData = playerDataStorage.get(profile);
         // if there are no arguments then list player's objectives
         if (args.length < 3 || "list".equalsIgnoreCase(args[2]) || "l".equalsIgnoreCase(args[2])) {
             // display objectives
-            log.debug("Listing objectives");
+            log.debug("Listing objectives.");
             final Predicate<String> shouldDisplay = createListFilter(args, 3, Function.identity());
             final Stream<String> objectives;
             if (isOnline) {
@@ -82,7 +82,7 @@ public class ObjectiveSubCommand extends QuestCommandPart {
         }
         // if there is not enough arguments, display warning
         if (args.length < 4) {
-            log.debug("Missing objective instruction string");
+            log.debug("Missing objective instruction string.");
             sendMessage(sender, "specify_objective");
             return;
         }
@@ -101,12 +101,12 @@ public class ObjectiveSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find objective: " + e.getMessage(), e);
+            log.warn("Could not find objective '%s': %s".formatted(args[3], e.getMessage()), e);
             return;
         }
         switch (args[2].toLowerCase(Locale.ROOT)) {
             case "start", "s", "add", "a" -> {
-                log.debug("Adding new objective " + objectiveID + " for " + profile);
+                log.debug(objectiveID.getPackage(), "Adding new objective '%s' for %s.".formatted(objectiveID, profile));
                 if (isOnline) {
                     objectiveManager.start(profile, objectiveID);
                 } else {
@@ -115,13 +115,13 @@ public class ObjectiveSubCommand extends QuestCommandPart {
                 sendMessage(sender, "objective_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Deleting objective " + objectiveID + " for " + profile);
+                log.debug(objectiveID.getPackage(), "Deleting objective '%s' for %s.".formatted(objectiveID, profile));
                 objectiveManager.cancel(profile, objectiveID);
                 playerData.removeRawObjective(objectiveID);
                 sendMessage(sender, "objective_removed");
             }
             case "complete", "c" -> {
-                log.debug("Completing objective " + objectiveID + " for " + profile);
+                log.debug(objectiveID.getPackage(), "Completing objective '%s' for %s.".formatted(objectiveID, profile));
                 if (isOnline) {
                     objective.getService().complete(profile);
                 } else {
@@ -130,7 +130,7 @@ public class ObjectiveSubCommand extends QuestCommandPart {
                 sendMessage(sender, "objective_completed");
             }
             default -> {
-                log.debug("The argument was unknown");
+                log.debug(objectiveID.getPackage(), "The argument was unknown.");
                 sendMessage(sender, "unknown_argument");
             }
         }

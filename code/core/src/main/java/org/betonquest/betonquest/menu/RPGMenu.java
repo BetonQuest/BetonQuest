@@ -158,9 +158,9 @@ public class RPGMenu {
         final Menu menu = menuProcessor.get(menuID);
         if (new MenuOpenEvent(onlineProfile, menuID).callEvent()) {
             new OpenedMenu(loggerFactory.create(OpenedMenu.class), bukkitManager, onlineProfile, menu);
-            log.debug(menu.getMenuID().getPackage(), "opening menu " + menuID + " for " + onlineProfile);
+            log.debug(menu.getMenuID().getPackage(), "Opening menu '%s' for %s.".formatted(menuID, onlineProfile));
         } else {
-            log.debug(menu.getMenuID().getPackage(), "A Bukkit listener canceled opening of menu " + menuID + " for " + onlineProfile);
+            log.debug(menu.getMenuID().getPackage(), "A Bukkit listener canceled opening of menu '%s' for %s.".formatted(menuID, onlineProfile));
         }
     }
 
@@ -199,6 +199,6 @@ public class RPGMenu {
      */
     public void syncCommands() {
         pluginCommand.syncCraftBukkitCommands();
-        log.info("Synced Command Map for (Menu) Commands…");
+        log.info("Synced Command Map for (Menu) Commands...");
     }
 }

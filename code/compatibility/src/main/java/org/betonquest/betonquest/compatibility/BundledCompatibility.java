@@ -95,7 +95,7 @@ public final class BundledCompatibility {
     private boolean shouldNotRegister(final String name) {
         final boolean isEnabled = config.getBoolean("hook." + name.toLowerCase(Locale.ROOT));
         if (!isEnabled) {
-            log.debug("Did not register hook %s because it is disabled".formatted(name));
+            log.debug("Did not register hook '%s' because it is disabled.".formatted(name));
             return true;
         }
         return false;

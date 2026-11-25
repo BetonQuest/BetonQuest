@@ -144,7 +144,7 @@ public class FolderAction implements NullableAction {
             final List<ConditionIdentifier> resolvedCancelConditions = cancelConditions.getValue(profile);
             return !resolvedCancelConditions.isEmpty() && conditionManager.testAll(profile, resolvedCancelConditions);
         } catch (final QuestException e) {
-            log.warn("Exception while checking cancel conditions: " + e.getMessage(), e);
+            log.warn("Exception while checking cancel conditions: %s".formatted(e.getMessage()), e);
             return false;
         }
     }
@@ -317,7 +317,7 @@ public class FolderAction implements NullableAction {
         public void onPlayerQuit(final PlayerQuitEvent event) {
             if (event.getPlayer().getUniqueId().equals(profile.getPlayerUUID())) {
                 cancelled = true;
-                log.debug("Folder action cancelled due to disconnect of " + profile);
+                log.debug("Folder action cancelled due to disconnect of %s.".formatted(profile));
             }
         }
 

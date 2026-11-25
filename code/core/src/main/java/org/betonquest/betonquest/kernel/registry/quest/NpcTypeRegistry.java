@@ -61,7 +61,7 @@ public class NpcTypeRegistry extends FactoryTypeRegistry<NpcWrapper<?>> implemen
             final Instruction instruction = instructionApi.create(npcId, npcId.readRawInstruction());
             resolved = instruction.chainForArgument(instruction.toString()).string().get().getValue(null);
         } catch (final QuestException e) {
-            log.warn("Could not resolve variables in npc id '" + npcId + "' to add reverse identifier: " + e.getMessage(), e);
+            log.warn(npcId.getPackage(), "Could not resolve variables in npc id '%s' to add reverse identifier: %s".formatted(npcId, e.getMessage()), e);
             return;
         }
         for (final NpcReverseIdentifier identifier : reverseIdentifiers) {

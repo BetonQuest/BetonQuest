@@ -122,14 +122,14 @@ public abstract class ExecutorServiceScheduler<S extends Schedule, T> extends Sc
     @Override
     public void stop() {
         if (isRunning()) {
-            log.debug("Stopping " + getClass().getSimpleName().toLowerCase(Locale.ROOT).replace("scheduler", "")
-                    + " scheduler.");
+            log.debug("Stopping '%s' scheduler."
+                    .formatted(getClass().getSimpleName().toLowerCase(Locale.ROOT).replace("scheduler", "")));
             executor.shutdownNow();
             try {
                 terminateExecutor();
                 log.debug("Successfully shut down executor service.");
             } catch (final InterruptedException | TimeoutException e) {
-                log.error("Error while stopping scheduler", e);
+                log.error("Error while stopping scheduler.", e);
             }
             super.stop();
             log.debug("Stop complete.");

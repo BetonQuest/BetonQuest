@@ -40,13 +40,13 @@ public class ConditionSubCommand extends QuestCommandPart {
     public void handle(final CommandSender sender, final String... args) throws QuestException {
         // the player has to be specified every time
         if (args.length < 2 || Bukkit.getPlayer(args[1]) == null && !"-".equals(args[1])) {
-            log.debug("Player's name is missing or he's offline");
+            log.debug("Player's name is missing or he's offline.");
             sendMessage(sender, "specify_player");
             return;
         }
         // the condition ID
         if (args.length < 3) {
-            log.debug("Condition's ID is missing");
+            log.debug("Condition's ID is missing.");
             sendMessage(sender, "specify_condition");
             return;
         }
@@ -56,7 +56,7 @@ public class ConditionSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find condition: " + e.getMessage(), e);
+            log.warn("Could not find condition '%s': %s".formatted(args[2], e.getMessage()), e);
             return;
         }
         // display message about condition

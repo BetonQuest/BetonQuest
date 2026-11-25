@@ -61,14 +61,14 @@ public class GlobalData implements PersistentDataHolder {
             while (resultSet.next()) {
                 this.globalTags.add(resultSet.getString("tag"));
             }
-            log.debug("Loaded %d global tags from database".formatted(this.globalTags.size()));
+            log.debug("Loaded '%s' global tags from database.".formatted(this.globalTags.size()));
         }, "Could not load global tags");
         connector.querySQL(QueryType.LOAD_ALL_GLOBAL_POINTS, new Arguments(), resultSet -> {
             while (resultSet.next()) {
                 final String category = resultSet.getString("category");
                 this.globalPoints.put(category, resultSet.getInt("count"));
             }
-            log.debug("Loaded %d global points from database".formatted(this.globalPoints.size()));
+            log.debug("Loaded '%s' global points from database.".formatted(this.globalPoints.size()));
         }, "Could not load global points");
     }
 
@@ -128,14 +128,14 @@ public class GlobalData implements PersistentDataHolder {
         @Override
         public void add(final String tag) {
             if (globalTags.add(tag)) {
-                log.debug("Adding global tag '%s'".formatted(tag));
+                log.debug("Adding global tag '%s'.".formatted(tag));
                 saver.add(new Record(UpdateType.ADD_GLOBAL_TAGS, tag));
             }
         }
 
         @Override
         public void remove(final String tag) {
-            log.debug("Removing global tag '%s'".formatted(tag));
+            log.debug("Removing global tag '%s'.".formatted(tag));
             globalTags.remove(tag);
             saver.add(new Record(UpdateType.REMOVE_GLOBAL_TAGS, tag));
         }
@@ -169,7 +169,7 @@ public class GlobalData implements PersistentDataHolder {
 
         @Override
         public void set(final String category, final int points) {
-            log.debug("Setting global points in category '%s' to %d".formatted(category, points));
+            log.debug("Setting global points in category '%s' to '%s'.".formatted(category, points));
             saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
             globalPoints.put(category, points);
             saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(points)));
@@ -177,7 +177,7 @@ public class GlobalData implements PersistentDataHolder {
 
         @Override
         public void add(final String category, final int points) {
-            log.debug("Adding %d global points in category '%s'".formatted(points, category));
+            log.debug("Adding '%s' global points in category '%s'.".formatted(points, category));
             saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
             final Integer newPoints = globalPoints.compute(category, (key, value) -> (value == null ? 0 : value) + points);
             saver.add(new Record(UpdateType.ADD_GLOBAL_POINTS, category, String.valueOf(newPoints)));
@@ -185,7 +185,7 @@ public class GlobalData implements PersistentDataHolder {
 
         @Override
         public void remove(final String category) {
-            log.debug("Removing global points category '%s'".formatted(category));
+            log.debug("Removing global points category '%s'.".formatted(category));
             globalPoints.remove(category);
             saver.add(new Record(UpdateType.REMOVE_GLOBAL_POINTS, category));
         }

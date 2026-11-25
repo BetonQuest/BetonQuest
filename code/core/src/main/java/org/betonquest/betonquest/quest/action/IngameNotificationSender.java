@@ -80,7 +80,8 @@ public class IngameNotificationSender implements NotificationSender {
                 final Component message = localizations.getMessage(profile, messageName, replacements);
                 Notify.get(questPackage, String.join(",", categories)).sendNotify(message, onlineProfile);
             } catch (final QuestException e) {
-                log.warn(questPackage == null ? LogSource.EMPTY : questPackage, "The notify system was unable to send the notification message '" + messageName + "' in '" + fullId + "'. Error was: '" + e.getMessage() + "'", e);
+                log.warn(questPackage == null ? LogSource.EMPTY : questPackage, "The notify system was unable to send the notification message '%s' in '%s': %s"
+                        .formatted(messageName, fullId, e.getMessage()), e);
             }
         });
     }

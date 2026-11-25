@@ -119,13 +119,14 @@ public class Quest {
                     try {
                         configAccessor.save();
                     } catch (final IOException e) {
-                        log.warn("Could not save file '" + configAccessor.getConfigurationFile().getPath() + "'! Reason: " + e.getMessage(), e);
+                        log.warn(this::getQuestPath, "Could not save file '%s': %s"
+                                .formatted(configAccessor.getConfigurationFile().getPath(), e.getMessage()), e);
                         exceptionOccurred = true;
                     }
                     continue unsaved;
                 }
             }
-            log.warn("No related ConfigAccessor found for ConfigurationSection '" + unsavedConfig.getName() + "'!");
+            log.warn(this::getQuestPath, "No related ConfigAccessor found for ConfigurationSection '%s'!".formatted(unsavedConfig.getName()));
             exceptionOccurred = true;
         }
         if (exceptionOccurred) {

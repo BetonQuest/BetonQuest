@@ -97,11 +97,11 @@ public class DeleteSubCommand extends QuestCommandPart {
         try {
             objectiveID = getIdentifier(ObjectiveIdentifier.class, name);
         } catch (final QuestException e) {
-            final String message = "The objective '" + name + "' does not exist, it will still be removed from the database!";
+            final String message = "The objective '%s' does not exist, it will still be removed from the database!".formatted(name);
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
             log.warn(message, e);
-            log.debug("Removing non existent objective only from database: " + e.getMessage(), e);
+            log.debug("Removing non existent objective only from database: %s".formatted(e.getMessage()), e);
             return;
         }
         for (final OnlineProfile onlineProfile : onlineProfiles) {
@@ -115,9 +115,9 @@ public class DeleteSubCommand extends QuestCommandPart {
         try {
             entryID = getIdentifier(JournalEntryIdentifier.class, name);
         } catch (final QuestException e) {
-            final String message = "The journal entry '" + name + "' does not exist, it will still be removed from the database!";
+            final String message = "The journal entry '%s' does not exist, it will still be removed from the database!".formatted(name);
             log.warn(message, e);
-            log.debug("Removing non existent journal entry only from database: " + e.getMessage(), e);
+            log.debug("Removing non existent journal entry only from database: %s".formatted(e.getMessage()), e);
             sender.sendMessage("§2" + message);
             return;
         }

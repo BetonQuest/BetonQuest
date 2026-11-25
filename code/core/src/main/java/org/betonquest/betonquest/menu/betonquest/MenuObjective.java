@@ -66,8 +66,8 @@ public class MenuObjective extends DefaultObjective {
                 return;
             }
         } catch (final QuestException e) {
-            log.debug(getPackage(), "Could not get menu placeholder value in '" + getPackage() + "' objective:"
-                    + e.getMessage(), e);
+            log.debug(getPackage(), "Could not get menu placeholder value in '%s' objective: %s"
+                    .formatted(getObjectiveID(), e.getMessage()), e);
             return;
         }
         this.getService().complete(profile);
@@ -78,15 +78,15 @@ public class MenuObjective extends DefaultObjective {
         try {
             menuData = menuProcessor.get(menuID.getValue(profile));
         } catch (final QuestException e) {
-            log.warn(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
-                    + e.getMessage(), e);
+            log.warn(getPackage(), "Error while getting menu property in '%s' objective: %s"
+                    .formatted(getObjectiveID(), e.getMessage()), e);
             return "";
         }
         try {
             return LegacyComponentSerializer.legacySection().serialize(menuData.getTitle(profile));
         } catch (final QuestException e) {
-            log.debug(getPackage(), "Error while getting menu property in '" + getObjectiveID() + "' objective: "
-                    + e.getMessage(), e);
+            log.debug(getPackage(), "Error while getting menu property in '%s' objective: %s"
+                    .formatted(getObjectiveID(), e.getMessage()), e);
         }
         return "";
     }

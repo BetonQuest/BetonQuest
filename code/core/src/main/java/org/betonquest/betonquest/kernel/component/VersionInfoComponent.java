@@ -48,7 +48,7 @@ public class VersionInfoComponent extends AbstractCoreComponent {
 
         final JREVersionReader jreVersionReader = new JREVersionReader();
         final String version = descriptionFile.getVersion();
-        log.debug("BetonQuest " + version + " is starting...");
+        log.debug("BetonQuest '%s' is starting...".formatted(version));
         log.info(jreVersionReader.getReadableVersionInformation());
 
         final Map<String, String> jreVersion = jreVersionReader.getVersionInformation();

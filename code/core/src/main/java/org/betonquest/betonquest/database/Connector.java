@@ -52,7 +52,7 @@ public class Connector {
     public void querySQL(final QueryType type, final Arguments args, final ResultSetCallback resultCallback,
                          final String errorMessage) {
         final String sql = type.createSql(prefix);
-        log.debug("Executing SQL query type '%s' with arguments '%s' and sql: %s".formatted(type, args, sql));
+        log.debug("Executing SQL query type '%s' with arguments '%s' and SQL '%s'.".formatted(type, args, sql));
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             args.resolve(statement);
@@ -81,12 +81,12 @@ public class Connector {
      */
     public void updateSQL(final UpdateType type, final Arguments args) {
         final String sql = type.createSql(prefix);
-        log.debug("Executing SQL update type '%s' with arguments '%s' and sql: %s".formatted(type, args, sql));
+        log.debug("Executing SQL update type '%s' with arguments '%s' and SQL '%s'.".formatted(type, args, sql));
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             args.resolve(statement);
             final int affectedRows = statement.executeUpdate();
-            log.debug("SQL update type '%s' completed successfully. Affected rows: %d".formatted(type, affectedRows));
+            log.debug("SQL update type '%s' completed successfully. Affected rows: '%s'.".formatted(type, affectedRows));
         } catch (final SQLException e) {
             log.debug("SQL update type '%s' failed: %s".formatted(type, e.getMessage()), e);
             throw new IllegalStateException(

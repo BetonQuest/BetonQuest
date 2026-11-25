@@ -72,7 +72,7 @@ public class FancyHologramsHologramFactory implements BetonHologramFactory {
                 final Instruction instruction = instructionApi.createPlaceholder(placeholderIdentifier, placeholderIdentifier.readRawInstruction());
                 return "%betonquest_" + placeholderIdentifier.getPackage().getQuestPath() + ":" + instruction + "%";
             } catch (final QuestException exception) {
-                log.warn("Could not create placeholder '" + group + "': " + exception.getMessage(), exception);
+                log.warn(pack, "Could not create placeholder '%s': %s".formatted(group, exception.getMessage()), exception);
             }
             return group;
         });

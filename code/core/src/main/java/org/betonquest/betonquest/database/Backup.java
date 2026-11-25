@@ -112,7 +112,7 @@ public final class Backup {
             log.warn("There was an error during backing up the database! This does not affect"
                     + " the configuration backup, nor damage your database. You should backup"
                     + " the database manually if you want to be extra safe, but it's not necessary if"
-                    + " you don't want to downgrade later. Reason: %s".formatted(e.getMessage()), e);
+                    + " you don't want to downgrade later: %s".formatted(e.getMessage()), e);
         }
 
         if (!backupFolder.isDirectory() && !backupFolder.mkdir()) {
@@ -126,7 +126,7 @@ public final class Backup {
             log.warn("Could not delete database backup file!");
         }
 
-        log.debug("Done in " + (System.currentTimeMillis() - time) + "ms");
+        log.debug("Done in %s ms.".formatted(System.currentTimeMillis() - time));
         log.info("Done, you can find the backup in 'Backups' directory.");
     }
 
@@ -148,7 +148,7 @@ public final class Backup {
             final String[] tables = {"objectives", "tags", "points", "journals", "player", "backpack", "global_points",
                     "global_tags", "migration", "player_profile", "profile"};
             for (final String table : tables) {
-                log.debug("Loading " + table);
+                log.debug("Loading '%s'.".formatted(table));
                 final String enumName = ("LOAD_ALL_" + table).toUpperCase(Locale.ROOT);
                 con.querySQL(QueryType.valueOf(enumName), new Arguments(),
                         resultSet -> writeBackup(table, resultSet, config),
@@ -156,7 +156,7 @@ public final class Backup {
             }
             config.save();
         } catch (final IOException | InvalidConfigurationException e) {
-            log.warn("There was an error during database backup: " + e.getMessage(), e);
+            log.warn("There was an error during database backup: %s".formatted(e.getMessage()), e);
             if (databaseBackupFile.exists() && !databaseBackupFile.delete()) {
                 log.warn("Could not delete the broken backup file!");
             }
@@ -164,15 +164,15 @@ public final class Backup {
     }
 
     private void writeBackup(final String table, final ResultSet resultSet, final FileConfigAccessor config) throws SQLException {
-        log.debug("Saving %s to the backup file".formatted(table));
+        log.debug("Saving '%s' to the backup file.".formatted(table));
         final ResultSetMetaData result = resultSet.getMetaData();
         final List<String> columns = new ArrayList<>();
         final int columnCount = result.getColumnCount();
-        log.debug("  There are %d columns in this ResultSet".formatted(columnCount));
+        log.debug("  There are '%s' columns in this ResultSet.".formatted(columnCount));
 
         for (int i = 1; i <= result.getColumnCount(); i++) {
             final String columnName = result.getColumnName(i);
-            log.debug("    Adding column %s".formatted(columnName));
+            log.debug("    Adding column '%s'.".formatted(columnName));
             columns.add(columnName);
         }
 
@@ -188,7 +188,7 @@ public final class Backup {
             }
             counter++;
         }
-        log.debug("  Saved " + (counter + 1) + " rows");
+        log.debug("  Saved '%s' rows.".formatted(counter + 1));
     }
 
     /**
@@ -216,14 +216,14 @@ public final class Backup {
         } catch (final IllegalArgumentException | IllegalStateException e) {
             log.warn("There was an error during old database backup process. This means that"
                     + " if the plugin loaded new database (from backup), the old one would be lost "
-                    + "forever. Because of that the loading of backup was aborted! Reason: %s".formatted(e.getMessage()), e);
+                    + "forever. Because of that the loading of backup was aborted: %s".formatted(e.getMessage()), e);
             return;
         }
         final ConfigAccessor config;
         try {
             config = configAccessorFactory.create(databaseBackupFile);
         } catch (final InvalidConfigurationException | FileNotFoundException e) {
-            log.warn(e.getMessage(), e);
+            log.warn("Could not load the database backup file '%s': %s".formatted(databaseBackupFile.getPath(), e.getMessage()), e);
             return;
         }
         // create tables if they don't exist, so we can be 100% sure

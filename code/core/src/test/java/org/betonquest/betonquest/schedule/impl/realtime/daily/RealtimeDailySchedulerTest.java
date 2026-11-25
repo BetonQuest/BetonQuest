@@ -74,7 +74,7 @@ class RealtimeDailySchedulerTest {
         verify(cache).cacheStartupTime(eq(now), any());
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
-        verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Found '0' missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Simple scheduler start complete.");
         verifyNoMoreInteractions(logger);
         verify(scheduler, never()).schedule(any(), any());
@@ -96,8 +96,8 @@ class RealtimeDailySchedulerTest {
 
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
-        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution);
-        verify(logger, times(1)).debug("Found 1 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at '%s'.".formatted(nextMissedExecution));
+        verify(logger, times(1)).debug("Found '1' missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Running missed schedules to catch up...");
         verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Simple scheduler start complete.");
@@ -123,10 +123,10 @@ class RealtimeDailySchedulerTest {
 
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
-        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution1);
-        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution2);
-        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + nextMissedExecution3);
-        verify(logger, times(1)).debug("Found 3 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at '%s'.".formatted(nextMissedExecution1));
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at '%s'.".formatted(nextMissedExecution2));
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at '%s'.".formatted(nextMissedExecution3));
+        verify(logger, times(1)).debug("Found '3' missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Running missed schedules to catch up...");
         verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Simple scheduler start complete.");
@@ -150,7 +150,7 @@ class RealtimeDailySchedulerTest {
 
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
-        verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Found '0' missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Simple scheduler start complete.");
         verifyNoMoreInteractions(logger);
         verify(schedule, never()).getActions();
@@ -172,8 +172,8 @@ class RealtimeDailySchedulerTest {
 
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
-        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at " + missedExecution);
-        verify(logger, times(1)).debug("Found 1 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug(null, "Schedule 'test.schedule' run missed at '%s'.".formatted(missedExecution));
+        verify(logger, times(1)).debug("Found '1' missed schedule runs that will be caught up.");
         verify(logger, times(1)).debug("Running missed schedules to catch up...");
         verify(logger, times(1)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Simple scheduler start complete.");
@@ -204,7 +204,7 @@ class RealtimeDailySchedulerTest {
         verify(cache).cacheStartupTime(eq(now), any());
         verify(logger, times(1)).debug("Starting simple scheduler.");
         verify(logger, times(1)).debug("Collecting missed schedules...");
-        verify(logger, times(1)).debug("Found 0 missed schedule runs that will be caught up.");
+        verify(logger, times(1)).debug("Found '0' missed schedule runs that will be caught up.");
         verify(logger, times(3)).debug(null, "Schedule 'test.schedule' runs its actions...");
         verify(logger, times(1)).debug("Simple scheduler start complete.");
         verifyNoMoreInteractions(logger);

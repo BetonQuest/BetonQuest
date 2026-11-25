@@ -201,7 +201,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
             try {
                 conv.sendMessage(localizations.getMessage(profile, "conversation_spectator"));
             } catch (final QuestException e) {
-                log.warn("Failed to get conversation_spectator message: " + e.getMessage(), e);
+                log.warn(conv.getPackage(), "Failed to get conversation_spectator message: %s".formatted(e.getMessage()), e);
             }
             return;
         }
@@ -253,7 +253,7 @@ public class InventoryConvIO implements Listener, ConversationIO {
                 item = itemID == null ? new ItemStack(Material.ENDER_PEARL)
                         : itemManager.getItem(profile, itemID.getValue(profile)).generate(1);
             } catch (final QuestException e) {
-                log.warn("Failed to generate item: " + e.getMessage(), e);
+                log.warn(conv.getPackage(), "Failed to generate item: %s".formatted(e.getMessage()), e);
                 item = new ItemStack(Material.ENDER_PEARL);
             }
             final ItemMeta meta = item.getItemMeta();
@@ -283,10 +283,10 @@ public class InventoryConvIO implements Listener, ConversationIO {
         final String plainTextNpcName = PlainTextComponentSerializer.plainText().serialize(npcName);
         final ItemStack npcHead;
         if (SKULL_CACHE.containsKey(plainTextNpcName)) {
-            log.debug(conv.getPackage(), "skull cache hit");
+            log.debug(conv.getPackage(), "Skull cache hit.");
             npcHead = SKULL_CACHE.get(plainTextNpcName);
         } else {
-            log.debug(conv.getPackage(), "skull cache miss");
+            log.debug(conv.getPackage(), "Skull cache miss.");
             npcHead = new ItemStack(Material.PLAYER_HEAD);
             npcHead.setDurability((short) 3);
             final SkullMeta npcMeta = (SkullMeta) npcHead.getItemMeta();

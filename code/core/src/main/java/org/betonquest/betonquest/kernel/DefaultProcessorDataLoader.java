@@ -45,24 +45,24 @@ public class DefaultProcessorDataLoader implements ProcessorDataLoader {
     @Override
     public void loadData(final Collection<QuestPackage> packages) {
         new LoadDataEvent(LoadDataEvent.State.PRE_LOAD).callEvent();
-        log.debug("Loading processor data, clearing processors");
+        log.debug("Loading processor data, clearing processors...");
         this.processors.forEach(QuestProcessor::clear);
         packages.forEach(pack -> {
             log.debug(pack, "Loading package '%s' for processors.".formatted(pack.getQuestPath()));
             this.processors.forEach(processor -> processor.load(pack));
             log.debug(pack, "Package '%s' for processors loaded.".formatted(pack.getQuestPath()));
         });
-        log.debug("Running post-load tasks");
+        log.debug("Running post-load tasks...");
         processors.stream().filter(processor -> processor instanceof PostLoadTask)
                 .map(processor -> (PostLoadTask) processor)
                 .forEach(PostLoadTask::startAll);
-        log.debug("Finished running post-load tasks");
+        log.debug("Finished running post-load tasks.");
         final String readableSizes = processors.stream()
                 .sorted(Comparator.comparing(QuestProcessor::getReadableName))
                 .map(QuestProcessor::readableSize)
                 .collect(Collectors.joining(", "));
-        log.info("There are [%s] loaded from %s packages.".formatted(readableSizes, packages.size()));
-        log.debug("Finished loading processor data");
+        log.info("There are [%s] loaded from '%s' packages.".formatted(readableSizes, packages.size()));
+        log.debug("Finished loading processor data.");
         new LoadDataEvent(LoadDataEvent.State.POST_LOAD).callEvent();
     }
 }

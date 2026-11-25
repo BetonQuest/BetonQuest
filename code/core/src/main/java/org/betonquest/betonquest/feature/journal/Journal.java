@@ -275,7 +275,7 @@ public class Journal {
             try {
                 journalEntry = entryProcessor.get(entryID);
             } catch (final QuestException e) {
-                log.warn(entryID.getPackage(), "Cannot add journal entry to " + profile + ": " + e.getMessage(), e);
+                log.warn(entryID.getPackage(), "Cannot add journal entry '%s' to %s: %s".formatted(entryID, profile, e.getMessage()), e);
                 continue;
             }
 
@@ -283,8 +283,8 @@ public class Journal {
             try {
                 text = journalEntry.asComponent(profile);
             } catch (final QuestException e) {
-                log.warn(entryID.getPackage(), "Error while creating placeholder on journal page '" + entryID + "' in "
-                        + profile + " journal: " + e.getMessage(), e);
+                log.warn(entryID.getPackage(), "Error while creating placeholder on journal page '%s' in %s journal: %s"
+                        .formatted(entryID, profile, e.getMessage()), e);
                 text = Component.text("error");
             }
 
@@ -311,8 +311,8 @@ public class Journal {
                 }
                 text = mainPageEntry.entry().asComponent(profile);
             } catch (final QuestException e) {
-                log.warn(entry.getKey().getPackage(), "Error while creating placeholder on main page in "
-                        + profile + " journal: " + e.getMessage(), e);
+                log.warn(entry.getKey().getPackage(), "Error while creating placeholder on main page '%s' in %s journal: %s"
+                        .formatted(entry.getKey(), profile, e.getMessage()), e);
                 text = Component.text("error");
             }
             final int number = mainPageEntry.priority();
@@ -365,7 +365,7 @@ public class Journal {
         try {
             generateTexts();
         } catch (final QuestException e) {
-            log.warn("Failed to generate texts for journal: " + e.getMessage(), e);
+            log.warn("Failed to generate texts for journal: %s".formatted(e.getMessage()), e);
             return;
         }
         final Inventory inventory = profile.getOnlineProfile().get().getPlayer().getInventory();
@@ -373,7 +373,7 @@ public class Journal {
         try {
             item = getAsItem();
         } catch (final QuestException e) {
-            log.warn("Failed to get journal as item: " + e.getMessage(), e);
+            log.warn("Failed to get journal as item: %s".formatted(e.getMessage()), e);
             return;
         }
         final int targetSlot = getJournalSlot();

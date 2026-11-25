@@ -93,7 +93,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
         log.debug("Collecting reboot schedules...");
         final List<CronSchedule> rebootSchedules = schedules.values().stream()
                 .filter(CronSchedule::shouldRunOnReboot).toList();
-        log.debug("Found " + rebootSchedules.size() + " reboot schedules. They will be run on next server tick.");
+        log.debug("Found '%s' reboot schedules. They will be run on next server tick.".formatted(rebootSchedules.size()));
         rebootSchedules.forEach(this::executeActions);
     }
 
@@ -105,7 +105,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
      */
     private void catchupMissedSchedules(final Instant now) {
         final List<CronSchedule> missedSchedules = listMissedSchedules(now);
-        log.debug("Found " + missedSchedules.size() + " missed schedule runs that will be caught up.");
+        log.debug("Found '%s' missed schedule runs that will be caught up.".formatted(missedSchedules.size()));
         if (!missedSchedules.isEmpty()) {
             log.debug("Running missed schedules to catch up...");
             for (final CronSchedule missed : missedSchedules) {
@@ -147,7 +147,7 @@ public class RealtimeCronScheduler extends ExecutorServiceScheduler<CronSchedule
             final MissedRun earliest = missedRuns.poll();
             missed.add(earliest.schedule);
             log.debug(earliest.schedule.getId().getPackage(),
-                    "Schedule '" + earliest.schedule.getId() + "' run missed at " + earliest.runTime);
+                    "Schedule '%s' run missed at '%s'.".formatted(earliest.schedule.getId(), earliest.runTime));
             if (earliest.schedule.getCatchup() == CatchupStrategy.ALL) {
                 final Optional<ZonedDateTime> nextExecution = earliest.schedule.getExecutionTime().nextExecution(earliest.runTime);
                 if (nextExecution.isPresent() && nextExecution.get().isBefore(ZonedDateTime.ofInstant(now, ZoneId.systemDefault()))) {

@@ -63,7 +63,7 @@ public class CustomDropListener implements Listener {
                     event.getDrops().add(itemManager.getItem(null, identifierFactory.parseIdentifier(null, dataContainerValue.substring(0, separatorIndex)))
                             .generate(Integer.parseInt(dataContainerValue.substring(separatorIndex + 1))));
                 } catch (final QuestException e) {
-                    log.warn("Error when dropping custom item from entity: " + e.getMessage(), e);
+                    log.warn("Error when dropping custom item from entity: %s".formatted(e.getMessage()), e);
                 }
             }
             dropIndex++;

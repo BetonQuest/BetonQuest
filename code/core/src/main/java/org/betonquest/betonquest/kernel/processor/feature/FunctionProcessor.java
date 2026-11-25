@@ -63,14 +63,15 @@ public class FunctionProcessor extends QuestProcessor<FunctionIdentifier, MathFu
         for (final String key : functionSection.getKeys(false)) {
             final String rawFunction = functionSection.getString(key);
             if (rawFunction == null) {
-                log.warn("Could not load function '%s' with null value in pack '%s'".formatted(key, pack.getQuestPath()));
+                log.warn(pack, "Could not load function '%s' with null value in pack '%s'.".formatted(key, pack.getQuestPath()));
                 continue;
             }
             final FunctionIdentifier functionIdentifier;
             try {
                 functionIdentifier = getIdentifier(pack, key);
             } catch (final QuestException e) {
-                log.warn("Could not load function '%s' with invalid identifier in pack '%s': %s".formatted(key, pack.getQuestPath(), e.getMessage()), e);
+                log.warn(pack, "Could not load function '%s' with invalid identifier in pack '%s': %s"
+                        .formatted(key, pack.getQuestPath(), e.getMessage()), e);
                 continue;
             }
             final List<FunctionToken> tokens = functionTokenizer.tokenize(rawFunction);
@@ -78,7 +79,8 @@ public class FunctionProcessor extends QuestProcessor<FunctionIdentifier, MathFu
             try {
                 mathFunction = functionParser.parseMathFunction(tokens);
             } catch (final QuestException e) {
-                log.warn("Could not load function '%s' in pack '%s'. Invalid function definition could not be parsed: %s".formatted(key, pack.getQuestPath(), e.getMessage()), e);
+                log.warn(pack, "Could not load function '%s' in pack '%s'. Invalid function definition could not be parsed: %s"
+                        .formatted(key, pack.getQuestPath(), e.getMessage()), e);
                 continue;
             }
             values.put(functionIdentifier, mathFunction);

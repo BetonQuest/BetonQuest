@@ -39,7 +39,7 @@ public class GlobalPointSubCommand extends QuestCommandPart {
     public void handle(final CommandSender sender, final String... args) throws QuestException {
         // if there are no arguments then list all global points
         if (args.length < 2 || "list".equalsIgnoreCase(args[1]) || "l".equalsIgnoreCase(args[1])) {
-            log.debug("Listing global points");
+            log.debug("Listing global points.");
             final Predicate<Map.Entry<String, Integer>> shouldDisplay = createListFilter(args, 2, Map.Entry::getKey);
             sendMessage(sender, "global_points");
             globalData.points().get().entrySet().stream()
@@ -49,14 +49,14 @@ public class GlobalPointSubCommand extends QuestCommandPart {
         }
         // handle purge
         if ("purge".equalsIgnoreCase(args[1])) {
-            log.debug("Purging all global points");
+            log.debug("Purging all global points.");
             globalData.purgePoints();
             sendMessage(sender, "global_points_purged");
             return;
         }
         // if there is not enough arguments, display warning
         if (args.length < 3) {
-            log.debug("Missing category");
+            log.debug("Missing category.");
             sendMessage(sender, "specify_category");
             return;
         }
@@ -70,21 +70,21 @@ public class GlobalPointSubCommand extends QuestCommandPart {
         switch (args[1].toLowerCase(Locale.ROOT)) {
             case "add", "a" -> {
                 if (args.length < 4 || !args[3].matches("-?\\d+")) {
-                    log.debug("Missing amount");
+                    log.debug("Missing amount.");
                     sendMessage(sender, "specify_amount");
                     return;
                 }
-                log.debug("Adding global points");
+                log.debug("Adding global points.");
                 globalData.points().add(category, Integer.parseInt(args[3]));
                 sendMessage(sender, "points_added");
             }
             case "remove", "delete", "del", "r", "d" -> {
-                log.debug("Removing global points");
+                log.debug("Removing global points.");
                 globalData.points().remove(category);
                 sendMessage(sender, "points_removed");
             }
             default -> {
-                log.debug("The argument was unknown");
+                log.debug("The argument was unknown.");
                 sendMessage(sender, "unknown_argument");
             }
         }

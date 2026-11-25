@@ -57,12 +57,12 @@ public class MenuBoundCommand extends SimpleCommand {
         final OnlineProfile onlineProfile = profileProvider.getProfile(player);
         if (menu.mayOpen(onlineProfile)) {
             final MenuIdentifier menuID = menu.getMenuID();
-            log.debug(menuID.getPackage(), onlineProfile + " run bound command of " + menuID);
+            log.debug(menuID.getPackage(), "%s run bound command of '%s'.".formatted(onlineProfile, menuID));
             try {
                 rpgMenu.openMenu(onlineProfile, menuID);
                 return true;
             } catch (final QuestException e) {
-                log.error(menu.getMenuID().getPackage(), "Could not open menu '" + menuID + "': " + e.getMessage(), e);
+                log.error(menu.getMenuID().getPackage(), "Could not open menu '%s': %s".formatted(menuID, e.getMessage()), e);
                 return false;
             }
         }

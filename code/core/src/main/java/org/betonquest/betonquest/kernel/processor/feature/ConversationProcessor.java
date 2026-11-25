@@ -176,7 +176,7 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         final QuestPackage pack = instruction.getPackage();
         final ConfigurationSection section = instruction.getSection();
         final ConversationIdentifier identifier = getIdentifier(pack, sectionName);
-        log.debug(pack, String.format("Loading conversation '%s'.", identifier));
+        log.debug(pack, "Loading conversation '%s'.".formatted(identifier));
 
         final boolean invincible = configAccessor.getBoolean("conversation.damage.invincible");
         final Text quester = textCreator.parseFromSection(pack, section, "quester");
@@ -221,8 +221,8 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
             try {
                 convData.checkExternalPointers();
             } catch (final QuestException e) {
-                log.warn(convData.getPack(), "Error in '" + convData.getPublicData().conversationID()
-                        + "' conversation: " + e.getMessage(), e);
+                log.warn(convData.getPack(), "Error in '%s' conversation: %s".formatted(
+                        convData.getPublicData().conversationID(), e.getMessage()), e);
                 return true;
             }
             return false;
@@ -310,7 +310,8 @@ public class ConversationProcessor extends SectionProcessor<ConversationIdentifi
         try {
             return Optional.of(quester.asComponent(profile));
         } catch (final QuestException e) {
-            log.debug("Could not resolve quester name for profile '%s' in conversation '%s': %s".formatted(profile, activeConversation.getID(), e.getMessage()), e);
+            log.debug(activeConversation.getID().getPackage(), "Could not resolve quester name for profile %s in conversation '%s': %s"
+                    .formatted(profile, activeConversation.getID(), e.getMessage()), e);
             return Optional.empty();
         }
     }

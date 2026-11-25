@@ -98,7 +98,7 @@ public class ConversationStarter {
     public void startConversation(final OnlineProfile onlineProfile, final ConversationIdentifier conversationID,
                                   final Location center, @Nullable final String startingOption, final ConversationFactory factory) {
         if (activeConversations.containsKey(onlineProfile)) {
-            log.debug(conversationID.getPackage(), onlineProfile + " is in conversation right now, returning.");
+            log.debug(conversationID.getPackage(), "%s is in conversation right now, returning.".formatted(onlineProfile));
             return;
         }
 
@@ -106,16 +106,16 @@ public class ConversationStarter {
         try {
             conversation = factory.create(onlineProfile, conversationID, center, () -> activeConversations.remove(onlineProfile));
         } catch (final QuestException e) {
-            log.warn(conversationID.getPackage(), "Cannot create conversation '" + conversationID + "': " + e.getMessage(), e);
+            log.warn(conversationID.getPackage(), "Cannot create conversation '%s': %s".formatted(conversationID, e.getMessage()), e);
             return;
         }
         activeConversations.put(onlineProfile, conversation);
         final QuestPackage pack = conversationID.getPackage();
-        log.debug(pack, "Starting conversation '" + conversationID + "' for '" + onlineProfile + "'.");
+        log.debug(pack, "Starting conversation '%s' for %s.".formatted(conversationID, onlineProfile));
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             if (!new PlayerConversationStartEvent(onlineProfile, conversation).callEvent()) {
-                log.debug(pack, "Conversation '" + conversationID + "' for '" + onlineProfile + "' has been "
-                        + "canceled because its PlayerConversationStartEvent has been canceled.");
+                log.debug(pack, ("Conversation '%s' for %s has been canceled because its PlayerConversationStartEvent "
+                        + "has been canceled.").formatted(conversationID, onlineProfile));
                 activeConversations.remove(onlineProfile);
                 return;
             }
@@ -126,7 +126,7 @@ public class ConversationStarter {
                     new Conversation.Starter(conversation, startingOption).start();
                 }
             } catch (final QuestException e) {
-                log.error(pack, "Cannot start conversation '%s': %s".formatted(conversationID, e), e);
+                log.error(pack, "Cannot start conversation '%s': %s".formatted(conversationID, e.getMessage()), e);
                 activeConversations.remove(onlineProfile);
             }
         });

@@ -64,7 +64,7 @@ public class ItemTypeRegistry extends FactoryTypeRegistry<QuestItemWrapper> impl
 
     @Override
     public void registerSerializer(final String name, final QuestItemSerializer serializer) {
-        log.debug("Registering item serializer for '" + name + "' type");
+        log.debug("Registering item serializer for '%s' type.".formatted(name));
         serializers.put(name, serializer);
     }
 

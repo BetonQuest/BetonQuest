@@ -132,7 +132,7 @@ public class PluginMessage implements Localizations {
         }
 
         for (final String language : getLanguages()) {
-            log.debug("Loaded " + language + " language");
+            log.debug("Loaded '%s' language.".formatted(language));
         }
     }
 
@@ -145,7 +145,7 @@ public class PluginMessage implements Localizations {
         for (final Map.Entry<String, String> file : loadMessageFiles(root).entrySet()) {
             final String langKey = file.getKey();
             if (!langKey.matches(LANG_KEY)) {
-                log.warn("Could not load '" + langKey + "' language file because the name is invalid! It has to be in the pattern: " + LANG_KEY);
+                log.warn("Could not load '%s' language file because the name is invalid! It has to be in the pattern: '%s'.".formatted(langKey, LANG_KEY));
                 continue;
             }
             if (!messages.containsKey(langKey)) {

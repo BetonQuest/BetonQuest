@@ -27,7 +27,7 @@ public class McMMOIntegrator implements Integration {
         final BetonQuestLogger log = api.loggerFactory().create(McMMOIntegrator.class);
         try {
             api.bukkit().registerEvents(new MCMMOQuestItemHandler());
-            log.debug("Enabled MCMMO QuestItemHandler");
+            log.debug("Enabled MCMMO QuestItemHandler.");
         } catch (final LinkageError e) {
             log.warn("MCMMO version is not compatible with the QuestItemHandler.", e);
         }

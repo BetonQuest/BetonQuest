@@ -166,7 +166,7 @@ public class Downloader implements Callable<Boolean> {
         requestCommitSHA();
         final Path cacheFile = getCacheFile();
         if (Files.exists(cacheFile)) {
-            log.debug(cacheFile + " is already cached, reusing it");
+            log.debug("'%s' is already cached, reusing it.".formatted(cacheFile));
         } else {
             download();
             cleanupOld();
@@ -189,13 +189,13 @@ public class Downloader implements Callable<Boolean> {
                 throw new DownloadFailedException("ref is not a valid commit SHA");
             }
             this.sha = ref;
-            log.debug("Commit has sha '" + this.sha + "'");
+            log.debug("Commit has sha '%s'.".formatted(this.sha));
             return;
         }
         final URL url = new URL(GITHUB_REFS_URL
                 .replace("{namespace}", namespace)
                 .replace("{ref}", ref));
-        log.debug("Requesting commit sha for " + namespace + " at " + ref + " from github api");
+        log.debug("Requesting commit sha for '%s' at '%s' from github api.".formatted(namespace, ref));
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
         final int code = connection.getResponseCode();
@@ -215,7 +215,7 @@ public class Downloader implements Callable<Boolean> {
             }
             final Optional<JsonElement> sha = Optional.ofNullable(object.getAsJsonObject().get("sha"));
             this.sha = sha.orElseThrow().getAsString();
-            log.debug("Commit has sha '" + this.sha + "'");
+            log.debug("Commit has sha '%s'.".formatted(this.sha));
         } catch (JsonParseException | NoSuchElementException | IllegalStateException e) {
             throw new IOException("Unable to parse the JSON returned by Github API", e);
         }
@@ -307,7 +307,7 @@ public class Downloader implements Callable<Boolean> {
             while ((read = input.read(dataBuffer, 0, 1024)) != -1) {
                 output.write(dataBuffer, 0, read);
             }
-            log.debug("Repo has been saved to cache as " + getCacheFile());
+            log.debug("Repo has been saved to cache as '%s'.".formatted(getCacheFile()));
         } catch (final FileNotFoundException e) {
             throw new DownloadFailedException("The commit SHA '%s' does not exist".formatted(this.sha), e);
         }
@@ -321,7 +321,7 @@ public class Downloader implements Callable<Boolean> {
      */
     @SuppressWarnings("PMD.AssignmentInOperand")
     private void extract() throws DownloadFailedException, IOException {
-        log.debug("Extracting downloaded files from cache");
+        log.debug("Extracting downloaded files from cache...");
         final Set<String> packages = listAllPackagesInZip();
         final List<String> ignoredPackages = filterIgnoredPackagesInZip(packages);
         ignoredPackages.forEach(packages::remove);
@@ -372,7 +372,7 @@ public class Downloader implements Callable<Boolean> {
             }
             try (OutputStream out = Files.newOutputStream(newFile, options)) {
                 input.transferTo(out);
-                log.debug("Extracted " + newFile);
+                log.debug("Extracted '%s'.".formatted(newFile));
             } catch (final FileAlreadyExistsException e) {
                 throw new DownloadFailedException("File already exists: %s".formatted(e.getMessage()), e);
             }
@@ -407,13 +407,13 @@ public class Downloader implements Callable<Boolean> {
      */
     private void cleanupOld() throws IOException {
         final Path cacheDir = getCacheFile().getParent();
-        log.debug("Cleaning up any old files from cache");
+        log.debug("Cleaning up any old files from cache...");
         Files.walkFileTree(cacheDir, new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
                 if (attrs.isRegularFile() && isCacheFile(file) && !file.equals(getCacheFile())) {
                     Files.delete(file);
-                    log.debug("Deleted " + file);
+                    log.debug("Deleted '%s'.".formatted(file));
                     return CONTINUE;
                 }
                 return super.visitFile(file, attrs);

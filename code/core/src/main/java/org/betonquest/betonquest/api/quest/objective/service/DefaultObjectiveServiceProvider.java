@@ -35,6 +35,11 @@ import java.util.Optional;
 public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider {
 
     /**
+     * The debug message logged after subscribing to an event.
+     */
+    private static final String SUBSCRIBED_MESSAGE = "Subscribed to event '%s' with priority '%s' and ignoreCancelled '%s'.";
+
+    /**
      * The event service to register events with.
      */
     private final BukkitEventService eventService;
@@ -147,7 +152,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
         final EventServiceSubscriber<T> subscriber = subNonProfile(objectiveID, handler, ignoreConditions);
         final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
         eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
-        logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+        logger.debug(objectiveID.getPackage(), SUBSCRIBED_MESSAGE.formatted(eventClass.getSimpleName(), priority.name(), ignoreCancelled));
     }
 
     @Override
@@ -160,7 +165,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
         final EventServiceSubscriber<T> subscriber = subOffline(objectiveID, handler, profileExtractor, ignoreConditions);
         final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
         eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
-        logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+        logger.debug(objectiveID.getPackage(), SUBSCRIBED_MESSAGE.formatted(eventClass.getSimpleName(), priority.name(), ignoreCancelled));
     }
 
     @Override
@@ -174,7 +179,7 @@ public class DefaultObjectiveServiceProvider implements ObjectiveServiceProvider
         final EventServiceSubscriber<T> subscriber = subOnline(objectiveID, handler, profileExtractor, ignoreConditions);
         final EventServiceSubscriber<T> exceptionHandled = exceptionHandled(objectiveID, eventClass, subscriber);
         eventService.subscribe(eventClass, priority, ignoreCancelled, exceptionHandled);
-        logger.debug(objectiveID.getPackage(), "Subscribed to event '" + eventClass.getSimpleName() + "' with priority '" + priority.name() + "' and ignoreCancelled '" + ignoreCancelled + "'");
+        logger.debug(objectiveID.getPackage(), SUBSCRIBED_MESSAGE.formatted(eventClass.getSimpleName(), priority.name(), ignoreCancelled));
     }
 
     private void runObjectiveChangeEvent(final ObjectiveIdentifier objectiveID, final Profile profile, final ObjectiveState previousState, final ObjectiveState newState) {

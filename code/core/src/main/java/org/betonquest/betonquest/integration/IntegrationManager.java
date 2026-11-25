@@ -127,7 +127,7 @@ public class IntegrationManager {
                 .filter(wrapper -> !enabledIntegrations.contains(wrapper))
                 .filter(IntegrationWrapper::isReadyToEnabled)
                 .toList();
-        log.debug("Enabling %s valid integrations out of %s registered integrations. %s are already enabled."
+        log.debug("Enabling '%s' valid integrations out of '%s' registered integrations. '%s' are already enabled."
                 .formatted(wrappers.size(), integrations.size(), enabledIntegrations.size()));
         for (final IntegrationWrapper wrapper : wrappers) {
             if (!wrapper.isCompatible()) {
@@ -250,7 +250,7 @@ public class IntegrationManager {
         private void logCompatibilityIssues() {
             for (final Policy policy : policies) {
                 if (!policy.validate()) {
-                    logger.warn("Integration provided by '%s' is not compatible due to policy: %s"
+                    logger.warn("Integration provided by '%s' is not compatible due to policy '%s'."
                             .formatted(integrationProvider.getName(), policy.description()));
                 }
             }

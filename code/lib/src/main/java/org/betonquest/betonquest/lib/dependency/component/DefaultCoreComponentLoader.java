@@ -100,21 +100,21 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
 
     @Override
     public void load() {
-        log.info("Loading %s BetonQuest components...".formatted(components.size()));
+        log.info("Loading '%s' BetonQuest components...".formatted(components.size()));
         initialInjections.forEach(this::injectToAll);
-        log.debug("Injected initial %s dependencies into components.".formatted(initialInjections.size()));
+        log.debug("Injected initial '%s' dependencies into components.".formatted(initialInjections.size()));
         loadedComponentsWarningCheck();
         if (components.isEmpty()) {
             log.warn("No components were registered. Skipping loading.");
             return;
         }
         final List<CoreComponent> orderedComponents = DependencyHelper.topologicalOrder(components, loaded);
-        log.debug("Component order for %s components: %s".formatted(orderedComponents.size(), orderedComponents.stream().map(CoreComponent::getClass).map(Class::getSimpleName).collect(Collectors.joining(","))));
+        log.debug("Component order for '%s' components: '%s'.".formatted(orderedComponents.size(), orderedComponents.stream().map(CoreComponent::getClass).map(Class::getSimpleName).collect(Collectors.joining(","))));
         final StopWatch stopWatch = StopWatch.createStarted();
         orderedComponents.forEach(this::loadComponent);
         stopWatch.stop();
-        log.debug("Loaded %s components, took %s".formatted(components.size(), stopWatch.formatTime()));
-        log.info("All %s components successfully loaded.".formatted(components.size()));
+        log.debug("Loaded '%s' components, took %s.".formatted(components.size(), stopWatch.formatTime()));
+        log.info("All '%s' components successfully loaded.".formatted(components.size()));
     }
 
     private void loadedComponentsWarningCheck() {
@@ -138,7 +138,7 @@ public class DefaultCoreComponentLoader implements CoreComponentLoader {
             final String missing = expectedProvidedClasses.stream().map(Class::getSimpleName).sorted().collect(Collectors.joining(","));
             throw new IllegalStateException("Component '%s' did not provide all expected dependencies, missing: '%s'".formatted(component.getClass().getSimpleName(), missing));
         }
-        log.debug("Loaded component '%s'. Took %s".formatted(component.getClass().getSimpleName(), stopWatch.formatTime()));
+        log.debug("Loaded component '%s', took %s.".formatted(component.getClass().getSimpleName(), stopWatch.formatTime()));
     }
 
     private void injectToAll(final LoadedDependency<?> loadedDependency) {

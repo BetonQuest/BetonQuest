@@ -63,7 +63,7 @@ public abstract class Database {
      * @return the current database connection
      */
     public Connection getConnection() {
-        log.debug("New database connection requested");
+        log.debug("New database connection requested.");
         return connectionProvider.create();
     }
 
@@ -81,16 +81,16 @@ public abstract class Database {
         log.debug("Checking database tables and running pending migrations...");
         try (Connection connection = getConnection()) {
             final SortedMap<MigrationKey, DatabaseUpdate> migrations = getMigrations();
-            log.debug("Found %d registered migrations.".formatted(migrations.size()));
+            log.debug("Found '%s' registered migrations.".formatted(migrations.size()));
             final Set<MigrationKey> executedMigrations = queryExecutedMigrations(connection);
-            log.debug("Found %d already executed migrations.".formatted(executedMigrations.size()));
+            log.debug("Found '%s' already executed migrations.".formatted(executedMigrations.size()));
             executedMigrations.forEach(migrations::remove);
-            log.debug("Pending migrations to execute: %d".formatted(migrations.size()));
+            log.debug("Pending migrations to execute: '%s'.".formatted(migrations.size()));
 
             while (!migrations.isEmpty()) {
                 final MigrationKey key = migrations.firstKey();
                 final DatabaseUpdate migration = migrations.remove(key);
-                log.debug("Executing migration '%s'".formatted(key));
+                log.debug("Executing migration '%s'...".formatted(key));
                 migration.executeUpdate(connection);
                 markMigrationExecuted(connection, key);
                 log.debug("Migration '%s' successfully executed and marked in database.".formatted(key));

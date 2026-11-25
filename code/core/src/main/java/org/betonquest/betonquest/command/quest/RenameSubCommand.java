@@ -139,7 +139,7 @@ public class RenameSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Could not find Objective: " + e.getMessage(), e);
+            log.warn("Could not find objective '%s': %s".formatted(name, e.getMessage()), e);
             return true;
         }
         // rename objective in the file
@@ -157,7 +157,8 @@ public class RenameSubCommand extends QuestCommandPart {
             configuration.associateWith(newPath, sourceConfigurationSection);
             nameID.getPackage().saveAll();
         } catch (final IOException | InvalidConfigurationException e) {
-            log.warn(nameID.getPackage(), e.getMessage(), e);
+            log.warn(nameID.getPackage(), "Could not rename objective '%s' in the package configuration: %s"
+                    .formatted(nameID.getFull(), e.getMessage()), e);
             return true;
         }
         // rename objective instance
@@ -166,7 +167,7 @@ public class RenameSubCommand extends QuestCommandPart {
             renameID = getIdentifier(ObjectiveIdentifier.class, rename);
         } catch (final QuestException e) {
             sender.sendMessage("§4There was an unexpected error: " + e.getMessage());
-            log.reportException(e);
+            log.reportException(nameID.getPackage(), e);
             return true;
         }
         final ObjectiveProcessor objectiveProcessor = (ObjectiveProcessor) objectiveManager;
@@ -175,7 +176,8 @@ public class RenameSubCommand extends QuestCommandPart {
         try {
             nameID.getPackage().saveAll();
         } catch (final IOException e) {
-            log.warn(nameID.getPackage(), e.getMessage(), e);
+            log.warn(nameID.getPackage(), "Could not save package configuration after renaming objective '%s': %s"
+                    .formatted(nameID.getFull(), e.getMessage()), e);
             return true;
         }
         return false;
@@ -183,7 +185,8 @@ public class RenameSubCommand extends QuestCommandPart {
 
     private boolean handleJournalEntries(final CommandSender sender, final String name, final String rename,
                                          final List<OnlineProfile> onlineProfiles) {
-        final QuestPackage newPackage = questPackageManager.getPackages().get(rename.split(Identifier.SEPARATOR)[0]);
+        final String newPackName = rename.split(Identifier.SEPARATOR)[0];
+        final QuestPackage newPackage = questPackageManager.getPackages().get(newPackName);
         if (newPackage == null) {
             final String message = "You can't rename into non-existent package!";
             sendMessage(sender, "error", new VariableReplacement("error", Component.text(message)));
@@ -197,7 +200,7 @@ public class RenameSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             final String message = "You can't rename into non-existent id!";
             sendMessage(sender, "error", new VariableReplacement("error", Component.text(message)));
-            log.error(message);
+            log.error(newPackage, message);
             return true;
         }
 
@@ -205,9 +208,9 @@ public class RenameSubCommand extends QuestCommandPart {
         try {
             oldEntryID = getIdentifier(JournalEntryIdentifier.class, name);
         } catch (final QuestException e) {
-            final String message = "Old journal entry " + name + " does not exist, renaming only database entries!";
-            log.warn(message, e);
-            log.debug("Renaming non existent journal entry only from database: " + e.getMessage(), e);
+            final String message = "Old journal entry '%s' does not exist, renaming only database entries!".formatted(name);
+            log.warn(newPackage, message, e);
+            log.debug(newPackage, "Renaming non existent journal entry only from database: %s".formatted(e.getMessage()), e);
             sender.sendMessage("§2" + message);
             return false;
         }

@@ -74,7 +74,7 @@ public class MySQL extends Database {
     @Override
     @SuppressFBWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     protected Set<MigrationKey> queryExecutedMigrations(final Connection connection) throws SQLException {
-        log.debug("Querying executed migrations from table '%s' migration".formatted(prefix));
+        log.debug("Querying executed migrations from table '%smigration'.".formatted(prefix));
         final Set<MigrationKey> executedMigrations = new HashSet<>();
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + prefix
@@ -297,7 +297,7 @@ public class MySQL extends Database {
                     try {
                         bytes = itemFactory.parseInstruction(argumentParsers, instruction).generate(1).serializeAsBytes();
                     } catch (final QuestException e) {
-                        log.warn("Could not generate QuestItem from Instruction: " + e.getMessage(), e);
+                        log.warn("Could not generate QuestItem from Instruction: %s".formatted(e.getMessage()), e);
                         continue;
                     }
                     final String serialized = Base64.getEncoder().encodeToString(bytes);

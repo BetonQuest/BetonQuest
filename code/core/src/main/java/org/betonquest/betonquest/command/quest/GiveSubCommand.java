@@ -53,12 +53,12 @@ public class GiveSubCommand extends QuestCommandPart {
     public void handle(final CommandSender sender, final String... args) {
         // sender must be a player
         if (!(sender instanceof Player)) {
-            log.debug("Cannot continue, sender must be player");
+            log.debug("Cannot continue, sender must be player.");
             return;
         }
         // and the item name must be specified
         if (args.length < 2) {
-            log.debug("Cannot continue, item's name must be supplied");
+            log.debug("Cannot continue, item's name must be supplied.");
             sendMessage(sender, "specify_item");
             return;
         }
@@ -69,7 +69,7 @@ public class GiveSubCommand extends QuestCommandPart {
             } catch (final QuestException e) {
                 sendMessage(sender, "error",
                         new VariableReplacement("error", Component.text(e.getMessage())));
-                log.warn("Could not find Item: " + e.getMessage(), e);
+                log.warn("Could not find item '%s': %s".formatted(args[1], e.getMessage()), e);
                 return;
             }
             final OnlineAction give = new GiveAction(
@@ -84,7 +84,7 @@ public class GiveSubCommand extends QuestCommandPart {
         } catch (final QuestException e) {
             sendMessage(sender, "error",
                     new VariableReplacement("error", Component.text(e.getMessage())));
-            log.warn("Error while creating an item: " + e.getMessage(), e);
+            log.warn("Error while creating item '%s': %s".formatted(args[1], e.getMessage()), e);
         }
     }
 

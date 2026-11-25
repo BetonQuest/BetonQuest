@@ -63,13 +63,13 @@ public class QuestPackageCacheImpl implements QuestPackageCache {
         try {
             cacheSection.accept(Objects.requireNonNullElseGet(section, () -> cacheAccessor.createSection(key)));
         } catch (final QuestException e) {
-            log.warn(logSource, "There was an error while trying to cache some values for '%s' for package '%s', reason: %s"
+            log.warn(logSource, "There was an error while trying to cache some values for '%s' for package '%s': %s"
                     .formatted(key, logSource, e.getMessage()), e);
         }
         try {
             cacheAccessor.save();
         } catch (final IOException e) {
-            log.warn(logSource, "Failed to save the cache '%s' for package '%s', reason: %s"
+            log.warn(logSource, "Failed to save the cache '%s' for package '%s': %s"
                     .formatted(key, logSource, e.getMessage()), e);
         }
     }

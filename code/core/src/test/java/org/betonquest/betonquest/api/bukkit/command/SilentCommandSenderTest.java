@@ -61,7 +61,7 @@ class SilentCommandSenderTest {
     void send_message() {
         silentSender.sendMessage("test1");
         verify(sender, never()).sendMessage(anyString());
-        verify(logger, times(1)).debug("Silently sending message to console: test1");
+        verify(logger, times(1)).debug("Silently sending message to console: 'test1'.");
         verifyNoMoreInteractions(logger);
     }
 
@@ -70,7 +70,7 @@ class SilentCommandSenderTest {
     void send_message_multiple() {
         silentSender.sendMessage("test2", "test3");
         verify(sender, never()).sendMessage(anyString(), anyString());
-        verify(logger, times(1)).debug("Silently sending messages to console: test2, test3");
+        verify(logger, times(1)).debug("Silently sending messages to console: 'test2, test3'.");
         verifyNoMoreInteractions(logger);
     }
 
@@ -79,7 +79,7 @@ class SilentCommandSenderTest {
     void send_message_sender_null() {
         silentSender.sendMessage(null, "test4");
         verify(sender, never()).sendMessage(any(UUID.class), anyString());
-        verify(logger, times(1)).debug("Silently sending message to console: test4");
+        verify(logger, times(1)).debug("Silently sending message to console: 'test4'.");
         verifyNoMoreInteractions(logger);
     }
 
@@ -88,7 +88,7 @@ class SilentCommandSenderTest {
     void send_message_uuid_null() {
         silentSender.sendMessage((UUID) null, "test5", "test6");
         verify(sender, never()).sendMessage(any(UUID.class), anyString(), anyString());
-        verify(logger, times(1)).debug("Silently sending messages to console: test5, test6");
+        verify(logger, times(1)).debug("Silently sending messages to console: 'test5, test6'.");
         verifyNoMoreInteractions(logger);
     }
 

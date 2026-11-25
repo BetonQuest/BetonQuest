@@ -44,7 +44,7 @@ public class FactoryRegistry<F> implements FeatureRegistry<F> {
 
     @Override
     public void register(final String name, final F factory) {
-        log.debug("Registering " + name + " " + typeName + " type");
+        log.debug("Registering '%s' %s type.".formatted(name, typeName));
         types.put(name, factory);
     }
 
@@ -55,7 +55,7 @@ public class FactoryRegistry<F> implements FeatureRegistry<F> {
             if (factory != null) {
                 return factory;
             }
-            log.debug(typeName + " '" + name + "' not found. Trying next one...");
+            log.debug("%s '%s' not found. Trying next one...".formatted(typeName, name));
         }
         throw new QuestException("%s type '%s' does not exist".formatted(typeName, names));
     }

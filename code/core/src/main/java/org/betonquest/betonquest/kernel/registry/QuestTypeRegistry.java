@@ -53,7 +53,7 @@ public abstract class QuestTypeRegistry<P, S, A> extends FactoryTypeRegistry<A> 
      */
     private void registerInternal(final String name, @Nullable final PlayerQuestFactory<P> playerFactory,
                                   @Nullable final PlayerlessQuestFactory<S> playerlessFactory) {
-        log.debug("Registering " + name + " " + typeName + " type");
+        log.debug("Registering '%s' %s type.".formatted(name, typeName));
         types.put(name, getFactoryAdapter(playerFactory, playerlessFactory));
     }
 

@@ -114,7 +114,7 @@ public class EffectLibRunnable extends BukkitRunnable {
                     activePlayerEffects.add(onlineProfile);
                 }
             } catch (final QuestException e) {
-                log.warn("Could not check conditions for effectlib effect '%s' for profile '%s': %s".formatted(
+                log.warn("Could not check conditions for effectlib effect '%s' for profile %s: %s".formatted(
                         effectConfiguration.settings().getName(), onlineProfile, e.getMessage()), e);
             }
         }
@@ -139,7 +139,7 @@ public class EffectLibRunnable extends BukkitRunnable {
         try {
             identifiers = effectConfiguration.npcs().getValue(profile);
         } catch (final QuestException e) {
-            log.warn("Could not resolve npcs for effectlib effect '" + effectClass + "': " + e.getMessage(), e);
+            log.warn("Could not resolve npcs for effectlib effect '%s': %s".formatted(effectClass, e.getMessage()), e);
             return;
         }
         for (final NpcIdentifier npcId : identifiers) {
@@ -150,7 +150,8 @@ public class EffectLibRunnable extends BukkitRunnable {
             try {
                 npcs = npcManager.getAll(profile, npcId);
             } catch (final QuestException exception) {
-                log.debug("Could not get Npc for id '" + npcId + "' in effects: " + exception.getMessage(), exception);
+                log.debug(npcId.getPackage(), "Could not get Npc for id '%s' in effects: %s".formatted(npcId, exception.getMessage()),
+                        exception);
                 continue;
             }
             runForNPC(effectClass, profile, npcId, npcs);
@@ -164,7 +165,7 @@ public class EffectLibRunnable extends BukkitRunnable {
             }
             final Optional<Location> location = npc.getLocation();
             if (location.isEmpty()) {
-                log.debug("Spawned Npc '" + npcId + "' has no location in effects");
+                log.debug(npcId.getPackage(), "Spawned Npc '%s' has no location in effects.".formatted(npcId));
                 continue;
             }
             final Player player = profile.getPlayer();
@@ -184,7 +185,7 @@ public class EffectLibRunnable extends BukkitRunnable {
                 manager.start(effectClass, effectConfiguration.settings(), location, profile.getPlayer());
             }
         } catch (final QuestException e) {
-            log.warn("Could not resolve locations for effectlib effect '" + effectClass + "': " + e.getMessage(), e);
+            log.warn("Could not resolve locations for effectlib effect '%s': %s".formatted(effectClass, e.getMessage()), e);
         }
     }
 

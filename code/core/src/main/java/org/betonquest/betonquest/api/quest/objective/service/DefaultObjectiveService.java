@@ -200,7 +200,7 @@ public class DefaultObjectiveService implements ObjectiveService {
 
     @Override
     public boolean checkConditions(@Nullable final Profile profile) throws QuestException {
-        getLogger().debug("Checking conditions for objective '%s' and profile '%s'".formatted(objectiveID, profile));
+        getLogger().debug(objectiveID.getPackage(), "Checking conditions for objective '%s' and profile %s.".formatted(objectiveID, profile));
         final ObjectiveServiceDataProvider provider = getServiceDataProvider();
         final List<ConditionIdentifier> conditions = provider.getConditions(profile);
         return conditions.isEmpty() || conditionProcessor.checks(profile, conditions, true);
@@ -213,7 +213,7 @@ public class DefaultObjectiveService implements ObjectiveService {
         if (events.isEmpty()) {
             return;
         }
-        getLogger().debug("Calling actions [%s] for objective '%s' and profile '%s'"
+        getLogger().debug(objectiveID.getPackage(), "Calling actions '%s' for objective '%s' and profile %s."
                 .formatted(String.join(",", events.stream().map(Identifier::toString).toList()), objectiveID, profile));
         actionProcessor.run(profile, events);
     }
@@ -228,20 +228,20 @@ public class DefaultObjectiveService implements ObjectiveService {
         try {
             objectiveService.stop(objectiveID, profile, ObjectiveState.COMPLETED);
         } catch (final QuestException e) {
-            logger.error("Could not stop objective '%s' for profile '%s': %s".formatted(getObjectiveID(), profile, e.getMessage()), e);
+            logger.error(objectiveID.getPackage(), "Could not stop objective '%s' for profile %s: %s".formatted(getObjectiveID(), profile, e.getMessage()), e);
             return;
         }
         final PlayerData playerData = BetonQuest.getInstance().getPlayerDataStorage().get(profile);
         final QuestPackage questPackage = objectiveID.getPackage();
         playerData.removeRawObjective(objectiveID);
         checkForPersistence(profile, playerData);
-        logger.debug("Objective '%s' has been completed for '%s', firing actions.".formatted(objectiveID, profile));
+        logger.debug(questPackage, "Objective '%s' has been completed for %s, firing actions.".formatted(objectiveID, profile));
         try {
             callActions(profile);
         } catch (final QuestException e) {
-            logger.warn(questPackage, "Error while firing actions in objective '%s' for profile '%s': %s".formatted(objectiveID, profile, e.getMessage()), e);
+            logger.warn(questPackage, "Error while firing actions in objective '%s' for profile %s: %s".formatted(objectiveID, profile, e.getMessage()), e);
         }
-        logger.debug(questPackage, "Firing actions in objective '%s' for profile '%s' finished".formatted(objectiveID, profile));
+        logger.debug(questPackage, "Firing actions in objective '%s' for profile %s finished.".formatted(objectiveID, profile));
     }
 
     private void checkForPersistence(final Profile profile, final PlayerData playerData) {
@@ -249,7 +249,7 @@ public class DefaultObjectiveService implements ObjectiveService {
         try {
             persistent = objectiveServiceData.isPersistent(profile);
         } catch (final QuestException e) {
-            logger.error("Could not get persistent flag of objective '%s' for profile '%s': %s".formatted(objectiveID, profile, e.getMessage()), e);
+            logger.error(objectiveID.getPackage(), "Could not get persistent flag of objective '%s' for profile %s: %s".formatted(objectiveID, profile, e.getMessage()), e);
             persistent = false;
         }
         if (persistent) {
@@ -258,9 +258,10 @@ public class DefaultObjectiveService implements ObjectiveService {
                 playerData.addRawObjective(objectiveID, defaultDataInstruction);
                 playerData.addObjToDB(objectiveID, defaultDataInstruction);
                 objectiveService.start(objectiveID, profile, defaultDataInstruction, ObjectiveState.NEW);
-                logger.debug("Persistent objective '%s' has been re-created for '%s'.".formatted(objectiveID, profile));
+                logger.debug(objectiveID.getPackage(), "Persistent objective '%s' has been re-created for %s.".formatted(objectiveID, profile));
             } catch (final QuestException e) {
-                logger.warn("Could not re-create persistent objective '%s' for profile '%s': The objective instruction could not be resolved: %s"
+                logger.warn(objectiveID.getPackage(), ("Could not re-create persistent objective '%s' for profile %s, "
+                        + "because the objective instruction could not be resolved: %s")
                         .formatted(objectiveID, profile, e.getMessage()), e);
             }
         }

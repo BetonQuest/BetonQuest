@@ -220,16 +220,17 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         final String packName = pack.getQuestPath();
         for (final String key : section.getKeys(false)) {
             if (key.contains(" ")) {
-                log.warn(pack, NPC_SECTION + " name cannot contain spaces: '" + key + "' (in " + packName + " package)");
+                log.warn(pack, "%s name cannot contain spaces: '%s' (in '%s' package).".formatted(NPC_SECTION, key, packName));
             } else if (!section.isString(key)) {
-                log.warn(pack, NPC_SECTION + " value for key '" + key + "' (in " + packName + " package) is not a string");
+                log.warn(pack, "%s value for key '%s' (in '%s' package) is not a string.".formatted(NPC_SECTION, key, packName));
             } else {
                 try {
                     final NpcIdentifier npcID = getIdentifier(pack, key);
                     final ConversationIdentifier conversationID = conversationIdentifierFactory.parseIdentifier(pack, Objects.requireNonNull(section.getString(key)));
                     assignedConversations.put(npcID, conversationID);
                 } catch (final QuestException exception) {
-                    log.warn(pack, "Error while loading " + NPC_SECTION + " for key '" + key + "' (in " + packName + " package): " + exception.getMessage(), exception);
+                    log.warn(pack, "Error while loading %s for key '%s' (in '%s' package): %s"
+                            .formatted(NPC_SECTION, key, packName, exception.getMessage()), exception);
                 }
             }
         }
@@ -290,8 +291,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
         }
 
         if (conversationID == null) {
-            log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + identifier
-                    + "' but there is no conversation assigned to it.");
+            log.debug("Profile '%s' clicked Npc '%s' but there is no conversation assigned to it."
+                    .formatted(clicker.getProfileName(), identifier));
             return false;
         }
 
@@ -300,8 +301,8 @@ public class NpcProcessor extends TypedQuestProcessor<NpcIdentifier, NpcWrapper<
             return false;
         }
 
-        log.debug("Profile '" + clicker.getProfileName() + "' clicked Npc '" + selected
-                + "' and started conversation '" + conversationID + "'.");
+        log.debug(conversationID.getPackage(), "Profile '%s' clicked Npc '%s' and started conversation '%s'."
+                .formatted(clicker.getProfileName(), selected, conversationID));
         final Location center = npc.getLocation().orElseGet(() -> onlineProfile.getPlayer().getLocation());
         convStarter.startConversation(onlineProfile, conversationID, center, null,
                 (onlineProfile1, id, center1, run)
