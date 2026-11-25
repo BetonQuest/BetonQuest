@@ -93,7 +93,7 @@ class ExecutorServiceSchedulerTest {
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
         verify(executor).shutdownNow();
         verify(executor).awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-        verify(logger, times(1)).debug("Stopping  scheduler.");
+        verify(logger, times(1)).debug("Stopping '' scheduler.");
         verify(logger, times(1)).debug("Successfully shut down executor service.");
         verify(logger, times(1)).debug("Stop complete.");
         verifyNoMoreInteractions(logger);
@@ -109,7 +109,7 @@ class ExecutorServiceSchedulerTest {
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
         verify(executor).shutdownNow();
         verify(executor).awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-        verify(logger, times(1)).debug("Stopping  scheduler.");
+        verify(logger, times(1)).debug("Stopping '' scheduler.");
         verify(logger, times(1)).error(eq("Error while stopping scheduler."), any(InterruptedException.class));
         verify(logger, times(1)).debug("Stop complete.");
         verifyNoMoreInteractions(logger);
@@ -125,7 +125,7 @@ class ExecutorServiceSchedulerTest {
         assertEquals(executor, scheduler.executor, "Executor should be provided by supplier");
         verify(executor).shutdownNow();
         verify(executor).awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-        verify(logger, times(1)).debug("Stopping  scheduler.");
+        verify(logger, times(1)).debug("Stopping '' scheduler.");
         verify(logger, times(1)).error(eq("Error while stopping scheduler."), any(TimeoutException.class));
         verify(logger, times(1)).debug("Stop complete.");
         verifyNoMoreInteractions(logger);
