@@ -115,6 +115,68 @@ class QuestMigrationTest extends QuestFixture {
     }
 
     @Test
+    void replaces_matching_placeholders_in_all_values() throws InvalidConfigurationException, IOException {
+        original.loadFromString("""
+                actions:
+                  run: "execute %point.old% and %point.old%"
+                  nested:
+                    run: "execute %point.old%"
+                conditions:
+                  check: "%point.old%"
+                objectives:
+                  track: "objective %point.old%"
+                journal:
+                  - "journal %point.old%"
+                  - "journal %point.keep%"
+                conversations:
+                  talk:
+                    text:
+                      - "conversation %point.old%"
+                list_of_maps:
+                  - text: "map text %point.old%"
+                    instruction: "map instruction %point.old%"
+                nested_placeholder: "before %point.old.{%point.old%}% after"
+                escaped_placeholder: 'literal \\%point.old\\%'
+                unrelated: "keep %point.keep%"
+                """);
+        expected.loadFromString("""
+                actions:
+                  run: "execute %point.new% and %point.new%"
+                  nested:
+                    run: "execute %point.new%"
+                conditions:
+                  check: "%point.new%"
+                objectives:
+                  track: "objective %point.new%"
+                journal:
+                  - "journal %point.new%"
+                  - "journal %point.keep%"
+                conversations:
+                  talk:
+                    text:
+                      - "conversation %point.new%"
+                list_of_maps:
+                  - text: "map text %point.new%"
+                    instruction: "map instruction %point.new%"
+                nested_placeholder: "before %point.new.{%point.new%}% after"
+                escaped_placeholder: 'literal \\%point.old\\%'
+                unrelated: "keep %point.keep%"
+                """);
+
+        final Quest quest = setupQuest("other.yml");
+        new QuestMigration() {
+            @Override
+            public void migrate(final Quest quest) {
+                replacePlaceholders(quest.getQuestConfig(), "point.old",
+                        placeholder -> placeholder.replace("point.old", "point.new"));
+            }
+        }.migrate(quest);
+        quest.saveAll();
+
+        checkAssertion(quest, "other.yml");
+    }
+
+    @Test
     void expand_to_sub_section_single_value() throws IOException, InvalidConfigurationException {
         original.loadFromString("""
                 actions:
