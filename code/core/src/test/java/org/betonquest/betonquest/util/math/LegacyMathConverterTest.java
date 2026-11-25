@@ -61,7 +61,16 @@ class LegacyMathConverterTest {
                 Arguments.of("2^3^2", "f(a) = 2^3^2", List.of()),
                 Arguments.of(" x + 2 *\ty ", "f(a,b) = a+2*b", List.of("x", "y")),
                 Arguments.of("1.5e3+.5+2.", "f(a) = 1.5e3+.5+2.", List.of()),
-                Arguments.of("NaN+Infinity", "f(a) = NaN+Infinity", List.of())
+                Arguments.of("NaN+Infinity", "f(a) = NaN+Infinity", List.of()),
+                Arguments.of("(constant.PointsNeededBase*(1-constant.PointsNeededMultiplier^globalpoint.HauntedMinesPlayers.amount)/(1-constant.PointsNeededMultiplier))~0",
+                        "f(a,b,c) = round((a*(1-b^c)/(1-b)),0)",
+                        List.of("constant.PointsNeededBase", "constant.PointsNeededMultiplier", "globalpoint.HauntedMinesPlayers.amount")),
+                Arguments.of("(constant.PointsRemovedPerTimeUnitBase*(1-constant.PointsRemovedMultiplier^globalpoint.HauntedMinesPlayers.amount)/(1-constant.PointsRemovedMultiplier))~0",
+                        "f(a,b,c) = round((a*(1-b^c)/(1-b)),0)",
+                        List.of("constant.PointsRemovedPerTimeUnitBase", "constant.PointsRemovedMultiplier", "globalpoint.HauntedMinesPlayers.amount")),
+                Arguments.of("((location.x-constant.Target.X)^2+(location.y-constant.Target.Y)^2+(location.z-constant.Target.Z)^2)^0.5~0",
+                        "f(a,b,c,d,e,f) = round(((a-b)^2+(c-d)^2+(e-f)^2)^0.5,0)",
+                        List.of("location.x", "constant.Target.X", "location.y", "constant.Target.Y", "location.z", "constant.Target.Z"))
         ), manyPlaceholders());
     }
 
